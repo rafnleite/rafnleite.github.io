@@ -1,0 +1,867 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Análise do resultado da eleição presidencial de 2022">
+    <meta name="author" content="Rafael Leite">
+
+    <title>Eleições 2022</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/dashboard/">
+
+    <!-- CSS -->
+    <link href="dashboard.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" rel="stylesheet">
+
+    <!-- JS Bibliotecas -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.7.1/dist/Chart.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"
+        integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <script src="./funcoes.js"></script>
+    <!-- Gráficos -->
+    <script src="./graficos/grafico_resultado_bolsonaro_por_modelo_urna_por_estado.js"></script>
+    <!-- JS Dados -->
+    <script src="./dados/votacao_por_zona_por_municipio.js"></script>
+    <script src="./dados/estados_por_regiao.js"></script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-3 col-md-4 d-none d-md-block bg-light sidebar">
+                <nav id="navegador" class="sidebar-sticky">
+                    <center>
+                        <img src="./assets/profile_pic.jpg" width="120" height="120"
+                            style="border-radius: 50%; border: 2px solid #000;">
+                        <div class="h6 mb-0">Rafael Leite</div>
+                        <div class="my-0">Engenheiro Civil</div>
+                        <div class="h5 my-2">
+                            <a class="mx-1" href="https://twitter.com/rafnleite" target="_blank"><i
+                                    class="fab fa-twitter"></i></a>
+                            <a class="mx-1" href="https://www.linkedin.com/in/rafnleite/" target="_blank"><i
+                                    class="fab fa-linkedin-in"></i></a>
+                        </div>
+                    </center>
+                    <hr>
+                    <ul id="listaNavegador" class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#introducao">
+                                Introdução <span class="sr-only">(current)</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#auditorias">
+                                Auditorias em urnas
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#tipos">
+                                Votação por tipo de urna
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#graficos">
+                                Comportamento de gráficos
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#unanimes">
+                                Urnas unâmines
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#codigofonte">
+                                Código-fonte das urnas
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#alteracoes">
+                                Os dados foram alterados após a live?
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#totalizacao">
+                                Totalização de votos
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#conclusao">
+                                Conclusão
+                            </a>
+                        </li>
+
+                        <h6
+                            class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                            <span>Análises adicionais</span>
+                        </h6>
+                        <ul class="nav flex-column mb-2">
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">
+                                    Votação por seção
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">
+                                    Votação por fatores socioeconômicos
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">
+                                    Mapa de votos
+                                </a>
+                            </li>
+                        </ul>
+                </nav>
+            </div>
+
+            <main role="main" class="col-lg-9 col-md-8 col-sm-12 col-xs-12 text-center">
+                <center>
+                    <div class="text-justify" style="max-width: 800px;">
+                        <div id="introducao">
+                            <div
+                                class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 mt-2 border-bottom">
+                                <h1 class="h2">Introdução</h1>
+                                <div class="btn-toolbar mb-2 mb-md-0">
+                                </div>
+                            </div>
+                            <p>A disputa presidencial de 2022 entre o ex-presidente <b>Luis Inácio Lula da Silva
+                                    (PT)</b> e
+                                o
+                                atual presidente <b>Jair Messais Bolsonaro (PL)</b> foi a <a
+                                    href="https://www.cnnbrasil.com.br/politica/disputa-entre-lula-e-bolsonaro-e-a-eleicao-para-presidente-mais-acirrada-da-historia/"
+                                    target="_blank">mais acirrada da história do Brasil</a>.
+                                Lula venceu a disputa com <b>50,9%</b> dos votos válidos e uma vantagem de pouco mais de
+                                2
+                                milhões de votos.
+                                Porém, desde o anúncio oficial do resultado pelo TSE, surgiram na internet inúmeros
+                                questionamentos, feitos pelos apoiadores do candidato derrotado Jair Bolsonaro, sobre a
+                                legitimidade das eleições.
+                            </p>
+                            <p>Não é a primeira vez que os apoiadores de Bolsonaro levantam dúvidas
+                                sobre a segurança das urnas eletrônicas. O próprio presidente recorrentemente insufla
+                                seus
+                                eleitores com acusações de fraudes no sistema eleitoral brasileiro e chegou a dizer, em
+                                2021,
+                                que <a
+                                    href="https://www.cnnbrasil.com.br/politica/bolsonaro-diz-que-vai-apresentar-provas-de-fraude-na-eleicao-na-semana-que-vem/"
+                                    target="_blank">apresentaria provas</a> sobre suas alegações - porém nunca o fez.
+                            </p>
+                            <p>Na semana posterior ao segundo turno das eleições presidenciais uma live no YouTube do
+                                canal
+                                argentino <b>La Derecha Diário</b> apresentou uma série de análise sobre os dados das
+                                eleições
+                                no Brasil, apontando supostas anormalias e dando a entender que eram indícios de fraudes
+                                nas
+                                eleições.
+                                A live atingiu a marca de 300 mil espectadores simultâneos e seu conteúdo passou a ser
+                                <a href="https://www.em.com.br/app/noticia/politica/2022/11/04/interna_politica,1417415/live-de-argentino-sobre-urnas-causa-furor-nas-redes-bolsonaristas.shtml"
+                                    target="_blank">utilizado por Bolsonaristas como argumento de que houve
+                                    interferências
+                                    nas
+                                    eleições</a>. Além da live, uma apresentação de slides foi divulgada pelos autores.
+                            </p>
+                            <p>A conteúdo do material se sustenta na tese de que o comportamento dos votos nos novos
+                                modelos
+                                de
+                                urnas eletrônicas (UE 2020) é diferente dos demais modelos utilizados (UE 2015, UE 2013,
+                                UE
+                                2011, UE 2010 e UE 2009) nas eleições, dando a entender que as urnas antigas favoreciam
+                                o
+                                candidato do PT.</p>
+                            <p>Neste trabalho vou contrapor as informações apresentadas pelo dossiê argentino,
+                                <b>evidenciando
+                                    os erros e viéses estatísticos explorados na apresentação</b>. Para isto, farei
+                                análises
+                                a
+                                partir dos dados das eleições, que são públicos e estão disponíveis no <a
+                                    href="https://dadosabertos.tse.jus.br/">Potal de Dados Abertos do TSE</a>.
+                            </p>
+                            <blockquote class="blockquote text-right">
+                                <p class="mb-0"><i>"Os fatos são teimosos, mas as estatísticas são mais maleáveis."</i>
+                                </p>
+                                <footer class="blockquote-footer"><cite title="Source Title">Mark Twain</cite></footer>
+                            </blockquote>
+                        </div>
+                        <div id="auditorias">
+                            <div
+                                class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+                                <h1 class="h2">Auditorias em urnas</h1>
+                                <div class="btn-toolbar mb-2 mb-md-0">
+                                </div>
+                            </div>
+                            <p>Antes de analisar os dados é importante destacar que todo o relatório é elaborado a <b>
+                                    partir de uma
+                                    premissa falsa</b>. O autor destaca na página 9 que <i>"As urnas de modelo anterior
+                                    a
+                                    2020
+                                    não têm
+                                    qualquer documentação de auditoria recente"</i> e a partir dali toda a comparação
+                                feita
+                                <b>trata o modelo 2020 como auditado e os modelos antigos como não auditados</b>.
+                            </p>
+                            <p>Sobre o assunto o TSE emitiu a seguinte <a
+                                    href="https://www.em.com.br/app/noticia/politica/2022/11/04/interna_politica,1417487/tse-desmente-suspeita-de-fraude-eleitoral-citada-em-live-de-argentino.shtml"
+                                    target="_blank">nota de esclarecimento</a>:</p>
+                            <blockquote class="blockquote mx-5"><i>"Não é verdade que os modelos anteriores das urnas
+                                    eletrônicas não passaram por procedimentos de auditoria e fiscalização. Os
+                                    equipamentos
+                                    antigos já estão em uso desde 2010 (para as urnas modelo 2009 e 2010) e todos foram
+                                    utilizadas nas Eleições 2018. Nesse período, esses modelos de urna já foram
+                                    submetidos a
+                                    diversas análises e auditorias, tais como a Auditoria Especial do PSDB em 2015 e
+                                    cinco
+                                    edições do Teste Público de Segurança (2012, 2016, 2017, 2019 e 2021)."</i>
+                            </blockquote>
+                            As urnas eletrônicas começaram a ser utilizadas no Brasil em 1996 e, desde então, <b>nunca
+                                foi
+                                provado nenhum tipo de fraude no sistema</b>.
+                            Os procedimentos de fiscalização e auditoria do sistema eletrônico de votação são regidos
+                            pela
+                            <a href="https://www.tse.jus.br/legislacao/compilada/res/2021/resolucao-no-23-673-14-de-dezembro-de-2021"
+                                target="_blank">Resolução Nº 23.673, de 14 de Dexembro de 2021</a> do TSE.
+                            A fiscalização dos sistemas eleitorais ocorrem em oito diferentes momentos, à saber:
+                            <p>
+                            <ul>
+                                <li>Durante o desenvolvimento, a compilação, a assinatura digital, e a lacração dos
+                                    sistemas
+                                    eleitorais;</li>
+                                <li>Durante as cerimônias destinadas à geração de mídias e preparação das urnas
+                                    eletrônicas;
+                                </li>
+                                <li>Durante a cerimônia destinada à verificação da integridade e autenticidade dos
+                                    sistemas
+                                    eleitorais instalados no TSE;</li>
+                                <li>Na audiência destinada à verificação dos sistemas destinados à transmissão de BUs;
+                                </li>
+                                <li>Durante os procedimentos preparatórios para realização de teste de integridade e no
+                                    dia
+                                    da
+                                    votação;</li>
+                                <li>Durante o Teste de Integridade das Urnas Eletrônicas;</li>
+                                <li>Durante o Teste de Autenticidade dos Sistemas Eleitorais;</li>
+                                <li>Após os procedimentos de totalização das eleições.</li>
+                            </ul>
+                            </p>
+                            Participam do processo de fiscalização as seguintes entidades fiscalizadoras:
+                            <p>
+                            <ul>
+                                <li>Partidos políticos, federações e coligações;</li>
+                                <li>Ordem dos Advogados do Brasil;</li>
+                                <li>Ministério Público;</li>
+                                <li>Congresso Nacional;</li>
+                                <li>Supremo Tribunal Federal;</li>
+                                <li>Controladoria-Geral da União;</li>
+                                <li>Polícia Federal;</li>
+                                <li>Sociedade Brasileira de Computação;</li>
+                                <li>Conselho Federal de Engenharia e Agronomia;</li>
+                                <li>Conselho Nacional de Justiça;</li>
+                                <li>Conselho Nacional do Ministério Público;</li>
+                                <li>Tribunal de Contas da União;</li>
+                                <li>Forças Armadas;</li>
+                                <li>
+                                    Confederação Nacional da Indústria, demais integrantes do Sistema Indústria e
+                                    entidades
+                                    corporativas pertencentes ao Sistema S;
+                                </li>
+                                <li>
+                                    Entidades privadas brasileiras, sem fins lucrativos, com notória atuação em
+                                    fiscalização
+                                    e
+                                    transparência da gestão pública, credenciadas junto ao TSE;
+                                </li>
+                                <li>Departamentos de tecnologia da informação de universidades credenciadas junto ao
+                                    TSE.
+                                </li>
+                            </ul>
+                            </p>
+                            <p>Além disso, o TSE prevê, por meio da <a
+                                    href="https://www.tse.jus.br/legislacao/codigo-eleitoral/normas-editadas-pelo-tse/resolucao-no-23-444-de-30-de-abril-de-2015-2013-brasilia-2013-df"
+                                    target="_blank">Resolução nº 23.444 de 30 de abril de 2015</a>, a realização de
+                                <b>Teste
+                                    Público de Segurança (TPS)</b> no ciclo de desenvolvimento dos sistemas de votação e
+                                apuração. Nestes testes <b>qualquer brasileiro pode apresentar um plano de ataque aos
+                                    sistemas
+                                    eleitorais</b> envolvidos na geração de mídias, votação, apuração, transmissão e
+                                recebimento
+                                de arquivos.
+                            </p>
+                            <p>Até o momento já foram realizadas seis edições do TPS, nos anos de 2009, 2012, 2016,
+                                2017,
+                                2019 e
+                                2021.</p>
+                            <p>Para maiores esclarecimentos sobre s segurança do sistema elitoral brasileiro, recomento
+                                os
+                                materiais:</p>
+                            <p>
+                            <ul>
+                                <li><a href="https://novo.org.br/explica/as-urnas-eletronicas-sao-auditaveis-e-seguras/"
+                                        target="_blank">As urnas eletrônicas são auditáveis e seguras? - Partido
+                                        Novo</a>
+                                </li>
+                                <li><a href="https://www.justicaeleitoral.jus.br/tps/" target="_blank">Teste Público de
+                                        Segurança - Justiça Eleitoral</a></li>
+                                <li><a href="https://www.youtube.com/watch?v=l4BmQ-hylTk" target="_blank">Vídeo: URNA
+                                        ELETRÔNICA
+                                        / Dá pra Hackear? - Canal Nostalgia</a></li>
+                            </ul>
+                            </p>
+                        </div>
+
+                        <div id="tipos">
+                            <div
+                                class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+                                <h1 class="h2">Votação por tipo de urna</h1>
+                                <div class="btn-toolbar mb-2 mb-md-0">
+                                </div>
+                            </div>
+                            <p>O relatório apresentado pelo canal La Derecha Diário alega que o candidato Lula teve mais
+                                votos nos modelos antigos de Urna Eletrônica.
+                                Quando analisamos a totalização de votos no Brasil no segundo turno percebemos que, de
+                                fato,
+                                Jair Bolsonaro
+                                foi mais votado nas urnas eletrônicas novas, enquanto Lula foi mais votado nas urnas
+                                eletrônicas antigas. A diferença entre os modelos de urna é de 3,44 pontos percentuais,
+                                conforme apresentado na Tabela 1.
+                            </p>
+                            <p>
+                            <div class="table-responsive">
+                                <table class="table table-bordered text-center mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>Candidato</th>
+                                            <th>UE antigas</th>
+                                            <th>UE 2020</th>
+                                            <th>Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><b>Lula (PT)</b></th>
+                                            <td>
+                                                <div class="bg-lula" style="width: 52.4%"></div><b>35.234.449
+                                                    (52,4%)</b>
+                                            </td>
+                                            <td>
+                                                <div class="bg-lula" style="width: 49.9%"></div><b>25.111.550
+                                                    (49,9%)</b>
+                                            </td>
+                                            <td>
+                                                <div class="bg-lula" style="width: 50.9%"></div><b>60.345.999
+                                                    (50,9%)</b>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <b>Jair Bolsonaro (PL)</b></th>
+                                            <td>
+                                                <div class="bg-bolso" style="width: 47.6%"></div><b>32.016.633
+                                                    (47,6%)</b>
+                                            </td>
+                                            <td>
+                                                <div class="bg-bolso" style="width: 51.1%"></div><b>26.189.721
+                                                    (51,1%)</b>
+                                            </td>
+                                            <td>
+                                                <div class="bg-bolso" style="width: 49.1%"></div><b>58.206.354
+                                                    (49,1%)</b>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <small class="mt-0">Tabela 1 - Votação por candidato e por tipo de urna eletrônica no
+                                    segundo
+                                    turno das
+                                    eleições.</small>
+                            </div>
+                            </p>
+                            <p>Ao analisarmos estado por estado, percebemos que este comportamento de mais votos para o
+                                candidato Jair Bolsonaro nas urnas eletrônicas 2020 é predominante. Nos estados do
+                                Amazonas
+                                e
+                                Alagoas a diferença no resultado do candidato Bolsonaro entre os modelos de urna superam
+                                20 pontos percentuais.
+                                O gráfico da Figura 1 compara os resultados obtidos pelo candidato Bolsonaro em cada estado nos dois modelos de urnas eletrônicas.
+                                Cada marcador no gráfico representa uma unidade federativa, sendo dimensionados de acordo com o número total de elitores aptos à votar no estado. 
+                                A linha que divide diagonalmente o gráfico indica a simetria entre os difernetes modelos de urnas. 
+                                Ou seja, quando mais próximo da simetria, menor a diferença entre do resultado do candidato de acordo com o modelo de urna eletrônica.
+                                Quanto mais o marcador estiver à esquerda da linha (área branca), melhor o candidato Bolsonaro foi nas urnas antigas.
+                                Da mesmo forma, quando mais à direita da referência (área vermelha), maior a diferença favorável à UE 2020 em relação aos modelos antigos.</p>
+
+                            <canvas class="my-4" id="graficoResultadoBolsonaroPorModeloUrnaPorEstadoCanvas" width="800"
+                                height="800"></canvas>
+
+
+                            <p>Mas afinal, se a difrença do resultado do mesmo candidato em um mesmo estado é tão grande
+                                de
+                                acordo com o modelo de urna, seria isso uma evidência de fraude nas eleições?</p>
+                            <p>Antes de demonstrar o viés por trás de tal resultado, preciso explicar um fenômeno
+                                estatístico
+                                conhecido como <b>Paradoxo de Simpson</b>.</p>
+                            <h5>Paradoxo de Simpson</h5>
+                            <p>Segundo Joel Grus, em seu livro <a
+                                    href="https://www.amazon.com.br/Data-Science-zero-Joel-Grus/dp/857608998X"
+                                    target="_blank">Data Science do Zero</a>, o paradoxo de Simpson é um fenômeno em que
+                                correlações estísticas podem ser enganosas quando as variáveis de confusão são
+                                ignoradas.
+                            </p>
+                            <p>Imagine o seguinte cenário: Eduardo, Analista de Recursos Humanos da <i>Bolsolula
+                                    company</i>,
+                                empresa sediada em São
+                                Paulo, resolveu analisar a remureção dos colabores da companhia. Desconfiado que os
+                                funcionários
+                                mineiros estavam sendo melhor remunerados do que os paulistas, Eduardo calculou a
+                                média de salário dos funcionários por estado, obtendo o seguinte resultado:</p>
+                            <p>
+                            <div class="table-responsive">
+                                <table class="table table-bordered text-center mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>Origem</th>
+                                            <th>Remuneração média</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Mineiros</th>
+                                            <td>R$ 5.900,00</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Paulistas</th>
+                                            <td>R$ 4.300,00</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <small class="mt-0">Tabela 3 - Remuneração média dos fucionários da <i>Bolsolula
+                                        company</i>
+                                    por
+                                    estado.</small>
+                            </div>
+                            </p>
+                            <p>Eduardo ficou revoltado com o resultado. Afinal, por que os forasteiros, funcionários
+                                mineiros,
+                                recebiam um salário 37% maior do que os paulistas? Como podia a companhia valorizar tão
+                                mais
+                                os
+                                colabores de outro estado?</p>
+                            <p>Rapidamente Eduardo espalhou sua descoberta entre os demais funcionários paulistas, que
+                                passaram
+                                a reivindicar aumento salarial para que fossem equiparados aos mineiros.</p>
+                            <p>O presidente da companhia, Alberto, se surpreendeu com o resultado da análise de Eduardo.
+                                Afinal,
+                                Alberto nunca havia levado em conta o estado de origem do funcionário para determinar
+                                seu
+                                salário.
+                                Ao constatar que, de fato, o salário dos mineiros era maior do que o dos paulistas,
+                                Alberto
+                                decidiu que iria equiparar o salário entre mineiros e paulistas para todos os cargos da
+                                companhia.</p>
+                            <p>Porém, ao olhar os dados cargo por cargo, Alberto percebeu que, an verdade, para todos os
+                                cargos
+                                da companhia, os paulistas é que tinham médias salariais maiores do que os mineiros.</p>
+                            <p>
+                            <div class="table-responsive">
+                                <table class="table table-bordered text-center mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>Cargo</th>
+                                            <th>Remuneração média mineiros</th>
+                                            <th>Remuneração média paulistas</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Diretor</th>
+                                            <td>R$ 12.000,00</td>
+                                            <td>R$ 14.000,00</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Engenheiro</th>
+                                            <td>R$ 8.000,00</td>
+                                            <td>R$ 8.400,00</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Analista</th>
+                                            <td>R$ 4.000,00</td>
+                                            <td>R$ 4.200,00</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Estagiário</th>
+                                            <td>R$ 1.500,00</td>
+                                            <td>R$ 1.600,00</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <small class="mt-0">Tabela 4 - Remuneração média dos fucionários da <i>Bolsolula
+                                        company</i>
+                                    por
+                                    cargo e por estado.</small>
+                            </div>
+                            </p>
+                            <p>Como pode os mineiros terem uma média salarial tão supeior aos paulistas se, em todos os
+                                cargos,
+                                os paulistas tem média salarial maior?</p>
+                            <p>Para entender o que estava acontecendo, Alberto resolveu se debruçar mais sobre os dados,
+                                e
+                                fez a
+                                relação de quantos funcionários de cada
+                                cargo vinham de cada estado.</p>
+                            <p>
+                            <div class="table-responsive">
+                                <table class="table table-bordered text-center mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>Cargo</th>
+                                            <th>Número de funcionários mineiros</th>
+                                            <th>Número de funcionários paulistas</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Diretor</th>
+                                            <td>1</td>
+                                            <td>1</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Engenheiro</th>
+                                            <td>4</td>
+                                            <td>3</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Analista</th>
+                                            <td>3</td>
+                                            <td>4</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Estagiário</th>
+                                            <td>2</td>
+                                            <td>8</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <small class="mt-0">Tabela 5 - Número de fucionários da <i>Bolsolula company</i> por
+                                    cargo e por estado.</small>
+                            </div>
+                            </p>
+                            <p>Alberto logo percebeu que a média salarial mais baixa dos funcionários paulistas se deu
+                                principalmente porque nos cargos de menor remuneração, como analistas e estagiários,
+                                havia
+                                uma
+                                maior quantidade de funcionários de São Paulo.
+                                Os estagiários eram predominantemente paulistas pois era mais difícil trazer estagiários
+                                de
+                                outros estados, já que estagiários normalmente ainda tem vínculo com a faculdade que
+                                está
+                                cursando.
+                            </p>
+                            <p>Após suas conclusões, Alberto resolveu, ao contrário do que foi reivindicado por Eduardo
+                                e
+                                pelos
+                                funcionários paulistas, aumentar o salário dos funcionários mineiros, para que assim, em
+                                todos
+                                os cargos, os salários fossem equiparados.</p>
+                            <p>Ou seja, quando Eduardo analisou o salário dos funcionários por estado, ignorando os
+                                cargos,
+                                teve
+                                a sensação de que os funcionários mineiros eram melhor remunerados.
+                                Quando Alberto fez a análise considerando os cargos que cada funcionário ocupava,
+                                constatou
+                                que,
+                                na verdade, eram os paulistas que recebiam melhores salários.
+                            </p>
+                            <h5>Resultado por modelo de urna - Distribuição espacial das novas urnas</h5>
+                            <p>Agora que o paradoxo de Simpson foi exemplificado, qual sua relação com as estatísticas
+                                de
+                                votação por modelos de urnas eletrônicas?</p>
+                            <p>
+                                As análises feitas no relatório argentino, seja pelo país como um todo ou por estado,
+                                ignoram
+                                que a distribuição das novas urnas eletrônicas não ocorreu de forma homogênea, mas
+                                se
+                                concentrou nas regiões metropolitanas.
+                                No dia 06 de Novembro, o cientista de dados Tiago Batalhão chamou a atenção para este
+                                fator
+                                no
+                                Twitter.
+                            </p>
+                            <p>
+                                <center>
+                                    <blockquote class="twitter-tweet">
+                                        <p lang="pt" dir="ltr">O argumento do relatório é que as cidades que receberam
+                                            as
+                                            urnas
+                                            novas tem o mesmo padrão que as cidades que receberam urnas antigas. Porém,
+                                            se
+                                            olharmos no mapa (azul=urna nova, vermelho=urna antiga), dá para ver que, no
+                                            Nordeste, as urnas novas ficaram próximos das capitais. <a
+                                                href="https://t.co/3gBwPJQXL0">pic.twitter.com/3gBwPJQXL0</a></p>&mdash;
+                                        Tiago
+                                        Batalhão (@tiagobbatalhao) <a
+                                            href="https://twitter.com/tiagobbatalhao/status/1589338526642221056?ref_src=twsrc%5Etfw">November
+                                            6, 2022</a>
+                                    </blockquote>
+                                    <script async src="https://platform.twitter.com/widgets.js"
+                                        charset="utf-8"></script>
+                                </center>
+                            </p>
+                            <p>
+                                Segundo o IBGE, atualmente existem 84 unidades territoriais ubanas no Brasil, sendo 76
+                                regiões metropolitantas (RMs), 3 regiões integradas de desenvolvimento (RIDES) e 5
+                                aglomerações urbanas (AUs), onde um total de 1.432 municípios estão localizados.
+                                Quando olhamos para o número de eleitores que votaram em cada modelo de urna e separamos
+                                os
+                                municípios que estão dentro de unidades territoriais urbanas com os municípios do
+                                interior,
+                                fica evidente que as novas urnas eletrônicas foram preferencialmente distribuídas em
+                                áreas
+                                urbanizadas. Enquanto nas unidades territoriais urbanas 58,7% do eleitorado utilizou as
+                                novas versões da urna eltrônica, no interior este número foi de apenas 21,5%.
+                            </p>
+                            <p>
+                            <div class="table-responsive">
+                                <table class="table table-bordered text-center mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th class="align-middle">Unidades territoriais urbanas</th>
+                                            <th class="align-middle">Interior</th>
+                                            <th class="align-middle">Fora do país</th>
+                                            <th class="align-middle">Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><b>UE antigas</b></th>
+                                            <td>
+                                                <div class="bg-azul" style="width: 41.3%"></div><b>36.897.031
+                                                    (41,3%)</b>
+                                            </td>
+                                            <td>
+                                                <div class="bg-azul" style="width: 78.5%"></div><b>52.148.859
+                                                    (78,5%)</b>
+                                            </td>
+                                            <td>
+                                                <div class="bg-azul" style="width: 100%"></div><b>694.930 (100,0%)</b>
+                                            </td>
+                                            <td>
+                                                <div class="bg-azul" style="width: 57.4%"></div><b>89.740.820
+                                                    (57,4%)</b>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <b>UE 2020</b></th>
+                                            <td>
+                                                <div class="bg-azul" style="width: 58.7%"></div><b>52.411.300
+                                                    (58,7%)</b>
+                                            </td>
+                                            <td>
+                                                <div class="bg-azul" style="width: 21.5%"></div><b>14.301.159
+                                                    (21,5%)</b>
+                                            </td>
+                                            <td>
+                                                <div class="bg-azul" style="width: 0%"></div><b>0 (0,0%)</b>
+                                            </td>
+                                            <td>
+                                                <div class="bg-azul" style="width: 42.6%"></div><b>66.712.459
+                                                    (42,6%)</b>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <small class="mt-0">Tabela 1 - Votação por candidato e por tipo de urna eletrônica no
+                                    segundo
+                                    turno das
+                                    eleições.</small>
+                            </div>
+                            </p>
+                            <p>
+                                Ainda em Fevereiro o TRE-PE informou que, em Pernambuco, <a
+                                    href="https://jc.ne10.uol.com.br/politica/2022/02/14945064-eleicoes-2022-tre-de-pernambuco-recebe-novo-modelo-de-urna-eletronica.html"
+                                    target="_blank">as urnas modelo 2020 seriam utilizadas preferencialmente na grande
+                                    Recife</a> por questões de logística.
+                                Comportamento similar foi observado na maioria dos estados.
+                            </p>
+                            <div id="graficos">
+                                <div
+                                    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+                                    <h1 class="h2">Comportamento de gráficos</h1>
+                                    <div class="btn-toolbar mb-2 mb-md-0">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="unanimes">
+                                <div
+                                    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+                                    <h1 class="h2">Urnas unâmines</h1>
+                                    <div class="btn-toolbar mb-2 mb-md-0">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="codigofonte">
+                                <div
+                                    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+                                    <h1 class="h2">Código-fonte urnas</h1>
+                                    <div class="btn-toolbar mb-2 mb-md-0">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="alteracoes">
+                                <div
+                                    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+                                    <h1 class="h2">Os dados foram alterados após a live?</h1>
+                                    <div class="btn-toolbar mb-2 mb-md-0">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="totalizacao">
+                                <div
+                                    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+                                    <h1 class="h2">Totalização de votos</h1>
+                                    <div class="btn-toolbar mb-2 mb-md-0">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="conclusao">
+                                <div
+                                    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+                                    <h1 class="h2">Conclusão</h1>
+                                    <div class="btn-toolbar mb-2 mb-md-0">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </center>
+            </main>
+        </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+
+
+    <!-- Icons -->
+    <script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
+    <script>
+        feather.replace()
+    </script>
+
+
+    <!-- Dados -->
+    <script>
+        // Cache selectors
+        // JavaScript Document
+
+        // Can also be used with $(document).ready() / $(window).load()
+        $(document).ready(function () {
+            ativarNavegador();
+
+            estadosPorRegiao.map(function (estado) {
+                votacaoEstado = votacaoPorZonaPorMunicipio.filter(v => v.SG_UF == estado.SG_UF)
+                agregadorPorUrna(estado, votacaoEstado)
+            })
+
+            criarGraficoResultadoBolsonaroPorModeloUrnaPorEstado();
+
+        });
+
+        function agregadorPorUrna(elemento, arrayFiltrado) {
+            elemento.bolsonaro_ue_antiga = arrayFiltrado.reduce((acc, cur) => acc + cur.bolsonaro_ue_antiga, 0)
+            elemento.bolsonaro_ue_2020 = arrayFiltrado.reduce((acc, cur) => acc + cur.bolsonaro_ue_2020, 0)
+            elemento.lula_ue_antiga = arrayFiltrado.reduce((acc, cur) => acc + cur.lula_ue_antiga, 0)
+            elemento.lula_ue_2020 = arrayFiltrado.reduce((acc, cur) => acc + cur.lula_ue_2020, 0)
+            elemento.eleitores_aptos_ue_2020 = arrayFiltrado.reduce((acc, cur) => acc + cur.eleitores_aptos_ue_2020, 0)
+            elemento.eleitores_aptos_ue_antiga = arrayFiltrado.reduce((acc, cur) => acc + cur.eleitores_aptos_ue_antiga, 0)
+            elemento.bolsonaro = elemento.bolsonaro_ue_antiga + elemento.bolsonaro_ue_2020
+            elemento.lula = elemento.lula_ue_antiga + elemento.lula_ue_2020
+            elemento.eleitores_aptos = elemento.eleitores_aptos_ue_2020 + elemento.eleitores_aptos_ue_antiga
+            elemento.bolsonaro_ue_antiga_perc = elemento.bolsonaro_ue_antiga / (elemento.bolsonaro_ue_antiga + elemento.lula_ue_antiga)
+            elemento.lula_ue_antiga_perc = elemento.lula_ue_antiga / (elemento.bolsonaro_ue_antiga + elemento.lula_ue_antiga)
+            elemento.bolsonaro_ue_2020_perc = elemento.bolsonaro_ue_2020 / (elemento.bolsonaro_ue_2020 + elemento.lula_ue_2020)
+            elemento.lula_ue_2020_perc = elemento.lula_ue_2020 / (elemento.bolsonaro_ue_2020 + elemento.lula_ue_2020)
+            elemento.bolsonaro_perc = elemento.bolsonaro / (elemento.bolsonaro + elemento.lula)
+            elemento.lula_perc = elemento.lula / (elemento.bolsonaro + elemento.lula)
+            elemento.eleitores_aptos_ue_2020_perc = elemento.eleitores_aptos_ue_2020 / elemento.eleitores_aptos
+            elemento.eleitores_aptos_ue_antiga_perc = elemento.eleitores_aptos_ue_antiga / elemento.eleitores_aptos
+        }
+
+        function ativarNavegador() {
+
+            // An offset to push the content down from the top
+            var listElement = $('#navegador li');
+
+
+
+            listElement.find('a[href^="#"]').click(function (event) {
+                // Prevent from default action to intitiate
+                event.preventDefault();
+
+                // The id of the section we want to go to.
+                var anchorId = $(this).attr("href");
+
+                // Our scroll target : the top position of the
+                // section that has the id referenced by our href.
+                if (anchorId.length > 1 && $(anchorId).length > 0) {
+                    var target = $(anchorId).offset().top;
+                }
+                else {
+                    var target = 0;
+                }
+                //console.log(target);
+
+
+                $('html, body').animate({ scrollTop: target }, 100, function () {
+                    //window.location.hash = '!' + id;
+                    window.location.hash = anchorId;
+                });
+
+                setActiveListElements();
+
+            });
+
+
+            // Update current item class
+            function setActiveListElements(event) {
+                var windowPos = $(window).scrollTop();
+                $('#navegador li a[href^="#"]').each(function () {
+
+                    var currentLink = $(this);
+                    if ($(currentLink.attr("href")).length > 0) {
+                        var refElement = $(currentLink.attr("href"));
+                        if (refElement.position().top <= windowPos && (refElement.position().top + refElement.height() + $("#navegador").height()) > windowPos) {
+                            $('#navegador li a').removeClass("active");
+                            currentLink.addClass("active");
+                        }
+                        else {
+                            currentLink.removeClass("active");
+                        }
+                    }
+                });
+            }
+
+            // Update menu item on scroll
+            $(window).scroll(function () {
+                // Call function
+                setActiveListElements();
+            });
+        }
+
+    </script>
+</body>
+
+</html>
