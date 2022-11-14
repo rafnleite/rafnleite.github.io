@@ -64,7 +64,6 @@ function tooltipMunicipios(feature, layer)  {
         UE antiga: ${feature.properties.eleitores_aptos_ue_antiga.toLocaleString('pt-Br')} (${feature.properties.eleitores_aptos_ue_antiga_perc.toLocaleString("pt-BR", { style: 'percent', minimumFractionDigits: 1 })})<br>
         <hr>
         Bolsonaro: ${feature.properties.bolsonaro.toLocaleString('pt-Br')} (${feature.properties.bolsonaro_perc.toLocaleString("pt-BR", { style: 'percent', minimumFractionDigits: 1 })})<br>
-        Lula: ${feature.properties.lula.toLocaleString('pt-Br')} (${feature.properties.lula_perc.toLocaleString("pt-BR", { style: 'percent', minimumFractionDigits: 1 })})<br>
-        ${feature.properties.lula}`
+        Lula: ${feature.properties.lula.toLocaleString('pt-Br')} (${feature.properties.lula_perc.toLocaleString("pt-BR", { style: 'percent', minimumFractionDigits: 1 })})<br>`
     });
 }
