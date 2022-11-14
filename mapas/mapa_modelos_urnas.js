@@ -12,7 +12,7 @@ function criarMapaModelosUrna() {
         center: mapCenter,
         preferCanvas: true
     });
-
+ 
     window.myRenderer = L.canvas({
         padding: 0.5
     });
