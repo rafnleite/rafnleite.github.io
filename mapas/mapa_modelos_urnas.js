@@ -63,7 +63,11 @@ function tooltipMunicipios(feature, layer)  {
         UE 2020: ${feature.properties.eleitores_aptos_ue_2020.toLocaleString('pt-Br')} (${feature.properties.eleitores_aptos_ue_2020_perc.toLocaleString("pt-BR", { style: 'percent', minimumFractionDigits: 1 })})<br>
         UE antiga: ${feature.properties.eleitores_aptos_ue_antiga.toLocaleString('pt-Br')} (${feature.properties.eleitores_aptos_ue_antiga_perc.toLocaleString("pt-BR", { style: 'percent', minimumFractionDigits: 1 })})<br>
         <hr>
-        Bolsonaro: ${feature.properties.bolsonaro.toLocaleString('pt-Br')} (${feature.properties.bolsonaro_perc.toLocaleString("pt-BR", { style: 'percent', minimumFractionDigits: 1 })})<br>
-        Lula: ${feature.properties.lula.toLocaleString('pt-Br')} (${feature.properties.lula_perc.toLocaleString("pt-BR", { style: 'percent', minimumFractionDigits: 1 })})<br>`
-    });
+        ${feature.properties.bolsonaro > feature.properties.lula ?
+        `Bolsonaro: ${feature.properties.bolsonaro.toLocaleString('pt-Br')} (${feature.properties.bolsonaro_perc.toLocaleString("pt-BR", { style: 'percent', minimumFractionDigits: 1 })})<br>
+        Lula: ${feature.properties.lula.toLocaleString('pt-Br')} (${feature.properties.lula_perc.toLocaleString("pt-BR", { style: 'percent', minimumFractionDigits: 1 })})` :
+        `Lula: ${feature.properties.lula.toLocaleString('pt-Br')} (${feature.properties.lula_perc.toLocaleString("pt-BR", { style: 'percent', minimumFractionDigits: 1 })})<br>
+        Bolsonaro: ${feature.properties.bolsonaro.toLocaleString('pt-Br')} (${feature.properties.bolsonaro_perc.toLocaleString("pt-BR", { style: 'percent', minimumFractionDigits: 1 })})`
+    }`
+})
 }
