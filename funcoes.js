@@ -127,4 +127,6 @@ const chartAreaBorder = {
     }
   };
 
-  
+  function interpolar(a, aMin, aMax, bMin, bMax) {
+    return bMin + (bMax - bMin) * (a - aMin) / (aMax - aMin)
+  }
