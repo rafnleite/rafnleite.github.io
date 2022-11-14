@@ -16,7 +16,7 @@ function criarMapaModelosUrna() {
     window.myRenderer = L.canvas({
         padding: 0.5
     });
-
+  
     L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/light-v9/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoicmFmYWVsbmxlaXRlIiwiYSI6ImNrMm1tZTYyeDAyNGMzY3NqZ2xnb2c5OXQifQ.on3Iv5VGNdnlAjPaqwz84Q', {
         maxNativeZoom: 19, // OSM max available zoom is at 19.
         maxZoom: 22, // Match the map maxZoom, or leave map.options.maxZoom undefined.
