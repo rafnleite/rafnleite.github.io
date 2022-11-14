@@ -17,10 +17,10 @@ function criarMapaModelosUrna() {
         padding: 0.5
     });
 
-    L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png', {
+    L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/light-v9/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoicmFmYWVsbmxlaXRlIiwiYSI6ImNrMm1tZTYyeDAyNGMzY3NqZ2xnb2c5OXQifQ.on3Iv5VGNdnlAjPaqwz84Q', {
         maxNativeZoom: 19, // OSM max available zoom is at 19.
         maxZoom: 22, // Match the map maxZoom, or leave map.options.maxZoom undefined.
-        attribution: `&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openPmap.org">OpenStreetMap</a> contributors`
+        attribution: `ranleite`
     }).addTo(mapaModelosUrna);
 
     mapaModelosUrna.markersMunicipios = L.featureGroup()
