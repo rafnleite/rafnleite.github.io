@@ -59,9 +59,12 @@ function atualizarMapaModelosUrna() {
 function tooltipMunicipios(feature, layer)  {
     layer.bindPopup(function () {
         return `<div class="h6">${feature.properties.NM_MUNICIPIO}/${feature.properties.NM_UF}</div>
-        ${feature.properties.CD_MUNICIPIO}<br>
-        ${feature.properties.eleitores_aptos}<br>
-        ${feature.properties.bolsonaro}<br>
+        Eleitores aptos: ${feature.properties.eleitores_aptos.toLocaleString('pt-Br')}<br>
+        UE 2020: ${feature.properties.eleitores_aptos_ue_2020.toLocaleString('pt-Br')} (${feature.properties.eleitores_aptos_ue_2020_perc.toLocaleString("pt-BR", { style: 'percent', minimumFractionDigits: 1 })})<br>
+        UE antiga: ${feature.properties.eleitores_aptos_ue_antiga.toLocaleString('pt-Br')} (${feature.properties.eleitores_aptos_ue_antiga_perc.toLocaleString("pt-BR", { style: 'percent', minimumFractionDigits: 1 })})<br>
+        <hr>
+        Bolsonaro: ${feature.properties.bolsonaro.toLocaleString('pt-Br')} (${feature.properties.bolsonaro_perc.toLocaleString("pt-BR", { style: 'percent', minimumFractionDigits: 1 })})<br>
+        Lula: ${feature.properties.lula.toLocaleString('pt-Br')} (${feature.properties.lula_perc.toLocaleString("pt-BR", { style: 'percent', minimumFractionDigits: 1 })})<br>
         ${feature.properties.lula}`
     });
 }
