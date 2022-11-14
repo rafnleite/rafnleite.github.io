@@ -1,5 +1,4 @@
 
-console.log('oi')
 function criarGraficoResultadoBolsonaroPorModeloUrnaPorEstado() {
     let regioes = [... new Set(estadosPorRegiao.map(x => x.REGIAO))]
     let datasets = []
@@ -32,7 +31,8 @@ function criarGraficoResultadoBolsonaroPorModeloUrnaPorEstado() {
     }
     datasets.push({
         type: 'line',
-        data: [{ y: 0, x: 0 }, { y: 1, x: 1 }],
+        label: 'Eixo de simetria',
+        data: [{ y: -1, x: -1 }, { y: 2, x: 2 }],
         fill: true,
         backgroundColor: "#FFD6CD80",
         borderColor: "#FFD6CD80",
@@ -41,7 +41,6 @@ function criarGraficoResultadoBolsonaroPorModeloUrnaPorEstado() {
         pointBorderWidth: 0,
         borderWidth: 0
     })
-    console.log(datasets)
 
     const graficoResultadoBolsonaroPorModeloUrnaPorEstado = new Chart($('#graficoResultadoBolsonaroPorModeloUrnaPorEstadoCanvas'), {
         type: 'mixed',
@@ -49,10 +48,82 @@ function criarGraficoResultadoBolsonaroPorModeloUrnaPorEstado() {
             datasets: datasets
         },
         options: {
+            plugins: {
+                title: {
+                    display: true,
+                    text: `Percentual de votos do Bolsonaro no segundo turno por estado por modelo de urna eletrônica`,
+                    font: {
+                        size: 14
+                    }
+                },
+                chartAreaBorder: {
+                    borderColor: '#636363',
+                    borderWidth: 2,
+                },
+                legend: {
+                    labels: {
+                        filter: function (item, chart) {
+                            return (!(estadosPorRegiao.map(x => x.NOME).includes(item.text)) && (item.text != 'Eixo de simetria'));
+                        }
+                    },
+                    onClick: function (e, legendItem, legend) {
+
+                        var index = legendItem.datasetIndex;
+                        var ci = this.chart;
+                        var estadosAlterar = estadosPorRegiao.filter(x => x.REGIAO == legendItem.text).map(x => x.NOME)
+                        var alreadyHidden = (ci.getDatasetMeta(index).hidden === null) ? false : ci.getDatasetMeta(index).hidden;
+                        ci.data.datasets.forEach(function (e, i) {
+                            var meta = ci.getDatasetMeta(i);
+                            if (i === index) {
+                                if (alreadyHidden) {
+                                    meta.hidden = meta.hidden === null ? !meta.hidden : null;
+                                    for (let i = 0; i < ci._metasets.length; i++) {
+                                        estadosAlterar.includes(ci._metasets[i].label) && (ci._metasets[i].hidden = false)
+                                    }
+                                } else if (meta.hidden === null) {
+                                    meta.hidden = true;
+                                    for (let i = 0; i < ci._metasets.length; i++) {
+                                        estadosAlterar.includes(ci._metasets[i].label) && (ci._metasets[i].hidden = true);
+                                    }
+                                }
+                            }
+                        });
+
+                        ci.update();
+                    }
+                },
+                tooltip: {
+                    backgroundColor: "rgba(255,255,255,1)",
+                    bodyColor: "#858796",
+                    titleMarginBottom: 10,
+                    titleColor: '#6e707e',
+                    titleFont: {
+                        size: 14
+                    },
+                    borderColor: '#dddfeb',
+                    borderWidth: 1,
+                    displayColors: false,
+                    intersect: false,
+                    caretPadding: 10,
+                    filter: function (tooltipItem) {
+                        return tooltipItem.dataset.label !== 'Eixo de simetria';
+                    },
+                    callbacks: {
+                        title: function (tooltipItem) {
+                            return tooltipItem[0].label
+                        },
+                        label: function (tooltipItem) {
+                            return [`UE 2020:  ${(tooltipItem.raw.x.toLocaleString("pt-BR", { style: 'percent', minimumFractionDigits: 1 }))}`,
+                            `UE antiga:  ${(tooltipItem.raw.y.toLocaleString("pt-BR", { style: 'percent', minimumFractionDigits: 1 }))}`,
+                                ``,
+                            `Diferença: ${(100 * (tooltipItem.raw.x - tooltipItem.raw.y)).toLocaleString("pt-BR", { style: 'decimal', minimumFractionDigits: 1, maximumFractionDigits: 1 })} pp`];
+                        }
+                    }
+                }
+            },
             responsive: true,
             aspectRatio: 1,
             maintainAspectRatio: true,
-            hover: { mode: null },
             layout: {
                 padding: {
                     left: 10,
@@ -61,106 +132,104 @@ function criarGraficoResultadoBolsonaroPorModeloUrnaPorEstado() {
                     bottom: 0
                 }
             },
-            legend: {
-                labels: {
-                    filter: function (item, chart) {
-                        return (!(estadosPorRegiao.map(x => x.NOME).includes(item.text)));
+
+            scales: {
+                x: {
+                    type: 'linear',
+                    min: 0,
+                    max: 1,
+                    ticks: {
+                        padding: 10,
+                        callback: function (value, index, values) {
+                            return value.toLocaleString("pt-BR", { style: 'percent', });
+                        }
+                    },
+                    grid: {
+                        color: `#bdbdbd`,
+                        drawTicks: false,
+                        z: -1
+                    },
+                    title: {
+                        display: true,
+                        text: '% Bolsonaro UE 2020',
+                        align: 'center'
                     }
                 },
-                onClick: function (e, legendItem) {
-                    var index = legendItem.datasetIndex;
-                    var ci = this.chart;
-                    var alreadyHidden = (ci.getDatasetMeta(index).hidden === null) ? false : ci.getDatasetMeta(index).hidden;
-                    ci.data.datasets.forEach(function (e, i) {
-                        var meta = ci.getDatasetMeta(i);
-                        console.log(meta)
-                        if (i === index) {
-                            if (alreadyHidden) {
-                                meta.hidden = meta.hidden === null ? !meta.hidden : null;
-                            } else if (meta.hidden === null) {
-                                meta.hidden = true;
-                            }
-                        }
-                    });
-
-                    ci.update();
-                }
-            },
-            scales: {
-                xAxes: [{
+                y: {
                     type: 'linear',
-                    text: '% Bolsonaro UE 2020',
+                    min: 0,
+                    max: 1,
                     ticks: {
-                        maxTicksLimit: 5,
                         padding: 10,
-                        min: 0,
-                        max: 1,
                         callback: function (value, index, values) {
                             return value.toLocaleString("pt-BR", { style: 'percent', });
                         }
                     },
-                    gridLines: {
-                        color: `rgb(234, 236, 244)`,
-                        zeroLineColor: `rgb(234, 236, 244)`,
-                        drawBorder: false,
-                        borderDash: [2],
-                        zeroLineBorderDash: [2]
+                    grid: {
+                        color: `#bdbdbd`,
+                        drawTicks: false,
+                        z: -1
                     },
-                    scaleLabel: {
+                    title: {
                         display: true,
-                        labelString: '% Bolsonaro UE 2020'
-                    }
-                }],
-                yAxes: [{
-                    type: 'linear',
-                    ticks: {
-                        maxTicksLimit: 5,
-                        padding: 10,
-                        min: 0,
-                        max: 1,
-                        callback: function (value, index, values) {
-                            return value.toLocaleString("pt-BR", { style: 'percent', });
-                        }
+                        text: '% Bolsonaro UE antiga',
+                        align: 'middle'
                     },
-                    gridLines: {
-                        color: `rgb(234, 236, 244)`,
-                        zeroLineColor: `rgb(234, 236, 244)`,
-                        drawBorder: false,
-                        borderDash: [2],
-                        zeroLineBorderDash: [2]
-                    },
-                    scaleLabel: {
-                        display: true,
-                        labelString: '% Bolsonaro UE antiga'
-                    },
-                }],
-            },
-            tooltips: {
-                backgroundColor: "rgba(255,255,255,1)",
-                bodyFontColor: "#858796",
-                titleMarginBottom: 10,
-                titleFontColor: '#6e707e',
-                titleFontSize: 14,
-                borderColor: '#dddfeb',
-                borderWidth: 1,
-                xPadding: 15,
-                yPadding: 15,
-                displayColors: false,
-                intersect: false,
-                caretPadding: 10,
-                callbacks: {
-                    title: function (tooltipItem, chart) {
-                        return chart.datasets[tooltipItem[0].datasetIndex].label
-                    },
-                    label: function (tooltipItem, chart) {
-                        var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
-                        return [`UE 2020:  ${(tooltipItem.xLabel.toLocaleString("pt-BR", { style: 'percent', minimumFractionDigits: 1 }))}`,
-                        `UE antiga:  ${(tooltipItem.yLabel.toLocaleString("pt-BR", { style: 'percent', minimumFractionDigits: 1 }))}`,
-                        ``,
-                        `Diferença: ${(tooltipItem.xLabel - tooltipItem.yLabel).toLocaleString("pt-BR", { style: 'percent', minimumFractionDigits: 1 })}`];
-                    }
-                }
+                },
             }
-        }
+        },
+        plugins: [chartAreaBorder]
+    })
+}
+
+function criarTabelaResultadoBolsonaroPorModeloUrnaPorEstado() {
+    if (window.hasOwnProperty('tabelaResultadoBolsonaroPorModeloUrnaPorEstado'))
+        $(`#tabelaResultadoBolsonaroPorModeloUrnaPorEstado`).DataTable().destroy();
+    window.tabelaResultadoBolsonaroPorModeloUrnaPorEstado = $(`#tabelaResultadoBolsonaroPorModeloUrnaPorEstado`).DataTable({
+        data: estadosPorRegiao,
+        dom: 'rt',
+        iDisplayLength: -1,
+        columns: [
+            {
+                title: 'Estado',
+                data: 'NOME',
+                class: 'small text-center align-middle'
+            },
+            {
+                title: 'Região',
+                data: 'REGIAO',
+                class: 'small text-center align-middle'
+            },
+            {
+                title: '% Bolsonaro UE 2020',
+                data: 'bolsonaro_ue_2020_perc',
+                class: 'small text-center align-middle',
+                render: function (data, type, full, meta) {
+                    if (type == 'sort')
+                        return data
+                    return data.toLocaleString("pt-BR", { style: 'percent', minimumFractionDigits: 1 })
+                }
+            },
+            {
+                title: '% Bolsonaro UE antiga',
+                data: 'bolsonaro_ue_antiga_perc',
+                class: 'small text-center align-middle',
+                render: function (data, type, full, meta) {
+                    if (type == 'sort')
+                        return data
+                    return data.toLocaleString("pt-BR", { style: 'percent', minimumFractionDigits: 1 })
+                }
+            },
+            {
+                title: 'Diferença',
+                data: 'NOME',
+                class: 'small text-center align-middle',
+                render: function (data, type, full, meta) {
+                    if (type == 'sort' || type == 'type')
+                        return 100 * isNaN((full.bolsonaro_ue_2020_perc - full.bolsonaro_ue_antiga_perc)) ? -1 : (full.bolsonaro_ue_2020_perc - full.bolsonaro_ue_antiga_perc)
+                    return `${(100 * (full.bolsonaro_ue_2020_perc - full.bolsonaro_ue_antiga_perc)).toLocaleString("pt-BR", { style: 'decimal', minimumFractionDigits: 1, maximumFractionDigits: 1 })} pp`
+                }
+            },
+        ]
     })
 }

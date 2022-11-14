@@ -13,13 +13,18 @@
 
     <!-- CSS -->
     <link href="dashboard.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.2/dist/leaflet.css"
+        integrity="sha256-sA+zWATbFveLLNqWO2gtiw3HL/lh1giY/Inf1BJ0z14=" crossorigin="" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css" rel="stylesheet">
 
     <!-- JS Bibliotecas -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.7.1/dist/Chart.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.1.min.js"
         integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
         integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
         crossorigin="anonymous"></script>
@@ -27,11 +32,20 @@
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
     <script src="./funcoes.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.2/dist/leaflet.js"
+        integrity="sha256-o9N1jGDZrf5tS+Ft4gbIK7mYMipq9lqpVJ91xHSyKhg=" crossorigin=""></script>
+
     <!-- Gráficos -->
     <script src="./graficos/grafico_resultado_bolsonaro_por_modelo_urna_por_estado.js"></script>
+    <script src="./graficos/grafico_dispersao_votacao_por_candidato_por_urna.js"></script>
+    <script src="./graficos/grafico_frequencia_eleitores_por_modelo_urna.js"></script>
+    <script src="./mapas/mapa_modelos_urnas.js"></script>
+
     <!-- JS Dados -->
     <script src="./dados/votacao_por_zona_por_municipio.js"></script>
     <script src="./dados/estados_por_regiao.js"></script>
+    <script src="./dados/votacao_urnas.js"></script>
+    <script src="./dadoscentroide_municipios.js"></script>
 </head>
 
 <body>
@@ -125,7 +139,7 @@
 
             <main role="main" class="col-lg-9 col-md-8 col-sm-12 col-xs-12 text-center">
                 <center>
-                    <div class="text-justify" style="max-width: 800px;">
+                    <div class="text-justify" style="max-width: 1000px;">
                         <div id="introducao">
                             <div
                                 class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 mt-2 border-bottom">
@@ -330,11 +344,11 @@
                                 Jair Bolsonaro
                                 foi mais votado nas urnas eletrônicas novas, enquanto Lula foi mais votado nas urnas
                                 eletrônicas antigas. A diferença entre os modelos de urna é de 3,44 pontos percentuais,
-                                conforme apresentado na Tabela 1.
+                                conforme apresentado na tabela abaixo.
                             </p>
                             <p>
                             <div class="table-responsive">
-                                <table class="table table-bordered text-center mb-0">
+                                <table class="table table-bordered text-center table-sm mb-0">
                                     <thead>
                                         <tr>
                                             <th>Candidato</th>
@@ -377,7 +391,7 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                                <small class="mt-0">Tabela 1 - Votação por candidato e por tipo de urna eletrônica no
+                                <small class="mt-0">Votação por candidato e por tipo de urna eletrônica no
                                     segundo
                                     turno das
                                     eleições.</small>
@@ -389,18 +403,53 @@
                                 e
                                 Alagoas a diferença no resultado do candidato Bolsonaro entre os modelos de urna superam
                                 20 pontos percentuais.
-                                O gráfico da Figura 1 compara os resultados obtidos pelo candidato Bolsonaro em cada estado nos dois modelos de urnas eletrônicas.
-                                Cada marcador no gráfico representa uma unidade federativa, sendo dimensionados de acordo com o número total de elitores aptos à votar no estado. 
-                                A linha que divide diagonalmente o gráfico indica a simetria entre os difernetes modelos de urnas. 
-                                Ou seja, quando mais próximo da simetria, menor a diferença entre do resultado do candidato de acordo com o modelo de urna eletrônica.
-                                Quanto mais o marcador estiver à esquerda da linha (área branca), melhor o candidato Bolsonaro foi nas urnas antigas.
-                                Da mesmo forma, quando mais à direita da referência (área vermelha), maior a diferença favorável à UE 2020 em relação aos modelos antigos.</p>
+                                O gráfico da Figura 1 compara os resultados obtidos pelo candidato Bolsonaro em cada
+                                estado nos dois modelos de urnas eletrônicas.
+                                Cada marcador no gráfico representa uma unidade federativa, sendo dimensionados de
+                                acordo com o número total de elitores aptos à votar no estado.
+                                A linha que divide diagonalmente o gráfico indica a simetria entre os difernetes modelos
+                                de urnas.
+                                Ou seja, quando mais próximo da simetria, menor a diferença entre do resultado do
+                                candidato de acordo com o modelo de urna eletrônica.
+                                Quanto mais o marcador estiver à esquerda da linha (área branca), melhor o candidato
+                                Bolsonaro foi nas urnas antigas.
+                                Da mesmo forma, quando mais à direita da referência (área vermelha), maior a diferença
+                                favorável à UE 2020 em relação aos modelos antigos.</p>
 
-                            <canvas class="my-4" id="graficoResultadoBolsonaroPorModeloUrnaPorEstadoCanvas" width="800"
-                                height="800"></canvas>
-
-
-                            <p>Mas afinal, se a difrença do resultado do mesmo candidato em um mesmo estado é tão grande
+                            <p>
+                            <div class="text-right">
+                                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                    <label class="btn btn-secondary btn-sm active">
+                                        <input type="radio" name="resultadoBolsonaroPorModeloUrnaTipoDeExibicao"
+                                            value="Gráfico" autocomplete="off" checked><i class="fas fa-chart-line"></i>
+                                        Gráfico
+                                    </label>
+                                    <label class="btn btn-secondary btn-sm">
+                                        <input type="radio" name="resultadoBolsonaroPorModeloUrnaTipoDeExibicao"
+                                            value="Tabela" autocomplete="off"><i class="fas fas fa-table"></i>
+                                        Tabela
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <canvas class="my-3" id="graficoResultadoBolsonaroPorModeloUrnaPorEstadoCanvas"
+                                            width="100%" height="800"></canvas>
+                                    </div>
+                                    <div class="col-12 my-3" id="tabelaResultadoBolsonaroPorModeloUrnaPorEstadoDIV"
+                                        style="display: none">
+                                        <table id="tabelaResultadoBolsonaroPorModeloUrnaPorEstado"
+                                            class="table table-sm table-striped compact table-bordered" width="100%">
+                                        </table>
+                                        <small class="mt-0">Percentual de votos do Bolsonaro no segundo turno por estado
+                                            por modelo de urna eletrônica.</small>
+                                    </div>
+                                </div>
+                            </div>
+                            </p>
+                            <p>Mas afinal, se a difrença do resultado do mesmo candidato em um mesmo estado é tão
+                                grande
                                 de
                                 acordo com o modelo de urna, seria isso uma evidência de fraude nas eleições?</p>
                             <p>Antes de demonstrar o viés por trás de tal resultado, preciso explicar um fenômeno
@@ -409,7 +458,8 @@
                             <h5>Paradoxo de Simpson</h5>
                             <p>Segundo Joel Grus, em seu livro <a
                                     href="https://www.amazon.com.br/Data-Science-zero-Joel-Grus/dp/857608998X"
-                                    target="_blank">Data Science do Zero</a>, o paradoxo de Simpson é um fenômeno em que
+                                    target="_blank">Data Science do Zero</a>, o paradoxo de Simpson é um fenômeno em
+                                que
                                 correlações estísticas podem ser enganosas quando as variáveis de confusão são
                                 ignoradas.
                             </p>
@@ -422,7 +472,7 @@
                                 média de salário dos funcionários por estado, obtendo o seguinte resultado:</p>
                             <p>
                             <div class="table-responsive">
-                                <table class="table table-bordered text-center mb-0">
+                                <table class="table table-bordered table-sm text-center mb-0">
                                     <thead>
                                         <tr>
                                             <th>Origem</th>
@@ -440,7 +490,7 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                                <small class="mt-0">Tabela 3 - Remuneração média dos fucionários da <i>Bolsolula
+                                <small class="mt-0">Remuneração média dos fucionários da <i>Bolsolula
                                         company</i>
                                     por
                                     estado.</small>
@@ -448,28 +498,35 @@
                             </p>
                             <p>Eduardo ficou revoltado com o resultado. Afinal, por que os forasteiros, funcionários
                                 mineiros,
-                                recebiam um salário 37% maior do que os paulistas? Como podia a companhia valorizar tão
+                                recebiam um salário 37% maior do que os paulistas? Como podia a companhia valorizar
+                                tão
                                 mais
                                 os
                                 colabores de outro estado?</p>
-                            <p>Rapidamente Eduardo espalhou sua descoberta entre os demais funcionários paulistas, que
+                            <p>Rapidamente Eduardo espalhou sua descoberta entre os demais funcionários paulistas,
+                                que
                                 passaram
                                 a reivindicar aumento salarial para que fossem equiparados aos mineiros.</p>
-                            <p>O presidente da companhia, Alberto, se surpreendeu com o resultado da análise de Eduardo.
+                            <p>O presidente da companhia, Alberto, se surpreendeu com o resultado da análise de
+                                Eduardo.
                                 Afinal,
-                                Alberto nunca havia levado em conta o estado de origem do funcionário para determinar
+                                Alberto nunca havia levado em conta o estado de origem do funcionário para
+                                determinar
                                 seu
                                 salário.
                                 Ao constatar que, de fato, o salário dos mineiros era maior do que o dos paulistas,
                                 Alberto
-                                decidiu que iria equiparar o salário entre mineiros e paulistas para todos os cargos da
+                                decidiu que iria equiparar o salário entre mineiros e paulistas para todos os cargos
+                                da
                                 companhia.</p>
-                            <p>Porém, ao olhar os dados cargo por cargo, Alberto percebeu que, an verdade, para todos os
+                            <p>Porém, ao olhar os dados cargo por cargo, Alberto percebeu que, an verdade, para
+                                todos os
                                 cargos
-                                da companhia, os paulistas é que tinham médias salariais maiores do que os mineiros.</p>
+                                da companhia, os paulistas é que tinham médias salariais maiores do que os mineiros.
+                            </p>
                             <p>
                             <div class="table-responsive">
-                                <table class="table table-bordered text-center mb-0">
+                                <table class="table table-bordered text-center table-sm mb-0">
                                     <thead>
                                         <tr>
                                             <th>Cargo</th>
@@ -500,23 +557,25 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                                <small class="mt-0">Tabela 4 - Remuneração média dos fucionários da <i>Bolsolula
+                                <small class="mt-0">Remuneração média dos fucionários da <i>Bolsolula
                                         company</i>
                                     por
                                     cargo e por estado.</small>
                             </div>
                             </p>
-                            <p>Como pode os mineiros terem uma média salarial tão supeior aos paulistas se, em todos os
+                            <p>Como pode os mineiros terem uma média salarial tão supeior aos paulistas se, em todos
+                                os
                                 cargos,
                                 os paulistas tem média salarial maior?</p>
-                            <p>Para entender o que estava acontecendo, Alberto resolveu se debruçar mais sobre os dados,
+                            <p>Para entender o que estava acontecendo, Alberto resolveu se debruçar mais sobre os
+                                dados,
                                 e
                                 fez a
                                 relação de quantos funcionários de cada
                                 cargo vinham de cada estado.</p>
                             <p>
                             <div class="table-responsive">
-                                <table class="table table-bordered text-center mb-0">
+                                <table class="table table-bordered text-center table-sm mb-0">
                                     <thead>
                                         <tr>
                                             <th>Cargo</th>
@@ -547,25 +606,29 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                                <small class="mt-0">Tabela 5 - Número de fucionários da <i>Bolsolula company</i> por
+                                <small class="mt-0">Número de fucionários da <i>Bolsolula company</i> por
                                     cargo e por estado.</small>
                             </div>
                             </p>
-                            <p>Alberto logo percebeu que a média salarial mais baixa dos funcionários paulistas se deu
+                            <p>Alberto logo percebeu que a média salarial mais baixa dos funcionários paulistas se
+                                deu
                                 principalmente porque nos cargos de menor remuneração, como analistas e estagiários,
                                 havia
                                 uma
                                 maior quantidade de funcionários de São Paulo.
-                                Os estagiários eram predominantemente paulistas pois era mais difícil trazer estagiários
+                                Os estagiários eram predominantemente paulistas pois era mais difícil trazer
+                                estagiários
                                 de
                                 outros estados, já que estagiários normalmente ainda tem vínculo com a faculdade que
                                 está
                                 cursando.
                             </p>
-                            <p>Após suas conclusões, Alberto resolveu, ao contrário do que foi reivindicado por Eduardo
+                            <p>Após suas conclusões, Alberto resolveu, ao contrário do que foi reivindicado por
+                                Eduardo
                                 e
                                 pelos
-                                funcionários paulistas, aumentar o salário dos funcionários mineiros, para que assim, em
+                                funcionários paulistas, aumentar o salário dos funcionários mineiros, para que
+                                assim, em
                                 todos
                                 os cargos, os salários fossem equiparados.</p>
                             <p>Ou seja, quando Eduardo analisou o salário dos funcionários por estado, ignorando os
@@ -578,16 +641,19 @@
                                 na verdade, eram os paulistas que recebiam melhores salários.
                             </p>
                             <h5>Resultado por modelo de urna - Distribuição espacial das novas urnas</h5>
-                            <p>Agora que o paradoxo de Simpson foi exemplificado, qual sua relação com as estatísticas
+                            <p>Agora que o paradoxo de Simpson foi exemplificado, qual sua relação com as
+                                estatísticas
                                 de
                                 votação por modelos de urnas eletrônicas?</p>
                             <p>
-                                As análises feitas no relatório argentino, seja pelo país como um todo ou por estado,
+                                As análises feitas no relatório argentino, seja pelo país como um todo ou por
+                                estado,
                                 ignoram
                                 que a distribuição das novas urnas eletrônicas não ocorreu de forma homogênea, mas
                                 se
                                 concentrou nas regiões metropolitanas.
-                                No dia 06 de Novembro, o cientista de dados Tiago Batalhão chamou a atenção para este
+                                No dia 06 de Novembro, o cientista de dados Tiago Batalhão chamou a atenção para
+                                este
                                 fator
                                 no
                                 Twitter.
@@ -595,14 +661,18 @@
                             <p>
                                 <center>
                                     <blockquote class="twitter-tweet">
-                                        <p lang="pt" dir="ltr">O argumento do relatório é que as cidades que receberam
+                                        <p lang="pt" dir="ltr">O argumento do relatório é que as cidades que
+                                            receberam
                                             as
                                             urnas
-                                            novas tem o mesmo padrão que as cidades que receberam urnas antigas. Porém,
+                                            novas tem o mesmo padrão que as cidades que receberam urnas antigas.
+                                            Porém,
                                             se
-                                            olharmos no mapa (azul=urna nova, vermelho=urna antiga), dá para ver que, no
+                                            olharmos no mapa (azul=urna nova, vermelho=urna antiga), dá para ver
+                                            que, no
                                             Nordeste, as urnas novas ficaram próximos das capitais. <a
-                                                href="https://t.co/3gBwPJQXL0">pic.twitter.com/3gBwPJQXL0</a></p>&mdash;
+                                                href="https://t.co/3gBwPJQXL0">pic.twitter.com/3gBwPJQXL0</a></p>
+                                        &mdash;
                                         Tiago
                                         Batalhão (@tiagobbatalhao) <a
                                             href="https://twitter.com/tiagobbatalhao/status/1589338526642221056?ref_src=twsrc%5Etfw">November
@@ -613,21 +683,24 @@
                                 </center>
                             </p>
                             <p>
-                                Segundo o IBGE, atualmente existem 84 unidades territoriais ubanas no Brasil, sendo 76
+                                Segundo o IBGE, atualmente existem 84 unidades territoriais ubanas no Brasil, sendo
+                                76
                                 regiões metropolitantas (RMs), 3 regiões integradas de desenvolvimento (RIDES) e 5
                                 aglomerações urbanas (AUs), onde um total de 1.432 municípios estão localizados.
-                                Quando olhamos para o número de eleitores que votaram em cada modelo de urna e separamos
+                                Quando olhamos para o número de eleitores que votaram em cada modelo de urna e
+                                separamos
                                 os
                                 municípios que estão dentro de unidades territoriais urbanas com os municípios do
                                 interior,
                                 fica evidente que as novas urnas eletrônicas foram preferencialmente distribuídas em
                                 áreas
-                                urbanizadas. Enquanto nas unidades territoriais urbanas 58,7% do eleitorado utilizou as
+                                urbanizadas. Enquanto nas unidades territoriais urbanas 58,7% do eleitorado utilizou
+                                as
                                 novas versões da urna eltrônica, no interior este número foi de apenas 21,5%.
                             </p>
                             <p>
                             <div class="table-responsive">
-                                <table class="table table-bordered text-center mb-0">
+                                <table class="table table-bordered text-center table-sm mb-0">
                                     <thead>
                                         <tr>
                                             <th></th>
@@ -649,7 +722,8 @@
                                                     (78,5%)</b>
                                             </td>
                                             <td>
-                                                <div class="bg-azul" style="width: 100%"></div><b>694.930 (100,0%)</b>
+                                                <div class="bg-azul" style="width: 100%"></div><b>694.930
+                                                    (100,0%)</b>
                                             </td>
                                             <td>
                                                 <div class="bg-azul" style="width: 57.4%"></div><b>89.740.820
@@ -677,7 +751,8 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                                <small class="mt-0">Tabela 1 - Votação por candidato e por tipo de urna eletrônica no
+                                <small class="mt-0">Votação por candidato e por tipo de urna eletrônica
+                                    no
                                     segundo
                                     turno das
                                     eleições.</small>
@@ -686,9 +761,22 @@
                             <p>
                                 Ainda em Fevereiro o TRE-PE informou que, em Pernambuco, <a
                                     href="https://jc.ne10.uol.com.br/politica/2022/02/14945064-eleicoes-2022-tre-de-pernambuco-recebe-novo-modelo-de-urna-eletronica.html"
-                                    target="_blank">as urnas modelo 2020 seriam utilizadas preferencialmente na grande
+                                    target="_blank">as urnas modelo 2020 seriam utilizadas preferencialmente na
+                                    grande
                                     Recife</a> por questões de logística.
                                 Comportamento similar foi observado na maioria dos estados.
+                            </p>
+
+                            <div>
+                                <div map id="mapaModelosUrna"
+                                    style="height: 720px; width:100%; border-style: solid; border-color: rgb(0, 0, 0);">
+                                </div>
+                            </div>
+
+                            <p>No relatório apresentado pelo canal argentino, o autor chega a fazer comparações dentro
+                                de um mesmo estado de cidades com popução abaixo de 50 mil ou 100 mil habitantes,
+                                alegando que, desta forma estaria comparando a "mesmíssima população".
+
                             </p>
                             <div id="graficos">
                                 <div
@@ -698,6 +786,19 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="row">
+                                <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-xs-12 card-body d-flex align-items-center justify-content-center"
+                                    id="graficoDispersaoUrnas2020Canvas" style="height:500px;"></div>
+                                <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-xs-12 card-body d-flex align-items-center justify-content-center"
+                                    id="graficoDispersaoUrnasAntigasCanvas" style="height:500px;"></div>
+                            </div>
+                            <!-- <div class="col-12 card-body d-flex align-items-center justify-content-center"
+                                id="graficoFrequnciaEleitoresPorModeloUrnaCanvas" style="height:800px; width: 100%">
+                            </div> -->
+
+                            <canvas class="my-4" id="graficoFrequnciaEleitoresPorModeloUrnaCanvas2" width="800"
+                                height="800"></canvas>
 
                             <div id="unanimes">
                                 <div
@@ -773,14 +874,20 @@
 
             estadosPorRegiao.map(function (estado) {
                 votacaoEstado = votacaoPorZonaPorMunicipio.filter(v => v.SG_UF == estado.SG_UF)
-                agregadorPorUrna(estado, votacaoEstado)
+                agregadorPorModeloUrna(estado, votacaoEstado)
             })
 
+            diferencaUrnas()
+
             criarGraficoResultadoBolsonaroPorModeloUrnaPorEstado();
+            criarTabelaResultadoBolsonaroPorModeloUrnaPorEstado();
+            criarGraficoFrequenciaEleitoresPorModeloUrna();
+            criarGraficoDispersao();
+            criarMapaModelosUrna()
 
         });
 
-        function agregadorPorUrna(elemento, arrayFiltrado) {
+        function agregadorPorModeloUrna(elemento, arrayFiltrado) {
             elemento.bolsonaro_ue_antiga = arrayFiltrado.reduce((acc, cur) => acc + cur.bolsonaro_ue_antiga, 0)
             elemento.bolsonaro_ue_2020 = arrayFiltrado.reduce((acc, cur) => acc + cur.bolsonaro_ue_2020, 0)
             elemento.lula_ue_antiga = arrayFiltrado.reduce((acc, cur) => acc + cur.lula_ue_antiga, 0)
@@ -800,6 +907,9 @@
             elemento.eleitores_aptos_ue_antiga_perc = elemento.eleitores_aptos_ue_antiga / elemento.eleitores_aptos
         }
 
+        function diferencaUrnas() {
+            votacaoPorUrna.map(x => x.diff = x.LULA - x.BOLSONARO)
+        }
         function ativarNavegador() {
 
             // An offset to push the content down from the top
@@ -861,6 +971,17 @@
             });
         }
 
+        $(`input[name=resultadoBolsonaroPorModeloUrnaTipoDeExibicao]`).change(function (el, attr) {
+
+            if (this.value == "Tabela") {
+                $(`#tabelaResultadoBolsonaroPorModeloUrnaPorEstadoDIV`).show()
+                $(`#graficoResultadoBolsonaroPorModeloUrnaPorEstadoCanvas`).hide()
+            }
+            if (this.value == "Gráfico") {
+                $(`#graficoResultadoBolsonaroPorModeloUrnaPorEstadoCanvas`).show()
+                $(`#tabelaResultadoBolsonaroPorModeloUrnaPorEstadoDIV`).hide()
+            }
+        })
     </script>
 </body>
 
