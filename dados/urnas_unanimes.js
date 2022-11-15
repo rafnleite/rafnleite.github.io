@@ -2520,10 +2520,6 @@ let urnasUnanimes = [
     tags: [{
       tipo: 'CDP',
       nome: `Centro de Detenção Provisória Osasco I`
-    },
-    {
-      tipo: 'POUCO',
-      nome: 'Apenas 89 eleitores',
     }]
   },
   {

@@ -24,7 +24,7 @@ function criarTabelaUrnasUnanimes() {
                 render: function (data, type, full, meta) {
                     if (type == 'sort')
                         return `${pad(full.NR_ZONA, 4)}_${pad(full.NR_SECAO, 4)}`
-                    return `${full.NR_ZONA}/${full.NR_SECAO}`
+                    return `Z:${full.NR_ZONA} | S:${full.NR_SECAO}`
                 }
             },
             {
@@ -39,11 +39,21 @@ function criarTabelaUrnasUnanimes() {
                 title: 'Votos Lula',
                 data: 'LULA',
                 class: 'small text-center align-middle',
+                render: function (data, type, full, meta) {
+                    if (type == 'sort')
+                        return data
+                    return data ? `<b>${data}</b>` : data
+                }
             },
             {
                 title: 'Votos Bolsonaro',
                 data: 'BOLSONARO',
-                class: 'small text-center align-middle'
+                class: 'small text-center align-middle',
+                render: function (data, type, full, meta) {
+                    if (type == 'sort')
+                        return data
+                    return data ? `<b>${data}</b>` : data
+                }
             },
         ]
     })
