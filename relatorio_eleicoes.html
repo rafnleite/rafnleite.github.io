@@ -47,9 +47,8 @@
     <script src="./graficos/grafico_resultado_bolsonaro_por_idhm_modelo_urna_por_estado.js"></script>
     <script src="./graficos/grafico_idhm_ponderado_por_estado_por_modelo_urna.js"></script>
     <script src="./graficos/grafico_resultado_bolsonaro_por_municipio_por_eleicao_por_modelo_urna.js"></script>
-
-
-
+    <script src="./graficos/grafico_resultado_bolsonaro_por_modelo_urna_por_zona_e_municipio.js"></script>
+   
     <!-- JS Dados -->
     <script src="./dados/votacao_por_zona_por_municipio.js"></script>
     <script src="./dados/estados_por_regiao.js"></script>
@@ -1021,8 +1020,51 @@
                                 em um mesmo estado está comparando a <i>"mesmíssima populaçao"</i>, não é o que
                                 acontece, dado a maneira como as urnas foram distribuídas.
                             </p>
+                            <p>
+                                Entre os slides 19 e 36, o faz comparações entre os estados nordestinos utilizando os seguintes critérios:
+                                <ul>
+                                    <li>Alagoas, cidades com menos de 50.000 habitantes</li>
+                                    <li>Ceará, cidades com menos de 50.000 habitantes</li>
+                                    <li>Paraíba, cidades com menos de 100.000 habitantes</li>
+                                    <li>Pernambuco, cidades com menos de 100.000 habitantes</li>
 
+                                </ul>
+                            </p>
+                            <p>Os mapas abaixo mostram: A) Quais municípios estão em cada grupo de análise; B) O IDH-M dos municípios dos 4 estados; C) Votação do Bolsonaro na região em 2018; D) Votação do Bolsonaro na região em 2022.</p>
 
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 my-2"><a
+                                            href="./assets/NE_UE.png" target="_blank"><img src="./assets/NE_UE.png"
+                                                style="max-width:100%; border: 1px solid #000;"></a></div>
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 my-2"><a
+                                            href="./assets/NE_IDHM.png" target="_blank"><img src="./assets/NE_IDHM.png"
+                                                style="max-width:100%; border: 1px solid #000;"></a></div>
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 my-2"><a
+                                            href="./assets/NE_B2018.png" target="_blank"><img
+                                                src="./assets/NE_B2018.png"
+                                                style="max-width:100%; border: 1px solid #000;"></a></div>
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 my-2"><a
+                                            href="./assets/NE_B2022.png" target="_blank"><img
+                                                src="./assets/NE_B2022.png"
+                                                style="max-width:100%; border: 1px solid #000;"></a></div>
+                                </div>
+                            </div>
+
+                            <p>Pelos mapas é possível perceber que os municípios que receberam as novas urnas estão concentrados próximo ao litoral, que estes municípios, em geral, tem maior IDH-M e que a votação de Bolsonaro na região pouco mudou de 2018 para 2022, independete se em 2022 foi utilizado a nova urna ou não.</p>
+                            <p>Finalmente, uma última forma de demonstrar que o viés da categorização feita pelo autor é reduzir a análise ao menor nível de granularidade possível: em vez de comparar mesmos estados, comparar mesmas zonas eleitorais e municípios.</p>
+                            <p>Ao todo, apenas 461 zonas / municípios receberam, ao mesmo tempo, ambos os modelos de urnas eletrônicas. Isto ocorreu pois na maioria dos casos uma zona eleitoral esteve com um único modelo - seja o novo ou o antigo.</p>
+
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <canvas class="my-3" id="graficoResultadoBolsonaroPorModeloUrnaPorZonaEMunicipioCanvas"
+                                            width="100%" height="800"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <p>Os marcadores no mapa passam a acompanhar bem mais o eixo de simetria do que quando o agrupamento era apenas por estado. 
+                                É importante destacar que, mesmo em um mesmo município, o comportamento dos votos pode variar muito de uma região pra outra (regiões centrais X zonas periféricas/rurais), e isso pode se refletir no resultado por modelo de urna, caso a distribuição das urnas não seja homogênea por regiões.</p>
                             <div id="graficos">
                                 <div
                                     class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
@@ -1125,7 +1167,7 @@
             centroideMunicipios.features.map(function (mun) {
                 agregadorPorModeloUrna(mun.properties, votacaoPorZonaPorMunicipio.filter(x => x.CD_MUNICIPIO == mun.properties.cd_mun_tse), true)
             })
-
+            console.log(centroideMunicipios)
             let opcoes = estadosPorRegiao.filter(x => x.SG_UF != 'ZZ').map(x => `<option value="${x.SG_UF}" ${x.SG_UF == "AL" ? `selected` : ``}>${x.NOME}</option>`)
             opcoes.push(`<option value="BR">Brasil</option>`)
             $(`#graficoResultadoBolsonaroPorModeloUrnaPorMunicipioPorIDHMSelector`).html(opcoes.join(''))
@@ -1143,6 +1185,7 @@
             criarGraficoResultadoBolsonaroPorModeloUrnaPorMunicipioPorIDHM();
             criarGraficoIDHMPonderadoPorEstadoPorModeloUrna();
             criarGraficoResultadoBolsonaroPorMunicipioPorEleicaoPorModeloUrna();
+            criarGraficoResultadoBolsonaroPorModeloUrnaPorZonaEMunicipioCanvas();
         });
 
         function agregadorPorModeloUrna(elemento, arrayFiltrado, mun = false) {

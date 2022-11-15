@@ -2,7 +2,6 @@
 function criarGraficoResultadoBolsonaroPorMunicipioPorEleicaoPorModeloUrna() {
     UF = $('#graficoResultadoBolsonaroPorMunicipioPorEleicaoPorModeloUrnaSelector').val()
     let municipios = centroideMunicipios.features.map(x => x.properties).filter(x => x.sigla == UF || 'BR' == UF)
-    console.log(municipios)
     let datasets = []
 
     let maximoEleitoresPorMunicipio = getMaximoValor(municipios.map(x => x.eleitores_aptos))
@@ -38,6 +37,8 @@ function criarGraficoResultadoBolsonaroPorMunicipioPorEleicaoPorModeloUrna() {
         pointBorderWidth: 0,
         borderWidth: 0
     })
+
+
 
     if (window.hasOwnProperty('graficoResultadoBolsonaroPorMunicipioPorEleicaoPorModeloUrna') && graficoResultadoBolsonaroPorMunicipioPorEleicaoPorModeloUrna) {
         graficoResultadoBolsonaroPorMunicipioPorEleicaoPorModeloUrna.destroy();

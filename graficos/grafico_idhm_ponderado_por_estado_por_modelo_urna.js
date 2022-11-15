@@ -59,7 +59,6 @@ function criarGraficoIDHMPonderadoPorEstadoPorModeloUrna() {
         borderWidth: 0
     })
 
-    console.log(datasets)
 
     const graficoIDHMPonderadoPorEstadoPorModeloUrna = new Chart($('#graficoIDHMPonderadoPorEstadoPorModeloUrnaCanvas'), {
         type: 'mixed',
