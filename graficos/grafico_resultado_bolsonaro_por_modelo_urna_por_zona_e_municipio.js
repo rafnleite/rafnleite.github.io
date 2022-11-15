@@ -24,7 +24,6 @@ function criarGraficoResultadoBolsonaroPorModeloUrnaPorZonaEMunicipioCanvas() {
             datasets.push(dataset)
         }
     }
-    console.log(zonasEMunicipioAmbosModelos)
     for (let i = 0; i < zonasEMunicipioAmbosModelos.length; i++) {
         let dataset = {}
         dataset.type = 'bubble'
@@ -50,7 +49,6 @@ function criarGraficoResultadoBolsonaroPorModeloUrnaPorZonaEMunicipioCanvas() {
         borderWidth: 0
     })
 
-    console.log(datasets)
 
 
     const graficoResultadoBolsonaroPorModeloUrnaPorZonaEMunicipio = new Chart($('#graficoResultadoBolsonaroPorModeloUrnaPorZonaEMunicipioCanvas'), {

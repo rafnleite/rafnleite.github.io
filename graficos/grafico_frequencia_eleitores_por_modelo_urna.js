@@ -3,51 +3,51 @@ function criarGraficoFrequenciaEleitoresPorModeloUrna() {
 
     frequencia_eleitores_urna = document.getElementById('graficoFrequnciaEleitoresPorModeloUrnaCanvas');
 
-    let options = {
-        showlegend: true,
-        legend: {
-            orientation: "h",
-            yanchor: "bottom",
-            y: 1.02,
-            xanchor: "right",
-            x: 1
-        },
-        title: {
-            text: 'Frequência de número de eleitores por seção eleitoral por modelo de urna.',
-            font: {
-                size: 14
-            }
-        },
-        xaxis: {
-            title: {
-                text: 'Frequência'
-            },
-            dtick: 500,
-            showgrid: true,
-            zeroline: true,
-            showline: true,
-            mirror: 'ticks',
-            gridcolor: '#bdbdbd',
-            gridwidth: 2,
-            linecolor: '#636363',
-            linewidth: 2,
-            range: [-3000, 3000],
-        },
-        yaxis: {
-            title: {
-                text: 'Número de eleitores'
-            },
-            dtick: 100,
-            showgrid: true,
-            showline: true,
-            mirror: 'ticks',
-            gridcolor: '#bdbdbd',
-            gridwidth: 1,
-            linecolor: '#636363',
-            linewidth: 2,
-            range: [0, 800]
-        },
-    }
+    // let options = {
+    //     showlegend: true,
+    //     legend: {
+    //         orientation: "h",
+    //         yanchor: "bottom",
+    //         y: 1.02,
+    //         xanchor: "right",
+    //         x: 1
+    //     },
+    //     title: {
+    //         text: 'Frequência de número de eleitores por seção eleitoral por modelo de urna.',
+    //         font: {
+    //             size: 14
+    //         }
+    //     },
+    //     xaxis: {
+    //         title: {
+    //             text: 'Frequência'
+    //         },
+    //         dtick: 500,
+    //         showgrid: true,
+    //         zeroline: true,
+    //         showline: true,
+    //         mirror: 'ticks',
+    //         gridcolor: '#bdbdbd',
+    //         gridwidth: 2,
+    //         linecolor: '#636363',
+    //         linewidth: 2,
+    //         range: [-3000, 3000],
+    //     },
+    //     yaxis: {
+    //         title: {
+    //             text: 'Número de eleitores'
+    //         },
+    //         dtick: 100,
+    //         showgrid: true,
+    //         showline: true,
+    //         mirror: 'ticks',
+    //         gridcolor: '#bdbdbd',
+    //         gridwidth: 1,
+    //         linecolor: '#636363',
+    //         linewidth: 2,
+    //         range: [0, 800]
+    //     },
+    // }
 
     let urnas_2020 = votacaoPorUrna.filter(x => x.DS_MODELO_URNA == "2020")
     let urnas_antigas = votacaoPorUrna.filter(x => x.DS_MODELO_URNA != "2020")
@@ -71,12 +71,12 @@ function criarGraficoFrequenciaEleitoresPorModeloUrna() {
     let data = {
         labels: numero_eleitores,
         datasets: [{
-            label: 'UE - 2020',
+            label: 'UE 2020',
             data: freq_2020,
             backgroundColor: getColor(4),
             borderWidth: 0
         }, {
-            label: 'UE - antiga',
+            label: 'UE antiga',
             data: freq_antigas.map(x => x * -1),
             backgroundColor: getColor(3),
             borderWidth: 0
@@ -118,23 +118,38 @@ function criarGraficoFrequenciaEleitoresPorModeloUrna() {
                 chartAreaBorder: {
                     borderColor: '#636363',
                     borderWidth: 2,
+                },
+                title: {
+                    display: true,
+                    text: `Histograma - Número de elitores por modelo de urna`,
+                    font: {
+                        size: 14
+                    }
+                },
+                tooltip: {
+                    backgroundColor: "rgba(255,255,255,1)",
+                    bodyColor: "#858796",
+                    titleMarginBottom: 10,
+                    titleColor: '#6e707e',
+                    titleFont: {
+                        size: 14
+                    },
+                    borderColor: '#dddfeb',
+                    borderWidth: 1,
+                    displayColors: false,
+                    intersect: false,
+                    caretPadding: 10,
+                    callbacks: {
+                        title: function (tooltipItem) {
+                            return tooltipItem[0].dataset.label
+                        },
+                        label: function (tooltipItem) {
+                            return [`Número de eleitores:  ${(tooltipItem.dataIndex)}`,
+                            `${(tooltipItem.dataset.label == 'UE antiga' ? freq_antigas[tooltipItem.dataIndex] : freq_2020[tooltipItem.dataIndex])} ocorrências`];
+                        }
+                    }
                 }
             },
-            // plugins: {
-            //     chartAreaBorder: {
-            //         borderColor: '#636363',
-            //         borderWidth: 2,
-            //     }
-            // },
-            //         hover: { mode: null },
-            //         layout: {
-            //             padding: {
-            //                 left: 10,
-            //                 right: 25,
-            //                 top: 25,
-            //                 bottom: 0
-            //             }
-            //         },
             scales: {
                 y: {
                     text: 'Frequência',
@@ -180,32 +195,6 @@ function criarGraficoFrequenciaEleitoresPorModeloUrna() {
                     },
                 },
             },
-            //         tooltips: {
-            //             backgroundColor: "rgba(255,255,255,1)",
-            //             bodyFontColor: "#858796",
-            //             titleMarginBottom: 10,
-            //             titleFontColor: '#6e707e',
-            //             titleFontSize: 14,
-            //             borderColor: '#dddfeb',
-            //             borderWidth: 1,
-            //             xPadding: 15,
-            //             yPadding: 15,
-            //             displayColors: false,
-            //             intersect: false,
-            //             caretPadding: 10,
-            //             callbacks: {
-            //                 title: function (tooltipItem, chart) {
-            //                     return chart.datasets[tooltipItem[0].datasetIndex].label
-            //                 },
-            //                 label: function (tooltipItem, chart) {
-            //                     var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
-            //                     return [`UE 2020:  ${(tooltipItem.xLabel.toLocaleString("pt-BR", { style: 'percent', minimumFractionDigits: 1 }))}`,
-            //                     `UE antiga:  ${(tooltipItem.yLabel.toLocaleString("pt-BR", { style: 'percent', minimumFractionDigits: 1 }))}`,
-            //                         ``,
-            //                     `Diferença: ${(tooltipItem.xLabel - tooltipItem.yLabel).toLocaleString("pt-BR", { style: 'percent', minimumFractionDigits: 1 })}`];
-            //                 }
-            //             }
-            //         }
         },
         plugins: [chartAreaBorder]
     })

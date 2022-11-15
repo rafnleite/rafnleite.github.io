@@ -137,3 +137,42 @@ function atualizarPaletaDeCores(container, cores) {
         $(container).append(`<div class="colorScale-item" style="background: ${cores[i]}"></div>`)
     }
 }
+
+function pad(n, width, z) {
+    z = z || '0';
+    n = n + '';
+    return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+}
+
+function criarTags(tags) {
+    if (tags) {
+        console.log(tags.map(x => `<span class="${corDict.find(y => y.tipo == x.tipo).class}">${x.nome}</span>`))
+        return tags.map(x => `${x.url ? `<a href="${x.url}" target="_blank">` : ``}<span class="${corDict.find(y => y.tipo == x.tipo).class}">${x.nome}</span>${x.url ? `</a>` : ``}`).join('')
+    }
+}
+
+let corDict = [{
+    tipo: `TI`,
+    class: "badge badge-pill badge-primary mx-1"
+},
+{
+    tipo: `RURAL`,
+    class: "badge badge-pill badge-secondary mx-1"
+},
+{
+    tipo: `QUILOMBOLA`,
+    class: "badge badge-pill badge-warning mx-1"
+},
+{
+    tipo: `POUCO`,
+    class: "badge badge-pill badge-info mx-1"
+},
+{
+    tipo: `MST`,
+    class: "badge badge-pill badge-danger mx-1"
+},
+{
+    tipo: `CDP`,
+    class: "badge badge-pill badge-dark mx-1"
+},
+]

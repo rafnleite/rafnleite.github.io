@@ -48,7 +48,9 @@
     <script src="./graficos/grafico_idhm_ponderado_por_estado_por_modelo_urna.js"></script>
     <script src="./graficos/grafico_resultado_bolsonaro_por_municipio_por_eleicao_por_modelo_urna.js"></script>
     <script src="./graficos/grafico_resultado_bolsonaro_por_modelo_urna_por_zona_e_municipio.js"></script>
-   
+    <script src="./graficos/grafico_simulacao_votos_retas_diagonais.js"></script>
+    <script src="./tabelas/tabela_urnas_unanimes.js"></script>
+
     <!-- JS Dados -->
     <script src="./dados/votacao_por_zona_por_municipio.js"></script>
     <script src="./dados/estados_por_regiao.js"></script>
@@ -57,6 +59,8 @@
     <script src="./dados/estados_shape.js"></script>
     <script src="./dados/rm_shape.js"></script>
     <script src="./dados/eleicoes_2018.js"></script>
+    <script src="./dados/urnas_unanimes.js"></script>
+
 </head>
 
 <body>
@@ -1021,16 +1025,19 @@
                                 acontece, dado a maneira como as urnas foram distribuídas.
                             </p>
                             <p>
-                                Entre os slides 19 e 36, o faz comparações entre os estados nordestinos utilizando os seguintes critérios:
-                                <ul>
-                                    <li>Alagoas, cidades com menos de 50.000 habitantes</li>
-                                    <li>Ceará, cidades com menos de 50.000 habitantes</li>
-                                    <li>Paraíba, cidades com menos de 100.000 habitantes</li>
-                                    <li>Pernambuco, cidades com menos de 100.000 habitantes</li>
+                                Entre os slides 19 e 36, o faz comparações entre os estados nordestinos utilizando os
+                                seguintes critérios:
+                            <ul>
+                                <li>Alagoas, cidades com menos de 50.000 habitantes</li>
+                                <li>Ceará, cidades com menos de 50.000 habitantes</li>
+                                <li>Paraíba, cidades com menos de 100.000 habitantes</li>
+                                <li>Pernambuco, cidades com menos de 100.000 habitantes</li>
 
-                                </ul>
+                            </ul>
                             </p>
-                            <p>Os mapas abaixo mostram: A) Quais municípios estão em cada grupo de análise; B) O IDH-M dos municípios dos 4 estados; C) Votação do Bolsonaro na região em 2018; D) Votação do Bolsonaro na região em 2022.</p>
+                            <p>Os mapas abaixo mostram: A) Quais municípios estão em cada grupo de análise; B) O IDH-M
+                                dos municípios dos 4 estados; C) Votação do Bolsonaro na região em 2018; D) Votação do
+                                Bolsonaro na região em 2022.</p>
 
                             <div class="container">
                                 <div class="row">
@@ -1050,20 +1057,32 @@
                                                 style="max-width:100%; border: 1px solid #000;"></a></div>
                                 </div>
                             </div>
-                            <p>Pelos mapas é possível perceber que os municípios que receberam as novas urnas estão concentrados próximo ao litoral, que estes municípios, em geral, tem maior IDH-M e que a votação de Bolsonaro na região pouco mudou de 2018 para 2022, independete se em 2022 foi utilizado a nova urna ou não.</p>
-                            <p>Finalmente, uma última forma de demonstrar que o viés da categorização feita pelo autor é reduzir a análise ao menor nível de granularidade possível: em vez de comparar mesmos estados, comparar mesmas zonas eleitorais e municípios.</p>
-                            <p>Ao todo, apenas 461 zonas / municípios receberam, ao mesmo tempo, ambos os modelos de urnas eletrônicas. Isto ocorreu pois na maioria dos casos uma zona eleitoral esteve com um único modelo - seja o novo ou o antigo.</p>
+                            <p>Pelos mapas é possível perceber que os municípios que receberam as novas urnas estão
+                                concentrados próximo ao litoral, que estes municípios, em geral, tem maior IDH-M e que a
+                                votação de Bolsonaro na região pouco mudou de 2018 para 2022, independete se em 2022 foi
+                                utilizado a nova urna ou não.</p>
+                            <p>Finalmente, uma última forma de demonstrar que o viés da categorização feita pelo autor é
+                                reduzir a análise ao menor nível de granularidade possível: em vez de comparar mesmos
+                                estados, comparar mesmas zonas eleitorais e municípios.</p>
+                            <p>Ao todo, apenas 461 zonas / municípios receberam, ao mesmo tempo, ambos os modelos de
+                                urnas eletrônicas. Isto ocorreu pois na maioria dos casos uma zona eleitoral esteve com
+                                um único modelo - seja o novo ou o antigo.</p>
 
                             <div class="container">
                                 <div class="row">
                                     <div class="col-12">
-                                        <canvas class="my-3" id="graficoResultadoBolsonaroPorModeloUrnaPorZonaEMunicipioCanvas"
+                                        <canvas class="my-3"
+                                            id="graficoResultadoBolsonaroPorModeloUrnaPorZonaEMunicipioCanvas"
                                             width="100%" height="800"></canvas>
                                     </div>
                                 </div>
                             </div>
-                            <p>Os marcadores no mapa passam a acompanhar bem mais o eixo de simetria do que quando o agrupamento era apenas por estado. 
-                                É importante destacar que, mesmo em um mesmo município, o comportamento dos votos pode variar muito de uma região pra outra (regiões centrais X zonas periféricas/rurais), e isso pode se refletir no resultado por modelo de urna, caso a distribuição das urnas não seja homogênea por regiões.</p>
+                            <p>Os marcadores no mapa passam a acompanhar bem mais o eixo de simetria do que quando o
+                                agrupamento era apenas por estado.
+                                É importante destacar que, mesmo em um mesmo município, o comportamento dos votos pode
+                                variar muito de uma região pra outra (regiões centrais X zonas periféricas/rurais), e
+                                isso pode se refletir no resultado por modelo de urna, caso a distribuição das urnas não
+                                seja homogênea.</p>
                             <div id="graficos">
                                 <div
                                     class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
@@ -1072,19 +1091,159 @@
                                     </div>
                                 </div>
                             </div>
+                            <p>A partir do slide 8 do relatório, é feito uma outra alegação que ganha destaque: de que
+                                existiria, nas urnas antigas, uma reta "artificial" limitando os votos ao se plotar o
+                                gráfico do votos do Lula x votos do Bolsonaro por seção, comportamento não observado no
+                                mesmo gráfico das urnas modelo 2020.</p>
+                            <p>
+                                <center><img src="./assets/comparacao_graficos.png" width="100%"></img></center>
+                            </p>
+                            <p>Antes de explicar a reta em si, vale observar que o autor utilizou-se de escalas
+                                diferentes nos gráficos comparados, uma técnica para distorcer e evidenciar seu ponto na
+                                apresentação dos dados. Enquanto no gráfico das UE 2020 os eixos do gráfico vão até 350
+                                e 400 votos, no gráfico das UE antigas, esse valor atinge 600.</p>
+                            <p>Isso quer dizer que, no gráfico das novas urnas, o autor se aproximou mais dos pontos,
+                                deixando mais evidentes os detalhes e micro comportamentos, enquanto no gráfico das
+                                urnas antigas, por usar um eixo mais abrangente, os pontos ficaram "amassados" em uma
+                                região menor do gráfico, ficando mais evidente o comportamento geral e disfarçando os
+                                detalhes.</p>
+                            <p>Mas e a "reta artificial"? Bom, primeiro precisamos entender o que ela significa. Como no
+                                gráfico, no eixo x, temos os votos de Bolsonaro e, no eixo Y, temos os votos do Lula em
+                                uma mesma urna, uma reta paralela à bissetriz dos quadrantes pares significa que a soma
+                                dos
+                                votos do Bolsonaro e Lula são iguais em todos os pontos da reta.</p>
+                            <p>Como exemplo, na tabela abaixo são apresentados 4 conjuntos de dados, em cada um a
+                                somatória dos votos do Bolsonaro e Lula é constante em todas as urnas.</p>
+                            <table class="table table-bordered text-center table-sm condensed mb-0">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Grupo 1<br>Soma: 100 votos <font color="#e6194B"><i
+                                                    class="fa-solid fa-circle"></i></font>
+                                        </th>
+                                        <th>Grupo 2<br>Soma: 200 votos <font color="#3cb44b"><i
+                                                    class="fa-solid fa-circle"></i></font>
+                                        </th>
+                                        <th>Grupo 3<br>Soma: 300 votos <font color="#4363d8"><i
+                                                    class="fa-solid fa-circle"></i></font>
+                                        </th>
+                                        <th>Grupo 4<br>Soma: 400 votos <font color="#f58231"><i
+                                                    class="fa-solid fa-circle"></i></font>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><b>Urna 1</b></td>
+                                        <td>Votos Lula: 50<br>Votos Bolsonaro: 50</td>
+                                        <td>Votos Lula: 90<br>Votos Bolsonaro: 110</td>
+                                        <td>Votos Lula: 190<br>Votos Bolsonaro: 110</td>
+                                        <td>Votos Lula: 200<br>Votos Bolsonaro: 200</td>
 
+                                    </tr>
+                                    <tr>
+                                        <td><b>Urna 2</b></td>
+                                        <td>Votos Lula: 70<br>Votos Bolsonaro: 30</td>
+                                        <td>Votos Lula: 60<br>Votos Bolsonaro: 140</td>
+                                        <td>Votos Lula: 230<br>Votos Bolsonaro: 70</td>
+                                        <td>Votos Lula: 300<br>Votos Bolsonaro: 100</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Urna 3</b></td>
+                                        <td>Votos Lula: 25<br>Votos Bolsonaro: 75</td>
+                                        <td>Votos Lula: 120<br>Votos Bolsonaro: 80</td>
+                                        <td>Votos Lula: 250<br>Votos Bolsonaro: 50</td>
+                                        <td>Votos Lula: 150<br>Votos Bolsonaro: 250</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Urna 4</b></td>
+                                        <td>Votos Lula: 40<br>Votos Bolsonaro: 60</td>
+                                        <td>Votos Lula: 130<br>Votos Bolsonaro: 70</td>
+                                        <td>Votos Lula: 75<br>Votos Bolsonaro: 225</td>
+                                        <td>Votos Lula: 175<br>Votos Bolsonaro: 225</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="col-12">
+                                <canvas class="my-3" id="graficoSimulacaoVotosRetasDiagnaisCanvas" width="100%"
+                                    height="500"></canvas>
+                            </div>
+                            <p>Ao plotarmos no gráfico, percebemos que para cada conjunto de pontos, onde todas as urnas
+                                tem o mesmo somatório de votos de Lula e Bolsonaro, uma reta paralela à bissetriz dos
+                                quadrantes pares é formada</p>
+                            <p>Explicado o que significa uma reta no gráfico, foram reproduzidos abaixo, para o segundo
+                                tuno, os gráficos com os dados reais. Foram utilizadas as mesmas escalas nos eixos de
+                                ambos os gráficos.
+                                O gráfico é dinâmico, é possível mover e alterar as escalas com o cursor (ou
+                                touch) e, dessa forma, explorar os dados em diferentes perspectivas.</p>
                             <div class="row">
                                 <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-xs-12 card-body d-flex align-items-center justify-content-center"
                                     id="graficoDispersaoUrnas2020Canvas" style="height:500px;"></div>
                                 <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-xs-12 card-body d-flex align-items-center justify-content-center"
                                     id="graficoDispersaoUrnasAntigasCanvas" style="height:500px;"></div>
                             </div>
+
+                            <p>Algumas observações que podemos fazer:
+                            <ul>
+                                <li>Com as escalas iguais, a diferença de comportamento dos gráficos é reduzida;</li>
+                                <li>A partir da faixa de aproximadamente 350 votos, os pontos se tornam bem menos
+                                    frequentes no gráfico das urnas antigas, embora ainda tenham diversos pontos após
+                                    esta faixa;</li>
+                                <li>Já no gráfico das UE 2020 ainda é perceptível uma quantidade significativa de urnas
+                                    entre 350 e 450 votos válidos.</li>
+                            </ul>
+                            </p>
+                            <p>No primiero turno das eleições, Lula e Bolsonaro foram quase unânimes: obtiveram juntos
+                                91,6% dos votos. Logo é esperado que quanto mais votos um deles tenham em uma seção
+                                específica, menos votos o outro terá. Eles concorrem direamente entre si pelos votos.
+                                Desta forma, faz sentido de que a somatória dos votos de ambos os candidatos seja
+                                limitado a partir de um ponto?
+                            </p>
+                            <p>Olhando para cada urna em específico, a soma de votos de Lula e Bolsonaro representa o
+                                total de eleitores naquela urna, subtraídos dos votos em branco e nulo, das abstenções e
+                                dos votos nos demais candidatos (no caso do primeiro turno). Ou seja, a soma dos votos
+                                de Lula e Bolsonaro é diretamente relacionada com a quantidade de eleitores em uma urna.
+                            </p>
+                            <p>É natural que, para evitar filas longas e para que todos os eleitores possam votar no
+                                intervalo estabelecido (entre 8:00 e 17:00), haja um limite de eleitores por urna
+                                estabelecido pelo TSE.</p>
+                            <p>Para verificar isso, é possível plotar um histograma de frequências de número de
+                                eleitores por seção eleitoral.</p>
                             <!-- <div class="col-12 card-body d-flex align-items-center justify-content-center"
                                 id="graficoFrequnciaEleitoresPorModeloUrnaCanvas" style="height:800px; width: 100%">
                             </div> -->
 
                             <canvas class="my-4" id="graficoFrequnciaEleitoresPorModeloUrnaCanvas2" width="800"
                                 height="800"></canvas>
+
+                            <p>É possível perceber que, para ambos os modelos, a frequência do número de eleitores por
+                                urna é crescente até a marca de aproximadamente 350 eleitores. Depois disso, tem uma
+                                pequena queda na frequência, na faixa entre 350 e 380 eleitores. Porém, a partir de 380
+                                um novo pico, ainda maior, é observado um pouco antes da marca de 400 eleitores.</p>
+                            <p>Isso significa que provalvelmente algumas zonas eleitorais trabalham com um máximo de 350
+                                eleitores por seção, enquanto a maioria tenta limitar o número de elitores à 400.</p>
+                            <p>A partir de 400 eleitores, há uma queda brusca nas frequências. Tanto nas UE antigas
+                                quanto
+                                nas UE novas, a marca de 400 eleitores é bem visível no histograma.
+                            </p>
+                            <p>Porém o comportamento dos gráficos a partir daí passa a ser bem diferente: Enquanto
+                                quase não há seções com mais de 400 eleitores utilizando as urnas antigas, ainda existe
+                                uma quantidade significativa de seções entre 400 e 500 eleitores utiliznado as UE 2020.
+                            </p>
+                            <p>A explicação para isso se dá pelo fato de que as novas urnas eletrônicas <a
+                                    href="https://www.tse.jus.br/comunicacao/noticias/2021/Dezembro/confira-as-principais-mudancas-do-novo-modelo-de-urna-eletronica-a-ser-utilizado-nas-eleicoes-2022"
+                                    target="_blank">são mais rápidas</a>. Aparentemente o TSE fez testou expandir a
+                                quantidade de eleitores utilizando o novo equipamento de votação.</p>
+                            <p>Ainda existem urnas acima dessa faixa de eleitores, mas estão concentradas principalmente
+                                no exterior, onde é
+                                possível colocar até 800 eleitores por seção. No exterior, o nível de abstenção costuma
+                                ser mais alto e os eleitores precisam votar apenas para o cargo de presidente. Assim, é
+                                possível colocar mais eleitores por seção.</p>
+                            <p>Dado que existe um limite na quantidade de elitores por urna, é completamente
+                                esperado de que haja a "reta diagonal" o gráfico de dispersão. E esta reta é menos
+                                visível nos modelos novos de urna eletrônica devido ao fato de que houve um número
+                                significativo de
+                                seções entre 400 e 500 eleitores utilizando a nova urna.</p>
 
                             <div id="unanimes">
                                 <div
@@ -1095,9 +1254,56 @@
                                 </div>
                             </div>
 
+                            <p>Entre os slides 50 e 63, são questionadas as urnas unânimes. Ao todo, no segundo turno,
+                                <b>147 urnas tiveram 100% dos votos para um candidato</b>, sendo 143 para o Lula e 4
+                                para o Bolsonaro.
+                            </p>
+                            <p>A maioria das urnas unânimes ocorreram em locais isolados, como comunidades indígenas e
+                                quilombolas e assentamentos do MST (nestes locais, é comum que os
+                                votos sejam bastante concentrados entre a comunidade: os mesmos candidatos tendem a ter
+                                o voto da maioria dos eleitores.). Ainda houve urnas unânimes em centros de detenção
+                                provisória, em seções com baixa quantidade de eleitores e em povoados rurais.</p>
+                            <p>O candidato Bolsonaro já fez diversos pronunciamentos púbilcos criticando a demarcação de
+                                terras indígenas, povos quilombolas e assentamentos do MST (<a
+                                    href="https://www.terra.com.br/noticias/eleicoes/bolsonaro-critica-demarcacao-de-terras-indigenas-e-o-fim-da-nossa-economia,ba232970189647a2b4b997cd9d237e8atc7jzwpp.html"
+                                    target="_blank">[1]</a>,
+                                <a href="https://conaq.org.br/noticias/bolsonaro-e-processado-por-quilombolas-de-todo-o-pais-pelo-crime-de-racismo/"
+                                    target="_blank">[2]</a>,
+                                <a href="https://noticias.r7.com/brasilia/no-meu-governo-nao-foi-demarcada-terra-indigena-comemora-bolsonaro-29062022"
+                                    target="_blank">[3]</a>,
+                                <a href="https://www.gazetadopovo.com.br/eleicoes/2022/bolsonaro-diz-que-anulou-violencia-do-mst-e-que-mundo-passa-fome-sem-agro/"
+                                    target="_blank">[4]</a>), desta forma é lógico que ele obtenha poucos votos nesse
+                                eleitorado.
+                            </p>
+                            <p>O autor ainda sugere, de forma inverídica, que seções adjacentes aos locais com urnas
+                                unânimes tiveram votações completamente diferentes.
+                                Como exemplo, o autor cita a seção 158 da zona 28 do MT, na cidade de Confesa,
+                                comparando com as seções 156, 159 e 160, dizendo que são adjacentes.
+                                Mapeando as seções, podemos perceber que enquanto a seção 158, que teve votação unânime
+                                para o candidato Lula fica nas terras indígenas de Urubu Branco, as demais
+                                seções ficam em distritos ou na sede do município, conforme mostrado abaixo.
+                            </p>
+                            <p><iframe
+                                    src="https://www.google.com/maps/d/u/0/embed?mid=1vTXvt3ftorRwy3CxU1ijreKX1GyhnV4&ehbc=2E312F"
+                                    width="100%" height="480"></iframe></p>
+                            <p>Ainda sobre a seção de Urubu Branco, os indígenas Apyãwa-Tapirapé que residem no local
+                                divulgaram uma nota pública, confirmando o voto no candidato Lula.</p>
+                            <p>
+                                <center><img src="./assets/nota_urububranco.png" style="max-width:100%;"></center>
+                            </p>
+                            <p>A lista de todas as seções unânimes com seus respectivos endereçoes é apresentada abaixo:
+                            </p>
+                            
+                            <div class="col-12 my-3" id="tabelaUrnasUnanimesDIV">
+                            <div id="tabelaUrnasUnanimesLegenda"></div>
+                                <table id="tabelaUrnasUnanimes"
+                                    class="table table-sm table-striped compact table-bordered" width="100%">
+                                </table>
+                            </div>
+
                             <div id="codigofonte">
                                 <div
-                                    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+                                    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 mt-2 border-bottom">
                                     <h1 class="h2">Código-fonte urnas</h1>
                                     <div class="btn-toolbar mb-2 mb-md-0">
                                     </div>
@@ -1185,6 +1391,8 @@
             criarGraficoIDHMPonderadoPorEstadoPorModeloUrna();
             criarGraficoResultadoBolsonaroPorMunicipioPorEleicaoPorModeloUrna();
             criarGraficoResultadoBolsonaroPorModeloUrnaPorZonaEMunicipioCanvas();
+            criarGraficoSimulacaoVotosRetasDiagnais();
+            criarTabelaUrnasUnanimes()
         });
 
         function agregadorPorModeloUrna(elemento, arrayFiltrado, mun = false) {
