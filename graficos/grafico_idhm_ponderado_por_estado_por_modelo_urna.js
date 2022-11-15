@@ -69,7 +69,7 @@ function criarGraficoIDHMPonderadoPorEstadoPorModeloUrna() {
             plugins: {
                 title: {
                     display: true,
-                    text: `IDH-M médio dos municípios ponderado dos municípios de cada estado, ponderado pelo número de elitores em cada modelo de urna`,
+                    text: `IDH-M médio dos municípios ponderado dos municípios de cada estado, ponderado pelo número de eleitores em cada modelo de urna`,
                     font: {
                         size: 14
                     }

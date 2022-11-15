@@ -121,7 +121,7 @@ function criarGraficoFrequenciaEleitoresPorModeloUrna() {
                 },
                 title: {
                     display: true,
-                    text: `Histograma - Número de elitores por modelo de urna`,
+                    text: `Histograma - Número de eleitores por seção por modelo de urna`,
                     font: {
                         size: 14
                     }

@@ -1135,32 +1135,32 @@
                                 <tbody>
                                     <tr>
                                         <td><b>Urna 1</b></td>
-                                        <td>Votos Lula: 50<br>Votos Bolsonaro: 50</td>
-                                        <td>Votos Lula: 90<br>Votos Bolsonaro: 110</td>
-                                        <td>Votos Lula: 190<br>Votos Bolsonaro: 110</td>
-                                        <td>Votos Lula: 200<br>Votos Bolsonaro: 200</td>
+                                        <td>Bolsonaro: 50<br>Lula: 50</td>
+                                        <td>Bolsonaro: 90<br>Lula: 110</td>
+                                        <td>Bolsonaro: 190<br>Lula: 110</td>
+                                        <td>Bolsonaro: 200<br>Lula: 200</td>
 
                                     </tr>
                                     <tr>
                                         <td><b>Urna 2</b></td>
-                                        <td>Votos Lula: 70<br>Votos Bolsonaro: 30</td>
-                                        <td>Votos Lula: 60<br>Votos Bolsonaro: 140</td>
-                                        <td>Votos Lula: 230<br>Votos Bolsonaro: 70</td>
-                                        <td>Votos Lula: 300<br>Votos Bolsonaro: 100</td>
+                                        <td>Bolsonaro: 70<br>Lula: 30</td>
+                                        <td>Bolsonaro: 60<br>Lula: 140</td>
+                                        <td>Bolsonaro: 230<br>Lula: 70</td>
+                                        <td>Bolsonaro: 300<br>Lula: 100</td>
                                     </tr>
                                     <tr>
                                         <td><b>Urna 3</b></td>
-                                        <td>Votos Lula: 25<br>Votos Bolsonaro: 75</td>
-                                        <td>Votos Lula: 120<br>Votos Bolsonaro: 80</td>
-                                        <td>Votos Lula: 250<br>Votos Bolsonaro: 50</td>
-                                        <td>Votos Lula: 150<br>Votos Bolsonaro: 250</td>
+                                        <td>Bolsonaro: 25<br>Lula: 75</td>
+                                        <td>Bolsonaro: 120<br>Lula: 80</td>
+                                        <td>Bolsonaro: 250<br>Lula: 50</td>
+                                        <td>Bolsonaro: 150<br>Lula: 250</td>
                                     </tr>
                                     <tr>
                                         <td><b>Urna 4</b></td>
-                                        <td>Votos Lula: 40<br>Votos Bolsonaro: 60</td>
-                                        <td>Votos Lula: 130<br>Votos Bolsonaro: 70</td>
-                                        <td>Votos Lula: 75<br>Votos Bolsonaro: 225</td>
-                                        <td>Votos Lula: 175<br>Votos Bolsonaro: 225</td>
+                                        <td>Bolsonaro: 40<br>Lula: 60</td>
+                                        <td>Bolsonaro: 130<br>Lula: 70</td>
+                                        <td>Bolsonaro: 75<br>Lula: 225</td>
+                                        <td>Bolsonaro: 175<br>Lula: 225</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -1221,7 +1221,7 @@
                                 pequena queda na frequência, na faixa entre 350 e 380 eleitores. Porém, a partir de 380
                                 um novo pico, ainda maior, é observado um pouco antes da marca de 400 eleitores.</p>
                             <p>Isso significa que provalvelmente algumas zonas eleitorais trabalham com um máximo de 350
-                                eleitores por seção, enquanto a maioria tenta limitar o número de elitores à 400.</p>
+                                eleitores por seção, enquanto a maioria tenta limitar o número de eleitores à 400.</p>
                             <p>A partir de 400 eleitores, há uma queda brusca nas frequências. Tanto nas UE antigas
                                 quanto
                                 nas UE novas, a marca de 400 eleitores é bem visível no histograma.
@@ -1309,7 +1309,11 @@
                                     </div>
                                 </div>
                             </div>
-
+                            <p>Um outro ponto que é questionado na apresentação é a possibildidade de existirem dois códigos-fontes diferentes em diferentes modelos de urnas eletrônicas. O autor se utiliza do resgistro de log ao inicializar a urna para levantar esta suspeita.</p>
+                            <p>Ao apresentar o log de inicialização de duas diferentes urnas, o autor destaca que uma linha de log que aparece em uma urna, não aparece na outra e diz que, por ser antes das eleições, isto jamais deveria poder ocorrer.</p>
+                            <p>Porém, mesmo antes de se inicializar a votação, quando um operador está carregando as informações das eleições no aparelho, é necessário realizar procedimentos que envolvem a interação com a urna. É possível que log diferentes sejam gerados caso as interações ocorram de formas diferentes. Por exemplo, um operador pode digitar uma tecla de forma inesperado em um momento que a urna está carregando informações.</p>
+                            <p>Desta forma, a simples diferença no registro de log não é uma evidência de códigos-fonte diferentes.</p>
+                            
                             <div id="alteracoes">
                                 <div
                                     class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
