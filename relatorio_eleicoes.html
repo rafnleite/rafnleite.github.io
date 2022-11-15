@@ -889,7 +889,10 @@
                             <p>
                                 <center><img src="./assets/eq1.png"></center>
                             </p>
-                            <p>Os resultados obtidos foram plotados no gráfico abaixo. A divisão entre as áreas azul e branca é a linha de simetria. Quanto mais os marcadores estão dentro da área azul, mais o estado priorizou municípios mais desenvolvidos para distribuir os novos modelos de urnas eletrônicas.</p>
+                            <p>Os resultados obtidos foram plotados no gráfico abaixo. A divisão entre as áreas azul e
+                                branca é a linha de simetria. Quanto mais os marcadores estão dentro da área azul, mais
+                                o estado priorizou municípios mais desenvolvidos para distribuir os novos modelos de
+                                urnas eletrônicas.</p>
                             <p>
                             <div class="col-12">
                                 <canvas class="mb-3 mt-0" id="graficoIDHMPonderadoPorEstadoPorModeloUrnaCanvas"
@@ -897,8 +900,37 @@
                                 </canvas>
                             </div>
                             </p>
-                            <p>Em todos os estados, o IDH-M médio dos locais com UE 2020 foi superior ao IDH-M dos locais com UE antigas. O Distrito Federal foi a única unidade federativa que o resultado foi o mesmo para os dois modelos de urna, e isso ocorreu porque é uma unidade formada por apenas um único município (Brasília).</p>
-                            <p>A diferença foi especialmente grande entre os estados do Norte e Nordeste, como Amazonas (IDH-M UE 2020: 0,737; IDH-M UE antiga: 0,606), Pernambuco (IDH-M UE 2020: 0,730; IDH-M UE antiga: 0,610), Roraima (IDH-M UE 2020: 0,719; IDH-M UE antiga: 0,590) e Alagoas (IDH-M UE 2020: 0,690; IDH-M UE antiga: 0,574), evidenciando a falta de homogeneidade na distribuição das novas urnas.</p>
+                            <p>Em todos os estados, o IDH-M médio dos locais com UE 2020 foi superior ao IDH-M dos
+                                locais com UE antigas. O Distrito Federal foi a única unidade federativa que o resultado
+                                foi o mesmo para os dois modelos de urna, e isso ocorreu porque é uma unidade formada
+                                por apenas um único município (Brasília).</p>
+                            <p>A diferença foi especialmente grande entre os estados do Norte e Nordeste, como Amazonas
+                                (IDH-M UE 2020: 0,737; IDH-M UE antiga: 0,606), Pernambuco (IDH-M UE 2020: 0,730; IDH-M
+                                UE antiga: 0,610), Roraima (IDH-M UE 2020: 0,719; IDH-M UE antiga: 0,590) e Alagoas
+                                (IDH-M UE 2020: 0,690; IDH-M UE antiga: 0,574), evidenciando a falta de homogeneidade na
+                                distribuição das novas urnas.</p>
+                            <p>Uma outra forma de evidenciar que não houve anormalias no comportamento da votação de
+                                acordo com o modelo de urna, é comparar os resultados das eleições deste ano com as de
+                                2018.
+                                O candiato Bolsonaro foi eleito em 2018 com 55,1% dos votos válidos, enquanto em 2022
+                                teve 49,10% dos votos.
+                                A distribuição do seu eleitorado se mateve similar pelo país, tendo uma maior proporção
+                                de votos no Sul, Sudeste e Centro-Oeste, ganhando por uma margem pequena no Norte e
+                                perdendo no Nordeste por uma margem grande.
+                                É de se esperar, de forma geral, uma pequena oscilação pra baixo nos percentuais
+                                recebidos em cada município, se comparado com 2018.
+                                Novamente, a divisão entre cores no gráfico abaixo representa a linha de simetria. Na
+                                região azul ficam os municipios onde o Bolsonaro foi melhor em 2022 e na área branca
+                                onde ele foi mehlor em 2018.
+                                Dado que em 2018 ainda não haviam os novos modelos de urna eletrônica, para que a tese
+                                de que o modelo de urna interfere no resultado das eleições faça sentido, os pontos
+                                vermelhos deveriam ficar nas área azul (ou seja, representaria que o Bolsonaro ganhou
+                                votos nos municípios que usaram as novas urnas) e os pontos amarelos na área branca
+                                (mostrando que a votação perdeu voto onde, em 2022, usaram as urnas antigas).
+                            </p>
+                            <p>
+                                O gráfico é dinâmico, e a unidade federativa pode ser alterada no selecionador abaixo.
+                            </p>
                             <p>
                                 <select id="graficoResultadoBolsonaroPorMunicipioPorEleicaoPorModeloUrnaSelector"
                                     class="form-control selectpicker" name="escolherCaixaPendecias"
@@ -919,6 +951,54 @@
                                 </div>
                             </div>
                             </p>
+
+                            <p>
+                                Olhando o país como um todo, não existe um padrão entre a distribuiçao dos pontos
+                                amarelos e vermelhos no gráfico, demostrando as seções que usaram ambos os modelos de
+                                urna tiveram comportamento similar este ano em relação à 2018. Não evidenciando
+                                portanto, interferência na votação por modelo de urna.
+                            </p>
+                            <p>Em alguns estados do Norte e Nordeste, como Alagoas, Ceará, Maranhão, Pará e Pernambuco,
+                                o que se observou foi justamente o contrário do que era esperado caso os indícios do
+                                relatório argentino fossem corretos.
+                                Em relação à 2018, <b>Bolsonaro ganhou votos nos municípios em que em 2022 utilizou os
+                                    modelos antigos de urna e perdeu votos nos municípios que usaram o novo modelo de
+                                    urna.</b>
+                            </p>
+                            <p>Este comportamento é reflexo de algo que pode ser visto à nível nacional: Ainda que o
+                                desempenho de Bolsonaro seja melhor nas regiões mais desenvolvidas, ele se saiu pior, se
+                                comparado à 2018, no Sul e Sudeste, enquanto se manteve estável no Nordeste.
+                                Embora entre o eleitorado de regiões menos desenvolvidas os votos terem sidos
+                                majoritariamentes para o Lula, o Bolsonaro se saiu melhor do que em 2018 neste público.
+                                E embora o Bolsonaro tenha melhor desempenho em regiões mais desenvolvidas, ele se saiu
+                                pior do que em 2018 neste eleitorado.
+                            </p>
+
+                            <p>
+                                Olhando o país como um todo, não existe um padrão entre a distribuiçao dos pontos
+                                amarelos e vermelhos no gráfico, demostrando as seções que usaram ambos os modelos de
+                                urna tiveram comportamento similar este ano em relação à 2018. Não evidenciando
+                                portanto, interferência na votação por modelo de urna.
+                            </p>
+                            <p>Em alguns estados do Norte e Nordeste, como Alagoas, Ceará, Maranhão, Pará e Pernambuco,
+                                o que se observou foi justamente o contrário do que era esperado caso os indícios do
+                                relatório argentino fossem corretos.
+                                Em relação à 2018, <b>Bolsonaro ganhou votos nos municípios em que em 2022 utilizou os
+                                    modelos antigos de urna e perdeu votos nos municípios que usaram o novo modelo de
+                                    urna.</b>
+                            </p>
+                            <p>Este comportamento é reflexo de algo que pode ser visto à nível nacional: Ainda que o
+                                desempenho de Bolsonaro seja melhor nas regiões mais desenvolvidas, ele se saiu pior, se
+                                comparado à 2018, no Sul e Sudeste, enquanto se manteve estável no Nordeste.
+                                Embora entre o eleitorado de regiões menos desenvolvidas os votos terem sidos
+                                majoritariamentes para o Lula, o Bolsonaro se saiu melhor do que em 2018 neste público.
+                                E embora o Bolsonaro tenha melhor desempenho em regiões mais desenvolvidas, ele se saiu
+                                pior do que em 2018 neste eleitorado.
+                            </p>
+
+                            <p>Ou seja, quando o autor diz que, por filtrar municípios com menos de 100 mil habitantes em um mesmo estado está comparando a <i>"mesmíssima populaçao"</i>, não é o que acontece, dado a maneira como as urnas foram distribuídas.
+                            </p>
+
 
                             <div id="graficos">
                                 <div
