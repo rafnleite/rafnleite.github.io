@@ -18,6 +18,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link href="bootstrap-select.css" rel="stylesheet">
+
 
     <!-- JS Bibliotecas -->
     <script src="https://code.jquery.com/jquery-3.6.1.min.js"
@@ -35,18 +37,27 @@
     <script src="https://unpkg.com/leaflet@1.9.2/dist/leaflet.js"
         integrity="sha256-o9N1jGDZrf5tS+Ft4gbIK7mYMipq9lqpVJ91xHSyKhg=" crossorigin=""></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.4.2/chroma.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/js/bootstrap-select.min.js"></script>
 
     <!-- Gráficos -->
     <script src="./graficos/grafico_resultado_bolsonaro_por_modelo_urna_por_estado.js"></script>
     <script src="./graficos/grafico_dispersao_votacao_por_candidato_por_urna.js"></script>
     <script src="./graficos/grafico_frequencia_eleitores_por_modelo_urna.js"></script>
     <script src="./mapas/mapa_modelos_urnas.js"></script>
+    <script src="./graficos/grafico_resultado_bolsonaro_por_idhm_modelo_urna_por_estado.js"></script>
+    <script src="./graficos/grafico_idhm_ponderado_por_estado_por_modelo_urna.js"></script>
+    <script src="./graficos/grafico_resultado_bolsonaro_por_municipio_por_eleicao_por_modelo_urna.js"></script>
+
+
 
     <!-- JS Dados -->
     <script src="./dados/votacao_por_zona_por_municipio.js"></script>
     <script src="./dados/estados_por_regiao.js"></script>
     <script src="./dados/votacao_urnas.js"></script>
     <script src="./dados/centroide_municipios.js"></script>
+    <script src="./dados/estados_shape.js"></script>
+    <script src="./dados/rm_shape.js"></script>
+    <script src="./dados/eleicoes_2018.js"></script>
 </head>
 
 <body>
@@ -414,7 +425,7 @@
                                 candidato de acordo com o modelo de urna eletrônica.
                                 Quanto mais o marcador estiver à esquerda da linha (área branca), melhor o candidato
                                 Bolsonaro foi nas urnas antigas.
-                                Da mesmo forma, quando mais à direita da referência (área vermelha), maior a diferença
+                                Da mesmo forma, quando mais à direita da referência (área azul), maior a diferença
                                 favorável à UE 2020 em relação aos modelos antigos.</p>
 
                             <p>
@@ -765,20 +776,150 @@
                                     target="_blank">as urnas modelo 2020 seriam utilizadas preferencialmente na
                                     grande
                                     Recife</a> por questões de logística.
-                                Comportamento similar foi observado na maioria dos estados.
+                                Comportamento similar foi observado na maioria dos estados. </p>
+                            <p>
+                                No mapa mapa abaixo, cada marcador indica um município brasileiro.
+                                A cor em que o município é representado no mapa indica a razão de cada modelo de UE
+                                utilizada,
+                                partindo no laranja claro, nos municípios que usaram apenas o modelo antigo, para o
+                                vermelho, que representa os municípios que usaram apenas as UE 2020.
+                                O tamanho em que cada município é representado no mapa corresponde ao número total de
+                                eleitores aptos. As áreas em cinza escuro são as regiões metropolitanas.
                             </p>
+                            <p>
 
                             <div>
                                 <div map id="mapaModelosUrna"
                                     style="height: 720px; width:100%; border-style: solid; border-color: rgb(0, 0, 0);">
                                 </div>
+                                <div id="mapaModelosUrnaLegenda" class="colorScale mt-2 mx-2 colorScaleModeloUrna"
+                                    style="border: 1px solid #000;"></div>
+                                <div class="d-flex justify-content-between">
+                                    <span>100% UE Antiga</span>
+                                    <span>50%/50%</span>
+                                    <span>100% UE 2020</span>
+                                </div>
                             </div>
-
+                            </p>
+                            <p>
+                                O mapa deixa visível que fora das regiões metropolitanas, as urnas eletrônicas de modelo
+                                antigo (pontos laranjas) predominam, enquanto nas regiões metropolitanas, os novos
+                                modelos de urna eletrônica passam a ser mais frequentes.
+                            </p>
                             <p>No relatório apresentado pelo canal argentino, o autor chega a fazer comparações dentro
                                 de um mesmo estado de cidades com popução abaixo de 50 mil ou 100 mil habitantes,
-                                alegando que, desta forma estaria comparando a "mesmíssima população".
-
+                                alegando que, desta forma estaria comparando a <i>"mesmíssima população"</i>, o que não
+                                é verdade.
+                                Tomando como exemplo os estados que apresentaram maior diferença entre o percentual de
+                                votos do Bolsonaro pra cada modelo de urna, Amazonas, Alagoas e Paraíba, observamos que:
+                            <ul>
+                                <li>No estado do <b>Amazonas</b>, apenas a cidade de Manaus recebeu o novo modelo de
+                                    urna eletrônica. Todas as cidades do interior utilizaram os modelos antidos de urna.
+                                </li>
+                                <li>No <b>Alagoas</b>, apenas Maceió e cidades próximas utilizaram o novo modelo de urna
+                                    eletrônica. Os muncípios do sertão alagoano utilizaram os modelos antigos de urna.
+                                </li>
+                                <li>Na <b>Paraíba</b>, os novos modelos de urna eletrônica foram utilizados nos
+                                    municípios que partem do litoral, até aproximadamente Campina Grande, pegando a
+                                    região mais desenvolvida do estado. Entre Campina Grande, e o extremo oeste do
+                                    estado, na região do sertão, todos os municípios utilizaram o modelo antigo de urna
+                                    eletrônica.</li>
+                            </ul>
                             </p>
+                            <p>
+                                A forma como os novos modelos de urna eletrônica foram distribuídos fez com que cidades
+                                com diferentes padrões socioeconômicos tivessem diferentes modelos de UE para votar.
+                                Uma outra forma de evidenciar isso, é cruzar os dados com outros indicadores, como o
+                                IDH-M,
+                                que mede o desnvolvimento de um município.
+                                O IDH-M é um indicador que varia em uma escla de zero até um, sendo que, quando mais
+                                próximo de zero, menos desenvolvido é o município, e quanto mais próximo de um, mais
+                                desenvolvido é o município.
+                                O gráfico cruza nos dois eixos o IDH-M de cada município com o percentual de votos do
+                                candidato Bolsonaro.
+                                Em quase todos os estados é possível perceber uma forte correlação entre o IDM-H e a
+                                proporção de votos que o Bolsonaro recebeu.
+                                As cores, seguindo a mesma escala do mapa, representam os modelos de urna eletrônica
+                                utilizadas no munípio.
+                                Olhando principalmente nos estados onde houve maior discrepância entre o resultado do
+                                Bolsonaro por modelo de urna, é possível perceber que os pontos vermelhos estão
+                                majoritariamente do lado direito do gráfico, ou seja, em municípios com maior IDH-M.
+                                Por outro lado, se olharmos para o parte esquerda do gráfico, predominam os pontos
+                                laranjas.
+                            </p>
+                            <p>
+                                Tomando novamento o estado de Alagoas como exemplo, na região do gráfico correspondente
+                                ao IDH-M abaixo de 0,600 há uma predominânica de pontos laranja.
+                                A partir de 0,600, porém, existem mais pontos vermelhos.
+                            </p>
+                            <p>
+                                O gráfico é dinâmico, e a unidade federativa pode ser alterada no selecionador abaixo.
+                            </p>
+                            <p>
+                                <select id="graficoResultadoBolsonaroPorModeloUrnaPorMunicipioPorIDHMSelector"
+                                    class="form-control selectpicker" name="escolherCaixaPendecias"
+                                    onchange="criarGraficoResultadoBolsonaroPorModeloUrnaPorMunicipioPorIDHM()"
+                                    data-style="form-control" data-live-search="true">
+                                </select>
+                            <div id="graficoResultadoBolsonaroPorModeloUrnaPorMunicipioPorIDHMInfo"></div>
+                            <div class="col-12">
+                                <canvas class="mb-3 mt-0"
+                                    id="graficoResultadoBolsonaroPorModeloUrnaPorMunicipioPorIDHMCanvas" width="100%"
+                                    height="800">
+                                </canvas>
+                                <div id="mapaModelosUrnaLegenda" class="colorScale mt-2 mx-2 colorScaleModeloUrna"
+                                    style="border: 1px solid #000;"></div>
+                                <div class="d-flex justify-content-between">
+                                    <span>100% UE Antiga</span>
+                                    <span>50%/50%</span>
+                                    <span>100% UE 2020</span>
+                                </div>
+                            </div>
+                            </p>
+                            <p>Para ter uma noção mais geral, por estado, é possível comparar o IDH-M entre os locais
+                                com UE 2020 e os locais com UE antigas.
+                                Para isso, é possível calcular um indicador de tendência central, como a média do IDH-M
+                                dos municípios de cada estado ponderada pela quantidade de eleitores aptos a votar,
+                                separando por modelo de urna eletrônica.
+                                Por exemplo, para calcular o IDH-M médio da UE 2020 em um estado, devemos, pra cada
+                                município, calcular o produto do IDH-M municipal pela quantidade de eleitores que votam
+                                em urnas 2020 e depois somar o valor obtido em todos os municípios e então dividir pelo
+                                número total de eleitores da UE 2020 no estado.
+                                O mesmo cálculo é feito para as UE antigas.</p>
+                            <p>
+                                <center><img src="./assets/eq1.png"></center>
+                            </p>
+                            <p>Os resultados obtidos foram plotados no gráfico abaixo. A divisão entre as áreas azul e branca é a linha de simetria. Quanto mais os marcadores estão dentro da área azul, mais o estado priorizou municípios mais desenvolvidos para distribuir os novos modelos de urnas eletrônicas.</p>
+                            <p>
+                            <div class="col-12">
+                                <canvas class="mb-3 mt-0" id="graficoIDHMPonderadoPorEstadoPorModeloUrnaCanvas"
+                                    width="100%" height="800">
+                                </canvas>
+                            </div>
+                            </p>
+                            <p>Em todos os estados, o IDH-M médio dos locais com UE 2020 foi superior ao IDH-M dos locais com UE antigas. O Distrito Federal foi a única unidade federativa que o resultado foi o mesmo para os dois modelos de urna, e isso ocorreu porque é uma unidade formada por apenas um único município (Brasília).</p>
+                            <p>A diferença foi especialmente grande entre os estados do Norte e Nordeste, como Amazonas (IDH-M UE 2020: 0,737; IDH-M UE antiga: 0,606), Pernambuco (IDH-M UE 2020: 0,730; IDH-M UE antiga: 0,610), Roraima (IDH-M UE 2020: 0,719; IDH-M UE antiga: 0,590) e Alagoas (IDH-M UE 2020: 0,690; IDH-M UE antiga: 0,574), evidenciando a falta de homogeneidade na distribuição das novas urnas.</p>
+                            <p>
+                                <select id="graficoResultadoBolsonaroPorMunicipioPorEleicaoPorModeloUrnaSelector"
+                                    class="form-control selectpicker" name="escolherCaixaPendecias"
+                                    onchange="criarGraficoResultadoBolsonaroPorMunicipioPorEleicaoPorModeloUrna()"
+                                    data-style="form-control" data-live-search="true">
+                                </select>
+                            <div class="col-12">
+                                <canvas class="mb-3 mt-0"
+                                    id="graficoResultadoBolsonaroPorMunicipioPorEleicaoPorModeloUrnaCanvas" width="100%"
+                                    height="800">
+                                </canvas>
+                                <div id="mapaModelosUrnaLegenda" class="colorScale mt-2 mx-2 colorScaleModeloUrna"
+                                    style="border: 1px solid #000;"></div>
+                                <div class="d-flex justify-content-between">
+                                    <span>100% UE Antiga</span>
+                                    <span>50%/50%</span>
+                                    <span>100% UE 2020</span>
+                                </div>
+                            </div>
+                            </p>
+
                             <div id="graficos">
                                 <div
                                     class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
@@ -878,17 +1019,30 @@
                 agregadorPorModeloUrna(estado, votacaoEstado)
             })
 
+            centroideMunicipios.features.map(function (mun) {
+                agregadorPorModeloUrna(mun.properties, votacaoPorZonaPorMunicipio.filter(x => x.CD_MUNICIPIO == mun.properties.cd_mun_tse), true)
+            })
+
+            let opcoes = estadosPorRegiao.filter(x => x.SG_UF != 'ZZ').map(x => `<option value="${x.SG_UF}" ${x.SG_UF == "AL" ? `selected` : ``}>${x.NOME}</option>`)
+            opcoes.push(`<option value="BR">Brasil</option>`)
+            $(`#graficoResultadoBolsonaroPorModeloUrnaPorMunicipioPorIDHMSelector`).html(opcoes.join(''))
+            $(`#graficoResultadoBolsonaroPorMunicipioPorEleicaoPorModeloUrnaSelector`).html(opcoes.join(''))
+            $('.selectpicker').selectpicker('refresh');
+            $('.selectpicker').selectpicker('render');
+
             diferencaUrnas()
 
             criarGraficoResultadoBolsonaroPorModeloUrnaPorEstado();
             criarTabelaResultadoBolsonaroPorModeloUrnaPorEstado();
             criarGraficoFrequenciaEleitoresPorModeloUrna();
             criarGraficoDispersao();
-            criarMapaModelosUrna()
-
+            criarMapaModelosUrna();
+            criarGraficoResultadoBolsonaroPorModeloUrnaPorMunicipioPorIDHM();
+            criarGraficoIDHMPonderadoPorEstadoPorModeloUrna();
+            criarGraficoResultadoBolsonaroPorMunicipioPorEleicaoPorModeloUrna();
         });
 
-        function agregadorPorModeloUrna(elemento, arrayFiltrado) {
+        function agregadorPorModeloUrna(elemento, arrayFiltrado, mun = false) {
             elemento.bolsonaro_ue_antiga = arrayFiltrado.reduce((acc, cur) => acc + cur.bolsonaro_ue_antiga, 0)
             elemento.bolsonaro_ue_2020 = arrayFiltrado.reduce((acc, cur) => acc + cur.bolsonaro_ue_2020, 0)
             elemento.lula_ue_antiga = arrayFiltrado.reduce((acc, cur) => acc + cur.lula_ue_antiga, 0)
@@ -906,6 +1060,14 @@
             elemento.lula_perc = elemento.lula / (elemento.bolsonaro + elemento.lula)
             elemento.eleitores_aptos_ue_2020_perc = elemento.eleitores_aptos_ue_2020 / elemento.eleitores_aptos
             elemento.eleitores_aptos_ue_antiga_perc = elemento.eleitores_aptos_ue_antiga / elemento.eleitores_aptos
+            if (mun) {
+                if (eleicoes2018.find(x => x.CD_MUNICIPIO == elemento.cd_mun_tse)) {
+                    elemento.bolsonaro_2018 = eleicoes2018.find(x => x.CD_MUNICIPIO == elemento.cd_mun_tse).bolsonaro_2018
+                    elemento.haddad_2018 = eleicoes2018.find(x => x.CD_MUNICIPIO == elemento.cd_mun_tse).haddad_2018
+                    elemento.bolsonaro_2018_perc = elemento.bolsonaro_2018 / (elemento.bolsonaro_2018 + elemento.haddad_2018)
+                    elemento.haddad_2018_perc = elemento.haddad_2018 / (elemento.bolsonaro_2018 + elemento.haddad_2018)
+                }
+            }
         }
 
         function diferencaUrnas() {

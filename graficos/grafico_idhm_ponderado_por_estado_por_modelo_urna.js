@@ -1,8 +1,25 @@
 
-function criarGraficoResultadoBolsonaroPorModeloUrnaPorEstado() {
+function criarGraficoIDHMPonderadoPorEstadoPorModeloUrna() {
+    let municipios = centroideMunicipios.features.map(x => x.properties)
     let regioes = [... new Set(estadosPorRegiao.map(x => x.REGIAO))]
-    let datasets = []
+
+    estadosPorRegiao.forEach(est => {
+        soma_produto_UE_2020 = 0
+        soma_eleitores_UE_2020 = 0
+        soma_produto_UE_antiga = 0
+        soma_eleitores_UE_antiga = 0
+        municipios.filter(mun => mun.sigla == est.SG_UF).forEach(mun => {
+            soma_produto_UE_2020 += mun.idhm * mun.eleitores_aptos_ue_2020
+            soma_eleitores_UE_2020 += mun.eleitores_aptos_ue_2020
+            soma_produto_UE_antiga += mun.idhm * mun.eleitores_aptos_ue_antiga
+            soma_eleitores_UE_antiga += mun.eleitores_aptos_ue_antiga
+        })
+        est.IDHMPonderadoUE2020 = (soma_produto_UE_2020 / soma_eleitores_UE_2020)
+        est.IDHMPonderadoUEantiga = (soma_produto_UE_antiga / soma_eleitores_UE_antiga)
+    })
+
     let maximoEleitoresPorEstado = getMaximoValor(estadosPorRegiao.map(x => x.eleitores_aptos))
+    let datasets = []
 
     for (let i = 0; i < regioes.length; i++) {
         if (regioes[i] != 'Exterior') {
@@ -21,8 +38,8 @@ function criarGraficoResultadoBolsonaroPorModeloUrnaPorEstado() {
             dataset.type = 'bubble'
             dataset.label = estadosPorRegiao[i].NOME
             dataset.data = [{
-                x: estadosPorRegiao[i].bolsonaro_ue_2020_perc,
-                y: estadosPorRegiao[i].bolsonaro_ue_antiga_perc,
+                x: estadosPorRegiao[i].IDHMPonderadoUE2020,
+                y: estadosPorRegiao[i].IDHMPonderadoUEantiga,
                 r: 3 + 15 * estadosPorRegiao[i].eleitores_aptos / maximoEleitoresPorEstado
             }]
             dataset.backgroundColor = getColor(regioes.findIndex(x => x == estadosPorRegiao[i].REGIAO))
@@ -42,7 +59,9 @@ function criarGraficoResultadoBolsonaroPorModeloUrnaPorEstado() {
         borderWidth: 0
     })
 
-    const graficoResultadoBolsonaroPorModeloUrnaPorEstado = new Chart($('#graficoResultadoBolsonaroPorModeloUrnaPorEstadoCanvas'), {
+    console.log(datasets)
+
+    const graficoIDHMPonderadoPorEstadoPorModeloUrna = new Chart($('#graficoIDHMPonderadoPorEstadoPorModeloUrnaCanvas'), {
         type: 'mixed',
         data: {
             datasets: datasets
@@ -51,7 +70,7 @@ function criarGraficoResultadoBolsonaroPorModeloUrnaPorEstado() {
             plugins: {
                 title: {
                     display: true,
-                    text: `Percentual de votos do Bolsonaro no segundo turno por estado por modelo de urna eletrônica`,
+                    text: `IDH-M médio dos municípios ponderado dos municípios de cada estado, ponderado pelo número de elitores em cada modelo de urna`,
                     font: {
                         size: 14
                     }
@@ -113,10 +132,8 @@ function criarGraficoResultadoBolsonaroPorModeloUrnaPorEstado() {
                             return tooltipItem[0].label
                         },
                         label: function (tooltipItem) {
-                            return [`UE 2020:  ${(tooltipItem.raw.x.toLocaleString("pt-BR", { style: 'percent', minimumFractionDigits: 1 }))}`,
-                            `UE antiga:  ${(tooltipItem.raw.y.toLocaleString("pt-BR", { style: 'percent', minimumFractionDigits: 1 }))}`,
-                                ``,
-                            `Diferença: ${(100 * (tooltipItem.raw.x - tooltipItem.raw.y)).toLocaleString("pt-BR", { style: 'decimal', minimumFractionDigits: 1, maximumFractionDigits: 1 })} pp`];
+                            return [`UE 2020:  ${(tooltipItem.raw.x.toLocaleString("pt-BR", { style: 'decimal', minimumFractionDigits: 3, maximumFractionDigits: 3}))}`,
+                            `UE antiga:  ${(tooltipItem.raw.y.toLocaleString("pt-BR", { style: 'decimal', minimumFractionDigits: 3, maximumFractionDigits: 3}))}`];
                         }
                     }
                 }
@@ -136,12 +153,12 @@ function criarGraficoResultadoBolsonaroPorModeloUrnaPorEstado() {
             scales: {
                 x: {
                     type: 'linear',
-                    min: 0,
-                    max: 1,
+                    min: 0.55,
+                    max: 0.85,
                     ticks: {
                         padding: 10,
                         callback: function (value, index, values) {
-                            return value.toLocaleString("pt-BR", { style: 'percent', });
+                            return value.toLocaleString("pt-BR", { style: 'decimal', minimumFractionDigits: 3, maximumFractionDigits: 3});
                         }
                     },
                     grid: {
@@ -151,18 +168,18 @@ function criarGraficoResultadoBolsonaroPorModeloUrnaPorEstado() {
                     },
                     title: {
                         display: true,
-                        text: '% Bolsonaro UE 2020',
+                        text: 'IDM-M médio dos municípios ponderado pelo número de eleitores - UE 2020',
                         align: 'center'
                     }
                 },
                 y: {
                     type: 'linear',
-                    min: 0,
-                    max: 1,
+                    min: 0.55,
+                    max: 0.85,
                     ticks: {
                         padding: 10,
                         callback: function (value, index, values) {
-                            return value.toLocaleString("pt-BR", { style: 'percent', });
+                            return value.toLocaleString("pt-BR", { style: 'decimal', minimumFractionDigits: 3, maximumFractionDigits: 3});
                         }
                     },
                     grid: {
@@ -172,64 +189,12 @@ function criarGraficoResultadoBolsonaroPorModeloUrnaPorEstado() {
                     },
                     title: {
                         display: true,
-                        text: '% Bolsonaro UE antiga',
+                        text: 'IDM-M médio dos municípios ponderado pelo número de eleitores - UE antiga',
                         align: 'middle'
                     },
                 },
             }
         },
         plugins: [chartAreaBorder]
-    })
-}
-
-function criarTabelaResultadoBolsonaroPorModeloUrnaPorEstado() {
-    if (window.hasOwnProperty('tabelaResultadoBolsonaroPorModeloUrnaPorEstado'))
-        $(`#tabelaResultadoBolsonaroPorModeloUrnaPorEstado`).DataTable().destroy();
-    window.tabelaResultadoBolsonaroPorModeloUrnaPorEstado = $(`#tabelaResultadoBolsonaroPorModeloUrnaPorEstado`).DataTable({
-        data: estadosPorRegiao,
-        dom: 'rt',
-        iDisplayLength: -1,
-        columns: [
-            {
-                title: 'Estado',
-                data: 'NOME',
-                class: 'small text-center align-middle'
-            },
-            {
-                title: 'Região',
-                data: 'REGIAO',
-                class: 'small text-center align-middle'
-            },
-            {
-                title: '% Bolsonaro UE 2020',
-                data: 'bolsonaro_ue_2020_perc',
-                class: 'small text-center align-middle',
-                render: function (data, type, full, meta) {
-                    if (type == 'sort')
-                        return data
-                    return data.toLocaleString("pt-BR", { style: 'percent', minimumFractionDigits: 1 })
-                }
-            },
-            {
-                title: '% Bolsonaro UE antiga',
-                data: 'bolsonaro_ue_antiga_perc',
-                class: 'small text-center align-middle',
-                render: function (data, type, full, meta) {
-                    if (type == 'sort')
-                        return data
-                    return data.toLocaleString("pt-BR", { style: 'percent', minimumFractionDigits: 1 })
-                }
-            },
-            {
-                title: 'Diferença',
-                data: 'NOME',
-                class: 'small text-center align-middle',
-                render: function (data, type, full, meta) {
-                    if (type == 'sort' || type == 'type')
-                        return 100 * isNaN((full.bolsonaro_ue_2020_perc - full.bolsonaro_ue_antiga_perc)) ? -1 : (full.bolsonaro_ue_2020_perc - full.bolsonaro_ue_antiga_perc)
-                    return `${(100 * (full.bolsonaro_ue_2020_perc - full.bolsonaro_ue_antiga_perc)).toLocaleString("pt-BR", { style: 'decimal', minimumFractionDigits: 1, maximumFractionDigits: 1 })} pp`
-                }
-            },
-        ]
     })
 }

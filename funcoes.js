@@ -116,17 +116,24 @@ function getMaximoValor(array) {
 const chartAreaBorder = {
     id: 'chartAreaBorder',
     beforeDraw(chart, args, options) {
-      const {ctx, chartArea: {left, top, width, height}} = chart;
-      ctx.save();
-      ctx.strokeStyle = options.borderColor;
-      ctx.lineWidth = options.borderWidth;
-      ctx.setLineDash(options.borderDash || []);
-      ctx.lineDashOffset = options.borderDashOffset;
-      ctx.strokeRect(left, top, width, height);
-      ctx.restore();
+        const { ctx, chartArea: { left, top, width, height } } = chart;
+        ctx.save();
+        ctx.strokeStyle = options.borderColor;
+        ctx.lineWidth = options.borderWidth;
+        ctx.setLineDash(options.borderDash || []);
+        ctx.lineDashOffset = options.borderDashOffset;
+        ctx.strokeRect(left, top, width, height);
+        ctx.restore();
     }
-  };
+};
 
-  function interpolar(a, aMin, aMax, bMin, bMax) {
+function interpolar(a, aMin, aMax, bMin, bMax) {
     return bMin + (bMax - bMin) * (a - aMin) / (aMax - aMin)
-  }
+}
+
+function atualizarPaletaDeCores(container, cores) {
+    $(container).html(``)
+    for (let i = 0; i < cores.length; i++) {
+        $(container).append(`<div class="colorScale-item" style="background: ${cores[i]}"></div>`)
+    }
+}
