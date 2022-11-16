@@ -1,5 +1,4 @@
 function criarTabelaUrnasUnanimes() {
-    console.log(urnasUnanimes)
 
     if (window.hasOwnProperty('tabelaUrnasUnanimes'))
         $(`#tabelaUrnasUnanimes`).DataTable().destroy();

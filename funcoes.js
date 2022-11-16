@@ -146,7 +146,6 @@ function pad(n, width, z) {
 
 function criarTags(tags) {
     if (tags) {
-        console.log(tags.map(x => `<span class="${corDict.find(y => y.tipo == x.tipo).class}">${x.nome}</span>`))
         return tags.map(x => `${x.url ? `<a href="${x.url}" target="_blank">` : ``}<span class="${corDict.find(y => y.tipo == x.tipo).class}">${x.nome}</span>${x.url ? `</a>` : ``}`).join('')
     }
 }

@@ -206,8 +206,8 @@ function criarTabelaResultadoBolsonaroPorModeloUrnaPorEstado() {
                 class: 'small text-center align-middle',
                 render: function (data, type, full, meta) {
                     if (type == 'sort')
-                        return data
-                    return data.toLocaleString("pt-BR", { style: 'percent', minimumFractionDigits: 1 })
+                        return data ? data : 0
+                    return data ? data.toLocaleString("pt-BR", { style: 'percent', minimumFractionDigits: 1 }) : '-'
                 }
             },
             {
@@ -217,7 +217,7 @@ function criarTabelaResultadoBolsonaroPorModeloUrnaPorEstado() {
                 render: function (data, type, full, meta) {
                     if (type == 'sort')
                         return data
-                    return data.toLocaleString("pt-BR", { style: 'percent', minimumFractionDigits: 1 })
+                    return data ? data.toLocaleString("pt-BR", { style: 'percent', minimumFractionDigits: 1 }) : '-'
                 }
             },
             {
@@ -226,8 +226,8 @@ function criarTabelaResultadoBolsonaroPorModeloUrnaPorEstado() {
                 class: 'small text-center align-middle',
                 render: function (data, type, full, meta) {
                     if (type == 'sort' || type == 'type')
-                        return 100 * isNaN((full.bolsonaro_ue_2020_perc - full.bolsonaro_ue_antiga_perc)) ? -1 : (full.bolsonaro_ue_2020_perc - full.bolsonaro_ue_antiga_perc)
-                    return `${(100 * (full.bolsonaro_ue_2020_perc - full.bolsonaro_ue_antiga_perc)).toLocaleString("pt-BR", { style: 'decimal', minimumFractionDigits: 1, maximumFractionDigits: 1 })} pp`
+                        return (full.bolsonaro_ue_2020_perc && full.bolsonaro_ue_antiga_perc) ? 100 * (full.bolsonaro_ue_2020_perc - full.bolsonaro_ue_antiga_perc) : -1
+                    return (full.bolsonaro_ue_2020_perc && full.bolsonaro_ue_antiga_perc) ? `${(100 * (full.bolsonaro_ue_2020_perc - full.bolsonaro_ue_antiga_perc)).toLocaleString("pt-BR", { style: 'decimal', minimumFractionDigits: 1, maximumFractionDigits: 1 })} pp` : `-`
                 }
             },
         ]
