@@ -38,7 +38,9 @@ function criarGraficoResultadoBolsonaroPorMunicipioPorEleicaoPorModeloUrna() {
         borderWidth: 0
     })
 
+    let correlacao = municipios.filter(mun => mun.bolsonaro_2018_perc != null && mun.bolsonaro_perc != null).length > 1 ? ss.sampleCorrelation(municipios.filter(mun => mun.idhm).map(mun => mun.bolsonaro_2018_perc), municipios.filter(mun => mun.idhm).map(mun => mun.bolsonaro_perc)) : null
 
+    $(`#graficoResultadoBolsonaroPorMunicipioPorEleicaoPorModeloUrnaInfo`).html(`${correlacao != null ? `Correlação (% Bolsonaro 2022 × % Bolsonaro 2018): <b>${correlacao.toLocaleString("pt-BR", { style: 'decimal', minimumFractionDigits: 3, maximumFractionDigits: 3 })}</b> (${classificardorCorrelacao(correlacao)})` : `Correlação não calculável`}`)
 
     if (window.hasOwnProperty('graficoResultadoBolsonaroPorMunicipioPorEleicaoPorModeloUrna') && graficoResultadoBolsonaroPorMunicipioPorEleicaoPorModeloUrna) {
         graficoResultadoBolsonaroPorMunicipioPorEleicaoPorModeloUrna.destroy();

@@ -175,3 +175,24 @@ let corDict = [{
     class: "badge badge-pill badge-dark mx-1"
 },
 ]
+
+function classificardorCorrelacao(correlacao) {
+    if (correlacao <= -0.9)
+        return 'negativa muito forte'
+    if (correlacao > -0.9 && correlacao <= -0.7)
+        return 'negativa forte'
+    if (correlacao > -0.7 && correlacao <= -0.5)
+        return 'negativa moderada'
+    if (correlacao > -0.5 && correlacao <= -0.3)
+        return 'negativa fraca'
+    if (correlacao > -0.3 && correlacao < 0.3)
+        return 'despezível'
+    if (correlacao >= 0.3 && correlacao < 0.5)
+        return 'positiva fraca'
+    if (correlacao >= 0.5 && correlacao < 0.7)
+        return 'positiva moderada'
+    if (correlacao >= 0.7 && correlacao < 0.9)
+        return 'positiva forte'
+    if (correlacao >= 0.9)
+        return 'positiva muito forte'
+}

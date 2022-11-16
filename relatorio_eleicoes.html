@@ -38,6 +38,8 @@
         integrity="sha256-o9N1jGDZrf5tS+Ft4gbIK7mYMipq9lqpVJ91xHSyKhg=" crossorigin=""></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.4.2/chroma.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/js/bootstrap-select.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/simple-statistics/7.8.0/simple-statistics.min.js"></script>
+
 
     <!-- Gráficos -->
     <script src="./graficos/grafico_resultado_bolsonaro_por_modelo_urna_por_estado.js"></script>
@@ -842,9 +844,16 @@
                                 desenvolvido é o município.
                                 O gráfico cruza nos dois eixos o IDH-M de cada município com o percentual de votos do
                                 candidato Bolsonaro.
-                                Em quase todos os estados é possível perceber uma forte correlação entre o IDH-M e a
-                                proporção de votos que o Bolsonaro recebeu.
-                                As cores, seguindo a mesma escala do mapa, representam os modelos de urna eletrônica
+                                A nível nacional é possível ver que <b>
+                                    existe uma correlação positiva forte (0,776) entre o
+                                    IDH-M e a
+                                    proporção de votos que o Bolsonaro recebeu
+                                </b>. Ou seja, quanto maior o IDH-M do município,
+                                maior a tendência
+                                de votação no Bolsonaro. Uma correlação positiva também é vista em quase todos os
+                                estados, quando olhados individualmente.
+                            </p>
+                            <p>As cores, seguindo a mesma escala do mapa, representam os modelos de urna eletrônica
                                 utilizadas no município.
                                 Olhando principalmente nos estados onde houve maior discrepância entre o resultado do
                                 Bolsonaro por modelo de urna, é possível perceber que os pontos vermelhos estão
@@ -916,7 +925,11 @@
                                 distribuição das novas urnas.</p>
                             <p>Uma outra forma de evidenciar que não houve anomalias no comportamento da votação de
                                 acordo com o modelo de urna, é comparar os resultados das eleições deste ano com as de
-                                2018.
+                                2018. A coeficiente de pearson entre o percentual de votação de Bolsonaro nos municípios
+                                nas
+                                eleições de 2018 e 2022 é de 0,975, <b>indicando uma correlação positiva muito
+                                    forte</b>. Em todos os estados foi observado um coeficiente de correlação acima de
+                                0,850, e em 24 dos 26 estados foi observado uma correlação acima de 0,900.
                                 O candidato Bolsonaro foi eleito em 2018 com 55,1% dos votos válidos, enquanto em 2022
                                 teve 49,10% dos votos.
                                 A distribuição do seu eleitorado se manteve similar pelo país, tendo uma maior proporção
@@ -924,7 +937,8 @@
                                 perdendo no Nordeste por uma margem grande.
                                 É de se esperar, de forma geral, uma pequena oscilação para baixo nos percentuais
                                 recebidos em cada município, se comparado com 2018.
-                                Novamente, a divisão entre cores no gráfico abaixo representa a linha de simetria. Na
+                            </p>
+                            <p>Novamente, a divisão entre cores no gráfico abaixo representa a linha de simetria. Na
                                 região azul ficam os municípios onde o Bolsonaro foi melhor em 2022 e na área branca
                                 onde ele foi melhor em 2018.
                                 Dado que em 2018 ainda não havia os novos modelos de urna eletrônica, para que a tese
@@ -943,6 +957,7 @@
                                     data-style="form-control" data-live-search="true">
                                 </select>
                             <div class="col-12">
+                                <div id="graficoResultadoBolsonaroPorMunicipioPorEleicaoPorModeloUrnaInfo"></div>
                                 <canvas class="mb-3 mt-0"
                                     id="graficoResultadoBolsonaroPorMunicipioPorEleicaoPorModeloUrnaCanvas" width="100%"
                                     height="800">
@@ -956,7 +971,6 @@
                                 </div>
                             </div>
                             </p>
-
                             <p>
                                 Olhando o país como um todo, não existe um padrão entre a distribuição dos pontos
                                 amarelos e vermelhos no gráfico, demostrando as seções que usaram ambos os modelos de

@@ -15,11 +15,6 @@ function criarGraficoResultadoBolsonaroPorModeloUrnaPorMunicipioPorIDHM() {
         soma_eleitores_UE_antiga += x.eleitores_aptos_ue_antiga
     })
 
-    $('#graficoResultadoBolsonaroPorModeloUrnaPorMunicipioPorIDHMInfo').html(
-        `IDH-M médio ponderado por eleitores - UE 2020: <b>${(soma_produto_UE_2020 / soma_eleitores_UE_2020).toLocaleString("pt-BR", { style: 'decimal', minimumFractionDigits: 3, maximumFractionDigits: 3 })}</b><br>
-         IDH-M médio ponderado por eleitores - UE antiga: <b>${(soma_produto_UE_antiga / soma_eleitores_UE_antiga).toLocaleString("pt-BR", { style: 'decimal', minimumFractionDigits: 3, maximumFractionDigits: 3 })}</b>`
-    )
-
     let datasets = []
 
     let maximoEleitoresPorMunicipio = getMaximoValor(municipios.map(x => x.eleitores_aptos))
@@ -41,6 +36,14 @@ function criarGraficoResultadoBolsonaroPorModeloUrnaPorMunicipioPorIDHM() {
 
         dataset.backgroundColor = `rgb(${r},${g},${b})`
         datasets.push(dataset)
+
+        let correlacao = municipios.filter(mun => mun.idhm).length > 1 ? ss.sampleCorrelation(municipios.filter(mun => mun.idhm).map(mun => mun.idhm), municipios.filter(mun => mun.idhm).map(mun => mun.bolsonaro_perc)) : null
+
+        $('#graficoResultadoBolsonaroPorModeloUrnaPorMunicipioPorIDHMInfo').html(
+            `IDH-M médio ponderado por eleitores - UE 2020: <b>${(soma_produto_UE_2020 / soma_eleitores_UE_2020).toLocaleString("pt-BR", { style: 'decimal', minimumFractionDigits: 3, maximumFractionDigits: 3 })}</b><br>
+             IDH-M médio ponderado por eleitores - UE antiga: <b>${(soma_produto_UE_antiga / soma_eleitores_UE_antiga).toLocaleString("pt-BR", { style: 'decimal', minimumFractionDigits: 3, maximumFractionDigits: 3 })}</b><br>
+             ${correlacao != null ? `Correlação (IDH-M × % Bolsonaro): <b>${correlacao.toLocaleString("pt-BR", { style: 'decimal', minimumFractionDigits: 3, maximumFractionDigits: 3 })}</b> (${classificardorCorrelacao(correlacao)})` : `Correlação não calculável`}`
+        )
     }
 
     if (window.hasOwnProperty('graficoResultadoBolsonaroPorModeloUrnaPorMunicipioPorIDHM') && graficoResultadoBolsonaroPorModeloUrnaPorMunicipioPorIDHM) {
