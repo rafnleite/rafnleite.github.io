@@ -103,9 +103,6 @@ function criarGraficoFrequenciaEleitoresPorModeloUrna() {
     //     }
     // ], options);
 
-
-
-
     const graficoFrequnciaEleitoresPorModeloUrnaCanvas2 = new Chart($('#graficoFrequnciaEleitoresPorModeloUrnaCanvas2'), {
         type: 'bar',
         data: data,
