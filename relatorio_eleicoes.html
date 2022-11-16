@@ -12,13 +12,13 @@
     <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/dashboard/">
 
     <!-- CSS -->
-    <link href="dashboard.css" rel="stylesheet">
+    <link href="./dashboard.css" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.2/dist/leaflet.css"
         integrity="sha256-sA+zWATbFveLLNqWO2gtiw3HL/lh1giY/Inf1BJ0z14=" crossorigin="" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css" rel="stylesheet">
-    <link href="bootstrap-select.css" rel="stylesheet">
+    <link href="./bootstrap-select.css" rel="stylesheet">
 
 
     <!-- JS Bibliotecas -->
@@ -160,13 +160,10 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">
-                                    Votação por fatores socioeconômicos
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">
-                                    Mapa de votos
+                                <a class="nav-link"
+                                    href="https://capyvara.github.io/locais_votacao_resultados_2022.html"
+                                    target="_blank">
+                                    Mapa de votos (Por Marcelo Oliveira)
                                 </a>
                             </li>
                         </ul>
@@ -209,7 +206,7 @@
                                 canal
                                 argentino <b>La Derecha Diário</b> apresentou uma série de análise sobre os dados das
                                 eleições
-                                no Brasil, apontando supostas anormalias e dando a entender que eram indícios de fraudes
+                                no Brasil, apontando supostas anomalias e dando a entender que eram indícios de fraudes
                                 nas
                                 eleições.
                                 A live atingiu a marca de 300 mil espectadores simultâneos e seu conteúdo passou a ser
@@ -229,7 +226,7 @@
                                 candidato do PT.</p>
                             <p>Neste trabalho vou contrapor as informações apresentadas pelo dossiê argentino,
                                 <b>evidenciando
-                                    os erros e viéses estatísticos explorados na apresentação</b>. Para isto, farei
+                                    os erros e vieses estatísticos explorados na apresentação</b>. Para isto, farei
                                 análises
                                 a
                                 partir dos dados das eleições, que são públicos e estão disponíveis no <a
@@ -277,7 +274,7 @@
                             Os procedimentos de fiscalização e auditoria do sistema eletrônico de votação são regidos
                             pela
                             <a href="https://www.tse.jus.br/legislacao/compilada/res/2021/resolucao-no-23-673-14-de-dezembro-de-2021"
-                                target="_blank">Resolução Nº 23.673, de 14 de Dexembro de 2021</a> do TSE.
+                                target="_blank">Resolução Nº 23.673, de 14 de Dezembro de 2021</a> do TSE.
                             A fiscalização dos sistemas eleitorais ocorrem em oito diferentes momentos, à saber:
                             <p>
                             <ul>
@@ -348,7 +345,7 @@
                                 2017,
                                 2019 e
                                 2021.</p>
-                            <p>Para maiores esclarecimentos sobre s segurança do sistema elitoral brasileiro, recomento
+                            <p>Para maiores esclarecimentos sobre s segurança do sistema eleitoral brasileiro, recomento
                                 os
                                 materiais:</p>
                             <p>
@@ -411,7 +408,8 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                <b>Jair Bolsonaro (PL)</b></td>
+                                                <b>Jair Bolsonaro (PL)</b>
+                                            </td>
                                             <td>
                                                 <div class="bg-bolso" style="width: 47.6%"></div><b>32.016.633
                                                     (47,6%)</b>
@@ -437,19 +435,19 @@
                                 candidato Jair Bolsonaro nas urnas eletrônicas 2020 é predominante. Nos estados do
                                 Amazonas
                                 e
-                                Alagoas a diferença no resultado do candidato Bolsonaro entre os modelos de urna superam
+                                Alagoas a diferença no resultado do candidato Bolsonaro entre os modelos de urna supera
                                 20 pontos percentuais.
                                 O gráfico da Figura 1 compara os resultados obtidos pelo candidato Bolsonaro em cada
                                 estado nos dois modelos de urnas eletrônicas.
                                 Cada marcador no gráfico representa uma unidade federativa, sendo dimensionados de
-                                acordo com o número total de elitores aptos à votar no estado.
-                                A linha que divide diagonalmente o gráfico indica a simetria entre os difernetes modelos
+                                acordo com o número total de eleitores aptos à votar no estado.
+                                A linha que divide diagonalmente o gráfico indica a simetria entre os diferentes modelos
                                 de urnas.
                                 Ou seja, quando mais próximo da simetria, menor a diferença entre do resultado do
                                 candidato de acordo com o modelo de urna eletrônica.
                                 Quanto mais o marcador estiver à esquerda da linha (área branca), melhor o candidato
                                 Bolsonaro foi nas urnas antigas.
-                                Da mesmo forma, quando mais à direita da referência (área azul), maior a diferença
+                                Da mesma forma, quando mais à direita da referência (área azul), maior a diferença
                                 favorável à UE 2020 em relação aos modelos antigos.</p>
 
                             <p>
@@ -484,7 +482,7 @@
                                 </div>
                             </div>
                             </p>
-                            <p>Mas afinal, se a difrença do resultado do mesmo candidato em um mesmo estado é tão
+                            <p>Mas afinal, se a diferença do resultado do mesmo candidato em um mesmo estado é tão
                                 grande
                                 de
                                 acordo com o modelo de urna, seria isso uma evidência de fraude nas eleições?</p>
@@ -496,15 +494,15 @@
                                     href="https://www.amazon.com.br/Data-Science-zero-Joel-Grus/dp/857608998X"
                                     target="_blank">Data Science do Zero</a>, o paradoxo de Simpson é um fenômeno em
                                 que
-                                correlações estísticas podem ser enganosas quando as variáveis de confusão são
+                                correlações estatísticas podem ser enganosas quando as variáveis de confusão são
                                 ignoradas.
                             </p>
                             <p>Imagine o seguinte cenário: Eduardo, Analista de Recursos Humanos da <i>Bolsolula
                                     company</i>,
                                 empresa sediada em São
-                                Paulo, resolveu analisar a remureção dos colabores da companhia. Desconfiado que os
+                                Paulo, resolveu analisar a remuneração dos colabores da companhia. Desconfiado que os
                                 funcionários
-                                mineiros estavam sendo melhor remunerados do que os paulistas, Eduardo calculou a
+                                mineiros estavam sendo mais bem remunerados do que os paulistas, Eduardo calculou a
                                 média de salário dos funcionários por estado, obtendo o seguinte resultado:</p>
                             <p>
                             <div class="table-responsive">
@@ -526,7 +524,7 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                                <small class="mt-0">Remuneração média dos fucionários da <i>Bolsolula
+                                <small class="mt-0">Remuneração média dos funcionários da <i>Bolsolula
                                         company</i>
                                     por
                                     estado.</small>
@@ -555,7 +553,7 @@
                                 decidiu que iria equiparar o salário entre mineiros e paulistas para todos os cargos
                                 da
                                 companhia.</p>
-                            <p>Porém, ao olhar os dados cargo por cargo, Alberto percebeu que, an verdade, para
+                            <p>Porém, ao olhar os dados cargo por cargo, Alberto percebeu que, na verdade, para
                                 todos os
                                 cargos
                                 da companhia, os paulistas é que tinham médias salariais maiores do que os mineiros.
@@ -593,16 +591,16 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                                <small class="mt-0">Remuneração média dos fucionários da <i>Bolsolula
+                                <small class="mt-0">Remuneração média dos funcionários da <i>Bolsolula
                                         company</i>
                                     por
                                     cargo e por estado.</small>
                             </div>
                             </p>
-                            <p>Como pode os mineiros terem uma média salarial tão supeior aos paulistas se, em todos
+                            <p>Como pode os mineiros terem uma média salarial tão superior aos paulistas se, em todos
                                 os
                                 cargos,
-                                os paulistas tem média salarial maior?</p>
+                                os paulistas têm média salarial maior?</p>
                             <p>Para entender o que estava acontecendo, Alberto resolveu se debruçar mais sobre os
                                 dados,
                                 e
@@ -642,7 +640,7 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                                <small class="mt-0">Número de fucionários da <i>Bolsolula company</i> por
+                                <small class="mt-0">Número de funcionários da <i>Bolsolula company</i> por
                                     cargo e por estado.</small>
                             </div>
                             </p>
@@ -670,7 +668,7 @@
                             <p>Ou seja, quando Eduardo analisou o salário dos funcionários por estado, ignorando os
                                 cargos,
                                 teve
-                                a sensação de que os funcionários mineiros eram melhor remunerados.
+                                a sensação de que os funcionários mineiros eram mais bem remunerados.
                                 Quando Alberto fez a análise considerando os cargos que cada funcionário ocupava,
                                 constatou
                                 que,
@@ -719,9 +717,9 @@
                                 </center>
                             </p>
                             <p>
-                                Segundo o IBGE, atualmente existem 84 unidades territoriais ubanas no Brasil, sendo
+                                Segundo o IBGE, atualmente existem 84 unidades territoriais urbanas no Brasil, sendo
                                 76
-                                regiões metropolitantas (RMs), 3 regiões integradas de desenvolvimento (RIDES) e 5
+                                regiões metropolitanas (RMs), 3 regiões integradas de desenvolvimento (RIDES) e 5
                                 aglomerações urbanas (AUs), onde um total de 1.432 municípios estão localizados.
                                 Quando olhamos para o número de eleitores que votaram em cada modelo de urna e
                                 separamos
@@ -732,7 +730,7 @@
                                 áreas
                                 urbanizadas. Enquanto nas unidades territoriais urbanas 58,7% do eleitorado utilizou
                                 as
-                                novas versões da urna eltrônica, no interior este número foi de apenas 21,5%.
+                                novas versões da urna eletrônica, no interior este número foi de apenas 21,5%.
                             </p>
                             <p>
                             <div class="table-responsive">
@@ -802,7 +800,7 @@
                                     Recife</a> por questões de logística.
                                 Comportamento similar foi observado na maioria dos estados. </p>
                             <p>
-                                No mapa mapa abaixo, cada marcador indica um município brasileiro.
+                                No mapa abaixo, cada marcador indica um município brasileiro.
                                 A cor em que o município é representado no mapa indica a razão de cada modelo de UE
                                 utilizada,
                                 partindo no laranja claro, nos municípios que usaram apenas o modelo antigo, para o
@@ -831,17 +829,17 @@
                                 modelos de urna eletrônica passam a ser mais frequentes.
                             </p>
                             <p>No relatório apresentado pelo canal argentino, o autor chega a fazer comparações dentro
-                                de um mesmo estado de cidades com popução abaixo de 50 mil ou 100 mil habitantes,
+                                de um mesmo estado de cidades com população abaixo de 50 mil ou 100 mil habitantes,
                                 alegando que, desta forma estaria comparando a <i>"mesmíssima população"</i>, o que não
                                 é verdade.
                                 Tomando como exemplo os estados que apresentaram maior diferença entre o percentual de
                                 votos do Bolsonaro pra cada modelo de urna, Amazonas, Alagoas e Paraíba, observamos que:
                             <ul>
                                 <li>No estado do <b>Amazonas</b>, apenas a cidade de Manaus recebeu o novo modelo de
-                                    urna eletrônica. Todas as cidades do interior utilizaram os modelos antidos de urna.
+                                    urna eletrônica. Todas as cidades do interior utilizaram os modelos antigos de urna.
                                 </li>
                                 <li>No <b>Alagoas</b>, apenas Maceió e cidades próximas utilizaram o novo modelo de urna
-                                    eletrônica. Os muncípios do sertão alagoano utilizaram os modelos antigos de urna.
+                                    eletrônica. Os municípios do sertão alagoano utilizaram os modelos antigos de urna.
                                 </li>
                                 <li>Na <b>Paraíba</b>, os novos modelos de urna eletrônica foram utilizados nos
                                     municípios que partem do litoral, até aproximadamente Campina Grande, pegando a
@@ -855,8 +853,8 @@
                                 com diferentes padrões socioeconômicos tivessem diferentes modelos de UE para votar.
                                 Uma outra forma de evidenciar isso, é cruzar os dados com outros indicadores, como o
                                 IDH-M,
-                                que mede o desnvolvimento de um município.
-                                O IDH-M é um indicador que varia em uma escla de zero até um, sendo que, quando mais
+                                que mede o desenvolvimento de um município.
+                                O IDH-M é um indicador que varia em uma escala de zero até um, sendo que, quando mais
                                 próximo de zero, menos desenvolvido é o município, e quanto mais próximo de um, mais
                                 desenvolvido é o município.
                                 O gráfico cruza nos dois eixos o IDH-M de cada município com o percentual de votos do
@@ -864,16 +862,16 @@
                                 Em quase todos os estados é possível perceber uma forte correlação entre o IDM-H e a
                                 proporção de votos que o Bolsonaro recebeu.
                                 As cores, seguindo a mesma escala do mapa, representam os modelos de urna eletrônica
-                                utilizadas no munípio.
+                                utilizadas no município.
                                 Olhando principalmente nos estados onde houve maior discrepância entre o resultado do
                                 Bolsonaro por modelo de urna, é possível perceber que os pontos vermelhos estão
                                 majoritariamente do lado direito do gráfico, ou seja, em municípios com maior IDH-M.
-                                Por outro lado, se olharmos para o parte esquerda do gráfico, predominam os pontos
+                                Por outro lado, se olharmos para a parte esquerda do gráfico, predominam os pontos
                                 laranjas.
                             </p>
                             <p>
-                                Tomando novamento o estado de Alagoas como exemplo, na região do gráfico correspondente
-                                ao IDH-M abaixo de 0,600 há uma predominânica de pontos laranja.
+                                Tomando novamente o estado de Alagoas como exemplo, na região do gráfico correspondente
+                                ao IDH-M abaixo de 0,600 há uma predominância de pontos laranja.
                                 A partir de 0,600, porém, existem mais pontos vermelhos.
                             </p>
                             <p>
@@ -905,7 +903,7 @@
                                 Para isso, é possível calcular um indicador de tendência central, como a média do IDH-M
                                 dos municípios de cada estado ponderada pela quantidade de eleitores aptos a votar,
                                 separando por modelo de urna eletrônica.
-                                Por exemplo, para calcular o IDH-M médio da UE 2020 em um estado, devemos, pra cada
+                                Por exemplo, para calcular o IDH-M médio da UE 2020 em um estado, devemos, para cada
                                 município, calcular o produto do IDH-M municipal pela quantidade de eleitores que votam
                                 em urnas 2020 e depois somar o valor obtido em todos os municípios e então dividir pelo
                                 número total de eleitores da UE 2020 no estado.
@@ -933,20 +931,20 @@
                                 UE antiga: 0,610), Roraima (IDH-M UE 2020: 0,719; IDH-M UE antiga: 0,590) e Alagoas
                                 (IDH-M UE 2020: 0,690; IDH-M UE antiga: 0,574), evidenciando a falta de homogeneidade na
                                 distribuição das novas urnas.</p>
-                            <p>Uma outra forma de evidenciar que não houve anormalias no comportamento da votação de
+                            <p>Uma outra forma de evidenciar que não houve anomalias no comportamento da votação de
                                 acordo com o modelo de urna, é comparar os resultados das eleições deste ano com as de
                                 2018.
-                                O candiato Bolsonaro foi eleito em 2018 com 55,1% dos votos válidos, enquanto em 2022
+                                O candidato Bolsonaro foi eleito em 2018 com 55,1% dos votos válidos, enquanto em 2022
                                 teve 49,10% dos votos.
-                                A distribuição do seu eleitorado se mateve similar pelo país, tendo uma maior proporção
+                                A distribuição do seu eleitorado se manteve similar pelo país, tendo uma maior proporção
                                 de votos no Sul, Sudeste e Centro-Oeste, ganhando por uma margem pequena no Norte e
                                 perdendo no Nordeste por uma margem grande.
-                                É de se esperar, de forma geral, uma pequena oscilação pra baixo nos percentuais
+                                É de se esperar, de forma geral, uma pequena oscilação para baixo nos percentuais
                                 recebidos em cada município, se comparado com 2018.
                                 Novamente, a divisão entre cores no gráfico abaixo representa a linha de simetria. Na
-                                região azul ficam os municipios onde o Bolsonaro foi melhor em 2022 e na área branca
-                                onde ele foi mehlor em 2018.
-                                Dado que em 2018 ainda não haviam os novos modelos de urna eletrônica, para que a tese
+                                região azul ficam os municípios onde o Bolsonaro foi melhor em 2022 e na área branca
+                                onde ele foi melhor em 2018.
+                                Dado que em 2018 ainda não havia os novos modelos de urna eletrônica, para que a tese
                                 de que o modelo de urna interfere no resultado das eleições faça sentido, os pontos
                                 vermelhos deveriam ficar nas área azul (ou seja, representaria que o Bolsonaro ganhou
                                 votos nos municípios que usaram as novas urnas) e os pontos amarelos na área branca
@@ -977,9 +975,9 @@
                             </p>
 
                             <p>
-                                Olhando o país como um todo, não existe um padrão entre a distribuiçao dos pontos
+                                Olhando o país como um todo, não existe um padrão entre a distribuição dos pontos
                                 amarelos e vermelhos no gráfico, demostrando as seções que usaram ambos os modelos de
-                                urna tiveram comportamento similar este ano em relação à 2018. Não evidenciando
+                                urna tiveram comportamento similar este ano em relação à 2018. Não evidenciando,
                                 portanto, interferência na votação por modelo de urna.
                             </p>
                             <p>Em alguns estados do Norte e Nordeste, como Alagoas, Ceará, Maranhão, Pará e Pernambuco,
@@ -993,35 +991,12 @@
                                 desempenho de Bolsonaro seja melhor nas regiões mais desenvolvidas, ele se saiu pior, se
                                 comparado à 2018, no Sul e Sudeste, enquanto se manteve estável no Nordeste.
                                 Embora entre o eleitorado de regiões menos desenvolvidas os votos terem sidos
-                                majoritariamentes para o Lula, o Bolsonaro se saiu melhor do que em 2018 neste público.
+                                majoritariamente para o Lula, o Bolsonaro se saiu melhor do que em 2018 neste público.
                                 E embora o Bolsonaro tenha melhor desempenho em regiões mais desenvolvidas, ele se saiu
                                 pior do que em 2018 neste eleitorado.
                             </p>
-
-                            <p>
-                                Olhando o país como um todo, não existe um padrão entre a distribuiçao dos pontos
-                                amarelos e vermelhos no gráfico, demostrando as seções que usaram ambos os modelos de
-                                urna tiveram comportamento similar este ano em relação à 2018. Não evidenciando
-                                portanto, interferência na votação por modelo de urna.
-                            </p>
-                            <p>Em alguns estados do Norte e Nordeste, como Alagoas, Ceará, Maranhão, Pará e Pernambuco,
-                                o que se observou foi justamente o contrário do que era esperado caso os indícios do
-                                relatório argentino fossem corretos.
-                                Em relação à 2018, <b>Bolsonaro ganhou votos nos municípios em que em 2022 utilizou os
-                                    modelos antigos de urna e perdeu votos nos municípios que usaram o novo modelo de
-                                    urna.</b>
-                            </p>
-                            <p>Este comportamento é reflexo de algo que pode ser visto à nível nacional: Ainda que o
-                                desempenho de Bolsonaro seja melhor nas regiões mais desenvolvidas, ele se saiu pior, se
-                                comparado à 2018, no Sul e Sudeste, enquanto se manteve estável no Nordeste.
-                                Embora entre o eleitorado de regiões menos desenvolvidas os votos terem sidos
-                                majoritariamentes para o Lula, o Bolsonaro se saiu melhor do que em 2018 neste público.
-                                E embora o Bolsonaro tenha melhor desempenho em regiões mais desenvolvidas, ele se saiu
-                                pior do que em 2018 neste eleitorado.
-                            </p>
-
                             <p>Ou seja, quando o autor diz que, por filtrar municípios com menos de 100 mil habitantes
-                                em um mesmo estado está comparando a <i>"mesmíssima populaçao"</i>, não é o que
+                                em um mesmo estado está comparando a <i>"mesmíssima população"</i>, não é o que
                                 acontece, dado a maneira como as urnas foram distribuídas.
                             </p>
                             <p>
@@ -1059,7 +1034,8 @@
                             </div>
                             <p>Pelos mapas é possível perceber que os municípios que receberam as novas urnas estão
                                 concentrados próximo ao litoral, que estes municípios, em geral, tem maior IDH-M e que a
-                                votação de Bolsonaro na região pouco mudou de 2018 para 2022, independete se em 2022 foi
+                                votação de Bolsonaro na região pouco mudou de 2018 para 2022, independente se em 2022
+                                foi
                                 utilizado a nova urna ou não.</p>
                             <p>Finalmente, uma última forma de demonstrar que o viés da categorização feita pelo autor é
                                 reduzir a análise ao menor nível de granularidade possível: em vez de comparar mesmos
@@ -1098,7 +1074,7 @@
                             <p>
                                 <center><img src="./assets/comparacao_graficos.png" width="100%"></img></center>
                             </p>
-                            <p>Antes de explicar a reta em si, vale observar que o autor utilizou-se de escalas
+                            <p>Antes de explicar a reta em si, vale observar que o autor se utilizou de escalas
                                 diferentes nos gráficos comparados, uma técnica para distorcer e evidenciar seu ponto na
                                 apresentação dos dados. Enquanto no gráfico das UE 2020 os eixos do gráfico vão até 350
                                 e 400 votos, no gráfico das UE antigas, esse valor atinge 600.</p>
@@ -1169,7 +1145,7 @@
                                     height="500"></canvas>
                             </div>
                             <p>Ao plotarmos no gráfico, percebemos que para cada conjunto de pontos, onde todas as urnas
-                                tem o mesmo somatório de votos de Lula e Bolsonaro, uma reta paralela à bissetriz dos
+                                têm o mesmo somatório de votos de Lula e Bolsonaro, uma reta paralela à bissetriz dos
                                 quadrantes pares é formada</p>
                             <p>Explicado o que significa uma reta no gráfico, foram reproduzidos abaixo, para o segundo
                                 tuno, os gráficos com os dados reais. Foram utilizadas as mesmas escalas nos eixos de
@@ -1193,11 +1169,11 @@
                                     entre 350 e 450 votos válidos.</li>
                             </ul>
                             </p>
-                            <p>No primiero turno das eleições, Lula e Bolsonaro foram quase unânimes: obtiveram juntos
+                            <p>No primeiro turno das eleições, Lula e Bolsonaro foram quase unânimes: obtiveram juntos
                                 91,6% dos votos. Logo é esperado que quanto mais votos um deles tenham em uma seção
-                                específica, menos votos o outro terá. Eles concorrem direamente entre si pelos votos.
+                                específica, menos votos o outro terá. Eles concorrem diretamente entre si pelos votos.
                                 Desta forma, faz sentido de que a somatória dos votos de ambos os candidatos seja
-                                limitado a partir de um ponto?
+                                limitada a partir de um ponto?
                             </p>
                             <p>Olhando para cada urna em específico, a soma de votos de Lula e Bolsonaro representa o
                                 total de eleitores naquela urna, subtraídos dos votos em branco e nulo, das abstenções e
@@ -1220,7 +1196,7 @@
                                 urna é crescente até a marca de aproximadamente 350 eleitores. Depois disso, tem uma
                                 pequena queda na frequência, na faixa entre 350 e 380 eleitores. Porém, a partir de 380
                                 um novo pico, ainda maior, é observado um pouco antes da marca de 400 eleitores.</p>
-                            <p>Isso significa que provalvelmente algumas zonas eleitorais trabalham com um máximo de 350
+                            <p>Isso significa que provavelmente algumas zonas eleitorais trabalham com um máximo de 350
                                 eleitores por seção, enquanto a maioria tenta limitar o número de eleitores à 400.</p>
                             <p>A partir de 400 eleitores, há uma queda brusca nas frequências. Tanto nas UE antigas
                                 quanto
@@ -1228,7 +1204,7 @@
                             </p>
                             <p>Porém o comportamento dos gráficos a partir daí passa a ser bem diferente: Enquanto
                                 quase não há seções com mais de 400 eleitores utilizando as urnas antigas, ainda existe
-                                uma quantidade significativa de seções entre 400 e 500 eleitores utiliznado as UE 2020.
+                                uma quantidade significativa de seções entre 400 e 500 eleitores utilizando as UE 2020.
                             </p>
                             <p>A explicação para isso se dá pelo fato de que as novas urnas eletrônicas <a
                                     href="https://www.tse.jus.br/comunicacao/noticias/2021/Dezembro/confira-as-principais-mudancas-do-novo-modelo-de-urna-eletronica-a-ser-utilizado-nas-eleicoes-2022"
@@ -1239,7 +1215,7 @@
                                 possível colocar até 800 eleitores por seção. No exterior, o nível de abstenção costuma
                                 ser mais alto e os eleitores precisam votar apenas para o cargo de presidente. Assim, é
                                 possível colocar mais eleitores por seção.</p>
-                            <p>Dado que existe um limite na quantidade de elitores por urna, é completamente
+                            <p>Dado que existe um limite na quantidade de eleitores por urna, é completamente
                                 esperado de que haja a "reta diagonal" o gráfico de dispersão. E esta reta é menos
                                 visível nos modelos novos de urna eletrônica devido ao fato de que houve um número
                                 significativo de
@@ -1263,7 +1239,7 @@
                                 votos sejam bastante concentrados entre a comunidade: os mesmos candidatos tendem a ter
                                 o voto da maioria dos eleitores.). Ainda houve urnas unânimes em centros de detenção
                                 provisória, em seções com baixa quantidade de eleitores e em povoados rurais.</p>
-                            <p>O candidato Bolsonaro já fez diversos pronunciamentos púbilcos criticando a demarcação de
+                            <p>O candidato Bolsonaro já fez diversos pronunciamentos públicos criticando a demarcação de
                                 terras indígenas, povos quilombolas e assentamentos do MST (<a
                                     href="https://www.terra.com.br/noticias/eleicoes/bolsonaro-critica-demarcacao-de-terras-indigenas-e-o-fim-da-nossa-economia,ba232970189647a2b4b997cd9d237e8atc7jzwpp.html"
                                     target="_blank">[1]</a>,
@@ -1277,7 +1253,7 @@
                             </p>
                             <p>O autor ainda sugere, de forma inverídica, que seções adjacentes aos locais com urnas
                                 unânimes tiveram votações completamente diferentes.
-                                Como exemplo, o autor cita a seção 158 da zona 28 do MT, na cidade de Confesa,
+                                Como exemplo, o autor cita a seção 158 da zona 28 do MT, na cidade de Confresa,
                                 comparando com as seções 156, 159 e 160, dizendo que são adjacentes.
                                 Mapeando as seções, podemos perceber que enquanto a seção 158, que teve votação unânime
                                 para o candidato Lula fica nas terras indígenas de Urubu Branco, as demais
@@ -1291,11 +1267,11 @@
                             <p>
                                 <center><img src="./assets/nota_urububranco.png" style="max-width:100%;"></center>
                             </p>
-                            <p>A lista de todas as seções unânimes com seus respectivos endereçoes é apresentada abaixo:
+                            <p>A lista de todas as seções unânimes com seus respectivos endereços é apresentada abaixo:
                             </p>
-                            
+
                             <div class="col-12 my-3 table-responsive" id="tabelaUrnasUnanimesDIV">
-                            <div id="tabelaUrnasUnanimesLegenda" class="mb-2 "></div>
+                                <div id="tabelaUrnasUnanimesLegenda" class="mb-2 "></div>
                                 <table id="tabelaUrnasUnanimes"
                                     class="table table-sm table-striped compact table-bordered mt-2" width="100%">
                                 </table>
@@ -1309,11 +1285,20 @@
                                     </div>
                                 </div>
                             </div>
-                            <p>Um outro ponto que é questionado na apresentação é a possibildidade de existirem dois códigos-fontes diferentes em diferentes modelos de urnas eletrônicas. O autor se utiliza do resgistro de log ao inicializar a urna para levantar esta suspeita.</p>
-                            <p>Ao apresentar o log de inicialização de duas diferentes urnas, o autor destaca que uma linha de log que aparece em uma urna, não aparece na outra e diz que, por ser antes das eleições, isto jamais deveria poder ocorrer.</p>
-                            <p>Porém, mesmo antes de se inicializar a votação, quando um operador está carregando as informações das eleições no aparelho, é necessário realizar procedimentos que envolvem a interação com a urna. É possível que log diferentes sejam gerados caso as interações ocorram de formas diferentes. Por exemplo, um operador pode digitar uma tecla de forma inesperado em um momento que a urna está carregando informações.</p>
-                            <p>Desta forma, a simples diferença no registro de log não é uma evidência de códigos-fonte diferentes.</p>
-                            
+                            <p>Um outro ponto que é questionado na apresentação é a possibilidade de existirem dois
+                                códigos-fontes diferentes em diferentes modelos de urnas eletrônicas. O autor se utiliza
+                                do registro de log ao inicializar a urna para levantar esta suspeita.</p>
+                            <p>Ao apresentar o log de inicialização de duas diferentes urnas, o autor destaca que uma
+                                linha de log que aparece em uma urna, não aparece na outra e diz que, por ser antes das
+                                eleições, isto jamais deveria poder ocorrer.</p>
+                            <p>Porém, mesmo antes de se inicializar a votação, quando um operador está carregando as
+                                informações das eleições no aparelho, é necessário realizar procedimentos que envolvem a
+                                interação com a urna. É possível que log diferentes sejam gerados caso as interações
+                                ocorram de formas diferentes. Por exemplo, um operador pode digitar uma tecla de forma
+                                inesperado em um momento que a urna está carregando informações.</p>
+                            <p>Desta forma, a simples diferença no registro de log não é uma evidência de códigos-fonte
+                                diferentes.</p>
+
                             <div id="alteracoes">
                                 <div
                                     class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
@@ -1323,14 +1308,64 @@
                                 </div>
                             </div>
 
-                            <div id="totalizacao">
-                                <div
-                                    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-                                    <h1 class="h2">Totalização de votos</h1>
-                                    <div class="btn-toolbar mb-2 mb-md-0">
-                                    </div>
-                                </div>
-                            </div>
+                            <p>
+                                O portal de dados abertos do TSE ficou inoperante momentos após a live apresentada no
+                                dia 04
+                                de Novembro, e isso também se tornou motivo de questionamento por parte dos
+                                Bolsonaristas.
+                                No dia seguinte, quando o portal voltou ao ar, chamou a atenção que alguns arquivos de
+                                dados
+                                estavam com data de modificação recente.
+                            </p>
+                            <p>
+                                Mas afinal, é possível que o TSE altere os dados de votação 5 dias após as eleições?
+                                Primeiro, os dados já estavam disponíveis anteriormente para qualquer pessoa baixar.
+                            </p>
+                            <p>
+                                Qualquer alteração poderia ser verificada por alguém que já tinha feito o download
+                                anterior
+                                à live. Além disso, não houve alteração nos arquivos de Boletins de Urna, que é de onde
+                                os
+                                dados brutos são coletados. Os arquivos que apareceram com nova data de modificação eram
+                                arquivos de totalização, que apenas sumarizam os resultados.
+                            </p>
+                            <p>
+                                A única mudança notada por entre os arquivos é na ordem em que os dados das seções são
+                                apresentados (ordem das linhas na planilha), não causando nenhum impacto na apuração.
+                            </p>
+                            <p>
+                                Cabe destacar que ao encerrar as eleições em cada seção são impressas entre 5 e 10 vias
+                                dos
+                                Boletins de Urna, que são assinados por todos os mesários e fiscais dos partidos
+                                presentes.
+                                os Boletins de Urna mostram a votação individual de cada candidato que concorreu naquela
+                                eleição e recebeu votos naquela seção específica, os votos para cada partido político,
+                                os votos nulos e os votos em branco, além da soma geral dos votos
+                            </p>
+                            <p>
+                                <center>
+                                    <img src="./assets/bu.jpg" style="max-width: 100%;"></img>
+                                </center>
+                            </p>
+                            <p>
+                                Duas dessas vias ficam com o TSE, uma fica o presidente da mesa, uma é afixada na porta
+                                da
+                                seção, para que assim qualquer pessoa possa conferir o resultado daquela urna. As demais
+                                vias ficam com fiscais de partido, caso solicitem.
+                            </p>
+                            <p>
+                                É uma prática comum entre os fiscais de partidos, após o término das eleições,
+                                fotografar
+                                todos os boletins de urna do local de votação onde ele está trabalhando,
+                                Qualquer divergência entre os boletins de urna impressos e o divulgado na internet
+                                indicaria
+                                uma falha no sistema eleitoral.
+                            </p>
+                            <p>
+                                Ou seja, uma vez que o boletim de urna foi impresso, os dados apresentados pelo TSE na
+                                apuração devem, necessariamente, condizer com o boletim de urna.
+                            </p>
+                            <p>Sendo assim, é impossível que a votação de uma urna seja alterada após a apuração.</p>
 
                             <div id="conclusao">
                                 <div
@@ -1340,6 +1375,10 @@
                                     </div>
                                 </div>
                             </div>
+                            <p>As informações apresentadas no relatório e na liva publicados pelo canal La Derecha
+                                Diário se baseiam em vieses estatísticos, como o padrão de distribuição das urnas
+                                eletrônicas, e em informações inverídicas e não comprovam nenhum tipo de fraude nas
+                                eleições.</p>
                         </div>
                     </div>
                 </center>
@@ -1368,15 +1407,6 @@
         $(document).ready(function () {
             ativarNavegador();
 
-            estadosPorRegiao.map(function (estado) {
-                votacaoEstado = votacaoPorZonaPorMunicipio.filter(v => v.SG_UF == estado.SG_UF)
-                agregadorPorModeloUrna(estado, votacaoEstado)
-            })
-
-            centroideMunicipios.features.map(function (mun) {
-                agregadorPorModeloUrna(mun.properties, votacaoPorZonaPorMunicipio.filter(x => x.CD_MUNICIPIO == mun.properties.cd_mun_tse), true)
-            })
-            console.log(centroideMunicipios)
             let opcoes = estadosPorRegiao.filter(x => x.SG_UF != 'ZZ').map(x => `<option value="${x.SG_UF}" ${x.SG_UF == "AL" ? `selected` : ``}>${x.NOME}</option>`)
             opcoes.push(`<option value="BR">Brasil</option>`)
             $(`#graficoResultadoBolsonaroPorModeloUrnaPorMunicipioPorIDHMSelector`).html(opcoes.join(''))
