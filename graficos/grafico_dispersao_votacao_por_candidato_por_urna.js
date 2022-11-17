@@ -141,6 +141,13 @@ function criarGraficoDispersao() {
         }
     ].concat(linhasReferencia), options, config);
 
+    options.title = {
+        text: 'Distribuição dos votos por seção - UE antiga',
+        font: {
+            size: 14
+        }
+    }
+    
     Plotly.plot(dispersao_UE_antiga, [{
         type: 'scattergl',
         mode: "markers",
