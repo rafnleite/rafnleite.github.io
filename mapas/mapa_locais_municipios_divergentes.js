@@ -41,7 +41,7 @@ function criarMapaLocaisMunicipiosDivergentes() {
         [-9.5, -64.6],
         [-7.2, -61.8]
         ],
-        center:[-8.6, -63.2],
+        center:[-8.6, -63.4],
         preferCanvas: true
     });
     window.myRenderer = L.canvas({
