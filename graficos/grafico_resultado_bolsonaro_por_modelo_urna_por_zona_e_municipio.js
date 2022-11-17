@@ -1,18 +1,16 @@
 
 function criarGraficoResultadoBolsonaroPorModeloUrnaPorZonaEMunicipioCanvas() {
     let regioes = [... new Set(estadosPorRegiao.map(x => x.REGIAO))]
-    let zonasEMunicipioAmbosModelos = votacaoPorZonaPorMunicipio.filter(x => x.eleitores_aptos_ue_2020 > 0 && x.eleitores_aptos_ue_antiga > 0)
+    let zonasEMunicipioAmbosModelos = votacaoPorZonaPorMunicipio.filter(x => x.eleitores_aptos_ue_2020/x.eleitores_aptos > 0 && x.eleitores_aptos_ue_antiga/x.eleitores_aptos > 0)
     let datasets = []
     let maximoEleitoresPorZonaEMunicipio = getMaximoValor(zonasEMunicipioAmbosModelos.map(x => x.eleitores_aptos))
 
-    // soma_bolso_ue_2020 = zonasEMunicipioAmbosModelos.reduce((pre, cur) => pre + cur.bolsonaro_ue_2020, 0)
-    // soma_bolso_ue_antiga = zonasEMunicipioAmbosModelos.reduce((pre, cur) => pre + cur.bolsonaro_ue_antiga, 0)
-    // soma_lula_ue_2020 = zonasEMunicipioAmbosModelos.reduce((pre, cur) => pre + cur.lula_ue_2020, 0)
-    // soma_lula_ue_antiga = zonasEMunicipioAmbosModelos.reduce((pre, cur) => pre + cur.lula_ue_antiga, 0)
-    // perc_bolso_ue_2020 = soma_bolso_ue_2020 / (soma_bolso_ue_2020 + soma_lula_ue_2020)
-    // perc_bolso_ue_antiga = soma_bolso_ue_antiga / (soma_bolso_ue_antiga + soma_lula_ue_antiga)
-    // console.log(perc_bolso_ue_2020)
-    // console.log(perc_bolso_ue_antiga)
+    soma_bolso_ue_2020 = zonasEMunicipioAmbosModelos.reduce((pre, cur) => pre + cur.bolsonaro_ue_2020, 0)
+    soma_bolso_ue_antiga = zonasEMunicipioAmbosModelos.reduce((pre, cur) => pre + cur.bolsonaro_ue_antiga, 0)
+    soma_lula_ue_2020 = zonasEMunicipioAmbosModelos.reduce((pre, cur) => pre + cur.lula_ue_2020, 0)
+    soma_lula_ue_antiga = zonasEMunicipioAmbosModelos.reduce((pre, cur) => pre + cur.lula_ue_antiga, 0)
+    perc_bolso_ue_2020 = soma_bolso_ue_2020 / (soma_bolso_ue_2020 + soma_lula_ue_2020)
+    perc_bolso_ue_antiga = soma_bolso_ue_antiga / (soma_bolso_ue_antiga + soma_lula_ue_antiga)
 
     for (let i = 0; i < regioes.length; i++) {
         if (regioes[i] != 'Exterior') {
@@ -48,7 +46,6 @@ function criarGraficoResultadoBolsonaroPorModeloUrnaPorZonaEMunicipioCanvas() {
         pointBorderWidth: 0,
         borderWidth: 0
     })
-
 
 
     const graficoResultadoBolsonaroPorModeloUrnaPorZonaEMunicipio = new Chart($('#graficoResultadoBolsonaroPorModeloUrnaPorZonaEMunicipioCanvas'), {
