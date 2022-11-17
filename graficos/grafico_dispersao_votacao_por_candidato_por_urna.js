@@ -142,12 +142,12 @@ function criarGraficoDispersao() {
     ].concat(linhasReferencia), options, config);
 
     options.title = {
-        text: 'Distribuição dos votos por seção - UE antiga',
+        text: 'Distribuição dos votos por seção - UE antigas',
         font: {
             size: 14
         }
     }
-    
+
     Plotly.plot(dispersao_UE_antiga, [{
         type: 'scattergl',
         mode: "markers",
