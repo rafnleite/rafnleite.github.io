@@ -88,10 +88,12 @@ function criarGraficoResultadoBolsonaroPorMunicipioPorEleicaoPorModeloUrna() {
                             return `${tooltipItem[0].label}/${municipios[tooltipItem[0].datasetIndex].sigla}`
                         },
                         label: function (tooltipItem) {
+
+
                             return [`% Bolsonaro 2022: ${tooltipItem.raw.x.toLocaleString("pt-BR", { style: 'percent', minimumFractionDigits: 1 })}`,
                             `% Bolsonaro 2018:  ${tooltipItem.raw.y.toLocaleString("pt-BR", { style: 'percent', minimumFractionDigits: 1 })}`,
-                            ``,
-                            `Diferença:  ${100 * (tooltipItem.raw.x - tooltipItem.raw.y).toLocaleString("pt-BR", { style: 'decimal', minimumFractionDigits: 1, maximumFractionDigits: 1})} pp`];
+                                ``,
+                            `Diferença:  ${(100 * (tooltipItem.raw.x - tooltipItem.raw.y)).toLocaleString("pt-BR", { style: 'decimal', minimumFractionDigits: 1, maximumFractionDigits: 1 })} pp`];
                         }
                     }
                 }
