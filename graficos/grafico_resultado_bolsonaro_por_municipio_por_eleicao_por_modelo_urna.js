@@ -55,7 +55,7 @@ function criarGraficoResultadoBolsonaroPorMunicipioPorEleicaoPorModeloUrna() {
             plugins: {
                 title: {
                     display: true,
-                    text: `Percentual de votos do Bolsonaro no segundo turno por município por IDH-M por modelo de urna eletrônica`,
+                    text: `Percentual de votos do Bolsonaro no segundo turno por município por eleição por modelo de urna eletrônica`,
                     font: {
                         size: 14
                     }
