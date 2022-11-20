@@ -541,4 +541,9 @@ select.selectpicker {
   float: none;
 }
 
+.tooltip-inner {
+  max-width: 600px;
+  /* If max-width does not work, try using width instead */
+  width: 400px; 
+}
 /*# sourceMappingURL=bootstrap-select.css.map */

@@ -7,7 +7,7 @@
     <meta name="description" content="Análise do resultado da eleição presidencial de 2022">
     <meta name="author" content="Rafael Leite">
 
-    <title>Eleições 2022</title>
+    <title>Eleições 2022 - Votação por seção</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/dashboard/">
 
@@ -49,6 +49,7 @@
     <script src="./dados/rm_shape.js"></script>
     <script src="./dados/eleicoes_2018.js"></script>
     <script src="./dados/urnas_unanimes.js"></script>
+
 </head>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-SZLLC4RXF9"></script>
@@ -355,7 +356,6 @@
                             caretPadding: 10,
                             callbacks: {
                                 label: function (tooltipItem) {
-                                    console.log(tooltipItem)
                                     return `${tooltipItem.raw.toLocaleString('pt-Br', { style: 'decimal', maximumFractionDigits: 0 })} vezes`;
                                 }
                             }
@@ -435,7 +435,6 @@
                             caretPadding: 10,
                             callbacks: {
                                 label: function (tooltipItem) {
-                                    console.log(tooltipItem)
                                     return `${Math.abs(tooltipItem.raw).toLocaleString('pt-Br', { style: 'decimal', maximumFractionDigits: 0 })} votos`;
                                 }
                             }
