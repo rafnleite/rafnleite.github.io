@@ -91,8 +91,10 @@ function tooltipMunicipios(feature, layer) {
 
 function tooltipUrnas(feature, layer) {
     layer.bindPopup(function () {
-        return `<b>Zona ${pad(feature.properties.nr_zona,4)} Seção ${pad(feature.properties.nr_secao,4)} | ${feature.properties.nm_municipio}/${feature.properties.sg_uf}</b>
-        ${feature.properties.nm_local_votacao} - ${feature.properties.nm_bairro}<br>
+        return `<b>Zona ${pad(feature.properties.nr_zona,4)} Seção ${pad(feature.properties.nr_secao,4)}<br>
+        ${feature.properties.nm_municipio}/${feature.properties.sg_uf}</b><br>
+        <small>${feature.properties.nm_local_votacao} - ${feature.properties.nm_bairro}</small><br>
+        Atraso: ${feature.properties.atraso}<br>
         Eleitores aptos: ${feature.properties.qt_aptos.toLocaleString('pt-Br')}<br>
         Modelo de urna: ${feature.properties.ds_modelo_urna}<br>
         <hr>
