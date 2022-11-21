@@ -196,3 +196,34 @@ function classificardorCorrelacao(correlacao) {
     if (correlacao >= 0.9)
         return 'positiva muito forte'
 }
+
+function getColorUF(uf) {
+return uf == 'SP' ? "#d03d55" :
+uf == 'RJ' ? "#6ed153" :
+uf == 'ES' ? "#6a47cd" :
+uf == 'SC' ? "#c8d73d" :
+uf == 'RS' ? "#c64ac9" :
+uf == 'PR' ? "#65d295" :
+uf == 'MS' ? "#d84592" :
+uf == 'MT' ? "#577e35" :
+uf == 'MG' ? "#47297d" :
+uf == 'GO' ? "#c2d17c" :
+uf == 'DF' ? "#677cd5" :
+uf == 'ZZ' ? "#d29f3c" :
+uf == 'BA' ? "#ca8ad4" :
+uf == 'SE' ? "#e14e2a" :
+uf == 'CE' ? "#71d4cd" :
+uf == 'PI' ? "#873672" :
+uf == 'RN' ? "#c7cbac" :
+uf == 'PB' ? "#32233b" :
+uf == 'PI' ? "#de906c" :
+uf == 'PE' ? "#585d84" :
+uf == 'AL' ? "#a04c23" :
+uf == 'AM' ? "#85aed3" :
+uf == 'PA' ? "#6b292c" :
+uf == 'RR' ? "#4b7d73" :
+uf == 'RO' ? "#c16a7b" :
+uf == 'AC' ? "#393c23" :
+uf == 'TO' ? "#cba3b5" :
+uf == 'MA' ? "#897146" : "#000000"
+}

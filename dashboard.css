@@ -162,3 +162,8 @@ body {
     overflow-x: hidden;
   }
 }
+
+.slider-width100
+{
+    width: 50%;
+}
