@@ -71,12 +71,12 @@ function criarGraficoFrequenciaEleitoresPorModeloUrna() {
     let data = {
         labels: numero_eleitores,
         datasets: [{
-            label: 'UE 2020',
+            label: 'UE - 2020',
             data: freq_2020,
             backgroundColor: getColor(4),
             borderWidth: 0
         }, {
-            label: 'UE antiga',
+            label: 'UE - antiga',
             data: freq_antigas.map(x => x * -1),
             backgroundColor: getColor(3),
             borderWidth: 0
@@ -103,6 +103,9 @@ function criarGraficoFrequenciaEleitoresPorModeloUrna() {
     //     }
     // ], options);
 
+
+
+
     const graficoFrequnciaEleitoresPorModeloUrnaCanvas2 = new Chart($('#graficoFrequnciaEleitoresPorModeloUrnaCanvas2'), {
         type: 'bar',
         data: data,
@@ -118,7 +121,7 @@ function criarGraficoFrequenciaEleitoresPorModeloUrna() {
                 },
                 title: {
                     display: true,
-                    text: `Histograma - Número de eleitores por seção por modelo de urna`,
+                    text: `Histograma - Número de elitores por modelo de urna`,
                     font: {
                         size: 14
                     }
@@ -138,11 +141,11 @@ function criarGraficoFrequenciaEleitoresPorModeloUrna() {
                     caretPadding: 10,
                     callbacks: {
                         title: function (tooltipItem) {
-                            return tooltipItem[0].dataset.label
+                            return tooltipItem[0].label
                         },
                         label: function (tooltipItem) {
-                            return [`Número de eleitores:  ${(tooltipItem.dataIndex)}`,
-                            `${(tooltipItem.dataset.label == 'UE antiga' ? freq_antigas[tooltipItem.dataIndex] : freq_2020[tooltipItem.dataIndex])} ocorrências`];
+                            return [`UE 2020:  ${(tooltipItem.raw)}`,
+                            `UE antiga:  ${(tooltipItem.raw.y.toLocaleString("pt-BR", { style: 'decimal', minimumFractionDigits: 3, maximumFractionDigits: 3 }))}`];
                         }
                     }
                 }

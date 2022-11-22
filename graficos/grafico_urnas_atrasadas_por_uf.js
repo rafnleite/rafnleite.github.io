@@ -27,14 +27,11 @@ function criarGraficoUrnasAtrasadas(urnasAtrasadasFiltradas) {
 
 
         if(window.hasOwnProperty('graficoUrnasAtrasadas')) {
-        console.log('entrou')
             graficoUrnasAtrasadas.data = data
             graficoUrnasAtrasadas.options.scales.x2.suggestedMax = getMaximoValor(contadorPorUF.map(x => x.contagem))
             graficoUrnasAtrasadas.update()
             return
         }
-
-        console.log('passou')
 
     window.graficoUrnasAtrasadas = new Chart($('#graficoUrnasAtrasadasCanvas'), {
         type: 'bar',

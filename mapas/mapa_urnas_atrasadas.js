@@ -38,6 +38,8 @@ function criarMapaUrnasAtrasadas() {
 }
 
 function atualizarMapaUrnasAtrasadas(urnasAtrasadasFiltradas) {
+    // var oms = new OverlappingMarkerSpiderfier(mapaUrnasAtrasadas);
+    
     if (window.hasOwnProperty('markersLocais'))
     mapaUrnasAtrasadas.removeLayer(markersLocais);
     if (window.hasOwnProperty('estadosGeometria'))
@@ -58,7 +60,16 @@ function atualizarMapaUrnasAtrasadas(urnasAtrasadasFiltradas) {
         onEachFeature: tooltipUrnas
     }).addTo(mapaUrnasAtrasadas)
 
-    console.log(window.markersLocais)
+    // oms.addMarker(markersLocais);
+
+
+    // oms.addListener('click', function(marker) {
+    //     popup.setContent(marker.desc);
+    //     popup.setLatLng(marker.getLatLng());
+    //     mapaUrnasAtrasadas.openPopup(popup);
+    //   });
+
+
 
     window.estadosGeometria = L.geoJson(estadosShape, {
         style: {
@@ -71,6 +82,18 @@ function atualizarMapaUrnasAtrasadas(urnasAtrasadasFiltradas) {
     }).addTo(mapaUrnasAtrasadas)
 
     mapaUrnasAtrasadas.invalidateSize()
+
+
+    // oms.addListener('spiderfy', function(markers) {
+    //     console.log('oi')
+    //     for (var i = 0, len = markers.length; i < len; i ++) markers[i].setIcon(new lightIcon());
+    //     map.closePopup();
+    //   });
+    //   oms.addListener('unspiderfy', function(markers) {
+    //     console.log('oi2')
+    //     for (var i = 0, len = markers.length; i < len; i ++) markers[i].setIcon(new darkIcon());
+    //   });
+
 }
 
 function tooltipMunicipios(feature, layer) {
