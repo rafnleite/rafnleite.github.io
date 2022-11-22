@@ -91,10 +91,11 @@ function tooltipMunicipios(feature, layer) {
 
 function tooltipUrnas(feature, layer) {
     layer.bindPopup(function () {
+        let atraso = feature.properties.atraso.split(`:`) 
         return `<b>Zona ${pad(feature.properties.nr_zona,4)} Seção ${pad(feature.properties.nr_secao,4)}<br>
         ${feature.properties.nm_municipio}/${feature.properties.sg_uf}</b><br>
         <small>${feature.properties.nm_local_votacao} - ${feature.properties.nm_bairro}</small><br>
-        Atraso: ${feature.properties.atraso}<br>
+        Atraso: ${atraso[0]} hora${atraso[0] > 1 ? 's' : ''} e ${atraso[1] > 1 ? 's' : ''} minutos<br>
         Eleitores aptos: ${feature.properties.qt_aptos.toLocaleString('pt-Br')}<br>
         Modelo de urna: ${feature.properties.ds_modelo_urna}<br>
         <hr>
