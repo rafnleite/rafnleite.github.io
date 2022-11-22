@@ -95,7 +95,9 @@ function tooltipUrnas(feature, layer) {
         return `<b>Zona ${pad(feature.properties.nr_zona,4)} Seção ${pad(feature.properties.nr_secao,4)}<br>
         ${feature.properties.nm_municipio}/${feature.properties.sg_uf}</b><br>
         <small>${feature.properties.nm_local_votacao} - ${feature.properties.nm_bairro}</small><br>
-        Atraso: ${atraso[0]} hora${atraso[0] > 1 ? 's' : ''} e ${atraso[1] > 1 ? 's' : ''} minutos<br>
+        Atraso: ${Number(atraso[0]) > 0 ? 
+            `${Number(atraso[0])} hora${atraso[0] > 1 ?
+                 's' : ''}` : ''}${(atraso[0] > 0 && atraso[1] > 0) ? ` e ` : ``}${Number(atraso[1]) > 0 ? `${Number(atraso[1])} minuto${atraso[1] > 1 ? 's' : ''}` : ``}<br>
         Eleitores aptos: ${feature.properties.qt_aptos.toLocaleString('pt-Br')}<br>
         Modelo de urna: ${feature.properties.ds_modelo_urna}<br>
         <hr>
