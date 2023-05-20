@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Análise do alterações de resultado das provas discursivas de TI da FGV">
+  <meta name="author" content="Rafael Leite">
+
+  <!-- CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" rel="stylesheet">
+  <link href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css">
+
+
+  <!-- BIBLIOTECAS -->
+  <script src="https://code.jquery.com/jquery-3.6.1.min.js"
+    integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+  <script src="./funcoes.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/simple-statistics/7.8.0/simple-statistics.min.js"></script>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <script src="https://cdn.plot.ly/plotly-2.4.2.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+
+
+  <!-- Gráficos -->
+  <script src="./graficos/criarGraficoHistograma.js"></script>
+  <script src="./tabelas/tabelaConcurso.js"></script>
+
+</head>
+
+<body>
+  <div class="m-4">
+    <div class="row">
+      <div id="dadosGeraisConcurso" class="col-md-6">
+      </div>
+      <div id="histogramaConcursoDIV" class="col-md-6">
+        <canvas id="histogramaConcurso"></canvas>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <h2>Tabela</h2>
+        <table id="tabelaConcurso" class="table table-sm compact table-bordered table-hover" width="90%">
+        </table>
+      </div>
+    </div>
+  </div>
+</body>
+
+<script src="./data/db-processado.js"></script>
+
+<script>
+  dados["DADOS GERAIS"].forEach(el => {
+    el["Candidatos"] = dados[`${el.Concurso} O`].map(e => {
+      let retorno = {}
+      retorno["Resultado Objetiva"] = JSON.parse(JSON.stringify(e));
+      delete retorno["Resultado Objetiva"]["Inscrição"];
+      delete retorno["Resultado Objetiva"]["Nome"];
+      delete retorno["Resultado Objetiva"]["Nascimento"];
+      retorno["Inscrição"] = e.Inscrição;
+      retorno["Nome"] = e.Nome;
+      retorno["Nascimento"] = e.Nascimento;
+      retorno["Idoso"] = moment(e.Nascimento).isBefore(moment().subtract(60, 'years'));
+      retorno["Posição Objetiva"] = e.Posição;
+      return retorno;
+    })
+
+    el["Candidatos"].forEach(c => {
+      let indicePreliminar = dados[`${el.Concurso} P`].findIndex(cd => cd.Inscrição == c.Inscrição);
+      if (indicePreliminar != -1) {
+        c["Resultado Preliminar"] = JSON.parse(JSON.stringify(dados[`${el.Concurso} P`][indicePreliminar]));
+        delete c["Resultado Preliminar"]["Inscrição"];
+        delete c["Resultado Preliminar"]["Nome"];
+      } else {
+        c["Resultado Preliminar"] = null;
+      }
+
+      if (dados.hasOwnProperty(`${el.Concurso} D`)) {
+        let indiceDefinitivo = dados[`${el.Concurso} D`].findIndex(cd => cd.Inscrição == c.Inscrição);
+        if (indiceDefinitivo != -1) {
+          c["Resultado Definitivo"] = JSON.parse(JSON.stringify(dados[`${el.Concurso} D`][indiceDefinitivo]));
+          delete c["Resultado Definitivo"]["Inscrição"];
+          delete c["Resultado Definitivo"]["Nome"];
+        } else {
+          c["Resultado Definitivo"] = null;
+        }
+      }
+    })
+  }
+  );
+
+  // CLASSIFICAÇÃO PRELIMINAR
+  dados["DADOS GERAIS"].forEach(el => {
+    let classificadorPreliminar = el["Candidatos"].map(c => {
+      let inscrição = { Inscrição: c.Inscrição }
+      return { ...inscrição, ...c["Resultado Objetiva"], ...c["Resultado Preliminar"] };
+    })
+
+    classificadorPreliminar.forEach(cp => cp["Total"] = (cp.hasOwnProperty("Prova Objetiva") && cp.hasOwnProperty("Prova Discursiva")) ?
+      cp["Prova Objetiva"] + cp["Prova Discursiva"] :
+      null);
+
+    classificadorPreliminar.sort((A, B) => {
+      for (let i = 0; i < el["Classificação"].length; i++) {
+        const [classificador, ascendente] = el["Classificação"][i];
+        const valorA = A.hasOwnProperty(classificador) ? A[classificador] : 0;
+        const valorB = B.hasOwnProperty(classificador) ? B[classificador] : 0;
+
+        if (valorA > valorB) {
+          return ascendente ? 1 : -1;
+        } else if (valorA < valorB) {
+          return ascendente ? -1 : 1;
+        }
+      }
+
+      return 0; // Empate em todos os critérios
+    })
+
+    el["Candidatos"].forEach(c => {
+      let pos = classificadorPreliminar.findIndex(cp => cp.Inscrição == c.Inscrição) + 1;
+      c["Posição Preliminar"] = c["Resultado Preliminar"] ? pos : null;
+    });
+  })
+
+  // CLASSIFICAÇÃO DEFINITIVA
+  dados["DADOS GERAIS"].forEach(el => {
+    let classificadorDefinitivo = el["Candidatos"].map(c => {
+      let inscrição = { Inscrição: c.Inscrição }
+      return { ...inscrição, ...c["Resultado Objetiva"], ...c["Resultado Definitivo"] };
+    })
+
+    classificadorDefinitivo.forEach(cp => cp["Total"] = (cp.hasOwnProperty("Prova Objetiva") && cp.hasOwnProperty("Prova Discursiva")) ?
+      cp["Prova Objetiva"] + cp["Prova Discursiva"] :
+      null);
+
+    classificadorDefinitivo.sort((A, B) => {
+      for (let i = 0; i < el["Classificação"].length; i++) {
+        const [classificador, ascendente] = el["Classificação"][i];
+        const valorA = A.hasOwnProperty(classificador) ? A[classificador] : 0;
+        const valorB = B.hasOwnProperty(classificador) ? B[classificador] : 0;
+
+        if (valorA > valorB) {
+          return ascendente ? 1 : -1;
+        } else if (valorA < valorB) {
+          return ascendente ? -1 : 1;
+        }
+      }
+
+      return 0; // Empate em todos os critérios
+    })
+
+    el["Candidatos"].forEach(c => {
+      let pos = classificadorDefinitivo.findIndex(cd => cd.Inscrição == c.Inscrição) + 1;
+      c["Posição Definitiva"] = c["Resultado Definitivo"] ? pos : null;
+    });
+  })
+
+  // INDICADORES
+  dados["DADOS GERAIS"].forEach(el => {
+    let alteracoes = el["Candidatos"].map(c => {
+      return {
+        "Nome": c["Nome"],
+        "Variação de pontos": c["Resultado Definitivo"] ? (c["Resultado Definitivo"]["Prova Discursiva"] - (c["Resultado Preliminar"] ? c["Resultado Preliminar"]["Prova Discursiva"] : el["Mínimo discursiva"])) : null,
+        "Estava eliminado": c["Resultado Definitivo"] ? (c["Resultado Preliminar"] ? false : true) : null,
+        "Variação de posições": c["Resultado Definitivo"] ? (c["Posição Preliminar"] ? c["Posição Preliminar"] - c["Posição Definitiva"] : null) : null
+      }
+    })
+
+    el["Candidato que mais subiu posições"] = { "Nome": null, "Variação": null };
+    el["Candidato que mais caiu posições"] = { "Nome": null, "Variação": null };
+    el["Candidato que mais ganhou pontos"] = { "Nome": null, "Variação": null, "Estava eliminado": null };
+
+    alteracoes.forEach(c => {
+      if (c["Variação de posições"] && c["Variação de posições"] > 0 &&
+        (el["Candidato que mais subiu posições"]["Variação"] == null || el["Candidato que mais subiu posições"]["Variação"] < c["Variação de posições"])) {
+        el["Candidato que mais subiu posições"] = {
+          "Nome": c["Nome"],
+          "Variação": c["Variação de posições"]
+        }
+      }
+
+      if (c["Variação de posições"] && c["Variação de posições"] < 0 &&
+        (el["Candidato que mais caiu posições"]["Variação"] == null || el["Candidato que mais caiu posições"]["Variação"] > c["Variação de posições"])) {
+        el["Candidato que mais caiu posições"] = {
+          "Nome": c["Nome"],
+          "Variação": c["Variação de posições"]
+        }
+      }
+
+      if (c["Variação de pontos"] && c["Variação de pontos"] > 0 &&
+        (el["Candidato que mais ganhou pontos"]["Variação"] == null || el["Candidato que mais ganhou pontos"]["Variação"] < c["Variação de pontos"])) {
+        el["Candidato que mais ganhou pontos"] = {
+          "Nome": c["Nome"],
+          "Variação": c["Variação de pontos"],
+          "Estava eliminado": c["Estava eliminado"]
+        }
+      }
+    });
+
+    el["Aprovados no resultado preliminar"] = el["Candidatos"].filter(c => c["Posição Preliminar"] != null).length;
+    el["Aprovados no resultado definitivo"] = el["Candidatos"].filter(c => c["Posição Definitiva"] != null).length;
+
+    el["Candidato que entraram nas vagas"] = el["Candidatos"].filter(c => (!c["Posição Preliminar"] || c["Posição Preliminar"] > el["Número de vagas"]["Ampla"]) &&
+      c["Posição Definitiva"] &&
+      c["Posição Definitiva"] <= el["Número de vagas"]["Ampla"]).length;
+
+    el["Candidato que saíram das vagas"] = el["Candidatos"].filter(c => c["Posição Definitiva"] > el["Número de vagas"]["Ampla"] &&
+      c["Posição Preliminar"] &&
+      c["Posição Preliminar"] <= el["Número de vagas"]["Ampla"]).length;
+
+    el["Candidato que entraram nas vagas ou CR"] = el["Cadastro de reservas"] != "ilimitado" ? el["Candidatos"].filter(c => (!c["Posição Preliminar"] || c["Posição Preliminar"] > (el["Número de vagas"]["Ampla"] + el["Cadastro de reservas"]["Ampla"]))
+      && c["Posição Definitiva"] &&
+      c["Posição Definitiva"] <= (el["Número de vagas"]["Ampla"] + el["Cadastro de reservas"]["Ampla"])).length :
+      el["Aprovados no resultado definitivo"] - el["Aprovados no resultado preliminar"];
+
+    el["Candidato que saíram das vagas ou CR"] = el["Cadastro de reservas"] != "ilimitado" ? el["Candidatos"].filter(c => c["Posição Definitiva"] > (el["Número de vagas"]["Ampla"] + el["Cadastro de reservas"]["Ampla"]) &&
+      c["Posição Preliminar"] &&
+      c["Posição Preliminar"] <= (el["Número de vagas"]["Ampla"] + el["Cadastro de reservas"]["Ampla"])).length :
+      0;
+
+  })
+
+  $(document).ready(function () {
+    const url = window.location.href;
+    const concurso = (new URL(url)).searchParams.get('id');
+    gerarDadosGeraisConcurso(dados["DADOS GERAIS"].find(d => d.Concurso == concurso));
+    gerarHistograma(dados["DADOS GERAIS"].find(d => d.Concurso == concurso));
+    criarTabelaConcurso(dados["DADOS GERAIS"].find(d => d.Concurso == concurso));
+  })
+
+  function gerarDadosGeraisConcurso(dados) {
+    let elementos = [];
+    elementos.push(`  <button onclick="voltar()">
+    <i class="fas fa-arrow-left"></i> Voltar
+  </button>`)
+    elementos.push(`<h3>${dados.Concurso}</h3>`);
+    elementos.push(`<div><a href="${dados.url}" target="_blank">Página do concurso</a></div>`);
+    elementos.push(`<div><b>Órgão:</b> ${dados.Órgão}</div>`);
+    elementos.push(`<div><b>Cargo:</b> ${dados.Cargo}</div>`);
+    elementos.push(`<div><b>Número de candidatos:</b> ${dados["Número de candidatos"].toLocaleString('pt-BR')}</div>`);
+    // elementos.push(`<div><b>Número de vagas:</b> ${dados.Concurso}</div>`);
+    // elementos.push(`<div><b>Número de vagas de CR:</b> ${dados.Concurso}</div>`);
+    elementos.push(`<div><b>Número de qualificados para discursiva:</b> ${dados["Número de qualificados para discursiva"].toLocaleString('pt-BR')}</div>`);
+    elementos.push(`<div><b>Nota mínima da discursiva:</b> ${dados["Mínimo discursiva"]} (${percentualBR(dados["Mínimo discursiva"] / dados["Questões"].reduce((acc, curr) => acc + curr.Valor, 0))})</div>`);
+    elementos.push(`<div><b>Aprovados no resultado preliminar:</b> ${dados["Aprovados no resultado preliminar"]} (${percentualBR(dados["Aprovados no resultado preliminar"] / dados["Número de qualificados para discursiva"])})</div>`);
+    elementos.push(`<div><b>Aprovados no resultado definitivo:</b> ${dados["Aprovados no resultado definitivo"]} (${percentualBR(dados["Aprovados no resultado definitivo"] / dados["Número de qualificados para discursiva"])})</div>`);
+    let aumentouNota = dados.Candidatos.filter(c => c["Resultado Preliminar"] != null && Number((c["Resultado Definitivo"]["Prova Discursiva"] - c["Resultado Preliminar"]["Prova Discursiva"]).toFixed(2))).length;
+    elementos.push(`<div><b>Aprovados no resultado preliminar que aumentaram a nota nos recursos:</b> ${aumentouNota} (${percentualBR(aumentouNota / dados["Aprovados no resultado preliminar"])})</div>`);
+    elementos.push(`<div><b>Questões:</b><br>${dados.Questões.map(q => `${q.Nome} / ${q.Tipo.join(', ')} / ${q.Valor} pontos`).join('<br>')}</div>`);
+
+    $(`#dadosGeraisConcurso`).html(elementos);
+  }
+
+  function gerarHistograma(dados) {
+    let variações = dados.Candidatos.map(c => (c["Resultado Preliminar"] == null && c["Resultado Definitivo"] !== null) ? 'Reclassificado' :
+      (c["Resultado Preliminar"] == null && c["Resultado Definitivo"] == null) ? null :
+        Number((c["Resultado Definitivo"]["Prova Discursiva"] - c["Resultado Preliminar"]["Prova Discursiva"]).toFixed(2)));
+
+    variações = variações.filter(v => v != null);
+    var frequencias = contarFrequencias(variações);
+    criarGraficoHistograma(`histogramaConcurso`, frequencias);
+  }
+
+  function voltar() {
+    window.location.href = `./analisador-discursivas.html`;
+  }
+
+
+</script>
