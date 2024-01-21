@@ -107,13 +107,13 @@ function criarFormulárioInvestimento(el, dadosInvestimento = null) {
   $(`#formularioInvestimentoÍndice`).on(`change`, function () {
     if ($(`#formularioInvestimentoÍndice`).val() == 'cdi') {
       $(`#formularioInvestimentoMultiplicadorDIV`).html(`<label for="formularioInvestimentoMultiplicador">% do CDI</label>
-      <input type="text" class="form-control" id="formularioInvestimentoMultiplicador" value="1"></input>`);
+      <input type="text" class="form-control" id="formularioInvestimentoMultiplicador" value="100"></input>`);
     } else if ($(`#formularioInvestimentoÍndice`).val() == 'ipca') {
       $(`#formularioInvestimentoMultiplicadorDIV`).html(`<label for="formularioInvestimentoMultiplicador">IPCA +</label>
-      <input type="text" class="form-control" id="formularioInvestimentoMultiplicador" value="0.05"></input>`);
+      <input type="text" class="form-control" id="formularioInvestimentoMultiplicador" value="5"></input>`);
     } else if ($(`#formularioInvestimentoÍndice`).val() == 'fixo') {
       $(`#formularioInvestimentoMultiplicadorDIV`).html(`<label for="formularioInvestimentoMultiplicador">Rendimento anual</label>
-      <input type="text" class="form-control" id="formularioInvestimentoMultiplicador" value="0.08"></input>`);
+      <input type="text" class="form-control" id="formularioInvestimentoMultiplicador" value="8"></input>`);
     } else {
       $(`#formularioInvestimentoMultiplicadorDIV`).html(``);
     }
@@ -131,11 +131,11 @@ function criarFormulárioInvestimento(el, dadosInvestimento = null) {
     $(`#formularioInvestimentoÍndice`).val(dadosInvestimento.índice);
     $(`#formularioInvestimentoÍndice`).trigger(`change`);
     $('#formularioInvestimentoMultiplicador').length && AutoNumeric.set('#formularioInvestimentoMultiplicador',
-      dadosInvestimento.índice == 'cdi' ? dadosInvestimento.multiplicador :
-        ['fixo', 'ipca'].includes(dadosInvestimento.índice) ? dadosInvestimento.multiplicador - 1 : 0);
+      dadosInvestimento.índice == 'cdi' ? dadosInvestimento.multiplicador * 100 :
+        ['fixo', 'ipca'].includes(dadosInvestimento.índice) ? 100 * (dadosInvestimento.multiplicador - 1) : 0);
     dadosInvestimento.dedutível_ir && $(`#formularioInvestimentoDedutivel`).prop('checked', true);
-    AutoNumeric.set('#formularioInvestimentoTaxaAporte', dadosInvestimento.taxa_aporte);
-    AutoNumeric.set('#formularioInvestimentoTaxaSaque', dadosInvestimento.taxa_saque);
+    AutoNumeric.set('#formularioInvestimentoTaxaAporte', dadosInvestimento.taxa_aporte * 100);
+    AutoNumeric.set('#formularioInvestimentoTaxaSaque', dadosInvestimento.taxa_saque * 100);
     $(`#formularioInvestimentoModalidadeTaxaSaque`).val(dadosInvestimento.modalidade_taxa_saque);
     $(`#formularioInvestimentoCor`).val(dadosInvestimento.cor);
     $(`#formularioInvestimentoObs`).val(dadosInvestimento.obs);

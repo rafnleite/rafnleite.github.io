@@ -274,15 +274,15 @@
               <div class="row">
                 <div class="form-group mt-auto my-2 col-6 col-md-4 col-xl-3">
                   <label for="adicionarUsuarioNome">Rendimento anual médio PREVCOM</label>
-                  <input class="form-control" id="projeçãoFuturaRendimentoPREVCOM" value="0.06"></input>
+                  <input class="form-control" id="projeçãoFuturaRendimentoPREVCOM" value="6"></input>
                 </div>
                 <div class="form-group mt-auto my-2 col-6 col-md-4 col-xl-3">
                   <label for="adicionarUsuarioNome">Rendimento anual médio CDI</label>
-                  <input class="form-control" id="projeçãoFuturaRendimentoCDI" value="0.09"></input>
+                  <input class="form-control" id="projeçãoFuturaRendimentoCDI" value="9"></input>
                 </div>
                 <div class="form-group mt-auto my-2 col-6 col-md-4 col-xl-3">
                   <label for="adicionarUsuarioNome">Inflação média (IPCA)</label>
-                  <input class="form-control" id="projeçãoFuturaIPCA" value="0.05"></input>
+                  <input class="form-control" id="projeçãoFuturaIPCA" value="5"></input>
                 </div>
                 <div class="form-group mt-auto my-2 col-6 col-md-4 col-xl-3">
                   <label for="adicionarUsuarioNome">Duração do investimento (anos)</label>
@@ -484,9 +484,9 @@
   function calcularRendimentosProjeçãoFutura() {
 
     const ÍNDICES = {
-      ipca: Math.pow(AutoNumeric.getNumber(`#projeçãoFuturaIPCA`) + 1, 1 / 12),
-      cdi: Math.pow(AutoNumeric.getNumber(`#projeçãoFuturaRendimentoCDI`) + 1, 1 / 12),
-      prevcom: Math.pow(AutoNumeric.getNumber(`#projeçãoFuturaRendimentoPREVCOM`) + 1, 1 / 12)
+      ipca: Math.pow(AutoNumeric.getNumber(`#projeçãoFuturaIPCA`) / 100 + 1, 1 / 12),
+      cdi: Math.pow(AutoNumeric.getNumber(`#projeçãoFuturaRendimentoCDI`) / 100 + 1, 1 / 12),
+      prevcom: Math.pow(AutoNumeric.getNumber(`#projeçãoFuturaRendimentoPREVCOM`) / 100 + 1, 1 / 12)
     }
 
     listaInvestimentos.forEach(el => {
@@ -814,14 +814,14 @@
     dadosInvestimento.índice = $(`#formularioInvestimentoÍndice`).val();
     if ($(`#formularioInvestimentoMultiplicador`).length) {
       if (['ipca', 'fixo'].includes($(`#formularioInvestimentoÍndice`).val())) {
-        dadosInvestimento.multiplicador = AutoNumeric.getNumber('#formularioInvestimentoMultiplicador') + 1;
+        dadosInvestimento.multiplicador = AutoNumeric.getNumber('#formularioInvestimentoMultiplicador') / 100 + 1;
       } else if ($(`#formularioInvestimentoÍndice`).val() == 'cdi') {
-        dadosInvestimento.multiplicador = AutoNumeric.getNumber('#formularioInvestimentoMultiplicador');
+        dadosInvestimento.multiplicador = AutoNumeric.getNumber('#formularioInvestimentoMultiplicador') / 100;
       }
     }
     dadosInvestimento.dedutível_ir = $('#formularioInvestimentoDedutivel').is(`:checked`) ? true : false;
-    dadosInvestimento.taxa_aporte = AutoNumeric.getNumber('#formularioInvestimentoTaxaAporte');
-    dadosInvestimento.taxa_saque = AutoNumeric.getNumber('#formularioInvestimentoTaxaSaque');
+    dadosInvestimento.taxa_aporte = AutoNumeric.getNumber('#formularioInvestimentoTaxaAporte') / 100;
+    dadosInvestimento.taxa_saque = AutoNumeric.getNumber('#formularioInvestimentoTaxaSaque') / 100;
     dadosInvestimento.modalidade_taxa_saque = $(`#formularioInvestimentoModalidadeTaxaSaque`).val();
     dadosInvestimento.cor = $(`#formularioInvestimentoCor`).val();
     dadosInvestimento.obs = $(`#formularioInvestimentoObs`).val();
