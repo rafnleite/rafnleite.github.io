@@ -1,0 +1,872 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Simulador de rendimento PREVCOM">
+  <meta name="author" content="Rafael Leite">
+  <title>Simulador PREVCOM</title>
+
+  <!-- CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" rel="stylesheet">
+  <link href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css">
+
+
+  <!-- BIBLIOTECAS -->
+  <script src="https://code.jquery.com/jquery-3.6.1.min.js"
+    integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/simple-statistics/7.8.0/simple-statistics.min.js"></script>
+  <script src="./funcoes.js"></script>
+  <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/autonumeric/4.10.3/autoNumeric.min.js"
+    integrity="sha512-CVmI6jvZ64JTUP54b893musu1a1R7e9qxdtYFkIw/JCSm4FW4z3sgg+phx+dZD1qSYXrr5EFWRdS8qetwbhgBA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment-with-locales.min.js"></script>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+  <style>
+    .verde-pastel {
+      background-color: #a9dfbf;
+      color: #00573F;
+    }
+
+    .verde-pastel:hover {
+      background-color: #a9dfbf;
+      color: #00573F;
+    }
+
+    .azul-pastel {
+      background-color: #aed4e6;
+      color: #001F3F;
+    }
+
+    .azul-pastel:hover {
+      background-color: #aed4e6;
+      color: #001F3F;
+    }
+
+    .centro {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      font-family: 'Arial', sans-serif;
+      font-size: 36px;
+      line-height: 1.5;
+      text-align: center;
+      padding: 50px;
+      transition: box-shadow 0.3s ease;
+    }
+
+    .centro:hover {
+      font-weight: bold;
+    }
+
+    .adicionarInvestimento {
+      box-sizing: border-box;
+      border-style: dashed;
+      border-color: #B89C00;
+      border-width: 2px;
+      height: 95%;
+      outline: 2px solid transparent;
+      transition: outline-width 0.3s, font-weight 0.3s;
+    }
+
+    .adicionarInvestimento:hover {
+      font-weight: bold;
+      background-color: rgb(249, 255, 220);
+    }
+
+    .pointer {
+      cursor: pointer;
+    }
+
+    th {
+      background-color: #f2f2f2;
+      position: sticky;
+      top: 0;
+      z-index: 2;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="selecionador" class="container-fluid">
+    <div class="row">
+      <div class="col-12 verde-pastel centro switch pointer" onclick="ativarSérieHistórica()">
+        <div class="icone"><i class="fas fa-history"></i></div>
+        <div>Simular a partir de série histórica</div>
+      </div>
+      <div class="col-12 azul-pastel centro switch pointer" onclick="ativarProjeçãoFutura()">
+        <div class="icone"><i class="fas fa-chart-line"></i></div>
+        <div>Fazer projeção futura</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="sérieHistórica" style="display: none">
+    <nav class="d-flex justify-content-center sb-topnav navbar navbar-expand navbar-dark verde-pastel fh-fixedHeader">
+      <i class="fas fa-history mx-2"></i><span class="fw-bold">Simulação a partir de série histórica</span>
+    </nav>
+
+    <main class="container-fluid p-4">
+      <div class="col-12">
+        <div class="card bg-light">
+          <div class="card-body">
+            <h5 class="card-title">Investimentos simulados</h5>
+            <div class="card-group cardsInvestimentos">
+            </div>
+          </div>
+        </div>
+        <hr>
+        <div class="card bg-light">
+          <div class="card-body">
+            <h5 class="card-title">Parâmetros globais</h5>
+            <form onchange="calcularRendimento()" onkeyup="calcularRendimento()" ;>
+              <div class="row">
+                <div class="col-12 col-md-6 my-2">
+                  <div class="form-group">
+                    <label for="sérieHistóricaSalário">Salário</label>
+                    <input type="text" class="form-control currency autonumeric" id="sérieHistóricaSalário"
+                      value="25291.35" onchange="atualizarReferência()"
+                      onkeyup="delay(atualizarReferência, 2000)"></input>
+                  </div>
+                  <div>
+                    <div>
+                      Teto do RGPS (2023): <span id="sérieHistóricaTetoRGPS" class="fw-bold"></span>
+                    </div>
+                    <div>
+                      Valor de referência para previdência complementar: <span id="sérieHistóricaReferência"
+                        class="fw-bold"></span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 col-md-6 my-2">
+                  <div class="form-group">
+                    <label for="sérieHistóricaContribuiçãoAbsoluta">Contribução (Relativo ao salário bruto)</label>
+                    <input type="text" class="form-control contrAbs" id="sérieHistóricaContribuiçãoAbsoluta"
+                      value="1333.79" onchange="atualizarContribuição()"
+                      onkeyup="delay(atualizarReferência, 2000)"></input>
+                  </div>
+                  <div class="text-end">
+                    <div>
+                      Limite do aporte com patrocínio PREVCOM: <a href="javascript:void(0)"
+                        onclick="ajustarContribuição('limitePatrocinio', this)" class="fw-bold"
+                        id="sérieHistóricaLimitePatrocínioPREVCOM"></a>
+                    </div>
+                    <div>
+                      Limite do aporte com dedução de IR PGBL: <a href="javascript:void(0)"
+                        onclick="ajustarContribuição('limiteDeducaoPGBL', this)" class="fw-bold"
+                        id="sérieHistóricaLimiteDeduçãoIRPGBL"></a>
+                    </div>
+                    <div>
+                      Limite do aporte com dedução de IR PREVCOM: <a href="javascript:void(0)"
+                        onclick="ajustarContribuição('limiteDeducaoPREVCOM', this)" class="fw-bold"
+                        id="sérieHistóricaLimiteDeduçãoIRPREVCOM"></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="form-group col-6">
+                  <label for="adicionarUsuarioNome">Data de início</label>
+                  <select class="form-select" id="sérieHistóricaDataInício"
+                    onchange="atualizarSérieHistóricaDatas()"></select>
+                </div>
+                <div class="form-group col-6">
+                  <label for="adicionarUsuarioNome">Data de término</label>
+                  <select class="form-select" id="sérieHistóricaDataFim"
+                    onchange="atualizarSérieHistóricaDatas()"></select>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <hr>
+        <div id="gráficoSérieHistórica"></div>
+        <div class="cardsResultados"></div>
+        <div class="text-end">
+          <button type="button" class="btn azul-pastel m-2" onclick="ativarProjeçãoFutura()"><i
+              class="fas fa-chart-line"></i> Fazer Projeção Futura</button>
+        </div>
+      </div>
+    </main>
+
+    <footer class="py-4 verde-pastel mt-auto">
+      <div class="container-fluid px-4">
+        <div class="d-flex align-items-center justify-content-end small">
+          <div class="text-muted">Rafael Nobre Leite</div>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <div id="projeçãoFutura" style="display: none">
+    <nav class="d-flex justify-content-center sb-topnav navbar navbar-expand navbar-dark azul-pastel fh-fixedHeader">
+      <i class="fas fa-chart-line mx-2"></i><span class="fw-bold">Projeção futura</span>
+    </nav>
+
+    <main class="container-fluid p-4">
+      <div class="col-12">
+        <div class="card bg-light">
+          <div class="card-body">
+            <h5 class="card-title">Investimentos simulados</h5>
+            <div class="card-group cardsInvestimentos">
+            </div>
+          </div>
+        </div>
+        <hr>
+        <div class="card bg-light">
+          <div class="card-body">
+            <h5 class="card-title">Parâmetros globais</h5>
+            <form onchange="calcularRendimento()" onkeyup="calcularRendimento()">
+              <div class="row">
+                <div class="col-12 col-md-6 my-2">
+                  <div class="form-group">
+                    <label for="projeçãoFuturaSalário">Salário</label>
+                    <input type="text" class="form-control currency autonumeric" id="projeçãoFuturaSalário"
+                      value="25291.35" onchange="atualizarReferência()"
+                      onkeyup="delay(atualizarReferência, 2000)"></input>
+                  </div>
+                  <div>
+                    <div>
+                      Teto do RGPS (2023): <span id="projeçãoFuturaTetoRGPS" class="fw-bold"></span>
+                    </div>
+                    <div>
+                      Valor de referência para previdência complementar: <span id="projeçãoFuturaReferência"
+                        class="fw-bold"></span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 col-md-6 my-2">
+                  <div class="form-group">
+                    <label for="projeçãoFuturaContribuiçãoAbsoluta">Contribução (Relativo ao salário bruto)</label>
+                    <input type="text" class="form-control contrAbs" id="projeçãoFuturaContribuiçãoAbsoluta"
+                      value="1333.79" onchange="atualizarContribuição()"
+                      onkeyup="delay(atualizarReferência, 2000)"></input>
+                  </div>
+                  <div class="text-end">
+                    <div>
+                      Limite do aporte com patrocínio PREVCOM: <a href="javascript:void(0)"
+                        onclick="ajustarContribuição('limitePatrocinio', this)" class="fw-bold"
+                        id="projeçãoFuturaLimitePatrocínioPREVCOM"></a>
+                    </div>
+                    <div>
+                      Limite do aporte com dedução de IR PGBL: <a href="javascript:void(0)"
+                        onclick="ajustarContribuição('limiteDeducaoPGBL', this)" class="fw-bold"
+                        id="projeçãoFuturaLimiteDeduçãoIRPGBL"></a>
+                    </div>
+                    <div>
+                      Limite do aporte com dedução de IR PREVCOM: <a href="javascript:void(0)"
+                        onclick="ajustarContribuição('limiteDeducaoPREVCOM', this)" class="fw-bold"
+                        id="projeçãoFuturaLimiteDeduçãoIRPREVCOM"></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="form-group mt-auto my-2 col-6 col-md-4 col-xl-3">
+                  <label for="adicionarUsuarioNome">Rendimento anual médio PREVCOM</label>
+                  <input class="form-control" id="projeçãoFuturaRendimentoPREVCOM" value="0.06"></input>
+                </div>
+                <div class="form-group mt-auto my-2 col-6 col-md-4 col-xl-3">
+                  <label for="adicionarUsuarioNome">Rendimento anual médio CDI</label>
+                  <input class="form-control" id="projeçãoFuturaRendimentoCDI" value="0.09"></input>
+                </div>
+                <div class="form-group mt-auto my-2 col-6 col-md-4 col-xl-3">
+                  <label for="adicionarUsuarioNome">Inflação média (IPCA)</label>
+                  <input class="form-control" id="projeçãoFuturaIPCA" value="0.05"></input>
+                </div>
+                <div class="form-group mt-auto my-2 col-6 col-md-4 col-xl-3">
+                  <label for="adicionarUsuarioNome">Duração do investimento (anos)</label>
+                  <input type="number" class="form-control" id="projeçãoFuturaDuração" value="30"></input>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <hr>
+        <div id="gráficoProjeçãoFutura"></div>
+        <div class="cardsResultados"></div>
+        <div class="text-end">
+          <button type="button" class="btn verde-pastel m-2" onclick="ativarSérieHistórica()"><i
+              class="fas fa-history"></i> Simular a partir de Série Histórica</button>
+        </div>
+      </div>
+    </main>
+
+    <footer class="py-4 azul-pastel mt-auto">
+      <div class="container-fluid px-4">
+        <div class="d-flex align-items-center justify-content-between small">
+          <div class="text-muted">Rafael Nobre Leite</div>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Adicione o Bootstrap JavaScript e o Popper.js (necessário para alguns componentes Bootstrap) via CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+<script src="./data/db.js"></script>
+
+<script>
+
+  $(document).ready(async function () {
+    $(window).trigger('orientationchange');
+    new AutoNumeric('#sérieHistóricaSalário', brazilianPos);
+    new AutoNumeric('#sérieHistóricaContribuiçãoAbsoluta', brazilianPos);
+    new AutoNumeric('#projeçãoFuturaSalário', brazilianPos);
+    new AutoNumeric('#projeçãoFuturaContribuiçãoAbsoluta', brazilianPos);
+    new AutoNumeric('#projeçãoFuturaRendimentoPREVCOM', 'percentageEU2decPos');
+    new AutoNumeric('#projeçãoFuturaRendimentoCDI', 'percentageEU2decPos');
+    new AutoNumeric('#projeçãoFuturaIPCA', 'percentageEU2decPos');
+  });
+
+  $(window).on("resize orientationchange", function (event) {
+    if (window.outerWidth < window.outerHeight) {
+      $(".switch").removeClass("col-6");
+      $(".switch").addClass("col-12");
+      $(".switch").css("height", "50vh");
+    } else {
+      $(".switch").removeClass("col-12");
+      $(".switch").addClass("col-6");
+      $(".switch").css("height", "100vh");
+    }
+  });
+
+  window.addEventListener('resize', function () {
+    Plotly.Plots.resize('gráficoSérieHistórica');
+    Plotly.Plots.resize('gráficoProjeçãoFutura');
+  });
+
+  function ativarSérieHistórica() {
+    $(`#selecionador`).hide();
+    $(`#projeçãoFutura`).hide();
+    $(`#sérieHistórica`).show();
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'instant'
+    });
+
+    $(`#sérieHistóricaTetoRGPS`).html(moedaBR(TETO_RGPS));
+    atualizarReferência();
+    atualizarSérieHistóricaDatas();
+
+    $(`#sérieHistóricaDataInício`).val('2015-08');
+    $(`#sérieHistóricaDataFim`).val('2023-11');
+
+    criarCardsInvestimentos();
+    calcularRendimento();
+
+    atualizarContribuição();
+    Plotly.Plots.resize('gráficoSérieHistórica');
+  }
+
+  function ativarProjeçãoFutura() {
+    $(`#selecionador`).hide();
+    $(`#sérieHistórica`).hide();
+    $(`#projeçãoFutura`).show();
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'instant'
+    });
+
+    $(`#projeçãoFuturaTetoRGPS`).html(moedaBR(TETO_RGPS));
+    atualizarReferência();
+
+    criarCardsInvestimentos();
+    calcularRendimento();
+    atualizarContribuição();
+    Plotly.Plots.resize('gráficoProjeçãoFutura');
+  }
+
+  // function alterarInputContribuição(tipo) {
+  //   switch (tipo) {
+  //     case 'Absoluto':
+  //       $(`.contrAbs`).show();
+  //       $(`.contrPer`).hide();
+  //       break;
+  //     case 'Percentual':
+  //       $(`.contrAbs`).hide();
+  //       $(`.contrPer`).show();
+  //       break;
+  //   }
+  // }
+
+  function atualizarContribuição() {
+    let absoluta;
+    let salário = AutoNumeric.getNumber('#sérieHistóricaSalário');
+    let contribuição = AutoNumeric.getNumber('#sérieHistóricaContribuiçãoAbsoluta');
+    let referência = salário > TETO_RGPS ? salário - TETO_RGPS : 0;
+
+    if (contribuição > salário) {
+      AutoNumeric.set('#sérieHistóricaContribuiçãoAbsoluta', salário);
+    }
+    $(`#sérieHistóricaReferência`).html(moedaBR(referência));
+    $(`#sérieHistóricaLimitePatrocínioPREVCOM`).html(moedaBR(arredondar(referência * 0.075)));
+  }
+
+  function ajustarContribuição(ajuste, el) {
+    let input = $(el).closest('div').parent().parent().find('input:first');
+    let salário = AutoNumeric.getNumber('#sérieHistóricaSalário');
+    let contribuição = AutoNumeric.getNumber('#sérieHistóricaContribuiçãoAbsoluta');
+    let referência = salário > TETO_RGPS ? salário - TETO_RGPS : 0;
+
+    switch (ajuste) {
+      case 'limitePatrocinio':
+        AutoNumeric.set(`#${input[0].id}`, arredondar(referência * 0.075));
+        break;
+      case 'limiteDeducaoPGBL':
+        AutoNumeric.set(`#${input[0].id}`, arredondar(salário * 0.12));
+        break;
+      case 'limiteDeducaoPREVCOM':
+        AutoNumeric.set(`#${input[0].id}`, arredondar(referência * 0.075) + arredondar(salário * 0.12));
+        break;
+    }
+
+    calcularRendimento();
+  }
+
+  function atualizarReferência() {
+    let salário = AutoNumeric.getNumber('#sérieHistóricaSalário');
+    let referência = salário > TETO_RGPS ? (salário - TETO_RGPS) : 0;
+    $(`#sérieHistóricaLimitePatrocínioPREVCOM`).html(moedaBR(referência * 0.075));
+    $(`#sérieHistóricaLimiteDeduçãoIRPGBL`).html(moedaBR(salário * 0.12));
+    $(`#sérieHistóricaLimiteDeduçãoIRPREVCOM`).html(moedaBR(referência * 0.075 + salário * 0.12));
+
+    salário = AutoNumeric.getNumber('#projeçãoFuturaSalário');
+    referência = salário > TETO_RGPS ? (salário - TETO_RGPS) : 0;
+    $(`#projeçãoFuturaLimitePatrocínioPREVCOM`).html(moedaBR(referência * 0.075));
+    $(`#projeçãoFuturaLimiteDeduçãoIRPGBL`).html(moedaBR(salário * 0.12));
+    $(`#projeçãoFuturaLimiteDeduçãoIRPREVCOM`).html(moedaBR(referência * 0.075 + salário * 0.12));
+
+    atualizarContribuição();
+  }
+
+  function atualizarSérieHistóricaDatas() {
+
+    let dataInício = $(`#sérieHistóricaDataInício`).val();
+    let dataFim = $(`#sérieHistóricaDataFim`).val();
+
+    $(`#sérieHistóricaDataInício`).html('');
+    $(`#sérieHistóricaDataFim`).html('');
+
+    let d = moment('2015-08-01');
+    let intervaloFim = moment('2023-11-01');
+
+    while (d.isBefore(intervaloFim) || d.isSame(intervaloFim)) {
+      let opcao = `<option value="${d.format('YYYY-MM')}">${d.locale('pt-Br').format('MMMM/YYYY').toUpperCase()}</option>`;
+      if (!dataFim || d.format('YYYY-MM') <= dataFim) {
+        $(`#sérieHistóricaDataInício`).append(opcao);
+      }
+      if (!dataInício || d.format('YYYY-MM') >= dataInício) {
+        $(`#sérieHistóricaDataFim`).append(opcao);
+      }
+
+      d.add(1, 'months');
+    }
+
+    dataInício ? $(`#sérieHistóricaDataInício`).val(dataInício) : $(`#sérieHistóricaDataInício`).val('2015-08');
+    dataFim ? $(`#sérieHistóricaDataFim`).val(dataFim) : $(`#sérieHistóricaDataFim`).val('2023-11');
+  }
+
+  function calcularRendimentosProjeçãoFutura() {
+    listaInvestimentos.forEach(el => {
+      el.resultado = {}
+      res = el.resultado;
+      const dataInicio = moment('2024-01-01');
+      const dataFim = dataInicio.clone().add(parseInt($(`#projeçãoFuturaDuração`).val()), 'y');
+
+      const ÍNDICES = {
+        ipca: Math.pow(AutoNumeric.getNumber(`#projeçãoFuturaIPCA`) + 1, 1 / 12),
+        cdi: Math.pow(AutoNumeric.getNumber(`#projeçãoFuturaRendimentoCDI`) + 1, 1 / 12),
+        prevcom: Math.pow(AutoNumeric.getNumber(`#projeçãoFuturaRendimentoPREVCOM`) + 1, 1 / 12)
+      }
+
+      res.salárioBruto = AutoNumeric.getNumber('#projeçãoFuturaSalário');
+      res.referência = res.salárioBruto > TETO_RGPS ? res.salárioBruto - TETO_RGPS : 0;
+      res.aportePessoalMensalBruto = AutoNumeric.getNumber('#projeçãoFuturaContribuiçãoAbsoluta');
+
+      res.PSSSobreSalário = calcularPSS(res.salárioBruto);
+      res.IRSobreSalárioSemInvestimento = calcularIR(res.salárioBruto - res.PSSSobreSalário);
+      res.IRSobreSalárioMenosInvestimento = calcularIR(res.salárioBruto - res.PSSSobreSalário - res.aportePessoalMensalBruto);
+      res.limiteDeduçãoPrevidenciária = arredondar(0.12 * res.salárioBruto);
+
+      res.limitePatrocínioAbsoluto = arredondar(res.referência * el.limite_patrocínio);
+      res.patrocínioMensal = el.patrocínio ? res.limitePatrocínioAbsoluto > arredondar(el.patrocínio * res.aportePessoalMensalBruto) ? arredondar(el.patrocínio * res.aportePessoalMensalBruto) : res.limitePatrocínioAbsoluto : 0;
+      res.baseCálculoIR = res.salárioBruto - res.PSSSobreSalário - (el.dedutível_ir ? res.aportePessoalMensalBruto > (res.patrocínioMensal + res.limiteDeduçãoPrevidenciária) ? (res.patrocínioMensal + res.limiteDeduçãoPrevidenciária) : res.aportePessoalMensalBruto : 0);
+      res.IRSobreSalário = calcularIR(res.baseCálculoIR);
+
+      res.IRSobreParcelaDoSalárioParaInvestimento = res.IRSobreSalário - res.IRSobreSalárioMenosInvestimento;
+      res.aportePessoalMensalPósIR = res.aportePessoalMensalBruto - res.IRSobreParcelaDoSalárioParaInvestimento;
+
+      res.aporteTotalMensalBruto = res.aportePessoalMensalPósIR + res.patrocínioMensal;
+      res.taxaDeAporteMensal = arredondar(res.aporteTotalMensalBruto * el.taxa_aporte);
+      res.aporteTotalMensalLíquido = res.aporteTotalMensalBruto - res.taxaDeAporteMensal;
+
+      if (dataInicio.isValid() && dataFim.isValid() && dataInicio.isBefore(dataFim)) {
+        let d = dataInicio;
+        res.tabela = [];
+        const multiplicadorMensal = ['ipca', 'fixo'].includes(el.índice) ? Math.pow(el.multiplicador, 1 / 12) : el.multiplicador;
+
+        while (d.isBefore(dataFim)) {
+          let dadosMes = {};
+          dadosMes.mês = d.format('YYYY-MM');
+
+          dadosMes.aportePessoalAcumuladoBruto = res.tabela.length == 0 ? res.aportePessoalMensalBruto : res.tabela[res.tabela.length - 1].aportePessoalAcumuladoBruto + res.aportePessoalMensalBruto;
+          dadosMes.aporteTotalAcumuladoLíquido = res.tabela.length == 0 ? res.aporteTotalMensalLíquido : res.tabela[res.tabela.length - 1].aporteTotalAcumuladoLíquido + res.aporteTotalMensalLíquido;
+
+          dadosMes.saldoInícioMês = res.tabela.length == 0 ? res.aporteTotalMensalLíquido : res.tabela[res.tabela.length - 1].saldoFinalMês + res.aporteTotalMensalLíquido;
+
+          if (['prevcom', 'cdi', 'ipca'].includes(el.índice)) {
+            dadosMes.rendimentoMensalRelativo = ÍNDICES[el.índice];
+            el.multiplicador && (dadosMes.rendimentoMensalRelativo *= multiplicadorMensal);
+          } else if (el.índice == 'fixo') {
+            dadosMes.rendimentoMensalRelativo = multiplicadorMensal;
+          }
+          dadosMes.rendimentoMensalAbsoluto = arredondar(dadosMes.saldoInícioMês * (dadosMes.rendimentoMensalRelativo - 1));
+          dadosMes.saldoFinalMês = dadosMes.saldoInícioMês + dadosMes.rendimentoMensalAbsoluto;
+
+          if (el.modalidade_taxa_saque == 'total') {
+            dadosMes.taxaSaqueAbsoluta = arredondar(dadosMes.saldoFinalMês * el.taxa_saque);
+          }
+          else if (el.modalidade_taxa_saque == 'rendimento') {
+            dadosMes.taxaSaqueAbsoluta = arredondar((dadosMes.saldoFinalMês - dadosMes.aporteTotalAcumuladoLíquido) * el.taxa_saque);
+          } else {
+            dadosMes.taxaSaqueAbsoluta = 0;
+          }
+
+          dadosMes.saldoFinalMêsLíquido = dadosMes.saldoFinalMês - dadosMes.taxaSaqueAbsoluta;
+
+          el.resultado.tabela.push(dadosMes);
+          d.add(1, 'month');
+        }
+      } else {
+        console.error('Datas inválidas. Certifique-se de que a data de início é anterior à data de término.');
+      }
+    });
+
+    plotarGráficoProjeçãoFutura(listaInvestimentos);
+    criarCardsResultados(listaInvestimentos);
+  }
+
+
+  function calcularRendimentosSérieHistórica() {
+
+    listaInvestimentos.forEach(el => {
+      el.resultado = {}
+      res = el.resultado;
+      const dataInicio = moment($('#sérieHistóricaDataInício').val(), 'YYYY-MM');
+      const dataFim = moment($('#sérieHistóricaDataFim').val(), 'YYYY-MM');
+
+      res.salárioBruto = AutoNumeric.getNumber('#sérieHistóricaSalário');
+      res.referência = res.salárioBruto > TETO_RGPS ? res.salárioBruto - TETO_RGPS : 0;
+      res.aportePessoalMensalBruto = AutoNumeric.getNumber('#sérieHistóricaContribuiçãoAbsoluta');
+
+      res.PSSSobreSalário = calcularPSS(res.salárioBruto);
+      res.IRSobreSalárioSemInvestimento = calcularIR(res.salárioBruto - res.PSSSobreSalário);
+      res.IRSobreSalárioMenosInvestimento = calcularIR(res.salárioBruto - res.PSSSobreSalário - res.aportePessoalMensalBruto);
+      res.limiteDeduçãoPrevidenciária = arredondar(0.12 * res.salárioBruto);
+
+      res.limitePatrocínioAbsoluto = arredondar(res.referência * el.limite_patrocínio);
+      res.patrocínioMensal = el.patrocínio ? res.limitePatrocínioAbsoluto > arredondar(el.patrocínio * res.aportePessoalMensalBruto) ? arredondar(el.patrocínio * res.aportePessoalMensalBruto) : res.limitePatrocínioAbsoluto : 0;
+      res.baseCálculoIR = res.salárioBruto - res.PSSSobreSalário - (el.dedutível_ir ? res.aportePessoalMensalBruto > (res.patrocínioMensal + res.limiteDeduçãoPrevidenciária) ? (res.patrocínioMensal + res.limiteDeduçãoPrevidenciária) : res.aportePessoalMensalBruto : 0);
+      res.IRSobreSalário = calcularIR(res.baseCálculoIR);
+
+      res.IRSobreParcelaDoSalárioParaInvestimento = res.IRSobreSalário - res.IRSobreSalárioMenosInvestimento;
+      res.aportePessoalMensalPósIR = res.aportePessoalMensalBruto - res.IRSobreParcelaDoSalárioParaInvestimento;
+
+      res.aporteTotalMensalBruto = res.aportePessoalMensalPósIR + res.patrocínioMensal;
+      res.taxaDeAporteMensal = arredondar(res.aporteTotalMensalBruto * el.taxa_aporte);
+      res.aporteTotalMensalLíquido = res.aporteTotalMensalBruto - res.taxaDeAporteMensal;
+
+      if (dataInicio.isValid() && dataFim.isValid() && dataInicio.isBefore(dataFim)) {
+        let d = dataInicio;
+        res.tabela = [];
+        const multiplicadorMensal = ['ipca', 'fixo'].includes(el.índice) ? Math.pow(el.multiplicador, 1 / 12) : el.multiplicador;
+
+        while (d.isBefore(dataFim) || d.isSame(dataFim, 'month')) {
+          let dadosMes = {};
+          dadosMes.mês = d.format('YYYY-MM');
+
+          dadosMes.aportePessoalAcumuladoBruto = res.tabela.length == 0 ? res.aportePessoalMensalBruto : res.tabela[res.tabela.length - 1].aportePessoalAcumuladoBruto + res.aportePessoalMensalBruto;
+          dadosMes.aporteTotalAcumuladoLíquido = res.tabela.length == 0 ? res.aporteTotalMensalLíquido : res.tabela[res.tabela.length - 1].aporteTotalAcumuladoLíquido + res.aporteTotalMensalLíquido;
+
+          dadosMes.saldoInícioMês = res.tabela.length == 0 ? res.aporteTotalMensalLíquido : res.tabela[res.tabela.length - 1].saldoFinalMês + res.aporteTotalMensalLíquido;
+
+          if (['prevcom', 'cdi', 'ipca'].includes(el.índice)) {
+            let índiceMês = histórico[el.índice].findIndex(x => x.mês == dadosMes.mês);
+            dadosMes.rendimentoMensalRelativo = histórico[el.índice][índiceMês].idx / histórico[el.índice][índiceMês - 1].idx;
+            el.multiplicador && (dadosMes.rendimentoMensalRelativo *= multiplicadorMensal);
+          } else if (el.índice == 'fixo') {
+            dadosMes.rendimentoMensalRelativo = multiplicadorMensal;
+          }
+          dadosMes.rendimentoMensalAbsoluto = arredondar(dadosMes.saldoInícioMês * (dadosMes.rendimentoMensalRelativo - 1));
+          dadosMes.saldoFinalMês = dadosMes.saldoInícioMês + dadosMes.rendimentoMensalAbsoluto;
+
+          if (el.modalidade_taxa_saque == 'total') {
+            dadosMes.taxaSaqueAbsoluta = arredondar(dadosMes.saldoFinalMês * el.taxa_saque);
+          }
+          else if (el.modalidade_taxa_saque == 'rendimento') {
+            dadosMes.taxaSaqueAbsoluta = arredondar((dadosMes.saldoFinalMês - dadosMes.aporteTotalAcumuladoLíquido) * el.taxa_saque);
+          } else {
+            dadosMes.taxaSaqueAbsoluta = 0;
+          }
+
+          dadosMes.saldoFinalMêsLíquido = dadosMes.saldoFinalMês - dadosMes.taxaSaqueAbsoluta;
+
+          el.resultado.tabela.push(dadosMes);
+          d.add(1, 'month');
+        }
+      } else {
+        console.error('Datas inválidas. Certifique-se de que a data de início é anterior à data de término.');
+      }
+    });
+
+    plotarGráficoSérieHistórica(listaInvestimentos);
+    criarCardsResultados(listaInvestimentos);
+
+  }
+
+  function plotarGráficoSérieHistórica(data) {
+    console.trace(data)
+    const traces = data.map(obj => {
+      const tabela = obj.resultado.tabela.map(item => ({
+        x: item.mês,
+        y: item.saldoFinalMêsLíquido
+      }));
+
+      return {
+        name: obj.nome,
+        type: 'scatter',
+        mode: 'lines',
+        x: tabela.map(item => item.x),
+        y: tabela.map(item => item.y),
+        line: {
+          color: obj.cor
+        }
+      };
+    });
+
+    const layout = {
+      title: 'Evolução de investimentos',
+      yaxis: {
+        title: 'Saldo Líquido (Disponível para saque)'
+      },
+      legend: {
+        orientation: 'h'
+      }
+    };
+
+    Plotly.newPlot('gráficoSérieHistórica', traces, layout);
+  }
+
+  function plotarGráficoProjeçãoFutura(data) {
+    const traces = data.map(obj => {
+      const tabela = obj.resultado.tabela.map(item => ({
+        x: item.mês,
+        y: item.saldoFinalMêsLíquido
+      }));
+
+      return {
+        name: obj.nome,
+        type: 'scatter',
+        mode: 'lines',
+        x: tabela.map(item => item.x),
+        y: tabela.map(item => item.y),
+        line: {
+          color: obj.cor
+        }
+      };
+    });
+
+    const layout = {
+      title: 'Evolução de investimentos',
+      yaxis: {
+        title: 'Saldo Líquido (Disponível para saque)'
+      },
+      legend: {
+        orientation: 'h'
+      }
+    };
+
+    Plotly.newPlot('gráficoProjeçãoFutura', traces, layout);
+  }
+
+
+  function modalAdicionarInvestimento() {
+
+    $(`#títuloModal`).html(`Adicionar investimento`);
+    $(`#rodapéModal`).html(`<button type="button" class="btn btn-primary" onclick="formularioInvestimentoSalvarAlterações()">Adicionar investimento</button>`);
+    criarFormulárioInvestimento($(`#corpoModal`));
+
+    $(`#modal`).modal(`show`);
+  }
+
+  function modalEditarInvestimento(id) {
+    if (id == 1) return;
+    const dadosInvestimento = listaInvestimentos.find(el => el.id == id);
+
+    $(`#títuloModal`).html(`Editar investimento`);
+    $(`#rodapéModal`).html(`<button type="button" class="btn btn-primary" onclick="formularioInvestimentoSalvarAlterações(${id})">Salvar alterações</button>`);
+    criarFormulárioInvestimento($(`#corpoModal`), dadosInvestimento);
+
+    $(`#modal`).modal(`show`);
+  }
+
+  function modalExcluirInvestimento(id) {
+    if (id == 1) return;
+    const dadosInvestimento = listaInvestimentos.find(el => el.id == id);
+    $(`#títuloModal`).html(`Excluir investimento`);
+    $(`#rodapéModal`).html(`<button type="button" class="btn btn-danger" onclick="excluirInvestimento(${id})">Excluir</button>`);
+    $(`#corpoModal`).html(`Você tem certeza que deseja excluir <b>${dadosInvestimento.nome}</b>?`);
+    $(`#modal`).modal(`show`);
+  }
+
+  function modalExibirDetalhes(id) {
+    const dadosInvestimento = listaInvestimentos.find(el => el.id == id);
+    const res = dadosInvestimento.resultado;
+    $(`#títuloModalXXL`).html(`Evolução de investimento - ${dadosInvestimento.nome}`);
+    $(`#rodapéModalXXL`).html(`<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>`);
+    let t = `<div>Aporte Pessoal Mensal Bruto: ${moedaBR(res.aportePessoalMensalBruto)}</div>
+    <div>IR sobre parcela do salário: ${moedaBR(res.IRSobreParcelaDoSalárioParaInvestimento)}</div>
+    <div>Patrocínio Mensal: ${moedaBR(res.patrocínioMensal)}</div>
+    <div>Taxa sobre aporte: ${moedaBR(res.taxaDeAporteMensal)}</div>
+    <div>Aporte Mensal Líquido: ${moedaBR(res.aporteTotalMensalLíquido)}</div>
+    <div class="h5 mt-2">Evolução mensal</div>
+        <table class="table table-bordered table-striped">
+      <tr>
+        <th>Mês</th>
+        <th style="text-align: center;">Aporte Pessoal Bruto Acumulado</th>
+        <th style="text-align: center;">Aporte Total Líquido Acumulado</th>
+        <th style="text-align: center;">Saldo no Início do Mês</th>
+        <th style="text-align: center;">Rentabilidade Mensal</th>
+        <th style="text-align: center;">Rendimento Mensal</th>
+        <th style="text-align: center;">Saldo no Final do Mês</th>
+        <th style="text-align: center;">Imposto sobre saque</th>
+        <th style="text-align: center;">Disponível para saque</th>
+      </tr>`;
+    console.log(dadosInvestimento);
+    res.tabela.forEach(m => t += `<tr>
+        <td>${moment(m.mês).locale('pt-Br').format('MMMM/YYYY').toUpperCase()}</td>
+        <td style="text-align: center;">${moedaBR(m.aportePessoalAcumuladoBruto)}</td>
+        <td style="text-align: center;">${moedaBR(m.aporteTotalAcumuladoLíquido)}</td>
+        <td style="text-align: center;">${moedaBR(m.saldoInícioMês)}</td>
+        <td style="text-align: center;">${percentualBR(m.rendimentoMensalRelativo - 1)}</td>
+        <td style="text-align: center;">${moedaBR(m.rendimentoMensalAbsoluto)}</td>
+        <td style="text-align: center;">${moedaBR(m.saldoFinalMês)}</td>
+        <td style="text-align: center;">${moedaBR(m.taxaSaqueAbsoluta)}</td>
+        <td class="fw-bold" style="text-align: center;">${moedaBR(m.saldoFinalMêsLíquido)}</td>
+      </tr>`);
+
+    t += `</table>`;
+
+    $(`#corpoModalXXL`).html(t);
+    $(`#modalXXL`).modal(`show`);
+  }
+
+  function formularioInvestimentoSalvarAlterações(id = null) {
+    if (id == 1) {
+      $(`#modal`).modal(`hide`);
+      return;
+    }
+
+    let erros = [];
+
+    !$(`#formularioInvestimentoNome`).val() && erros.push(`<div>Nome do investimento não pode ser nulo.</div>`);
+    !$(`#formularioInvestimentoÍndice`).val() && erros.push(`<div>Índice do investimento não pode ser nulo.</div>`);
+    $(`#formularioInvestimentoMultiplicador`).length && !$(`#formularioInvestimentoMultiplicador`).val() && erros.push(`<div>Taxa de rendimento não pode ser nula.</div>`);
+
+    if (erros.length > 0) {
+      $("#formularioInvestimentoErros").html(erros.join(''));
+      window.timeout = setTimeout(function () {
+        $("#formularioInvestimentoErros").html('');
+      }, 5000);
+      return;
+    }
+
+    const dadosInvestimento = id ? listaInvestimentos.find(el => el.id == id) : {};
+    dadosInvestimento.nome = $(`#formularioInvestimentoNome`).val();
+    dadosInvestimento.índice = $(`#formularioInvestimentoÍndice`).val();
+    if ($(`#formularioInvestimentoMultiplicador`).length) {
+      if (['ipca', 'fixo'].includes($(`#formularioInvestimentoÍndice`).val())) {
+        dadosInvestimento.multiplicador = AutoNumeric.getNumber('#formularioInvestimentoMultiplicador') + 1;
+      } else if ($(`#formularioInvestimentoÍndice`).val() == 'cdi') {
+        dadosInvestimento.multiplicador = AutoNumeric.getNumber('#formularioInvestimentoMultiplicador');
+      }
+    }
+    dadosInvestimento.dedutível_ir = $('#formularioInvestimentoDedutivel').is(`:checked`) ? true : false;
+    dadosInvestimento.taxa_aporte = AutoNumeric.getNumber('#formularioInvestimentoTaxaAporte');
+    dadosInvestimento.taxa_saque = AutoNumeric.getNumber('#formularioInvestimentoTaxaSaque');
+    dadosInvestimento.modalidade_taxa_saque = $(`#formularioInvestimentoModalidadeTaxaSaque`).val();
+    dadosInvestimento.cor = $(`#formularioInvestimentoCor`).val();
+    dadosInvestimento.obs = $(`#formularioInvestimentoObs`).val();
+    if (!id) {
+      const ultimoId = listaInvestimentos.reduce((acumulado, atual) =>
+        atual.id > acumulado ? atual.id : acumulado, 0
+      );
+      dadosInvestimento.id = ultimoId + 1;
+      listaInvestimentos.push(dadosInvestimento);
+    }
+    criarCardsInvestimentos();
+    calcularRendimento();
+    $(`#modal`).modal(`hide`);
+  }
+
+  function excluirInvestimento(id) {
+    const índice = listaInvestimentos.findIndex(el => el.id == id);
+
+    if (índice !== -1) {
+      listaInvestimentos.splice(índice, 1);
+    }
+    criarCardsInvestimentos();
+    calcularRendimento();
+    $(`#modal`).modal(`hide`);
+  }
+
+  function arredondar(numero) {
+    return Number(numero.toFixed(2));
+  }
+
+</script>
+
+<div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="títuloModal"></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="corpoModal">
+      </div>
+      <div class="modal-footer" id="rodapéModal">
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalXXL" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" style="max-width: 95%">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="títuloModalXXL"></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="corpoModalXXL">
+      </div>
+      <div class="modal-footer" id="rodapéModalXXL">
+      </div>
+    </div>
+  </div>
+</div>
