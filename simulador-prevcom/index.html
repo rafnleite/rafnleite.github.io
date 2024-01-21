@@ -758,20 +758,24 @@
     <div>Taxa sobre aporte: ${moedaBR(res.taxaDeAporteMensal)}</div>
     <div>Aporte Mensal Líquido: ${moedaBR(res.aporteTotalMensalLíquido)}</div>
     <div class="h5 mt-2">Evolução mensal</div>
-        <table class="table table-bordered table-striped">
-      <tr>
-        <th>Mês</th>
-        <th style="text-align: center;">Aporte Pessoal Bruto Acumulado</th>
-        <th style="text-align: center;">Aporte Total Líquido Acumulado</th>
-        <th style="text-align: center;">Saldo no Início do Mês</th>
-        <th style="text-align: center;">Rentabilidade Mensal</th>
-        <th style="text-align: center;">Rendimento Mensal</th>
-        <th style="text-align: center;">Saldo no Final do Mês</th>
-        <th style="text-align: center;">Imposto sobre saque</th>
-        <th style="text-align: center;">Disponível para saque</th>
+    <div class="table-responsive">
+    <table class="table table-bordered table-striped table-responsive">`;
+
+    res.tabela.forEach((m, idx) => {
+      if (idx % 24 == 0) {
+        t += `<tr>
+        <th class="bg-dark text-white">Mês</th>
+        <th class="bg-dark text-white" style="text-align: center;">Aporte Pessoal Bruto Acumulado</th>
+        <th class="bg-dark text-white" style="text-align: center;">Aporte Total Líquido Acumulado</th>
+        <th class="bg-dark text-white" style="text-align: center;">Saldo no Início do Mês</th>
+        <th class="bg-dark text-white" style="text-align: center;">Rentabilidade Mensal</th>
+        <th class="bg-dark text-white" style="text-align: center;">Rendimento Mensal</th>
+        <th class="bg-dark text-white" style="text-align: center;">Saldo no Final do Mês</th>
+        <th class="bg-dark text-white" style="text-align: center;">Imposto sobre saque</th>
+        <th class="bg-dark text-white" style="text-align: center;">Disponível para saque</th>
       </tr>`;
-    console.log(dadosInvestimento);
-    res.tabela.forEach(m => t += `<tr>
+      }
+      t += `<tr>
         <td>${moment(m.mês).locale('pt-Br').format('MMMM/YYYY').toUpperCase()}</td>
         <td style="text-align: center;">${moedaBR(m.aportePessoalAcumuladoBruto)}</td>
         <td style="text-align: center;">${moedaBR(m.aporteTotalAcumuladoLíquido)}</td>
@@ -781,9 +785,10 @@
         <td style="text-align: center;">${moedaBR(m.saldoFinalMês)}</td>
         <td style="text-align: center;">${moedaBR(m.taxaSaqueAbsoluta)}</td>
         <td class="fw-bold" style="text-align: center;">${moedaBR(m.saldoFinalMêsLíquido)}</td>
-      </tr>`);
+      </tr>`;
+    });
 
-    t += `</table>`;
+    t += `</table></div>`;
 
     $(`#corpoModalXXL`).html(t);
     $(`#modalXXL`).modal(`show`);
