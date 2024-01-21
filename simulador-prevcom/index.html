@@ -275,7 +275,7 @@
               <div class="row">
                 <div class="form-group mt-auto my-2 col-6 col-md-4 col-xl-3">
                   <label for="adicionarUsuarioNome">Rendimento anual médio PREVCOM</label>
-                  <input class="form-control" id="projeçãoFuturaRendimentoPREVCOM" value="6"></input>
+                  <input class="form-control" id="projeçãoFuturaRendimentoPREVCOM" value="6.3"></input>
                 </div>
                 <div class="form-group mt-auto my-2 col-6 col-md-4 col-xl-3">
                   <label for="adicionarUsuarioNome">Rendimento anual médio CDI</label>
@@ -283,7 +283,7 @@
                 </div>
                 <div class="form-group mt-auto my-2 col-6 col-md-4 col-xl-3">
                   <label for="adicionarUsuarioNome">Inflação média (IPCA)</label>
-                  <input class="form-control" id="projeçãoFuturaIPCA" value="5"></input>
+                  <input class="form-control" id="projeçãoFuturaIPCA" value="5.5"></input>
                 </div>
                 <div class="form-group mt-auto my-2 col-6 col-md-4 col-xl-3">
                   <label for="adicionarUsuarioNome">Duração do investimento (anos)</label>
@@ -406,16 +406,31 @@
   // }
 
   function atualizarContribuição() {
-    let absoluta;
-    let salário = AutoNumeric.getNumber('#sérieHistóricaSalário');
-    let contribuição = AutoNumeric.getNumber('#sérieHistóricaContribuiçãoAbsoluta');
-    let referência = salário > TETO_RGPS ? salário - TETO_RGPS : 0;
+    if ($(`#sérieHistórica`).is(`:visible`)) {
+      let absoluta;
+      let salário = AutoNumeric.getNumber('#sérieHistóricaSalário');
+      let contribuição = AutoNumeric.getNumber('#sérieHistóricaContribuiçãoAbsoluta');
+      let referência = salário > TETO_RGPS ? salário - TETO_RGPS : 0;
 
-    if (contribuição > salário) {
-      AutoNumeric.set('#sérieHistóricaContribuiçãoAbsoluta', salário);
+      if (contribuição > salário) {
+        AutoNumeric.set('#sérieHistóricaContribuiçãoAbsoluta', salário);
+      }
+      $(`#sérieHistóricaReferência`).html(moedaBR(referência));
+      $(`#sérieHistóricaLimitePatrocínioPREVCOM`).html(moedaBR(arredondar(referência * 0.075)));
     }
-    $(`#sérieHistóricaReferência`).html(moedaBR(referência));
-    $(`#sérieHistóricaLimitePatrocínioPREVCOM`).html(moedaBR(arredondar(referência * 0.075)));
+
+    if ($(`#projeçãoFutura`).is(`:visible`)) {
+      let absoluta;
+      let salário = AutoNumeric.getNumber('#projeçãoFuturaSalário');
+      let contribuição = AutoNumeric.getNumber('#projeçãoFuturaContribuiçãoAbsoluta');
+      let referência = salário > TETO_RGPS ? salário - TETO_RGPS : 0;
+
+      if (contribuição > salário) {
+        AutoNumeric.set('#projeçãoFuturaContribuiçãoAbsoluta', salário);
+      }
+      $(`#projeçãoFuturaReferência`).html(moedaBR(referência));
+      $(`#projeçãoFuturaLimitePatrocínioPREVCOM`).html(moedaBR(arredondar(referência * 0.075)));
+    }
   }
 
   function ajustarContribuição(ajuste, el) {
