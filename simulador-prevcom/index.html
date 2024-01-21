@@ -640,7 +640,6 @@
   }
 
   function plotarGráficoSérieHistórica(data) {
-    console.trace(data)
     const traces = data.map(obj => {
       const tabela = obj.resultado.tabela.map(item => ({
         x: item.mês,
