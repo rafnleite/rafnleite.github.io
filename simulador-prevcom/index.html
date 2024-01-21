@@ -322,13 +322,13 @@
 
   $(document).ready(async function () {
     $(window).trigger('orientationchange');
-    new AutoNumeric('#sérieHistóricaSalário', brazilianPos);
-    new AutoNumeric('#sérieHistóricaContribuiçãoAbsoluta', brazilianPos);
-    new AutoNumeric('#projeçãoFuturaSalário', brazilianPos);
-    new AutoNumeric('#projeçãoFuturaContribuiçãoAbsoluta', brazilianPos);
-    new AutoNumeric('#projeçãoFuturaRendimentoPREVCOM', 'percentageEU2decPos');
-    new AutoNumeric('#projeçãoFuturaRendimentoCDI', 'percentageEU2decPos');
-    new AutoNumeric('#projeçãoFuturaIPCA', 'percentageEU2decPos');
+    new AutoNumeric('#sérieHistóricaSalário', moedaBRPos);
+    new AutoNumeric('#sérieHistóricaContribuiçãoAbsoluta', moedaBRPos);
+    new AutoNumeric('#projeçãoFuturaSalário', moedaBRPos);
+    new AutoNumeric('#projeçãoFuturaContribuiçãoAbsoluta', moedaBRPos);
+    new AutoNumeric('#projeçãoFuturaRendimentoPREVCOM', percentualPos);
+    new AutoNumeric('#projeçãoFuturaRendimentoCDI', percentualPos);
+    new AutoNumeric('#projeçãoFuturaIPCA', percentualPos);
   });
 
   $(window).on("resize orientationchange", function (event) {
@@ -482,17 +482,18 @@
   }
 
   function calcularRendimentosProjeçãoFutura() {
+
+    const ÍNDICES = {
+      ipca: Math.pow(AutoNumeric.getNumber(`#projeçãoFuturaIPCA`) + 1, 1 / 12),
+      cdi: Math.pow(AutoNumeric.getNumber(`#projeçãoFuturaRendimentoCDI`) + 1, 1 / 12),
+      prevcom: Math.pow(AutoNumeric.getNumber(`#projeçãoFuturaRendimentoPREVCOM`) + 1, 1 / 12)
+    }
+
     listaInvestimentos.forEach(el => {
       el.resultado = {}
       res = el.resultado;
       const dataInicio = moment('2024-01-01');
       const dataFim = dataInicio.clone().add(parseInt($(`#projeçãoFuturaDuração`).val()), 'y');
-
-      const ÍNDICES = {
-        ipca: Math.pow(AutoNumeric.getNumber(`#projeçãoFuturaIPCA`) + 1, 1 / 12),
-        cdi: Math.pow(AutoNumeric.getNumber(`#projeçãoFuturaRendimentoCDI`) + 1, 1 / 12),
-        prevcom: Math.pow(AutoNumeric.getNumber(`#projeçãoFuturaRendimentoPREVCOM`) + 1, 1 / 12)
-      }
 
       res.salárioBruto = AutoNumeric.getNumber('#projeçãoFuturaSalário');
       res.referência = res.salárioBruto > TETO_RGPS ? res.salárioBruto - TETO_RGPS : 0;
@@ -518,7 +519,11 @@
       if (dataInicio.isValid() && dataFim.isValid() && dataInicio.isBefore(dataFim)) {
         let d = dataInicio;
         res.tabela = [];
-        const multiplicadorMensal = ['ipca', 'fixo'].includes(el.índice) ? Math.pow(el.multiplicador, 1 / 12) : el.multiplicador;
+
+        const rendimentoMensal = el.índice === 'cdi' ? Math.pow(((Math.pow(ÍNDICES.cdi, 12) - 1) * el.multiplicador + 1), 1 / 12) :
+          el.índice === 'ipca' ? ÍNDICES.ipca * Math.pow(el.multiplicador, 1 / 12) :
+            el.índice === 'prevcom' ? ÍNDICES.prevcom :
+              el.índice === 'fixo' ? Math.pow(el.multiplicador, 1 / 12) : 0;
 
         while (d.isBefore(dataFim)) {
           let dadosMes = {};
@@ -528,13 +533,8 @@
           dadosMes.aporteTotalAcumuladoLíquido = res.tabela.length == 0 ? res.aporteTotalMensalLíquido : res.tabela[res.tabela.length - 1].aporteTotalAcumuladoLíquido + res.aporteTotalMensalLíquido;
 
           dadosMes.saldoInícioMês = res.tabela.length == 0 ? res.aporteTotalMensalLíquido : res.tabela[res.tabela.length - 1].saldoFinalMês + res.aporteTotalMensalLíquido;
+          dadosMes.rendimentoMensalRelativo = rendimentoMensal;
 
-          if (['prevcom', 'cdi', 'ipca'].includes(el.índice)) {
-            dadosMes.rendimentoMensalRelativo = ÍNDICES[el.índice];
-            el.multiplicador && (dadosMes.rendimentoMensalRelativo *= multiplicadorMensal);
-          } else if (el.índice == 'fixo') {
-            dadosMes.rendimentoMensalRelativo = multiplicadorMensal;
-          }
           dadosMes.rendimentoMensalAbsoluto = arredondar(dadosMes.saldoInícioMês * (dadosMes.rendimentoMensalRelativo - 1));
           dadosMes.saldoFinalMês = dadosMes.saldoInícioMês + dadosMes.rendimentoMensalAbsoluto;
 
@@ -607,11 +607,24 @@
 
           if (['prevcom', 'cdi', 'ipca'].includes(el.índice)) {
             let índiceMês = histórico[el.índice].findIndex(x => x.mês == dadosMes.mês);
-            dadosMes.rendimentoMensalRelativo = histórico[el.índice][índiceMês].idx / histórico[el.índice][índiceMês - 1].idx;
-            el.multiplicador && (dadosMes.rendimentoMensalRelativo *= multiplicadorMensal);
-          } else if (el.índice == 'fixo') {
-            dadosMes.rendimentoMensalRelativo = multiplicadorMensal;
+            let rendimentoMês = histórico[el.índice][índiceMês].idx / histórico[el.índice][índiceMês - 1].idx;
           }
+
+          switch (el.índice) {
+            case 'ipca':
+              dadosMes.rendimentoMensalRelativo = rendimentoMês * multiplicadorMensal;
+              break;
+            case 'cdi':
+              dadosMes.rendimentoMensalRelativo = ((rendimentoMês ^ 12 - 1) * el.multiplicador + 1) ^ (1 / 12);
+              break;
+            case 'prevcom':
+              dadosMes.rendimentoMensalRelativo = rendimentoMês;
+              break;
+            case 'fixo':
+              dadosMes.rendimentoMensalRelativo = multiplicadorMensal;
+              break;
+          }
+
           dadosMes.rendimentoMensalAbsoluto = arredondar(dadosMes.saldoInícioMês * (dadosMes.rendimentoMensalRelativo - 1));
           dadosMes.saldoFinalMês = dadosMes.saldoInícioMês + dadosMes.rendimentoMensalAbsoluto;
 

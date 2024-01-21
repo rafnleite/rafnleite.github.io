@@ -118,13 +118,13 @@ function criarFormulárioInvestimento(el, dadosInvestimento = null) {
       $(`#formularioInvestimentoMultiplicadorDIV`).html(``);
     }
 
-    $('#formularioInvestimentoMultiplicador').length && new AutoNumeric('#formularioInvestimentoMultiplicador', 'percentageEU2decPos');
+    $('#formularioInvestimentoMultiplicador').length && new AutoNumeric('#formularioInvestimentoMultiplicador', percentualPos);
   });
 
   $(`#formularioInvestimentoÍndice`).trigger(`change`);
 
-  new AutoNumeric('#formularioInvestimentoTaxaAporte', 'percentageEU2decPos');
-  new AutoNumeric('#formularioInvestimentoTaxaSaque', 'percentageEU2decPos');
+  new AutoNumeric('#formularioInvestimentoTaxaAporte', percentualPos);
+  new AutoNumeric('#formularioInvestimentoTaxaSaque', percentualPos);
 
   if (dadosInvestimento) {
     $(`#formularioInvestimentoNome`).val(dadosInvestimento.nome);

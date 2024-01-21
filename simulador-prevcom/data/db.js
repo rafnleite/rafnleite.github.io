@@ -368,10 +368,19 @@ const histórico = {
         ]
 }
 
-const brazilianPos = {
+const moedaBRPos = {
     digitGroupSeparator: '.',
     decimalCharacter: ',',
     currencySymbol: 'R$',
     currencySymbolPlacement: 'p',
     minimumValue: '0'
-  };
+};
+
+const percentualPos = {
+    digitGroupSeparator: '.',
+    decimalCharacter: ',',
+    decimalPlaces: 2,
+    suffixText: '%',
+    rawValueDivisor: 100,
+    negative: false 
+};
