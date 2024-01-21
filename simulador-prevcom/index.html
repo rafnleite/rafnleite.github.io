@@ -605,9 +605,10 @@
 
           dadosMes.saldoInícioMês = res.tabela.length == 0 ? res.aporteTotalMensalLíquido : res.tabela[res.tabela.length - 1].saldoFinalMês + res.aporteTotalMensalLíquido;
 
+          let índiceMês, rendimentoMês;
           if (['prevcom', 'cdi', 'ipca'].includes(el.índice)) {
-            let índiceMês = histórico[el.índice].findIndex(x => x.mês == dadosMes.mês);
-            let rendimentoMês = histórico[el.índice][índiceMês].idx / histórico[el.índice][índiceMês - 1].idx;
+            índiceMês = histórico[el.índice].findIndex(x => x.mês == dadosMes.mês);
+            rendimentoMês = histórico[el.índice][índiceMês].idx / histórico[el.índice][índiceMês - 1].idx;
           }
 
           switch (el.índice) {
@@ -615,7 +616,7 @@
               dadosMes.rendimentoMensalRelativo = rendimentoMês * multiplicadorMensal;
               break;
             case 'cdi':
-              dadosMes.rendimentoMensalRelativo = ((rendimentoMês ^ 12 - 1) * el.multiplicador + 1) ^ (1 / 12);
+              dadosMes.rendimentoMensalRelativo = Math.pow(((Math.pow(rendimentoMês, 12) - 1) * el.multiplicador + 1), 1 / 12)
               break;
             case 'prevcom':
               dadosMes.rendimentoMensalRelativo = rendimentoMês;

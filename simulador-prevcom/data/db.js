@@ -382,5 +382,5 @@ const percentualPos = {
     decimalPlaces: 2,
     suffixText: '%',
     rawValueDivisor: 100,
-    negative: false 
+    minimumValue: 0
 };
