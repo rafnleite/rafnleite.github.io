@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+   <!-- basic -->
+   <meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <!-- mobile metas -->
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+   <!-- site metas -->
+   <title>🏎️ | STI Kart - Regulamento</title>
+   <meta name="keywords" content="">
+   <meta name="description" content="">
+   <meta name="author" content="">
+   <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+   <link rel="stylesheet" type="text/css" href="css/style.css">
+   <link rel="stylesheet" href="css/responsive.css">
+   <!-- fevicon -->
+   <link rel="icon" href="images/fevicon.png" type="image/gif" />
+   <!-- CSS -->
+   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+   <link rel="stylesheet" href="css/jquery.mCustomScrollbar.min.css">
+   <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+
+   <!-- BIBLIOTECAS -->
+
+   <script src="./js/funcoes.js"></script>
+   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+   <script src="https://code.jquery.com/jquery-3.6.1.min.js"
+      integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment-with-locales.min.js"></script>
+   <script src="js/popper.min.js"></script>
+   <script src="js/bootstrap.bundle.min.js"></script>
+   <script src="js/plugin.js"></script>
+   <script src="https://d3js.org/d3.v7.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+   <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
+   <script src="js/custom.js"></script>
+</head>
+
+<body>
+   <div class="header_section header_bg">
+      <div class="container">
+         <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="index.html">
+               <div class="h5 text-white">🏁<span class="font-italic"><span class="font-weight-light">KART//</span><span
+                        class="font-weight-bold">STI</span></span></div>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+               aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+               <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+               <ul class="navbar-nav ml-auto">
+                  <li class="nav-item">
+                     <a class="nav-link active" href="corridas.html">Corridas</a>
+                  </li>
+                  <li class="nav-item">
+                     <a class="nav-link" href="pilotos.html">Pilotos</a>
+                  </li>
+                  <li class="nav-item">
+                     <a class="nav-link" href="ranking.html">Ranking</a>
+                  </li>
+                  <li class="nav-item">
+                     <a class="nav-link" href="recordes.html">Recordes</a>
+                  </li>
+                  <li class="nav-item">
+                     <a class="nav-link" href="regulamento.html">Regulamento</a>
+                  </li>
+
+               </ul>
+            </div>
+         </nav>
+      </div>
+   </div>
+
+   <div class="contact_section layout_padding">
+      <div class="container">
+         <div class="row">
+            <div class="col-sm-12">
+               <div class="h1 contact_taital">Corridas</div>
+               <div class="row" id="lista_corridas"></div>
+            </div>
+         </div>
+      </div>
+   </div>
+   </div>
+
+   <div class="copyright_section">
+      <div class="container">
+         <div class="row">
+            <div class="col-sm-12">
+               <p class="copyright_text">2024 | Rafael Nobre Leite.<br>Design by <a href="https://html.design">Free Html
+                     Templates</a>
+                  Distribution by <a href="https://themewagon.com">ThemeWagon</a></p>
+            </div>
+         </div>
+      </div>
+   </div>
+</body>
+
+<script>
+   $(document).ready(async function () {
+
+      const CORRIDAS = {};
+      await loadFileList();
+
+      console.log(CORRIDAS);
+      let cards = [];
+      for (let i = 0; i < 20; i++) {
+         for (corrida in CORRIDAS) {
+            console.log(corrida);
+            cards.push(criarCard(CORRIDAS[corrida], corrida));
+         }
+      }
+
+      $(`#lista_corridas`).html(cards);
+
+      function loadJsonFiles(files) {
+         const fetchPromises = files.map((file) => {
+            const url = `./data/baterias/${file}`;
+            return fetch(url)
+               .then((response) => {
+                  if (!response.ok) {
+                     throw new Error(`Erro ao carregar ${file}: ${response.statusText}`);
+                  }
+                  return response.json();
+               })
+               .then((jsonData) => {
+                  const fileName = file.replace('.json', '');
+                  CORRIDAS[fileName] = jsonData;
+               })
+               .catch((error) => console.error('Erro ao carregar arquivo JSON:', error));
+         });
+
+         return Promise.all(fetchPromises);
+      }
+
+      function loadFileList() {
+         const url = './data/baterias/lista_baterias.json';
+
+         return fetch(url)
+            .then((response) => {
+               if (!response.ok) {
+                  throw new Error(`Erro ao carregar lista de arquivos: ${response.statusText}`);
+               }
+               return response.json();
+            })
+            .then((fileList) => {
+               return loadJsonFiles(fileList);
+            })
+            .then(() => {
+               console.log(CORRIDAS);
+            })
+            .catch((error) => console.error('Erro ao carregar lista de arquivos:', error));
+      }
+
+      function criarCard(corrida, titulo) {
+
+         console.log(corrida);
+         console.log(titulo);
+
+         return `<div class="col-lg-3 col-md-6">
+            <div class="coffee_box">
+            <h3 class="types_text">${formatarData(titulo)}</h3>
+            <p class="looking_text">1º <span class="font-weight-bold">${corrida.corrida[0].NOME}</span></p>
+            <p class="looking_text">2º ${corrida.corrida[1].NOME}</p>
+            <p class="looking_text">3º ${corrida.corrida[2].NOME}</p>
+            <p class="looking_text">${corrida.corrida.length} participantes</p>
+            <div class="read_bt"><a href="#">Ver mais</a></div>
+            </div>
+      </div>`;
+
+      }
+
+   });
+
+   function formatarData(input) {
+      const datePart = input.slice(0, 10);
+      const timePart = input.slice(11, 15);
+
+      const year = parseInt(datePart.slice(0, 4));
+      const month = parseInt(datePart.slice(5, 7)) - 1;
+      const day = parseInt(datePart.slice(8, 10));
+
+      const hours = parseInt(timePart.slice(0, 2));
+      const minutes = parseInt(timePart.slice(2, 4));
+
+      const date = new Date(year, month, day, hours, minutes);
+
+      const formattedDate = `${day.toString().padStart(2, '0')}/${(month + 1).toString().padStart(2, '0')}/${year} - ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+
+      return formattedDate;
+   }
+
+</script>
+
+</html>

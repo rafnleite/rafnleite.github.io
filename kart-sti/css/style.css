@@ -24,6 +24,7 @@
 
 html {
     scroll-behavior: smooth;
+    height: 100%;
 }
 
 body {
@@ -33,6 +34,9 @@ body {
     line-height: 1.80857;
     font-weight: normal;
     overflow-x: hidden;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 a {
@@ -101,7 +105,7 @@ h4 a,
 h5 a,
 h6 a {
     color: #212121;
-    text-decoration: none!important;
+    text-decoration: none !important;
     opacity: 1
 }
 
@@ -146,7 +150,7 @@ img {
     height: auto;
 }
 
- :focus {
+:focus {
     outline: 0;
 }
 
@@ -224,8 +228,7 @@ button {
 .header_bg {
     width: 100%;
     float: left;
-    background: #1d1d1d
-    height: auto;
+    background: #1d1d1d height: auto;
     background-size: 100%;
 }
 
@@ -297,7 +300,7 @@ button {
     color: #f01c1c;
 }
 
-.navbar-brand{
+.navbar-brand {
     margin-top: 20px;
 }
 
@@ -538,13 +541,16 @@ button {
     width: 100%;
     float: left;
 }
+
 .coffee_box {
     width: 100%;
     float: left;
     background-color: #242c2f;
     height: auto;
     padding: 20px 20px;
+    margin: 20px 20px;
 }
+
 .coffee_box:hover {
     background-color: #f01c1c;
 }
@@ -1049,7 +1055,9 @@ textarea#comment.update_mail::placeholder {
 
 .copyright_section {
     width: 100%;
-    float: left;
+    position: fixed;
+    left: 0;
+    bottom: 0;
     background-color: #f01c1c;
     height: auto;
 }
