@@ -91,7 +91,7 @@
    </div>
    </div>
 
-   <div class="copyright_section">
+   <footer class="copyright_section">
       <div class="container">
          <div class="row">
             <div class="col-sm-12">
@@ -101,7 +101,7 @@
             </div>
          </div>
       </div>
-   </div>
+      </div>
 </body>
 
 <script>
@@ -112,11 +112,8 @@
 
       console.log(CORRIDAS);
       let cards = [];
-      for (let i = 0; i < 20; i++) {
-         for (corrida in CORRIDAS) {
-            console.log(corrida);
-            cards.push(criarCard(CORRIDAS[corrida], corrida));
-         }
+      for (corrida in CORRIDAS) {
+         cards.push(criarCard(CORRIDAS[corrida], corrida));
       }
 
       $(`#lista_corridas`).html(cards);
@@ -162,41 +159,18 @@
 
       function criarCard(corrida, titulo) {
 
-         console.log(corrida);
-         console.log(titulo);
-
          return `<div class="col-lg-3 col-md-6">
             <div class="coffee_box">
             <h3 class="types_text">${formatarData(titulo)}</h3>
-            <p class="looking_text">1º <span class="font-weight-bold">${corrida.corrida[0].NOME}</span></p>
-            <p class="looking_text">2º ${corrida.corrida[1].NOME}</p>
-            <p class="looking_text">3º ${corrida.corrida[2].NOME}</p>
+            <p class="looking_text">🥇 <span class="font-weight-bold">${corrida.corrida[0].NOME}</span></p>
+            <p class="looking_text">🥈 ${corrida.corrida[1].NOME}</p>
+            <p class="looking_text">🥉 ${corrida.corrida[2].NOME}</p>
             <p class="looking_text mt-2">${corrida.corrida.length} participantes</p>
-            <div class="read_bt"><a href="#">Ver mais</a></div>
+            <div class="read_bt"><a href="./corrida.html?bateria=${titulo.replace(' ', '')}">Ver mais</a></div>
             </div>
       </div>`;
-
       }
-
    });
-
-   function formatarData(input) {
-      const datePart = input.slice(0, 10);
-      const timePart = input.slice(11, 15);
-
-      const year = parseInt(datePart.slice(0, 4));
-      const month = parseInt(datePart.slice(5, 7)) - 1;
-      const day = parseInt(datePart.slice(8, 10));
-
-      const hours = parseInt(timePart.slice(0, 2));
-      const minutes = parseInt(timePart.slice(2, 4));
-
-      const date = new Date(year, month, day, hours, minutes);
-
-      const formattedDate = `${day.toString().padStart(2, '0')}/${(month + 1).toString().padStart(2, '0')}/${year} - ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
-
-      return formattedDate;
-   }
 
 </script>
 

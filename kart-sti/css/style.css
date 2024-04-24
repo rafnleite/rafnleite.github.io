@@ -1055,9 +1055,6 @@ textarea#comment.update_mail::placeholder {
 
 .copyright_section {
     width: 100%;
-    position: fixed;
-    left: 0;
-    bottom: 0;
     background-color: #f01c1c;
     height: auto;
 }
@@ -1085,4 +1082,48 @@ textarea#comment.update_mail::placeholder {
 
 .margin_top90 {
     margin-top: 90px;
+}
+
+.table-coffee {
+    border-collapse: separate;
+    border-spacing: 10px;
+    background-color: transparent;
+    width: 100%;
+}
+
+table.table-coffee thead th,
+table.table-coffee thead td {
+    border-bottom: 0px !important;
+}
+
+.table-coffee tbody {
+    display: table;
+    width: 100%;
+    border-spacing: 0 5px;
+}
+
+.table-coffee thead {
+    display: none;
+}
+
+
+.table-coffee td {
+    background-color: #242c2f;
+    color: white;
+}
+
+.table-coffee td:first-child {
+    background-color: #242c2f;
+    color: white;
+    border-radius: 10px 0px 0px 10px;
+}
+
+.table-coffee td:last-child {
+    background-color: #242c2f;
+    color: white;
+    border-radius: 0px 10px 10px 0px;
+}
+
+.table-coffee tbody tr:hover td {
+    background-color: #f01c1c;
 }

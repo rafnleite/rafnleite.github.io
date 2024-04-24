@@ -70,3 +70,73 @@ function caulcarPCTT(pos, numero_participantes) {
 function caulcarPVC(voltas) {
   return 10 * voltas;
 }
+
+function formatarData(dataTexto) {
+  if (dataTexto.length !== 12) {
+    throw new Error('Formato incorreto do texto da data');
+  }
+
+  const data = moment(dataTexto, 'YYYYMMDDHHmm');
+
+  if (!data.isValid()) {
+    throw new Error('Data inválida');
+  }
+
+  return data.format('DD/MM/YYYY • HH:mm');
+}
+
+const paletaDeCores = [
+  "#e6194B",
+  "#3cb44b",
+  "#ffe119",
+  "#4363d8",
+  "#f58231",
+  "#911eb4",
+  "#42d4f4",
+  "#f032e6",
+  "#bfef45",
+  "#fabed4",
+  "#469990",
+  "#dcbeff",
+  "#9A6324",
+  "#fffac8",
+  "#800000",
+  "#aaffc3",
+  "#808000",
+  "#ffd8b1",
+  "#000075",
+  "#a9a9a9",
+  "#000000",
+  '#8b4513',
+  '#556b2f',
+  '#000000',
+  '#483d8b',
+  '#b22222',
+  '#008080',
+  '#9acd32',
+  '#daa520',
+  '#8fbc8f',
+  '#8b008b',
+  '#b03060',
+  '#d2b48c',
+  '#00ced1',
+  '#ff8c00',
+  '#7fff00',
+  '#9400d3',
+  '#00ff7f',
+  '#00bfff',
+  '#0000ff',
+  '#f08080',
+  '#ff7f50',
+  '#ff00ff',
+  '#f0e68c',
+  '#ffff54',
+  '#6495ed',
+  '#dda0dd',
+  '#b0e0e6',
+  '#ff1493',
+  '#7b68ee',
+  '#ee82ee',
+  '#98fb98',
+  '#7fffd4',
+]

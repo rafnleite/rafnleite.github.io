@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+   <!-- basic -->
+   <meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <!-- mobile metas -->
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+   <!-- site metas -->
+   <title>🏎️ | STI Kart</title>
+   <meta name="keywords" content="">
+   <meta name="description" content="">
+   <meta name="author" content="">
+   <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+   <link rel="stylesheet" type="text/css" href="css/style.css">
+   <link rel="stylesheet" href="css/responsive.css">
+   <!-- fevicon -->
+   <link rel="icon" href="images/fevicon.png" type="image/gif" />
+   <!-- CSS -->
+   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+   <link rel="stylesheet" href="css/jquery.mCustomScrollbar.min.css">
+   <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+   <link href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css" rel="stylesheet">
+   <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css">
+   <link href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css" rel="stylesheet">
+
+
+   <!-- BIBLIOTECAS -->
+
+   <script src="./js/funcoes.js"></script>
+   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+   <script src="https://code.jquery.com/jquery-3.6.1.min.js"
+      integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+   <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment-with-locales.min.js"></script>
+
+   <script src="js/popper.min.js"></script>
+   <script src="js/bootstrap.bundle.min.js"></script>
+   <script src="js/plugin.js"></script>
+   <script src="https://d3js.org/d3.v7.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+   <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+
+   <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
+   <script src="js/custom.js"></script>
+</head>
+
+<body>
+   <div class="header_section header_bg">
+      <div class="container">
+         <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="index.html">
+               <div class="h5 text-white">🏁<span class="font-italic"><span class="font-weight-light">KART//</span><span
+                        class="font-weight-bold">STI</span></span></div>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+               aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+               <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+               <ul class="navbar-nav ml-auto">
+                  <li class="nav-item">
+                     <a class="nav-link active" href="corridas.html">Corridas</a>
+                  </li>
+                  <li class="nav-item">
+                     <a class="nav-link" href="pilotos.html">Pilotos</a>
+                  </li>
+                  <li class="nav-item">
+                     <a class="nav-link" href="ranking.html">Ranking</a>
+                  </li>
+                  <li class="nav-item">
+                     <a class="nav-link" href="recordes.html">Recordes</a>
+                  </li>
+                  <li class="nav-item">
+                     <a class="nav-link" href="regulamento.html">Regulamento</a>
+                  </li>
+
+               </ul>
+            </div>
+         </nav>
+      </div>
+   </div>
+
+   <div class="contact_section layout_padding">
+      <div class="container">
+         <div class="row">
+            <div class="col-sm-12">
+               <div class="h1 contact_taital" id="títuloCorrida"></div>
+               <p class="text-center" id="URLCorrida"></p>
+               <div class="table-responsive">
+                  <table id="tabelaClassificaçãoCorrida" class="table-hover-coffee table-coffee" style="width:100%">
+                  </table>
+               </div>
+            </div>
+         </div>
+         <div class="row">
+            <div class="col-12">
+               <canvas id="gráficoClassificação" width="100%" height="800"></canvas>
+            </div>
+         </div>
+         <div class="row" id="tabelaClassificaçãoTomadaDeTempo"></div>
+
+      </div>
+   </div>
+
+   <div class="copyright_section">
+      <div class="container">
+         <div class="row">
+            <div class="col-sm-12">
+               <p class="copyright_text">2024 | Rafael Nobre Leite.<br>Design by <a href="https://html.design">Free Html
+                     Templates</a>
+                  Distribution by <a href="https://themewagon.com">ThemeWagon</a></p>
+            </div>
+         </div>
+      </div>
+   </div>
+</body>
+
+<script>
+   $(document).ready(async function () {
+
+      const url = window.location.href;
+      const BATERIA = (new URL(url)).searchParams.get('bateria');
+      console.log(BATERIA);
+      let CORRIDA = {};
+
+      await carregarArquivoJSON(BATERIA);
+
+
+      function carregarArquivoJSON(files) {
+         const url = `./data/baterias/${BATERIA}.json`;
+         console.log(url)
+         return fetch(url)
+            .then((response) => {
+               if (!response.ok) {
+                  throw new Error(`Erro ao carregar ${file}: ${response.statusText}`);
+               }
+               return response.json();
+            })
+            .then((jsonData) => {
+               CORRIDA = jsonData;
+            })
+            .catch((error) => console.error('Erro ao carregar arquivo JSON:', error));
+
+         return Promise.all(fetchPromises);
+      }
+
+      $(`#títuloCorrida`).html(formatarData(BATERIA));
+      $(`#URLCorrida`).html(`<a href="${CORRIDA.url}" target="_blank">Ver resultado no LapTime</a>`);
+      gerarTabelaDeClassificacao(CORRIDA.corrida);
+      criarGráficoClassificação(CORRIDA);
+
+   });
+
+   function gerarTabelaDeClassificacao(dados) {
+
+      // console.log(dados);
+
+      if (window.hasOwnProperty('tabelaClassificaçãoCorrida')) {
+         $(`#tabelaClassificaçãoCorrida`).DataTable().destroy();
+      }
+
+      window.tabelaClassificaçãoCorrida = $(`#tabelaClassificaçãoCorrida`).DataTable({
+         data: dados,
+         dom: 'rt',
+         ordering: false,
+         pageLength: -1,
+         columns: [
+            {
+               data: 'POS',
+               class: 'text-center align-middle h5'
+            },
+            {
+               data: 'NOME',
+               class: 'align-middle'
+            },
+            {
+               data: 'POS',
+               class: 'text-center align-middle',
+               render: function (data, type, full, meta) {
+                  return full['D.L.'].replace('.', ',');
+               }
+            }
+         ]
+      });
+
+   }
+
+   function criarGráficoClassificação(dados) {
+
+      dados.corrida.forEach((el) => {
+         el['MAPA_VOLTAS_SEG'] = [];
+         el['MAPA_VOLTAS_SEG_ACC'] = [];
+
+         el['MAPA_VOLTAS'].forEach((v, idx) => {
+            if (v) {
+               partes = v.split(":");
+               el['MAPA_VOLTAS_SEG'][idx] = Number(partes[0]) * 60 + Number(partes[1]);
+               let acc = 0;
+               for (let i = 0; i <= idx; i++) {
+                  acc += el['MAPA_VOLTAS_SEG'][i];
+               }
+               el['MAPA_VOLTAS_SEG_ACC'][idx] = acc;
+            } else {
+               el['MAPA_VOLTAS_SEG'][idx] = null;
+               el['MAPA_VOLTAS_SEG_ACC'][idx] = null;
+            }
+         });
+      });
+
+      const N_VOLTAS = dados.corrida[0]['MAPA_VOLTAS_SEG_ACC'].length;
+
+      let largada = dados.tomada_de_tempo.map(el => {
+         return {
+            NOME: el.NOME,
+            POS: Number(el.POS)
+         }
+      });
+
+      let chegada = dados.corrida.map(el => {
+         return {
+            NOME: el.NOME,
+            POS: Number(el.POS)
+         }
+      });
+
+      let voltas = [];
+
+      for (let i = 0; i < N_VOLTAS; i++) {
+         let volta = dados.corrida.map(el => {
+            return {
+               NOME: el.NOME,
+               TEMPO: el['MAPA_VOLTAS_SEG_ACC'][i]
+            }
+         });
+
+         voltas.push(volta.filter(el => el.TEMPO).sort((a, b) => a.TEMPO - b.TEMPO));
+      }
+
+      let pilotosPosições = [];
+
+      dados.corrida.forEach((el) => {
+         let p = {
+            NOME: el.NOME,
+            POS: []
+         };
+
+         let largada_obj = largada.find(el2 => el2.NOME == p.NOME);
+
+         if (largada_obj) {
+            p.POS.push(largada.find(el2 => el2.NOME == p.NOME).POS);
+         } else {
+            p.POS.push(null);
+         }
+
+         for (let i = 0; i < voltas.length; i++) {
+            let volta = voltas[i].find(el2 => el2.NOME == p.NOME);
+            if (volta && volta.TEMPO) {
+               p.POS.push(voltas[i].findIndex(el2 => el2.NOME == p.NOME) + 1);
+            } else {
+               p.POS.push(chegada.find(el2 => el2.NOME == p.NOME).POS);
+            }
+         }
+         p.POS.push(chegada.find(el2 => el2.NOME == p.NOME).POS);
+
+         pilotosPosições.push(p);
+      });
+
+
+      const RÓTULOS = ['LARGADA', ...Array.from({ length: N_VOLTAS }, (_, i) => i + 1), 'CHEGADA'];
+
+      const datasets = pilotosPosições.map((piloto, idx) => ({
+         label: piloto.NOME,
+         data: piloto.POS,
+         borderColor: paletaDeCores[idx],
+         pointRadius: 0,
+         fill: false,
+         lineTension: 0,
+      }));
+
+      const ctx = document.getElementById("gráficoClassificação").getContext("2d");
+      const chart = new Chart(ctx, {
+         type: "line",
+         data: {
+            labels: RÓTULOS,
+            datasets: datasets,
+         },
+         options: {
+            scales: {
+               y: {
+                  reverse: true,
+                  beginAtZero: false,
+                  title: {
+                     display: true,
+                     text: "Posição",
+                  },
+               },
+               x: {
+                  title: {
+                     display: true,
+                     text: "Voltas",
+                  },
+               },
+            },
+            plugins: {
+               legend: {
+                  position: "bottom",
+                  labels: {
+                     boxHeight: 0
+                  }
+               },
+               tooltip: {
+                  backgroundColor: "rgba(255,255,255,0.5)",
+                  borderColor: '#dddfeb',
+                  titleColor: `#000000`,
+                  bodyColor: `#000000`,
+                  position: 'nearest',
+                  borderWidth: 1,
+                  displayColors: false,
+                  caretPadding: 5,
+               },
+            },
+            interaction: {
+               mode: 'nearest',
+               intersect: false
+            },
+            responsive: true,
+            aspectRatio: 1,
+            maintainAspectRatio: false,
+            onHover: function (event, activeElements) {
+               chart.data.datasets.forEach((dataset) => {
+                  dataset.borderWidth = 2;
+               });
+
+               if (activeElements.length > 0) {
+                  const activeDatasetIndex = activeElements[0].datasetIndex;
+                  chart.data.datasets[activeDatasetIndex].borderWidth = 6;
+               }
+
+               chart.update();
+            }
+         },
+      });
+
+   }
+
+</script>
+
+</html>
