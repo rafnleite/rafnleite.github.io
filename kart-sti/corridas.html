@@ -43,7 +43,7 @@
    <script src="js/custom.js"></script>
 </head>
 
-<body>
+<body style="min-height:100vh">
    <div class="header_section header_bg">
       <div class="container">
          <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -89,7 +89,7 @@
          </div>
       </div>
    </div>
-   </div>
+
 
    <footer class="copyright_section">
       <div class="container">
@@ -101,7 +101,7 @@
             </div>
          </div>
       </div>
-      </div>
+   </footer>
 </body>
 
 <script>
@@ -116,7 +116,9 @@
          cards.push(criarCard(CORRIDAS[corrida], corrida));
       }
 
-      $(`#lista_corridas`).html(cards);
+      cards.sort((a, b) => b.bateria - a.bateria);
+
+      $(`#lista_corridas`).html(cards.map(el => el.card));
 
       function loadJsonFiles(files) {
          const fetchPromises = files.map((file) => {
@@ -159,7 +161,9 @@
 
       function criarCard(corrida, titulo) {
 
-         return `<div class="col-lg-3 col-md-6">
+         return {
+            bateria: titulo,
+            card: `<div class="col-lg-3 col-md-6">
             <div class="coffee_box">
             <h3 class="types_text">${formatarData(titulo)}</h3>
             <p class="looking_text">🥇 <span class="font-weight-bold">${corrida.corrida[0].NOME}</span></p>
@@ -168,7 +172,8 @@
             <p class="looking_text mt-2">${corrida.corrida.length} participantes</p>
             <div class="read_bt"><a href="./corrida.html?bateria=${titulo.replace(' ', '')}">Ver mais</a></div>
             </div>
-      </div>`;
+      </div>`
+         };
       }
    });
 

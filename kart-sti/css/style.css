@@ -37,6 +37,10 @@ body {
     min-height: 100%;
     display: flex;
     flex-direction: column;
+    box-sizing: border-box;
+    height: 100%;
+    padding: 0;
+    margin: 0;
 }
 
 a {
@@ -801,6 +805,7 @@ button {
 .contact_section {
     width: 100%;
     float: left;
+    flex-grow: 1;
 }
 
 .contact_taital {
@@ -1057,6 +1062,8 @@ textarea#comment.update_mail::placeholder {
     width: 100%;
     background-color: #f01c1c;
     height: auto;
+    flex-grow: 0;
+    flex-shrink: 0;
 }
 
 .copyright_text {
@@ -1126,4 +1133,18 @@ table.table-coffee thead td {
 
 .table-coffee tbody tr:hover td {
     background-color: #f01c1c;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+tr.active td {
+    background-color: #f01c1c !important;
+}
+
+tr.child td {
+    background-color: #ffffff !important;
+    color: black !important;
+    font-family: 'arial' !important;
 }
