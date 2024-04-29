@@ -5,6 +5,8 @@ const P_MIN = 10
 const FRAC_TT = 0.07;
 const P_MIN_TT = 0;
 const FRAC_MVC = 0.12;
+const P_VC = 5;
+
 
 const numeroBr = function (numero, max = 0, min = 0) {
   if (numero === null) return null;
@@ -70,7 +72,7 @@ function caulcarPCTT(pos, numero_participantes) {
 }
 
 function caulcarPVC(voltas) {
-  return 10 * voltas;
+  return P_VC * voltas;
 }
 
 function formatarData(dataTexto) {

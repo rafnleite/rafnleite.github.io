@@ -25,11 +25,10 @@
    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
    <link href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css" rel="stylesheet">
    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css">
-   <link href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css" rel="stylesheet">
+   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
 
 
    <!-- BIBLIOTECAS -->
-
    <script src="./js/funcoes.js"></script>
    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
@@ -38,6 +37,9 @@
       integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
    <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment-with-locales.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/js/all.min.js"
+      integrity="sha512-u3fPA7V8qQmhBPNT5quvaXVa1mnnLSXUep5PS1qo5NRzHwG19aHmNJnj1Q8hpA/nBWZtZD4r4AX6YOt5ynLN2g=="
+      crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
    <script src="js/popper.min.js"></script>
    <script src="js/bootstrap.bundle.min.js"></script>
@@ -89,22 +91,53 @@
    <div class="contact_section layout_padding">
       <div class="container">
          <div class="row">
-            <div class="col-sm-12">
-               <div class="h1 contact_taital" id="títuloCorrida"></div>
-               <p class="text-center" id="URLCorrida"></p>
+            <div class="h1 contact_taital" id="títuloCorrida"></div>
+            <p class="text-center" id="URLCorrida"></p>
+         </div>
+
+         <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+               <a class="nav-link active" id="tabelaClassificaçãoCorrida-tab" data-toggle="tab"
+                  href="#tabelaClassificaçãoCorrida" role="tab" aria-controls="tabelaClassificaçãoCorrida"
+                  aria-selected="true">Classificação da Corrida</a>
+            </li>
+            <li class="nav-item" role="presentation">
+               <a class="nav-link" id="gráficoEvoluçãoCorrida-tab" data-toggle="tab" href="#gráficoEvoluçãoCorrida"
+                  role="tab" aria-controls="gráficoEvoluçãoCorrida" aria-selected="false">Gráfico de evolução</a>
+            </li>
+            <li class="nav-item" role="presentation">
+               <a class="nav-link" id="tabelaTomadaDeTempo-tab" data-toggle="tab" href="#tabelaTomadaDeTempo" role="tab"
+                  aria-controls="tabelaTomadaDeTempo" aria-selected="false">Grid de Largada</a>
+            </li>
+            <li class="nav-item" role="presentation">
+               <a class="nav-link" id="tabelaMelhoresVoltas-tab" data-toggle="tab" href="#tabelaMelhoresVoltas"
+                  role="tab" aria-controls="tabelaMelhoresVoltas" aria-selected="false">Melhores Voltas</a>
+            </li>
+         </ul>
+
+         <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="tabelaClassificaçãoCorrida" role="tabelaClassificaçãoCorrida"
+               aria-labelledby="tabelaClassificaçãoCorrida-tab">
                <div class="table-responsive">
                   <table id="tabelaDeClassificaçãoCorrida" class="table-hover-coffee table-coffee" style="width:100%">
                   </table>
                </div>
             </div>
-         </div>
-         <div class="row">
-            <div class="col-12">
-               <canvas id="gráficoDeClassificaçãoCorrida" width="100%" height="800"></canvas>
+            <div class="tab-pane fade" id="gráficoEvoluçãoCorrida" role="gráficoEvoluçãoCorrida"
+               aria-labelledby="gráficoEvoluçãoCorrida-tab">
+               <div class="row">
+                  <div class="col-12">
+                     <canvas id="gráficoDeClassificaçãoCorridaCanvas" width="100%" height="800"></canvas>
+                  </div>
+               </div>
             </div>
+            <div class="tab-pane fade" id="tabelaTomadaDeTempo" role="tabelaTomadaDeTempo"
+               aria-labelledby="tabelaTomadaDeTempotab">
+               <div class="row" id="tabelaClassificaçãoTomadaDeTempo"></div>
+            </div>
+            <div class="tab-pane fade" id="tabelaMelhoresVoltas" role="tabelaMelhoresVoltas"
+               aria-labelledby="tabelaMelhoresVoltas-tab">...</div>
          </div>
-         <div class="row" id="tabelaClassificaçãoTomadaDeTempo"></div>
-
       </div>
    </div>
 
@@ -126,11 +159,9 @@
 
       const url = window.location.href;
       const BATERIA = (new URL(url)).searchParams.get('bateria');
-      console.log(BATERIA);
-      let CORRIDA = {};
+      window.CORRIDA = {};
 
       await carregarArquivoJSON(BATERIA);
-
 
       function carregarArquivoJSON(files) {
          const url = `./data/baterias/${BATERIA}.json`;
@@ -149,34 +180,14 @@
          return Promise.all(fetchPromises);
       }
 
-      let MELHORES_VOLTAS = [];
-
-      CORRIDA.corrida.forEach(c => {
-         MELHORES_VOLTAS = MELHORES_VOLTAS.concat(c['MAPA_VOLTAS'].map((v, idx) => {
-            return {
-               PILOTO: c.NOME,
-               VOLTA_TEMPO: v,
-               VOLTA_NUMERO: idx + 1
-            }
-         }).filter(el => el.VOLTA_TEMPO));
-      });
-
-      MELHORES_VOLTAS = MELHORES_VOLTAS.sort((a, b) => a.VOLTA_TEMPO > b.VOLTA_TEMPO ? 1 : -1);
-
-      CORRIDA.corrida.forEach(p => {
-         p['MELHOR_VOLTA'] = p['MAPA_VOLTAS'].includes(MELHORES_VOLTAS[0]['VOLTA_TEMPO']) ? true : false;
-      });
-
       $(`#títuloCorrida`).html(formatarData(BATERIA));
       $(`#URLCorrida`).html(`<a href="${CORRIDA.url}" target="_blank">Ver resultado no LapTime</a>`);
       gerarTabelaDeClassificaçãoCorrida(CORRIDA);
-      criarGráficoDeClassificaçãoCorrida(CORRIDA);
+      atualizarGráficoDeClassificaçãoCorrida(CORRIDA);
 
    });
 
    function gerarTabelaDeClassificaçãoCorrida(dados) {
-
-      console.log(dados);
 
       window.callDetalhesTabelaDeClassificaçãoCorrida = false;
 
@@ -202,14 +213,15 @@
                data: 'NOME',
                class: 'align-middle pointer',
                render: function (data, type, full, meta) {
-                  return `${full['NOME']} #${full['#']} ${full['MELHOR_VOLTA'] ? 'MV' : ''}`;
+                  return `<strong>#${full['#']}</strong> ${full['NOME']} ${full['MVC'] ? `<span class="badge badge-pill badge-warning">MELHOR VOLTA</span>` : ''}`;
                }
             },
             {
                data: 'POS',
                class: 'text-center align-middle pointer',
                render: function (data, type, full, meta) {
-                  return full['D.L.'].replace('.', ',');
+                  if (full.POS == 1) return full['TT'].replace('.', ',')
+                  return full['DL'].includes('VOLTA') ? full['DL'] : `+${full['DL'].replace('.', ',')}`;
                }
             }
          ]
@@ -222,14 +234,11 @@
    }
 
    async function configurarDetalhesTabelaDeClassificaçãoCorrida(CORRIDA) {
-      $(`#tabelaDeClassificaçãoCorrida tbody`).on(`click`, `td`, async function () {
+      $(`#tabelaDeClassificaçãoCorrida tbody`).on(`click`, `td.pointer`, async function () {
          let tr = $(this).closest(`tr`);
          let row = tabelaDeClassificaçãoCorrida.row(tr);
 
-         console.log(row);
-
          if (row.child.isShown()) {
-            console.log('isShown')
             row.child.hide();
             tr.removeClass(`active`);
          } else {
@@ -244,19 +253,10 @@
                }
             });
 
-            gerarDetalhePiloto(row.data(), CORRIDA).then(el => row.child(el, 'child').show());
+            gerarDetalhePiloto(row.data(), CORRIDA).then(el => row.child(el, 'child p-3').show());
             tr.addClass(`active`);
          }
       });
-
-      // removerTooltip();
-      // $('[data-toggle="tooltip"]').tooltip();
-
-      // tabelaProcessosProjetosUsuario.on(`user-select`, function (e, dt, type, cell, originalEvent) {
-      //    if ($(cell.node()).hasClass(`details-control`)) {
-      //       e.preventDefault();
-      //    }
-      // });
    }
 
    async function gerarDetalhePiloto(d, CORRIDA) {
@@ -266,20 +266,20 @@
       let pontuacao = [`<div class="h6">Pontuação</div>`];
 
       d['VLTS'] && detalhesPiloto.push(`<div><b>Número de voltas: </b>${d['VLTS']}</div>`);
-      d['T.T'] && detalhesPiloto.push(`<div><b>Tempo total: </b>${d['T.T']}</div>`);
-      d['V.M.(km/h)'] && detalhesPiloto.push(`<div><b>Velocidade Média: </b>${numeroBr(d['V.M.(km/h)'], 2)} Km/h</div>`);
-      d['T.M.V'] && detalhesPiloto.push(`<div><b>Tempo da Melhor Volta: </b>${d['T.M.V']}</div>`);
-      d['D.A.'] && d['D.A.'] != '---' && detalhesPiloto.push(`<div> <b>Diferença para o anterior: </b>${d['D.A.']}</div>`);
+      d['TT'] && detalhesPiloto.push(`<div><b>Tempo total: </b>${d['TT'].replace('.', ',')}</div>`);
+      d['VM'] && detalhesPiloto.push(`<div><b>Velocidade Média: </b>${numeroBr(d['VM'], 2)} Km/h</div>`);
+      d['TMV'] && detalhesPiloto.push(`<div><b>Tempo da Melhor Volta: </b>${d['TMV'].replace('.', ',')}</div>`);
+      d['DA'] && d['DA'] != '---' && detalhesPiloto.push(`<div> <b>Diferença para o anterior: </b>${d['DA'].replace('.', ',')}</div>`);
 
       let pcc = caulcarPCC(d['POS'], CORRIDA.corrida.length);
-      let pmv = d['MELHOR_VOLTA'] ? caulcarPMV(CORRIDA.corrida.length) : 0;
+      let pmv = d['MVC'] ? caulcarPMV(CORRIDA.corrida.length) : 0;
       let pctt = caulcarPCTT(tt['POS'], CORRIDA.tomada_de_tempo.length);
       let pvc = caulcarPVC(d.MAPA_VOLTAS.filter(el => el).length + tt.MAPA_VOLTAS.filter(el => el).length);
 
-      pontuacao.push(`<div><b>PCC: </b>${numeroBr(pcc, 2, 2)}</div>`);
-      pontuacao.push(`<div><b>PMV: </b>${numeroBr(pmv, 2, 2)}</div>`);
-      pontuacao.push(`<div><b>PCTT: </b>${numeroBr(pctt, 2, 2)}</div>`);
-      pontuacao.push(`<div><b>PVC: </b>${numeroBr(pvc, 2, 2)}</div>`);
+      pontuacao.push(`<div><b>P<sub>CC</sub>: </b>${numeroBr(pcc, 2, 2)}</div>`);
+      pontuacao.push(`<div><b>P<sub>MV</sub>: </b>${numeroBr(pmv, 2, 2)}</div>`);
+      pontuacao.push(`<div><b>P<sub>CTT</sub>: </b>${numeroBr(pctt, 2, 2)}</div>`);
+      pontuacao.push(`<div><b>P<sub>VC</sub>: </b>${numeroBr(pvc, 2, 2)}</div>`);
       pontuacao.push(`<div><b>Pontuação Total: </b>${numeroBr(pcc + pmv + pctt + pvc, 2, 2)}</div>`);
 
 
@@ -289,29 +289,15 @@
          </div>`
    }
 
-   function criarGráficoDeClassificaçãoCorrida(dados) {
+   function atualizarGráficoDeClassificaçãoCorrida() {
 
-      dados.corrida.forEach((el) => {
-         el['MAPA_VOLTAS_SEG'] = [];
-         el['MAPA_VOLTAS_SEG_ACC'] = [];
+      if (typeof gráficoDeClassificaçãoCorrida != 'undefined' && gráficoDeClassificaçãoCorrida) {
+         gráficoDeClassificaçãoCorrida.destroy();
+      }
 
-         el['MAPA_VOLTAS'].forEach((v, idx) => {
-            if (v) {
-               partes = v.split(":");
-               el['MAPA_VOLTAS_SEG'][idx] = Number(partes[0]) * 60 + Number(partes[1]);
-               let acc = 0;
-               for (let i = 0; i <= idx; i++) {
-                  acc += el['MAPA_VOLTAS_SEG'][i];
-               }
-               el['MAPA_VOLTAS_SEG_ACC'][idx] = acc;
-            } else {
-               el['MAPA_VOLTAS_SEG'][idx] = null;
-               el['MAPA_VOLTAS_SEG_ACC'][idx] = null;
-            }
-         });
-      });
+      let dados = CORRIDA;
 
-      const N_VOLTAS = dados.corrida[0]['MAPA_VOLTAS_SEG_ACC'].length;
+      const N_VOLTAS = dados.corrida[0]['MAPA_VOLTAS_ACC_ms'].length;
 
       let largada = dados.tomada_de_tempo.map(el => {
          return {
@@ -333,7 +319,7 @@
          let volta = dados.corrida.map(el => {
             return {
                NOME: el.NOME,
-               TEMPO: el['MAPA_VOLTAS_SEG_ACC'][i]
+               TEMPO: el['MAPA_VOLTAS_ACC_ms'][i]
             }
          });
 
@@ -381,8 +367,8 @@
          lineTension: 0,
       }));
 
-      const ctx = document.getElementById("gráficoDeClassificaçãoCorrida").getContext("2d");
-      const chart = new Chart(ctx, {
+      const ctx = document.getElementById("gráficoDeClassificaçãoCorridaCanvas").getContext("2d");
+      window.gráficoDeClassificaçãoCorrida = new Chart(ctx, {
          type: "line",
          data: {
             labels: RÓTULOS,
@@ -431,21 +417,29 @@
             aspectRatio: 1,
             maintainAspectRatio: false,
             onHover: function (event, activeElements) {
-               chart.data.datasets.forEach((dataset) => {
+               gráficoDeClassificaçãoCorrida.data.datasets.forEach((dataset) => {
                   dataset.borderWidth = 2;
                });
 
                if (activeElements.length > 0) {
                   const activeDatasetIndex = activeElements[0].datasetIndex;
-                  chart.data.datasets[activeDatasetIndex].borderWidth = 6;
+                  gráficoDeClassificaçãoCorrida.data.datasets[activeDatasetIndex].borderWidth = 6;
                }
 
-               chart.update();
+               gráficoDeClassificaçãoCorrida.update();
             }
          },
       });
 
    }
+
+   $('#myTab a').on('click', function (e) {
+      e.preventDefault();
+      $(this).tab('show');
+      if ($(this).attr('id') == 'gráficoEvoluçãoCorrida-tab' && (typeof gráficoDeClassificaçãoCorrida == 'undefined' || gráficoDeClassificaçãoCorrida.height == 1 || gráficoDeClassificaçãoCorrida.height == 0)) {
+         setTimeout(() => { atualizarGráficoDeClassificaçãoCorrida(); console.log('oi') }, 250);
+      }
+   });
 
 </script>
 
