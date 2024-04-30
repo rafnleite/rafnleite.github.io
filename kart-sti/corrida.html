@@ -90,31 +90,32 @@
 
    <div class="contact_section layout_padding">
       <div class="container">
-         <div class="row">
-            <div class="h1 contact_taital" id="títuloCorrida"></div>
+         <div class="h1 contact_taital" id="títuloCorrida"></div>
+         <div>
             <p class="text-center" id="URLCorrida"></p>
          </div>
 
-         <ul class="nav nav-tabs" id="myTab" role="tablist">
-            <li class="nav-item">
-               <a class="nav-link active" id="tabelaClassificaçãoCorrida-tab" data-toggle="tab"
-                  href="#tabelaClassificaçãoCorrida" role="tab" aria-controls="tabelaClassificaçãoCorrida"
-                  aria-selected="true">Classificação da Corrida</a>
-            </li>
-            <li class="nav-item" role="presentation">
-               <a class="nav-link" id="gráficoEvoluçãoCorrida-tab" data-toggle="tab" href="#gráficoEvoluçãoCorrida"
-                  role="tab" aria-controls="gráficoEvoluçãoCorrida" aria-selected="false">Gráfico de evolução</a>
-            </li>
-            <li class="nav-item" role="presentation">
-               <a class="nav-link" id="tabelaTomadaDeTempo-tab" data-toggle="tab" href="#tabelaTomadaDeTempo" role="tab"
-                  aria-controls="tabelaTomadaDeTempo" aria-selected="false">Grid de Largada</a>
-            </li>
-            <li class="nav-item" role="presentation">
-               <a class="nav-link" id="tabelaMelhoresVoltas-tab" data-toggle="tab" href="#tabelaMelhoresVoltas"
-                  role="tab" aria-controls="tabelaMelhoresVoltas" aria-selected="false">Melhores Voltas</a>
-            </li>
-         </ul>
-
+         <div class="row">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+               <li class="nav-item">
+                  <a class="nav-link active" id="tabelaClassificaçãoCorrida-tab" data-toggle="tab"
+                     href="#tabelaClassificaçãoCorrida" role="tab" aria-controls="tabelaClassificaçãoCorrida"
+                     aria-selected="true">Classificação da Corrida</a>
+               </li>
+               <li class="nav-item" role="presentation">
+                  <a class="nav-link" id="gráficoEvoluçãoCorrida-tab" data-toggle="tab" href="#gráficoEvoluçãoCorrida"
+                     role="tab" aria-controls="gráficoEvoluçãoCorrida" aria-selected="false">Gráfico de evolução</a>
+               </li>
+               <li class="nav-item" role="presentation">
+                  <a class="nav-link" id="tabelaTomadaDeTempo-tab" data-toggle="tab" href="#tabelaTomadaDeTempo"
+                     role="tab" aria-controls="tabelaTomadaDeTempo" aria-selected="false">Grid de Largada</a>
+               </li>
+               <li class="nav-item" role="presentation">
+                  <a class="nav-link" id="tabelaMelhoresVoltas-tab" data-toggle="tab" href="#tabelaMelhoresVoltas"
+                     role="tab" aria-controls="tabelaMelhoresVoltas" aria-selected="false">Melhores Voltas</a>
+               </li>
+            </ul>
+         </div>
          <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="tabelaClassificaçãoCorrida" role="tabelaClassificaçãoCorrida"
                aria-labelledby="tabelaClassificaçãoCorrida-tab">
@@ -133,10 +134,16 @@
             </div>
             <div class="tab-pane fade" id="tabelaTomadaDeTempo" role="tabelaTomadaDeTempo"
                aria-labelledby="tabelaTomadaDeTempotab">
-               <div class="row" id="tabelaClassificaçãoTomadaDeTempo"></div>
+               <div class="table-responsive">
+                  <table id="tabelaDeTomadaDeTempo" class="table-hover-coffee table-coffee" style="width:100%">
+                  </table>
+               </div>
             </div>
             <div class="tab-pane fade" id="tabelaMelhoresVoltas" role="tabelaMelhoresVoltas"
-               aria-labelledby="tabelaMelhoresVoltas-tab">...</div>
+               aria-labelledby="tabelaMelhoresVoltas-tab">
+               <table id="tabelaDeMelhoresVoltas" class="table-hover-coffee table-coffee" style="width:100%">
+               </table>
+            </div>
          </div>
       </div>
    </div>
@@ -183,8 +190,9 @@
       $(`#títuloCorrida`).html(formatarData(BATERIA));
       $(`#URLCorrida`).html(`<a href="${CORRIDA.url}" target="_blank">Ver resultado no LapTime</a>`);
       gerarTabelaDeClassificaçãoCorrida(CORRIDA);
+      gerarTabelaDeTomadaDeTempo(CORRIDA);
+      gerarTabelaDeMelhoresVoltas(CORRIDA);
       atualizarGráficoDeClassificaçãoCorrida(CORRIDA);
-
    });
 
    function gerarTabelaDeClassificaçãoCorrida(dados) {
@@ -231,6 +239,113 @@
          callDetalhesTabelaDeClassificaçãoCorrida = true;
          configurarDetalhesTabelaDeClassificaçãoCorrida(dados);
       }
+   }
+
+   function gerarTabelaDeTomadaDeTempo(dados) {
+
+      window.callDetalhesTabelaDeTomadaDeTempo = false;
+
+      if (window.hasOwnProperty('tabelaDeTomadaDeTempo')) {
+         $(`#tabelaDeTomadaDeTempo`).DataTable().destroy();
+         callDetalhesTabelaDeTomadaDeTempo = false;
+      }
+
+      window.tabelaDeTomadaDeTempo = $(`#tabelaDeTomadaDeTempo`).DataTable({
+         data: dados.tomada_de_tempo,
+         dom: 'rt',
+         ordering: false,
+         pageLength: -1,
+         columns: [
+            {
+               data: 'POS',
+               class: 'text-center align-middle pointer h5',
+               render: function (data, type, full, meta) {
+                  return `${data}º`;
+               }
+            },
+            {
+               data: 'NOME',
+               class: 'align-middle pointer',
+               render: function (data, type, full, meta) {
+                  return `<strong>#${full['#']}</strong> ${full['NOME']} ${full['MVC'] ? `<span class="badge badge-pill badge-warning">MELHOR VOLTA</span>` : ''}`;
+               }
+            },
+            {
+               data: 'TMV',
+               class: 'text-center align-middle pointer'
+            }
+         ]
+      });
+
+      // if (!callDetalhesTabelaDeTomadaDeTempo) {
+      //    callDetalhesTabelaDeTomadaDeTempo = true;
+      //    configurarDetalhesTabelaDeTomadaDeTempo(dados);
+      // }
+   }
+
+   function gerarTabelaDeMelhoresVoltas(dados) {
+
+      let voltas = [];
+
+      dados.corrida.forEach(piloto => {
+
+         let voltasP = piloto.MAPA_VOLTAS.filter(v => v).map((v, idx) => {
+            return {
+               piloto: piloto.NOME,
+               kart: piloto['#'],
+               volta: idx + 1,
+               tempo: v
+            }
+         });
+         voltas = voltas.concat(voltasP);
+      });
+
+      voltas.sort((a, b) => a.tempo > b.tempo ? 1 : -1);
+
+      const top10 = voltas.slice(0, 10);
+      const tempo10 = top10[top10.length - 1].tempo;
+      const extras = voltas.slice(10).filter(item => item.tempo === tempo10);
+      const resultado = top10.concat(extras);
+
+      if (window.hasOwnProperty('tabelaDeMelhoresVoltas')) {
+         $(`#tabelaDeMelhoresVoltas`).DataTable().destroy();
+         callDetalhesTabelaDeMelhoresVoltas = false;
+      }
+
+      window.tabelaDeMelhoresVoltas = $(`#tabelaDeMelhoresVoltas`).DataTable({
+         data: resultado,
+         dom: 'rt',
+         ordering: false,
+         pageLength: -1,
+         columns: [
+            {
+               data: 'POS',
+               class: 'text-center align-middle pointer h5',
+               render: function (data, type, full, meta) {
+                  return `${meta.row == 0 ? `1º` : resultado[meta.row].tempo === resultado[meta.row - 1].tempo ? '-' : `${meta.row + 1}º`}`;
+               }
+            },
+            {
+               data: 'piloto',
+               class: 'align-middle pointer',
+               render: function (data, type, full, meta) {
+                  return `<strong>#${full.kart}</strong> ${full.piloto}`;
+               }
+            },
+            {
+               data: 'volta',
+               class: 'align-middle pointer',
+               render: function (data, type, full, meta) {
+                  return `Volta ${data}`;
+               }
+            },
+            {
+               data: 'tempo',
+               class: 'text-center align-middle pointer'
+            }
+         ]
+      });
+
    }
 
    async function configurarDetalhesTabelaDeClassificaçãoCorrida(CORRIDA) {
@@ -437,7 +552,7 @@
       e.preventDefault();
       $(this).tab('show');
       if ($(this).attr('id') == 'gráficoEvoluçãoCorrida-tab' && (typeof gráficoDeClassificaçãoCorrida == 'undefined' || gráficoDeClassificaçãoCorrida.height == 1 || gráficoDeClassificaçãoCorrida.height == 0)) {
-         setTimeout(() => { atualizarGráficoDeClassificaçãoCorrida(); console.log('oi') }, 250);
+         setTimeout(() => { atualizarGráficoDeClassificaçãoCorrida(); }, 250);
       }
    });
 
