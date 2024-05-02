@@ -1,0 +1,217 @@
+{
+    "total": [
+        {
+            "NOME": "BRENER SILVA",
+            "PTOTAL": 536.68,
+            "POS": 1
+        },
+        {
+            "NOME": "AYRTON MENDONCA",
+            "PTOTAL": 400.77,
+            "POS": 2
+        },
+        {
+            "NOME": "REGINALDO VIEIRA",
+            "PTOTAL": 338.63,
+            "POS": 3
+        },
+        {
+            "NOME": "RAFAEL ANGELO VIEIRA PESSOA LIMA",
+            "PTOTAL": 316.43,
+            "POS": 4
+        },
+        {
+            "NOME": "PEDRO MANFRIM MAGALHAES DE PAULA",
+            "PTOTAL": 225.4,
+            "POS": 5
+        },
+        {
+            "NOME": "LEONARDO STADLER PEZZINI",
+            "PTOTAL": 187.71,
+            "POS": 6
+        },
+        {
+            "NOME": "ELTON LAGROTERIA DOS SANTOS",
+            "PTOTAL": 156.54,
+            "POS": 7
+        },
+        {
+            "NOME": "HEITOR GOMIDE DE CASTRO",
+            "PTOTAL": 133.86,
+            "POS": 8
+        },
+        {
+            "NOME": "GUSTAVO BASTOS",
+            "PTOTAL": 108.86,
+            "POS": 9
+        },
+        {
+            "NOME": "RAFAEL LEITE",
+            "PTOTAL": 95.96,
+            "POS": 10
+        },
+        {
+            "NOME": "ANA JESSICA DE OLIVEIRA BATISTA",
+            "PTOTAL": 79.78,
+            "POS": 11
+        },
+        {
+            "NOME": "GABRIEL CARDOSO",
+            "PTOTAL": 45.0,
+            "POS": 12
+        }
+    ],
+    "baterias": [
+        {
+            "bateria": "202403201815",
+            "pilotos": [
+                {
+                    "NOME": "AYRTON MENDONCA",
+                    "POS_CORRIDA": 2,
+                    "POS_TOMADA_DE_TEMPO": 3,
+                    "MVC": false,
+                    "VC": 15,
+                    "PCC": 314.29,
+                    "PMV": 0,
+                    "PCTT": 11.48,
+                    "PVC": 75,
+                    "PTOTAL": 400.77
+                },
+                {
+                    "NOME": "RAFAEL LEITE",
+                    "POS_CORRIDA": 10,
+                    "POS_TOMADA_DE_TEMPO": 10,
+                    "MVC": false,
+                    "VC": 11,
+                    "PCC": 40.96,
+                    "PMV": 0,
+                    "PCTT": 0,
+                    "PVC": 55,
+                    "PTOTAL": 95.96
+                },
+                {
+                    "NOME": "RAFAEL ANGELO VIEIRA PESSOA LIMA",
+                    "POS_CORRIDA": 4,
+                    "POS_TOMADA_DE_TEMPO": 5,
+                    "MVC": true,
+                    "VC": 13,
+                    "PCC": 196.57,
+                    "PMV": 51.84,
+                    "PCTT": 3.02,
+                    "PVC": 65,
+                    "PTOTAL": 316.43
+                },
+                {
+                    "NOME": "GUSTAVO BASTOS",
+                    "POS_CORRIDA": 9,
+                    "POS_TOMADA_DE_TEMPO": null,
+                    "MVC": false,
+                    "VC": 10,
+                    "PCC": 58.86,
+                    "PMV": 0,
+                    "PCTT": 0,
+                    "PVC": 50,
+                    "PTOTAL": 108.86
+                },
+                {
+                    "NOME": "ELTON LAGROTERIA DOS SANTOS",
+                    "POS_CORRIDA": 7,
+                    "POS_TOMADA_DE_TEMPO": 8,
+                    "MVC": false,
+                    "VC": 11,
+                    "PCC": 101.54,
+                    "PMV": 0,
+                    "PCTT": 0,
+                    "PVC": 55,
+                    "PTOTAL": 156.54
+                },
+                {
+                    "NOME": "ANA JESSICA DE OLIVEIRA BATISTA",
+                    "POS_CORRIDA": 11,
+                    "POS_TOMADA_DE_TEMPO": 9,
+                    "MVC": false,
+                    "VC": 11,
+                    "PCC": 24.78,
+                    "PMV": 0,
+                    "PCTT": 0,
+                    "PVC": 55,
+                    "PTOTAL": 79.78
+                },
+                {
+                    "NOME": "BRENER SILVA",
+                    "POS_CORRIDA": 1,
+                    "POS_TOMADA_DE_TEMPO": 1,
+                    "MVC": false,
+                    "VC": 15,
+                    "PCC": 432.0,
+                    "PMV": 0,
+                    "PCTT": 29.68,
+                    "PVC": 75,
+                    "PTOTAL": 536.68
+                },
+                {
+                    "NOME": "PEDRO MANFRIM MAGALHAES DE PAULA",
+                    "POS_CORRIDA": 5,
+                    "POS_TOMADA_DE_TEMPO": 4,
+                    "MVC": false,
+                    "VC": 12,
+                    "PCC": 158.68,
+                    "PMV": 0,
+                    "PCTT": 6.72,
+                    "PVC": 60,
+                    "PTOTAL": 225.4
+                },
+                {
+                    "NOME": "HEITOR GOMIDE DE CASTRO",
+                    "POS_CORRIDA": 8,
+                    "POS_TOMADA_DE_TEMPO": 7,
+                    "MVC": false,
+                    "VC": 11,
+                    "PCC": 78.86,
+                    "PMV": 0,
+                    "PCTT": 0,
+                    "PVC": 55,
+                    "PTOTAL": 133.86
+                },
+                {
+                    "NOME": "LEONARDO STADLER PEZZINI",
+                    "POS_CORRIDA": 6,
+                    "POS_TOMADA_DE_TEMPO": 11,
+                    "MVC": false,
+                    "VC": 12,
+                    "PCC": 127.71,
+                    "PMV": 0,
+                    "PCTT": 0,
+                    "PVC": 60,
+                    "PTOTAL": 187.71
+                },
+                {
+                    "NOME": "GABRIEL CARDOSO",
+                    "POS_CORRIDA": 12,
+                    "POS_TOMADA_DE_TEMPO": 6,
+                    "MVC": false,
+                    "VC": 7,
+                    "PCC": 10.0,
+                    "PMV": 0,
+                    "PCTT": 0.0,
+                    "PVC": 35,
+                    "PTOTAL": 45.0
+                },
+                {
+                    "NOME": "REGINALDO VIEIRA",
+                    "POS_CORRIDA": 3,
+                    "POS_TOMADA_DE_TEMPO": 2,
+                    "MVC": false,
+                    "VC": 15,
+                    "PCC": 245.43,
+                    "PMV": 0,
+                    "PCTT": 18.2,
+                    "PVC": 75,
+                    "PTOTAL": 338.63
+                }
+            ],
+            "numero_participantes_corrida": 12,
+            "numero_participantes_tomada_de_tempo": 11
+        }
+    ]
+}
