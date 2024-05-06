@@ -10,7 +10,7 @@
    <meta name="viewport" content="width=device-width, initial-scale=1">
    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
    <!-- site metas -->
-   <title>🏎️ | STI Kart - Regulamento</title>
+   <title>🏎️ | STI Kart</title>
    <meta name="keywords" content="">
    <meta name="description" content="">
    <meta name="author" content="">
@@ -23,21 +23,33 @@
    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
    <link rel="stylesheet" href="css/jquery.mCustomScrollbar.min.css">
    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+   <link href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css" rel="stylesheet">
+   <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css">
+   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+   <link href="./bootstrap-select.css" rel="stylesheet">
+
+
 
    <!-- BIBLIOTECAS -->
-
    <script src="./js/funcoes.js"></script>
    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
    <script src="https://code.jquery.com/jquery-3.6.1.min.js"
       integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+   <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment-with-locales.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/js/all.min.js"
+      integrity="sha512-u3fPA7V8qQmhBPNT5quvaXVa1mnnLSXUep5PS1qo5NRzHwG19aHmNJnj1Q8hpA/nBWZtZD4r4AX6YOt5ynLN2g=="
+      crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/js/bootstrap-select.min.js"></script>
+
    <script src="js/popper.min.js"></script>
    <script src="js/bootstrap.bundle.min.js"></script>
    <script src="js/plugin.js"></script>
    <script src="https://d3js.org/d3.v7.min.js"></script>
    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+   <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
 
    <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
    <script src="js/custom.js"></script>
@@ -63,8 +75,8 @@
                   <li class="nav-item">
                      <a class="nav-link" href="pilotos.html">Pilotos</a>
                   </li>
-                  <li class="nav-item active">
-                     <a class="nav-link" href="ranking.html">Ranking</a>
+                  <li class="nav-item">
+                     <a class="nav-link active" href="ranking.html">Ranking</a>
                   </li>
                   <li class="nav-item">
                      <a class="nav-link" href="recordes.html">Recordes</a>
@@ -72,7 +84,7 @@
                   <li class="nav-item">
                      <a class="nav-link" href="regulamento.html">Regulamento</a>
                   </li>
-    
+
                </ul>
             </div>
          </nav>
@@ -81,450 +93,22 @@
 
    <div class="contact_section layout_padding">
       <div class="container">
-         <div class="row">
-            <div class="col-sm-12">
-               <div class="h1 contact_taital">Regulamento</div>
-               <p class="text-center"><a href="javascript:void(0)" onclick="verRegulamento(0)">Ver resumo de
-                     fórmulas</a> | <a href="javascript:void(0)" onclick="verRegulamento(1)">Ver regulamento
-                     completo</a>
-               </p>
-               <div id="pontuacao_resumida" style="display: none">
-                  <div class="h6">Pontuação por bateria</div>
-                  <p>A pontuação por bateria qualificável é a soma das pontuações dos quatro objetos avaliados:
-                     classificação na corrida, melhor volta na corrida, classificação na tomada de tempo e número de
-                     voltas
-                     completadas na corrida.</p>
-                  <p class="text-center">
-                     \( P_{\text{TOTAL}} = P_{\text{CC}} + P_{\text{MVC}} + P_{\text{CTT}} + P_{\text{VC}} \)
-                  </p>
-                  <div class="h6">Classificação na corrida</div>
-                  <p>A pontuação de um piloto pela classificação na corrida será definida por:</p>
-                  <p class="text-center">
-                     \[
-                     \boxed{
-                     P_{CC}(X, N) = - \ln(x) \cdot \frac{326 + 8N}{\ln(N)} + 336 + 8N
-                     }
-                     \]
-                  </p>
-                  <p class="text-right">
-                     X: Posição no piloto na corrida;<br>
-                     N: Número de pilotos qualificados na corrida.
-                  </p>
-                  <canvas class="graficoPcc" width="1000" height="700"></canvas>
-                  <div class="h6">Melhor volta na corrida</div>
-                  <p>A pontuação dada ao piloto que obter a melhor volta na corrida será definida por:</p>
-                  <p class="text-center">
-                     \[
-                     \boxed{
-                     P_{PMV}(N) = 40{,}32 + 0{,}96N
-                     }
-                     \]
-                  </p>
-                  <p class="text-right">
-                     N: Número de pilotos qualificados na corrida.
-                  </p>
-                  <div class="h6">Classificação na tomada de tempo</div>
-                  <p>A pontuação de um piloto pela classificação na corrida será definida por:</p>
-                  <p class="text-center">
-                     \[
-                     \boxed{
-                     P_{CTT}(X, N) = \max \left(
-                     \frac{-\ln(x) \cdot (23{,}52 + 0{,}56N)}{\ln\left( \frac{N + 1}{2} \right)} + (23{,}52 +
-                     0{,}56N), 0
-                     \right)
-                     }
-                     \]
-                  </p>
-                  <p class="text-right">
-                     X: Posição no piloto na corrida;<br>
-                     N: Número de pilotos qualificados na corrida.
-                  </p>
-                  <canvas class="graficoPctt" width="1000" height="700"></canvas>
-                  <div class="h6">Número de voltas completadas</div>
-                  <p>Para cada volta completada durante a corrida ou tomada de tempo o piloto ganhará 10 pontos.</p>
-                  <p class="text-center">
-                     \[
-                     \boxed{
-                     P_{VC} = 10 \times \left( \text{VLTS}_{\text{Corrida}} + \text{VLTS}_{\text{Tomada de tempo}}
-                     \right)
-                     }
-                     \]
-                  </p>
-                  <p class="text-right">
-                     VLTS: Número de voltas concluídas.
-                  </p>
-
-               </div>
-               <div id="regulamento_completo" style="display: none">
-                  <div class="h5">1. Considerações iniciais</div>
-                  <div>
-                     <p class="text-justify">Este documento apresenta o ranking de Kart da STI. O ranking tem uma
-                        proposta
-                        de acompanhar o
-                        desempenho dos pilotos ao longo das corridas promovidas
-                        pelos servidores da STI, incentivando uma competição saudável de longo prazo.</p>
-                  </div>
-                  <div class="h5">2. Qualificação para o ranking</div>
-                  <div class="h6">2.1.Qualificação para o piloto</div>
-                  <div>
-                     <p class="text-justify">Para que um piloto seja considerado qualificado para o ranking ele deve
-                        seguir
-                        os seguintes
-                        critérios:</p>
-                     <p class="text-justify">
-                     <ul>
-                        <li>• Ter participado, no momento de atualização do ranking, de pelo menos um terço das corridas
-                           qualificadas nos últimos 12 meses.</li>
-                        <li>• Ser servidor da STI, servidor de outra superintendência com trabalho voltado para a área
-                           de
-                           TI ou agregados (cônjuges, amigos, demais servidores da SEF, entre outros).</li>
-                     </ul>
-                     </p>
-                     <p class="text-justify">
-                        Agregados podem ser considerados como pilotos não qualificados para o ranking, mediante votação
-                        por
-                        enquete no grupo de WhatsApp ou outro canal de comunicação que venha a substituí-lo.
-                     </p>
-                  </div>
-                  <div class="h6">2.2. Qualificação para a corrida</div>
-                  <div>
-                     <p class="text-justify">Para que uma corrida seja considerada no ranking ela precisa seguir todos
-                        os
-                        seguintes critérios:
-                     </p>
-                     <p class="text-justify">
-                     <ul>
-                        <li>• Ter, ao término da prova, ao menos oito pilotos qualificados participando da corrida.</li>
-                        <li>• Ter, ao término da prova, ao menos metade dos participantes como pilotos qualificados.
-                        </li>
-                        <li>• Ser agendada em data e horário estabelecida em comum acordo por parte majoritária, no
-                           grupo
-                           de
-                           WhatsApp ou outro canal de comunicação que venha a substituí-lo, com antecedência mínima de
-                           48
-                           horas.</li>
-                     </ul>
-                     </p>
-                  </div>
-                  <div class="h5">3. Atualização do ranking</div>
-                  <div>
-                     <p class="text-justify">O ranking será atualizado após cada corrida qualificada.</p>
-                     <p class="text-justify">Em cada atualização será verificado quais são os pilotos qualificados, de
-                        acordo com os critérios
-                        estabelecidos neste documento, no momento da atualização.</p>
-                     <p class="text-justify">Caso um piloto passe a se tornar qualificado após determinada corrida, sua
-                        pontuação será contada
-                        retroativamente para as corridas anteriores, ainda que no momento dessas corridas passadas o
-                        piloto
-                        não estivesse com status de qualificado. A pontuação obtida pelos demais pilotos nas corridas
-                        anteriores também serão atualizadas, passando a considerar que o piloto que antes era não
-                        qualificado passou a ser considerado qualificado.</p>
-                     <p class="text-justify">Por exemplo:</p>
-                     <p class="text-justify">
-                     <ul>
-                        <li>• Considere que um piloto participe pela primeira vez na 5ª corrida, obtendo o 3º lugar. Ao
-                           término da
-                           prova ele terá participado de apenas 1/5 das corridas qualificadas, sendo assim considerado
-                           um
-                           piloto
-                           não qualificado para o ranking. Desta forma, na 5ª atualização do ranking, a posição deste
-                           piloto será
-                           ignorada e ele não terá nenhum ponto computado. Todas as demais posições abaixo da
-                           classificação
-                           deste
-                           piloto serão reajustadas: O piloto que terminou a corrida em 4º lugar será pontuado como 3º,
-                           o
-                           piloto
-                           que terminou a corrida como 5º lugar será pontuado como 4º, e assim por diante.
-                        </li>
-                        <li>• Considere que este mesmo piloto participe novamente da 6º corrida, obtendo o 4º lugar. Ao
-                           término da
-                           prova ele terá participado de 2/6 das corridas qualificadas, tornando-se um piloto
-                           qualificado
-                           para a
-                           6ª atualização do ranking. Desta forma, na 6ª atualização do ranking, a posição deste piloto
-                           será
-                           considerada tanto para a 5ª corrida, onde ele obteve o 3º lugar, quanto pra 6ª corrida, em
-                           que o
-                           piloto obteve o 4º lugar, obtendo como pontuação total o somatório das pontuações obtidas nas
-                           duas
-                           corridas. Também nesta 6ª atualização do ranking a pontuação dos demais participantes da 5ª
-                           corrida
-                           será atualizada, agora considerando que este piloto que antes era não qualificado tornou-se
-                           qualificado.</li>
-                     </ul>
-                     </p>
-                  </div>
-                  <div class="h5">4. Cálculo da pontuação</div>
-                  <div class="h6">4.1. Princípios</div>
-                  <div>
-                     <p class="text-justify">Os princípios são os fundamentos básicos considerados para elaboração dos
-                        critérios de pontuação, e
-                        são apresentados a seguir:</p>
-                     <p class="text-justify"><span class="font-weight-bold">Objetos de pontuação</span> – Os critérios
-                        para
-                        pontuação devem premiar diversos aspectos
-                        mensuráveis
-                        relativos às provas. Desta forma, o primeiro princípio estabelece que serão objetos de
-                        pontuação:
-                     </p>
-                     <p class="text-justify">
-                     <ul>
-                        <li>a) Classificação na corrida;</li>
-                        <li>b) Melhor volta na corrida;</li>
-                        <li>c) Classificação na tomada de tempo;</li>
-                        <li>d) Número de voltas completadas na corrida e na tomada de tempo.</li>
-                     </ul>
-                     <p>A pontuação relativa a cada critério será calculado conforme instruções presentes neste
-                        regulamente, e será arredondada com duas casas decimais de precisão.</p>
-                     </p>
-                     <p class="text-justify"><span class="font-weight-bold">Corrida como etapa principal</span> – A
-                        corrida
-                        é principal a etapa de cada bateria e, portanto, sua classificação deve concentrar a maior parte
-                        dos pontos distribuídos. Os critérios de pontuação devem ser estabelecidos de maneira que haja
-                        garantia de que o vencedor da corrida seja o maior pontuador de cada bateria, independentemente
-                        dos
-                        resultados de outros objetos de pontuação. Portanto, o segundo princípio estabelece que a
-                        pontuação
-                        obtida pelo vencedor da corrida na bateria deve ser sempre superior a pontuação obtida pelo
-                        segundo
-                        colocado, ainda que este faça a melhor volta e o melhor tempo de qualificação.</p>
-                     <p class="text-justify"><span class="font-weight-bold">Ganho de posições deve valer mais pontos no
-                           topo da tabela</span> – Quando um piloto está, durante uma corrida, na parte superior da
-                        tabela
-                        de classificação, subentende-se que este piloto está disputando posições contra os melhores
-                        adversários e que o grau de dificuldade para ganhar novas posições é maior. Por outro lado,
-                        quando
-                        um piloto está na parte de baixo da classificação, é mais fácil conquistar novas posições. O
-                        terceiro critério estabelece que a diferença de pontos pelos critérios de classificação na
-                        corrida
-                        e na tomada da tempo entre uma posição e a posição subsequente deve ser decrescente. Ou seja, a
-                        diferença de pontuação do 1º pro 2º colocado deve ser maior do que a diferença de pontuação do
-                        2º
-                        pro 3º colocado, que por sua vez deve ser maior do que a diferença de pontuação do 3º pro 4º
-                        colocado, e assim por diante.</p>
-                     <p class="text-justify"><span class="font-weight-bold">Pontuação crescente de acordo com o número
-                           de
-                           participantes</span> – Quanto maior o número de participantes em uma bateria, maior a
-                        dificuldade da competição. Por isso o quarto princípio estabelece que, com exceção do número de
-                        voltas completadas na corrida, todos os objetos de pontuação devem ser majorados à medida que o
-                        número de competidores aumenta.</p>
-                     <p class="text-justify">Por exemplo:</p>
-                     <ul<li>• O vencedor de uma corrida com vinte pilotos qualificados deve, necessariamente, fazer mais
-                        pontos do que o vencedor de uma corrida com dezenove pilotos qualificados;</li>
-                        <li>• O quarto colocado de uma corrida com quinze pilotos qualificados deve, necessariamente,
-                           fazer
-                           mais pontos do que o quarto colocado de uma corrida com quatorze pilotos qualificados.</li>
-                        <li>• O piloto com melhor volta em uma corrida com dez pilotos qualificados deve,
-                           necessariamente,
-                           fazer mais pontos do que o piloto com melhor volta em uma corrida com nove pilotos
-                           qualificados.
-                        </li>
-                        <li>• O piloto na pole position em uma corrida com dezesseis pilotos qualificados deve,
-                           necessariamente, fazer mais pontos do que o piloto na pole position em uma corrida com quinze
-                           pilotos qualificados.</li>
-                        </ul>
-                        </p>
-                  </div>
-                  <div class="h6">4.2. Pontuação por bateria</div>
-                  <p>A pontuação por bateria qualificável é a soma das pontuações dos quatro objetos avaliados:
-                     classificação na corrida, melhor volta na corrida, classificação na tomada de tempo e número de
-                     voltas
-                     completadas na corrida.</p>
-                  <p class="text-center">
-                     \( P_{\text{TOTAL}} = P_{\text{CC}} + P_{\text{MVC}} + P_{\text{CTT}} + P_{\text{VC}} \)
-                  </p>
-                  <div class="h6">4.2.1 Hiperparâmetros</div>
-                  <table class="table">
-                     <tr>
-                        <th>Sigla</th>
-                        <th>Descrição</th>
-                        <th>Valor</th>
-                     </tr>
-                     <tr>
-                        <td>N<sub>mín</sub></td>
-                        <td>Número mínimo de participantes qualificados para que uma corrida seja considerada
-                           qualificada.
-                        </td>
-                        <td>8</td>
-                     </tr>
-                     <tr>
-                        <td>P<sub>base_CC</sub></td>
-                        <td>Pontuação base do primeiro colocado de uma corrida.</td>
-                        <td>400</td>
-                     </tr>
-                     <tr>
-                        <td>T<sub>cresc_CC</sub></td>
-                        <td>Taxa de crescimento linear da pontuação do primeiro colocado em relação ao número de
-                           participantes (o quanto a pontuação do primeiro colocado aumenta a cada aumento unitário no
-                           número de participantes da corrida).</td>
-                        <td>8</td>
-                     </tr>
-                     <tr>
-                        <td>P<sub>min_CC</sub></td>
-                        <td>Pontuação do último colocado na classificação de uma corrida.</td>
-                        <td>10</td>
-                     </tr>
-                     <tr>
-                        <td>F<sub>P<sub>base_CTT</sub>/P<sub>base_CC</sub></sub></td>
-                        <td>Fração entre a pontuação base do primeiro colocado de uma tomada de tempo e do primeiro
-                           colocado de uma corrida.</td>
-                        <td>7%</td>
-                     </tr>
-                     <tr>
-                        <td>P<sub>min_CTT</sub></td>
-                        <td>Pontuação do último colocado de uma tomada de tempo.</td>
-                        <td>0</td>
-                     </tr>
-                     <tr>
-                        <td>F<sub>P<sub>MVC</sub>/P<sub>base_CC</sub></sub></td>
-                        <td>Fração entre a pontuação da melhor volta de uma corrida e do primeiro colocado de uma
-                           corrida.
-                        </td>
-                        <td>12%</td>
-                     </tr>
-                  </table>
-                  <div class="h6">4.2.2 Classificação na corrida</div>
-                  <p>A pontuação de um piloto em uma corrida é referente ao ajuste de uma curva logarítmica entre a
-                     pontuação
-                     do primeiro e do último classificado na corrida e suas respectivas posições.</p>
-                  <p>A pontuação do primeiro colocado em uma corrida, em função do número de participantes qualificados
-                     da
-                     corrida, é definida por:</p>
-                  <p class="text-center">
-                     \( P_{\text{1º_CC}} (N)=P_{\text{base_CC}}+T_{\text{cresc_CC}}×(N-N_{\text{mín}}) \)
-                  </p>
-                  <p>Desta forma, para os atuais hiperparâmetros, esta pontuação é definida por:</p>
-                  <p class="text-center">
-                     \( P_{\text{1º_CC}}(N) = 336 + 8N \)
-                  </p>
-                  <p>Onde N é o número de participantes em uma corrida.</p>
-                  <p>Já a pontuação do último colocado é definida pelo hiperparâmetro P<sub>min_CC</sub>:</p>
-                  <p class="text-center">
-                     \( P_{\text{Nº-CC}}(N) = P_{\text{min-CC}} = 10 \)
-                  </p>
-                  <p>Desta forma, a equação da pontuação pela classificação na corrida, que ajusta uma curva logarítmica
-                     entre
-                     o primeiro e último colocado e suas respectivas pontuações, em função da posição (X) e do número de
-                     competidores (N) é definida por:</p>
-                  <p class="text-center">
-                     \( P_{CC}(X, N) = \frac{P_{\text{min_CC}} - (P_{\text{base_CC}} + T_{\text{cresc_CC}} \times (N -
-                     N_{\min}))}{\ln(N)} \cdot \ln(x) + P_{\text{base_CC}} + T_{\text{cresc_CC}} \times (N - N_{\min})
-                     \)
-                  </p>
-                  <p>Equação que pode ser simplificada, considerando os hiperparâmetros:</p>
-                  <p class="text-center">
-                     \[
-                     \boxed{
-                     P_{CC}(X, N) = - \ln(x) \cdot \frac{326 + 8N}{\ln(N)} + 336 + 8N
-                     }
-                     \]
-                  </p>
-                  <p class="text-right">
-                     X: Posição no piloto na corrida;<br>
-                     N: Número de pilotos qualificados na corrida.
-                  </p>
-                  <canvas class="graficoPcc" width="1000" height="700"></canvas>
-                  <div class="h6">4.2.3 Melhor volta na corrida</div>
-                  <p>A pontuação dada ao piloto que obter a melhor volta na corrida será obtida pela multiplicação da
-                     nota
-                     do
-                     primeiro colocado pelo critério de classificação na corrida pelo hiperparâmetro que indica a fração
-                     entre
-                     a pontuação da melhor volta de uma corrida e do primeiro colocado de uma corrida.</p>
-                  <p class="text-center">
-                     \( P_{PMV}(N) = \left( P_{\text{base_CC}} + T_{\text{cresc_CC}} \times (N - N_{\min}) \right)
-                     \times
-                     F_{{P_{MVC}}/{P_{\text{base_CC}}}} \)
-                  </p>
-                  <p>Considerando os hiperparâmetros, a equação pode ser simplificada para:</p>
-                  <p class="text-center">
-                     \[
-                     \boxed{
-                     P_{PMV}(N) = 40{,}32 + 0{,}96N
-                     }
-                     \]
-                  </p>
-                  <p class="text-right">
-                     N: Número de pilotos qualificados na corrida.
-                  </p>
-                  <div class="h6">4.2.4 Classificação na tomada de tempo</div>
-                  <p>A pontuação de um piloto em uma tomada de tempo é referente ao ajuste de uma curva logarítmica
-                     entre a
-                     pontuação do primeiro classificado na tomada de tempo e do piloto na posição na posição referente à
-                     metade do total de pilotos na bateria. A pontuação do primeiro colocado é uma fração da pontuação
-                     do
-                     primeiro colocado na corrida, definida pelo hiperparâmetro
-                     F<sub>P<sub>base_CTT</sub>/P<sub>base_CC</sub></sub>.</p>
-                  <p class="text-center">
-                     \( P_{\text{1º-TT}}(N) = F_{{P_{\text{base_CTT}}}/{P_{\text{base_CC}}}} \times \left(
-                     P_{\text{base_CC}} + T_{\text{cresc_CC}} \times (N - N_{\min}) \right) \)
-                  </p>
-                  <p>Substituindo os hiperparâmetros:</p>
-                  <p class="text-center">
-                     \( P_{\text{1º_CTT}}(N) = 23{,}52 + 0{,}56N \)
-                  </p>
-                  <p>Já a pontuação do piloto posicionado na metade da classificação é definida pelo hiperparâmetro
-                     P<sub>min_CTT</sub>.</p>
-                  <p class="text-center">
-                     \( P_{{\frac{N + 1}{2}}{º\_CTT}}\left( N \right) = P_{\text{mín_CTT}} = 0 \)
-                  </p>
-                  <p>Desta forma, apenas os pilotos posicionados em uma classificação superior à posição mediana
-                     pontuarão
-                     na classificação da tomada de pontos. A fórmula geral para calcular a pontuação da classificação na
-                     tomada de tempo é apresentada a seguir:</p>
-                  <p class="text-center">
-                     \( P_{CTT}(X, N) = \max \left(
-                     \frac{P_{\text{min_CTT}} - \left( F_{{P_{\text{base_CTT}}}/{P_{\text{base-CC}}}} \times \left(
-                     P_{\text{base_CC}} + T_{\text{cresc_CC}} \times (N - N_{\min}) \right) \right)}{\ln\left( \frac{N +
-                     1}{2} \right)}\cdot \ln(x)
-                     +
-                     \left( F_{{P_{\text{base_CTT}}}/{P_{\text{base_CC}}}} \times \left( P_{\text{base-CC}} +
-                     T_{\text{cresc_CC}} \times (N - N_{\min}) \right) \right),
-                     0
-                     \right) \)
-                  </p>
-                  <p>Que, considerando os hiperparâmetros, pode ser simplificada para:</p>
-                  <p class="text-center">
-                     \[
-                     \boxed{
-                     P_{CTT}(X, N) = \max \left(
-                     \frac{-\ln(x) \cdot (23{,}52 + 0{,}56N)}{\ln\left( \frac{N + 1}{2} \right)} + (23{,}52 +
-                     0{,}56N), 0
-                     \right)
-                     }
-                     \]
-                  </p>
-                  <p class="text-right">
-                     X: Posição no piloto na corrida;<br>
-                     N: Número de pilotos qualificados na corrida.
-                  </p>
-                  <canvas class="graficoPctt" width="1000" height="700"></canvas>
-                  <div class="h6">4.2.5 Número de voltas completadas</div>
-                  <p>Para cada volta completada durante a corrida ou tomada de tempo o piloto ganhará 10 pontos.</p>
-                  <p class="text-center">
-                     \[
-                     \boxed{
-                     P_{VC} = 10 \times \left( \text{VLTS}_{\text{Corrida}} + \text{VLTS}_{\text{Tomada de tempo}}
-                     \right)
-                     }
-                     \]
-                  </p>
-                  <p class="text-right">
-                     VLTS: Número de voltas concluídas.
-                  </p>
-               </div>
-            </div>
+         <div class="h1 contact_taital">Ranking</div>
+         <div><select id="selecionadorDeRanking">
+            </select></div>
+         <div class="table-responsive">
+            <table id="tabelaRanking" class="table-hover-coffee table-coffee" style="width:100%">
+            </table>
          </div>
       </div>
-   </div>
    </div>
 
    <div class="copyright_section">
       <div class="container">
          <div class="row">
             <div class="col-sm-12">
-               <p class="copyright_text">2024 | Rafael Nobre Leite.<br>Design by <a href="https://html.design">Free Html
+               <p class="copyright_text">2024 | Rafael Nobre Leite.<br>Design by <a href="https://html.design">Free
+                     Html
                      Templates</a>
                   Distribution by <a href="https://themewagon.com">ThemeWagon</a></p>
             </div>
@@ -536,221 +120,207 @@
 <script>
    $(document).ready(async function () {
 
+      const RANKINGS = {};
+      await loadFileList();
+      window.RANKINGS_VETOR = reorganizarDadosRanking(RANKINGS);
+      preencherSelecionadorRanking(RANKINGS_VETOR);
+      gerarTabelaDeRanking();
 
-      const colorScale = d3.scaleLinear()
-         .domain([8, 36]) // Valores mínimos e máximos de `n`
-         .range(['#E5FF00', '#FF0000']);
-
-
-      tabela_pcc = [];
-      tabela_pctt = [];
-
-      for (let n = 8; n <= 36; n++) {
-         let pcc_n = [];
-         let pctt_n = [];
-         for (let pos = 1; pos <= 36; pos++) {
-            pcc_n.push(caulcarPCC(pos, n));
-            pctt_n.push(caulcarPCTT(pos, n));
-         }
-         tabela_pcc.push({
-            'n': n,
-            'pcc': pcc_n
+      function loadJsonFiles(files) {
+         const fetchPromises = files.map((file) => {
+            const url = `./data/ranking/${file}`;
+            return fetch(url)
+               .then((response) => {
+                  if (!response.ok) {
+                     throw new Error(`Erro ao carregar ${file}: ${response.statusText}`);
+                  }
+                  return response.json();
+               })
+               .then((jsonData) => {
+                  const fileName = file.replace('.json', '');
+                  RANKINGS[fileName] = jsonData;
+               })
+               .catch((error) => console.error('Erro ao carregar arquivo JSON:', error));
          });
 
-         tabela_pctt.push({
-            'n': n,
-            'pctt': pctt_n
-         });
+         return Promise.all(fetchPromises);
       }
 
-      const labels = Array.from({ length: 36 }, (_, i) => i + 1); // Valores para eixo X
+      function loadFileList() {
+         const url = './data/ranking/lista_rankings.json';
 
-      const datasets_pcc = tabela_pcc.map((item) => {
-         let cor = colorScale(item.n);
-         return {
-            label: `N = ${item.n}`,
-            data: item.pcc,
-            borderColor: cor,
-            fill: false,
-            tension: 0.1,
-            pointBackgroundColor: cor,
-            pointBorderColor: cor,
-            pointRadius: 2
-         };
-      });
-
-      const datasets_pctt = tabela_pctt.map((item) => {
-         let cor = colorScale(item.n);
-         return {
-            label: `N = ${item.n}`,
-            data: item.pctt,
-            borderColor: cor,
-            fill: false,
-            tension: 0.1,
-            pointBackgroundColor: cor,
-            pointBorderColor: cor,
-            pointRadius: 2
-         };
-      });
-
-      function criarGraficoPcc(ctx) {
-         const config = {
-            type: 'line',
-            data: {
-               labels: labels,
-               datasets: datasets_pcc,
-            },
-            options: {
-               responsive: true,
-               interaction: {
-                  mode: 'nearest',
-                  intersect: false
-               },
-               plugins: {
-                  title: {
-                     display: true,
-                     text: 'Pontuação pela classificação na corrida em função da posição e do número de participantes (N)',
-                     font: {
-                        size: 16,
-                     },
-                     padding: {
-                        top: 10,
-                        bottom: 10,
-                     },
-                     align: 'center',
-                  },
-                  legend: {
-                     position: 'right',
-                     labels: {
-                        boxHeight: 0
-                     }
-                  },
-                  tooltip: {
-                     backgroundColor: "rgba(255,255,255,1)",
-                     borderColor: '#dddfeb',
-                     bodyColor: `#858796`,
-                     position: 'nearest',
-                     borderWidth: 1,
-                     displayColors: false,
-                     caretPadding: 5,
-                     callbacks: {
-                        label: function (tooltipItem) {
-                           return [`${tooltipItem.label}º lugar de ${tooltipItem.datasetIndex + 8} participantes: ${numeroBr(tooltipItem.raw, 2)} ponto${tooltipItem.raw >= 2 ? 's' : ''}`];
-                        },
-                     },
-                  },
-               },
-               scales: {
-                  x: {
-                     title: {
-                        display: true,
-                        text: 'Posição',
-                     },
-                  },
-                  y: {
-                     title: {
-                        display: true,
-                        text: 'Pontuação por classificação na corrida',
-                     },
-                  },
-               },
-            },
-         };
-         return new Chart(ctx, config);
+         return fetch(url)
+            .then((response) => {
+               if (!response.ok) {
+                  throw new Error(`Erro ao carregar lista de arquivos: ${response.statusText}`);
+               }
+               return response.json();
+            })
+            .then((fileList) => {
+               return loadJsonFiles(fileList);
+            })
+            .then(() => {
+               console.log('Rankings carregados');
+            })
+            .catch((error) => console.error('Erro ao carregar lista de arquivos:', error));
       }
-
-      function criarGraficoPctt(ctx) {
-         console.log(datasets_pctt);
-         const config = {
-            type: 'line',
-            data: {
-               labels: labels,
-               datasets: datasets_pctt,
-            },
-            options: {
-               responsive: true,
-               interaction: {
-                  mode: 'nearest',
-                  intersect: false
-               },
-               plugins: {
-                  title: {
-                     display: true,
-                     text: 'Pontuação pela classificação na tomada de tempo em função da posição e do número de participantes (N)',
-                     font: {
-                        size: 16,
-                     },
-                     padding: {
-                        top: 10,
-                        bottom: 10,
-                     },
-                     align: 'center',
-                  },
-                  legend: {
-                     position: 'right',
-                     labels: {
-                        boxHeight: 0
-                     }
-                  },
-                  tooltip: {
-                     backgroundColor: "rgba(255,255,255,1)",
-                     borderColor: '#dddfeb',
-                     bodyColor: `#858796`,
-                     position: 'nearest',
-                     borderWidth: 1,
-                     displayColors: false,
-                     caretPadding: 5,
-                     callbacks: {
-                        label: function (tooltipItem) {
-                           return [`${tooltipItem.label}º lugar de ${tooltipItem.datasetIndex + 8} participantes: ${numeroBr(tooltipItem.raw, 2)} ponto${tooltipItem.raw >= 2 ? 's' : ''}`];
-                        },
-                     },
-                  },
-               },
-               scales: {
-                  x: {
-                     title: {
-                        display: true,
-                        text: 'Posição',
-                     },
-                  },
-                  y: {
-                     title: {
-                        display: true,
-                        text: 'Pontuação por classificação na corrida',
-                     },
-                  },
-               },
-            },
-         };
-         return new Chart(ctx, config);
-      }
-
-      const canvasElementsPcc = document.querySelectorAll('.graficoPcc');
-      canvasElementsPcc.forEach(canvas => {
-         const ctx = canvas.getContext('2d');
-         criarGraficoPcc(ctx);
-      });
-
-      const canvasElementsPctt = document.querySelectorAll('.graficoPctt');
-      canvasElementsPctt.forEach(canvas => {
-         const ctx = canvas.getContext('2d');
-         criarGraficoPctt(ctx);
-      });
    });
 
-   function verRegulamento(tipo) {
-      if (tipo == 1) {
-         $(`#regulamento_completo`).show();
-         $(`#pontuacao_resumida`).hide();
+   function preencherSelecionadorRanking(RANKINGS_VETOR) {
+      $(`#selecionadorDeRanking`).html(RANKINGS_VETOR.map((r, idx) => {
+         return `<option value="${r.ranking}" ${idx + 1 == RANKINGS_VETOR.length ? `selected` : ``}>${idx + 1}ª Atualização - ${moment(r.ranking, 'YYYYMMDD').format('DD/MM/YYYY')}</option>`
+      }));
+
+      $('.selectpicker').selectpicker('refresh');
+      $(`select`).niceSelect('update');
+
+      $(`#selecionadorDeRanking`).change(el => gerarTabelaDeRanking($(`#selecionadorDeRanking`).val()));
+   }
+
+   function gerarTabelaDeRanking(ranking = null) {
+
+      if (ranking == null) {
+         dadosIdx = RANKINGS_VETOR.length - 1;
+      } else {
+         dadosIdx = RANKINGS_VETOR.findIndex(r => r.ranking == ranking)
       }
 
-      if (tipo == 0) {
-         $(`#pontuacao_resumida`).show();
-         $(`#regulamento_completo`).hide();
+      console.log(RANKINGS_VETOR[dadosIdx].total);
+
+      window.callDetalhesTabelaDeRankings = false;
+
+      if (window.hasOwnProperty('tabelaRanking')) {
+         $(`#tabelaRanking`).DataTable().destroy();
+         callDetalhesTabelaDeRankings = false;
       }
 
-      return;
+      window.tabelaRanking = $(`#tabelaRanking`).DataTable({
+         data: RANKINGS_VETOR[dadosIdx]['total'],
+         dom: 'rt',
+         ordering: false,
+         pageLength: -1,
+         columns: [
+            {
+               data: 'POS',
+               class: 'text-center align-middle pointer h5',
+               render: function (data, type, full, meta) {
+                  return `${data}º`;
+               }
+            },
+            {
+               data: 'NOME',
+               class: 'align-middle pointer'
+            },
+            {
+               data: 'PTOTAL',
+               class: 'text-center align-middle pointer',
+               render: function (data, type, full, meta) {
+                  return `<strong>${numeroBr(data, 2)}</strong> Pts.`;
+               }
+            },
+            {
+               data: 'POS',
+               class: 'text-center align-middle pointer',
+               render: function (data, type, full, meta) {
+                  if (dadosIdx == 0) {
+                     return '';
+                  } else {
+                     let PILOTO_ANTERIOR = RANKINGS_VETOR[dadosIdx - 1]['total'].find(p => p.NOME == full.NOME);
+                     if (PILOTO_ANTERIOR) {
+                        let POS_ANTERIOR = PILOTO_ANTERIOR.POS;
+                        return calcularVariacao(POS_ANTERIOR, full.POS);
+                     } else {
+                        return '★';
+                     }
+                  }
+               }
+            }
+         ]
+      });
+
+      // if (!callDetalhesTabelaDeRankings) {
+      //    callDetalhesTabelaDeRankings = true;
+      //    configurarDetalhesTabelaDeRankings(dados);
+      // }
+   }
+
+   async function configurarDetalhesTabelaDeClassificaçãoCorrida(CORRIDA) {
+      $(`#tabelaDeClassificaçãoCorrida tbody`).on(`click`, `td.pointer`, async function () {
+         let tr = $(this).closest(`tr`);
+         let row = tabelaDeClassificaçãoCorrida.row(tr);
+
+         if (row.child.isShown()) {
+            row.child.hide();
+            tr.removeClass(`active`);
+         } else {
+            $('#tabelaDeClassificaçãoCorrida tr').removeClass('active');
+
+            $('#tabelaDeClassificaçãoCorrida').DataTable().rows().every(function () {
+               var row = this;
+
+               if (row.child.isShown()) {
+                  row.child.hide();
+                  $(row.node()).removeClass('shown');
+               }
+            });
+
+            gerarDetalhePiloto(row.data(), CORRIDA).then(el => row.child(el, 'child p-3').show());
+            tr.addClass(`active`);
+         }
+      });
+   }
+
+   async function gerarDetalhePiloto(d, CORRIDA) {
+
+      let tt = CORRIDA.tomada_de_tempo.find(el => el.NOME == d.NOME);
+      let detalhesPiloto = [`<div class="h6">Estatísticas</div>`];
+      let pontuacao = [`<div class="h6">Pontuação</div>`];
+
+      d['VLTS'] && detalhesPiloto.push(`<div><b>Número de voltas: </b>${d['VLTS']}</div>`);
+      d['TT'] && detalhesPiloto.push(`<div><b>Tempo total: </b>${d['TT'].replace('.', ',')}</div>`);
+      d['VM'] && detalhesPiloto.push(`<div><b>Velocidade Média: </b>${numeroBr(d['VM'], 2)} Km/h</div>`);
+      d['TMV'] && detalhesPiloto.push(`<div><b>Tempo da Melhor Volta: </b>${d['TMV'].replace('.', ',')}</div>`);
+      d['DA'] && d['DA'] != '---' && detalhesPiloto.push(`<div> <b>Diferença para o anterior: </b>${d['DA'].replace('.', ',')}</div>`);
+
+      let pcc = caulcarPCC(d['POS'], CORRIDA.corrida.length);
+      let pmv = d['MVC'] ? caulcarPMV(CORRIDA.corrida.length) : 0;
+      let pctt = caulcarPCTT(tt['POS'], CORRIDA.tomada_de_tempo.length);
+      let pvc = caulcarPVC(d.MAPA_VOLTAS.filter(el => el).length + tt.MAPA_VOLTAS.filter(el => el).length);
+
+      pontuacao.push(`<div><b>P<sub>CC</sub>: </b>${numeroBr(pcc, 2, 2)}</div>`);
+      pontuacao.push(`<div><b>P<sub>MV</sub>: </b>${numeroBr(pmv, 2, 2)}</div>`);
+      pontuacao.push(`<div><b>P<sub>CTT</sub>: </b>${numeroBr(pctt, 2, 2)}</div>`);
+      pontuacao.push(`<div><b>P<sub>VC</sub>: </b>${numeroBr(pvc, 2, 2)}</div>`);
+      pontuacao.push(`<div><b>Pontuação Total: </b>${numeroBr(pcc + pmv + pctt + pvc, 2, 2)}</div>`);
+
+
+      return `<div class="row">
+         <div class="col-6">${detalhesPiloto.join('')}</div>
+         <div class="col-6">${pontuacao.join('')}</div>
+         </div>`
+   }
+
+   function calcularVariacao(POS_ANTERIOR, POS) {
+      if (POS_ANTERIOR > POS) {
+         return `▲ ${POS_ANTERIOR - POS}`;
+      } else if (POS_ANTERIOR == POS) {
+         return `-`;
+      } else if (POS_ANTERIOR < POS) {
+         return `▼ ${POS - POS_ANTERIOR}`;
+      } else {
+         return null;
+      }
+   }
+
+   function reorganizarDadosRanking(ranking) {
+      const keys = Object.keys(ranking);
+
+      keys.sort();
+
+      return keys.map((key) => ({
+         'ranking': key,
+         ...ranking[key]
+      }));
    }
 </script>
 
