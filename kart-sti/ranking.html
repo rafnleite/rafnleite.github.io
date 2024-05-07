@@ -22,7 +22,6 @@
    <!-- CSS -->
    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
    <link rel="stylesheet" href="css/jquery.mCustomScrollbar.min.css">
-   <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
    <link href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css" rel="stylesheet">
    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css">
    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
@@ -94,8 +93,21 @@
    <div class="contact_section layout_padding">
       <div class="container">
          <div class="h1 contact_taital">Ranking</div>
-         <div><select id="selecionadorDeRanking">
-            </select></div>
+         <div class="row">
+            <div class="col-2 text-center d-flex align-items-center justify-content-center">
+               <i id="rankingAnterior" class="fa-solid fa-circle-left fa-2xl" data-toggle="tooltip"
+                  data-placement="top"></i>
+            </div>
+            <div class="col-8 d-flex justify-content-center">
+               <select id="selecionadorDeRanking">
+               </select>
+            </div>
+            <div class="col-2 text-center d-flex align-items-center justify-content-center">
+               <i id="rankingPosterior" class="fa-solid fa-circle-right fa-2xl" data-toggle="tooltip"
+                  data-placement="top"></i>
+            </div>
+         </div>
+         <hr>
          <div class="table-responsive">
             <table id="tabelaRanking" class="table-hover-coffee table-coffee" style="width:100%">
             </table>
@@ -174,24 +186,18 @@
       $('.selectpicker').selectpicker('refresh');
       $(`select`).niceSelect('update');
 
-      $(`#selecionadorDeRanking`).change(el => gerarTabelaDeRanking($(`#selecionadorDeRanking`).val()));
+      $(`#selecionadorDeRanking`).change(el => gerarTabelaDeRanking());
    }
 
-   function gerarTabelaDeRanking(ranking = null) {
+   function gerarTabelaDeRanking() {
 
-      if (ranking == null) {
-         dadosIdx = RANKINGS_VETOR.length - 1;
-      } else {
-         dadosIdx = RANKINGS_VETOR.findIndex(r => r.ranking == ranking)
-      }
 
-      console.log(RANKINGS_VETOR[dadosIdx].total);
-
+      dadosIdx = RANKINGS_VETOR.findIndex(r => r.ranking == $(`#selecionadorDeRanking`).val());
       window.callDetalhesTabelaDeRankings = false;
 
       if (window.hasOwnProperty('tabelaRanking')) {
          $(`#tabelaRanking`).DataTable().destroy();
-         callDetalhesTabelaDeRankings = false;
+         $(`#tabelaRanking`).empty();
       }
 
       window.tabelaRanking = $(`#tabelaRanking`).DataTable({
@@ -238,24 +244,55 @@
          ]
       });
 
-      // if (!callDetalhesTabelaDeRankings) {
-      //    callDetalhesTabelaDeRankings = true;
-      //    configurarDetalhesTabelaDeRankings(dados);
-      // }
+      if (dadosIdx == 0) {
+         $(`#rankingAnterior`).parent().removeClass(`text-dark pointer`);
+         $("#rankingAnterior").removeAttr("data-original-title");
+         $("#rankingAnterior").off("click");
+      } else {
+         $(`#rankingAnterior`).parent().addClass(`text-dark pointer`);
+         $(`#rankingAnterior`).attr(`data-original-title`, `Ver ranking anterior`);
+         $(`#rankingAnterior`).click((el, idx) => {
+            $(`#selecionadorDeRanking`).val(RANKINGS_VETOR[dadosIdx - 1].ranking);
+            gerarTabelaDeRanking();
+            $(`select`).niceSelect('update');
+         });
+      }
+
+      if (dadosIdx == RANKINGS_VETOR.length - 1) {
+         $(`#rankingPosterior`).parent().removeClass(`text-dark pointer`);
+         $("#rankingPosterior").removeAttr("data-original-title");
+         $("#rankingPosterior").off("click");
+      } else {
+         $(`#rankingPosterior`).parent().addClass(`text-dark pointer`);
+         $(`#rankingPosterior`).attr(`data-original-title`, `Ver ranking posterior`);
+         $(`#rankingPosterior`).click((el, idx) => {
+            $(`#selecionadorDeRanking`).val(RANKINGS_VETOR[dadosIdx + 1].ranking);
+            gerarTabelaDeRanking();
+            $(`select`).niceSelect('update');
+         });
+      };
+
+      $('[data-toggle="tooltip"]').tooltip(`hide`);
+      $('[data-toggle="tooltip"]').tooltip();
+
+      if (!callDetalhesTabelaDeRankings) {
+         callDetalhesTabelaDeRankings = true;
+         configurarDetalhesTabelaDeRankings(RANKINGS_VETOR[dadosIdx]);
+      }
    }
 
-   async function configurarDetalhesTabelaDeClassificaçãoCorrida(CORRIDA) {
-      $(`#tabelaDeClassificaçãoCorrida tbody`).on(`click`, `td.pointer`, async function () {
+   function configurarDetalhesTabelaDeRankings(ranking) {
+      $(`#tabelaRanking tbody`).on(`click`, `td.pointer`, async function () {
          let tr = $(this).closest(`tr`);
-         let row = tabelaDeClassificaçãoCorrida.row(tr);
-
+         let row = tabelaRanking.row(tr);
+         
          if (row.child.isShown()) {
             row.child.hide();
             tr.removeClass(`active`);
          } else {
-            $('#tabelaDeClassificaçãoCorrida tr').removeClass('active');
+            $('#tabelaRanking tr').removeClass('active');
 
-            $('#tabelaDeClassificaçãoCorrida').DataTable().rows().every(function () {
+            $('#tabelaRanking').DataTable().rows().every(function () {
                var row = this;
 
                if (row.child.isShown()) {
@@ -264,40 +301,39 @@
                }
             });
 
-            gerarDetalhePiloto(row.data(), CORRIDA).then(el => row.child(el, 'child p-3').show());
+            gerarDetalhePiloto(row.data(), ranking).then(el => row.child(el, 'child p-3').show());
             tr.addClass(`active`);
          }
       });
    }
 
-   async function gerarDetalhePiloto(d, CORRIDA) {
+   async function gerarDetalhePiloto(d, ranking) {
 
-      let tt = CORRIDA.tomada_de_tempo.find(el => el.NOME == d.NOME);
-      let detalhesPiloto = [`<div class="h6">Estatísticas</div>`];
-      let pontuacao = [`<div class="h6">Pontuação</div>`];
+      let tabela = [`<table class="table">
+         <tr>
+            <th>Bateria</th>
+            <th>P<sub>CC</sub></th>
+            <th>P<sub>MV</sub></th>
+            <th>P<sub>CTT</sub></th>
+            <th>P<sub>VC</sub></th>
+            <th>P<sub>TOTAL</sub></th>
+         </tr>`];
 
-      d['VLTS'] && detalhesPiloto.push(`<div><b>Número de voltas: </b>${d['VLTS']}</div>`);
-      d['TT'] && detalhesPiloto.push(`<div><b>Tempo total: </b>${d['TT'].replace('.', ',')}</div>`);
-      d['VM'] && detalhesPiloto.push(`<div><b>Velocidade Média: </b>${numeroBr(d['VM'], 2)} Km/h</div>`);
-      d['TMV'] && detalhesPiloto.push(`<div><b>Tempo da Melhor Volta: </b>${d['TMV'].replace('.', ',')}</div>`);
-      d['DA'] && d['DA'] != '---' && detalhesPiloto.push(`<div> <b>Diferença para o anterior: </b>${d['DA'].replace('.', ',')}</div>`);
+      ranking.baterias.filter(b => b.pilotos.find(p => p.NOME == d.NOME)).forEach(b => {
+         let dadosPiloto = b.pilotos.find(p => p.NOME == d.NOME);
+         tabela.push(`<tr>
+            <td>${formatarData(b.bateria)}</td>
+            <td>${numeroBr(dadosPiloto.PCC, 2, 2)}</td>
+            <td>${numeroBr(dadosPiloto.PMV, 2, 2)}</td>
+            <td>${numeroBr(dadosPiloto.PCTT, 2, 2)}</td>
+            <td>${numeroBr(dadosPiloto.PVC, 2, 2)}</td>
+            <td>${numeroBr(dadosPiloto.PTOTAL, 2, 2)}</td>
+            </tr>`);
+      });
 
-      let pcc = caulcarPCC(d['POS'], CORRIDA.corrida.length);
-      let pmv = d['MVC'] ? caulcarPMV(CORRIDA.corrida.length) : 0;
-      let pctt = caulcarPCTT(tt['POS'], CORRIDA.tomada_de_tempo.length);
-      let pvc = caulcarPVC(d.MAPA_VOLTAS.filter(el => el).length + tt.MAPA_VOLTAS.filter(el => el).length);
+      tabela.push(`</table>`);
 
-      pontuacao.push(`<div><b>P<sub>CC</sub>: </b>${numeroBr(pcc, 2, 2)}</div>`);
-      pontuacao.push(`<div><b>P<sub>MV</sub>: </b>${numeroBr(pmv, 2, 2)}</div>`);
-      pontuacao.push(`<div><b>P<sub>CTT</sub>: </b>${numeroBr(pctt, 2, 2)}</div>`);
-      pontuacao.push(`<div><b>P<sub>VC</sub>: </b>${numeroBr(pvc, 2, 2)}</div>`);
-      pontuacao.push(`<div><b>Pontuação Total: </b>${numeroBr(pcc + pmv + pctt + pvc, 2, 2)}</div>`);
-
-
-      return `<div class="row">
-         <div class="col-6">${detalhesPiloto.join('')}</div>
-         <div class="col-6">${pontuacao.join('')}</div>
-         </div>`
+      return tabela.join(``);
    }
 
    function calcularVariacao(POS_ANTERIOR, POS) {

@@ -22,7 +22,6 @@
    <!-- CSS -->
    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
    <link rel="stylesheet" href="css/jquery.mCustomScrollbar.min.css">
-   <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
 
    <!-- BIBLIOTECAS -->
 
@@ -72,7 +71,7 @@
                   <li class="nav-item active">
                      <a class="nav-link" href="regulamento.html">Regulamento</a>
                   </li>
-    
+
                </ul>
             </div>
          </nav>
@@ -141,7 +140,7 @@
                   </p>
                   <canvas class="graficoPctt" width="1000" height="700"></canvas>
                   <div class="h6">Número de voltas completadas</div>
-                  <p>Para cada volta completada durante a corrida ou tomada de tempo o piloto ganhará 10 pontos.</p>
+                  <p>Para cada volta completada durante a corrida ou tomada de tempo o piloto ganhará 5 pontos.</p>
                   <p class="text-center">
                      \[
                      \boxed{
@@ -501,7 +500,7 @@
                   </p>
                   <canvas class="graficoPctt" width="1000" height="700"></canvas>
                   <div class="h6">4.2.5 Número de voltas completadas</div>
-                  <p>Para cada volta completada durante a corrida ou tomada de tempo o piloto ganhará 10 pontos.</p>
+                  <p>Para cada volta completada durante a corrida ou tomada de tempo o piloto ganhará 5 pontos.</p>
                   <p class="text-center">
                      \[
                      \boxed{
@@ -660,7 +659,6 @@
       }
 
       function criarGraficoPctt(ctx) {
-         console.log(datasets_pctt);
          const config = {
             type: 'line',
             data: {
@@ -737,6 +735,8 @@
          const ctx = canvas.getContext('2d');
          criarGraficoPctt(ctx);
       });
+
+      verRegulamento(1);
    });
 
    function verRegulamento(tipo) {

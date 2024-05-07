@@ -63,8 +63,6 @@ function caulcarPMV(numero_participantes) {
 }
 
 function caulcarPCTT(pos, numero_participantes) {
-  console.log(pos);
-  console.log(numero_participantes);
   if (pos > numero_participantes) return null;
   let p1_cc = P_BASE + T_CRES * (numero_participantes - N_MIN);
   let p1_ctt = p1_cc * FRAC_TT;
