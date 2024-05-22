@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+   <!-- basic -->
+   <meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <!-- mobile metas -->
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+   <!-- site metas -->
+   <title>🏎️ | STI Kart - Piloto</title>
+   <meta name="keywords" content="">
+   <meta name="description" content="">
+   <meta name="author" content="">
+   <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+   <link rel="stylesheet" type="text/css" href="css/style.css">
+   <link rel="stylesheet" href="css/responsive.css">
+   <!-- fevicon -->
+   <link rel="icon" href="images/fevicon.png" type="image/gif" />
+   <!-- CSS -->
+   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+   <link rel="stylesheet" href="css/jquery.mCustomScrollbar.min.css">
+
+   <!-- BIBLIOTECAS -->
+
+   <script src="./js/funcoes.js"></script>
+   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+   <script src="https://code.jquery.com/jquery-3.6.1.min.js"
+      integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment-with-locales.min.js"></script>
+   <script src="js/popper.min.js"></script>
+   <script src="js/bootstrap.bundle.min.js"></script>
+   <script src="js/plugin.js"></script>
+   <script src="https://d3js.org/d3.v7.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+   <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
+   <script src="js/custom.js"></script>
+</head>
+
+<body>
+   <div class="header_section header_bg">
+      <div class="container">
+         <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="index.html">
+               <div class="h5 text-white">🏁<span class="font-italic"><span class="font-weight-light">KART//</span><span
+                        class="font-weight-bold">STI</span></span></div>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+               aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+               <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+               <ul class="navbar-nav ml-auto">
+                  <li class="nav-item">
+                     <a class="nav-link" href="corridas.html">Corridas</a>
+                  </li>
+                  <li class="nav-item">
+                     <a class="nav-link active" href="pilotos.html">Pilotos</a>
+                  </li>
+                  <li class="nav-item">
+                     <a class="nav-link" href="ranking.html">Ranking</a>
+                  </li>
+                  <li class="nav-item">
+                     <a class="nav-link" href="recordes.html">Recordes</a>
+                  </li>
+                  <li class="nav-item">
+                     <a class="nav-link" href="regulamento.html">Regulamento</a>
+                  </li>
+
+               </ul>
+            </div>
+         </nav>
+      </div>
+   </div>
+
+   <div class="contact_section layout_padding">
+      <div class="container">
+         <div class="h1 contact_taital" id="títuloPiloto"></div>
+         <p class="text-center">Página em construção. Volte em breve!</p>
+
+         <div class="row">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+               <li class="nav-item">
+                  <a class="nav-link active" id="estatísticasPiloto-tab" data-toggle="tab" href="#estatísticasPiloto"
+                     role="tab" aria-controls="estatísticasPiloto" aria-selected="true">Estatísticas</a>
+               </li>
+               <li class="nav-item" role="presentation">
+                  <a class="nav-link" id="históricoPiloto-tab" data-toggle="tab" href="#históricoPiloto" role="tab"
+                     aria-controls="históricoPiloto" aria-selected="false">Histórico</a>
+               </li>
+            </ul>
+         </div>
+         <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="estatísticasPiloto" role="estatísticasPiloto"
+               aria-labelledby="estatísticasPiloto-tab">
+            </div>
+            <div class="tab-pane fade" id="históricoPiloto" role="históricoPiloto"
+               aria-labelledby="históricoPiloto-tab">
+               <div class="row">
+                  <div class="col-12">
+                     <canvas id="gráficoDeClassificaçãoCorridaCanvas" width="100%" height="800"></canvas>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <div class="copyright_section">
+      <div class="container">
+         <div class="row">
+            <div class="col-sm-12">
+               <p class="copyright_text">2024 | Rafael Nobre Leite.<br>Design by <a href="https://html.design">Free Html
+                     Templates</a>
+                  Distribution by <a href="https://themewagon.com">ThemeWagon</a></p>
+            </div>
+         </div>
+      </div>
+   </div>
+</body>
+
+<script>
+
+   $(document).ready(async function () {
+
+      const url = window.location.href;
+      const PILOTO = (new URL(url)).searchParams.get('piloto');
+      $(`#títuloPiloto`).html(PILOTO);
+
+
+      const CORRIDAS = {};
+      await carregarLista('corridas', CORRIDAS);
+
+      const RANKINGS = {};
+      await carregarLista('rankings', RANKINGS);
+      window.RANKINGS_VETOR = reorganizarDadosRanking(RANKINGS);
+
+      gerarEstatisticasPiloto(PILOTO, CORRIDAS, RANKINGS_VETOR);
+
+      function gerarEstatisticasPiloto(piloto, corridas, rankings) {
+
+         let stats = [];
+         let status_ranking = rankings[rankings.length - 1].total.find(p => p.NOME == piloto);
+
+         let dadosRankings = [];
+         let dadosBaterias = [];
+
+         for (c in corridas) {
+            let corrida = corridas[c];
+            let dadosPilotoCorrida = corrida['corrida'].find(c => c.NOME == piloto);
+            let dadosPilotoTomadaDeTempo = corrida['tomada_de_tempo'].find(c => c.NOME == piloto);
+            if (dadosPilotoCorrida || dadosPilotoTomadaDeTempo) {
+               let dadosBateria = { 'bateria': corrida['bateria'] }
+               if (dadosPilotoCorrida) {
+                  dadosBateria['pos'] = dadosPilotoCorrida.POS;
+                  dadosBateria['melhor_volta_corrida'] = dadosPilotoCorrida.MVC;
+                  dadosBateria['melhor_volta_inividual'] = dadosPilotoCorrida.TMV;
+                  dadosBateria['numero_voltas'] = dadosPilotoCorrida.VLTS;
+               }
+               if (dadosPilotoTomadaDeTempo) {
+                  dadosBateria['pos_largada'] = dadosPilotoTomadaDeTempo.POS;
+               }
+               dadosBaterias.push(dadosBateria);
+            }
+         }
+
+         for (r in rankings) {
+            let ranking = rankings[r];
+            let dadosPilotoRanking = ranking['total'].find(r => r.NOME == piloto);
+            let dadosRanking = { 'ranking': ranking['ranking'] };
+            if (dadosPilotoRanking) {
+               dadosRanking['ptotal'] = dadosPilotoRanking.PTOTAL;
+               dadosRanking['pos'] = dadosPilotoRanking.POS;
+            }
+            dadosRankings.push(dadosRanking);
+         }
+
+         let dadosPontuacaoPorBateriasUltimoRanking = rankings[rankings.length - 1].baterias.map(b => {
+            let dadosPiloto = b.pilotos.find(p => p.NOME == piloto);
+            if (dadosPiloto) {
+               dadosPiloto.bateria = b.bateria;
+            }
+            return dadosPiloto;
+         }).filter(x => x);
+
+         status_ranking ? stats.push(`<div class="h6 mt-2">${status_ranking.POS} º no Ranking (${status_ranking.PTOTAL} Pts.)</div>`) : stats.push(`Não qualificado no ranking`);
+         let melhorPosicaoRanking = dadosRankings.sort((a, b) => a.pos > b.pos ? 1 : -1)[0];
+         stats.push(`<div>Melhor posição no Ranking: <b>${melhorPosicaoRanking.pos}º (${formatarData(melhorPosicaoRanking.ranking)})</b></div>`);
+         stats.push(`<div>Média de pontos por bateria: <b>${numeroBr(status_ranking.PTOTAL / dadosBaterias.length, 2)} Pts.</b></div>`);
+         let ordenar_bateria = dadosBaterias.sort((a, b) => a.bateria > b.bateria ? 1 : -1);
+
+         let maiorPontuacaoBateria = dadosPontuacaoPorBateriasUltimoRanking.sort((a, b) => a.PTOTAL > b.PTOTAL ? -1 : 1)[0];
+         stats.push(`<div>Maior pontuação em uma bateria: <b>${numeroBr(maiorPontuacaoBateria.PTOTAL, 2)} Pts. (${formatarData(maiorPontuacaoBateria.bateria.substring(0, 8))})</b></div>`);
+         stats.push(`<div>Número de participações: <b>${dadosBaterias.length}</b></div>`);
+         stats.push(`<div>Primeira participação: <b>${formatarData(ordenar_bateria[0].bateria)}</b></div>`);
+         stats.push(`<div>Última participação: <b>${formatarData(ordenar_bateria[ordenar_bateria.length - 1].bateria)}</b></div>`);
+
+
+         dadosBaterias.map(b => b.pos).includes("1") ?
+            stats.push(`<div>Número de vitórias: <b>${dadosBaterias.filter(b => b.pos == 1).length}</b></div>`) :
+            stats.push(`<div>Melhor posição em uma corrida: <b>${dadosBaterias.sort((a, b) => Number(a.pos) > Number(b.pos) ? 1 : -1)[0].pos}º</b></div>`);
+         stats.push(`<div>Número de podiums: <b>${dadosBaterias.filter(b => ["1", "2", "3"].includes(b.pos)).length}</b></div>`);
+         dadosBaterias.map(b => b.pos_largada).includes("1") ?
+            stats.push(`<div>Número de pole positions: <b>${dadosBaterias.filter(b => b.pos_largada == 1).length}</b></div>`) :
+            stats.push(`<div>Melhor posição no gride de largada: <b>${dadosBaterias.sort((a, b) => Number(a.pos_largada) > Number(b.pos_largada) ? 1 : -1)[0].pos_largada}º</b></div>`);
+         stats.push(`<div>Melhor volta em corridas: <b>${dadosBaterias.sort((a, b) => a.melhor_volta_inividual > b.melhor_volta_inividual ? 1 : -1)[0].melhor_volta_inividual}</b></div>`);
+         stats.push(`<div>Número máximo de voltas em uma corrida: <b>${dadosBaterias.sort((a, b) => Number(a.numero_voltas) > Number(b.numero_voltas) ? -1 : 1)[0].numero_voltas}</b></div>`);
+         stats.push(`<div>Número total de voltas em corridas: <b>${dadosBaterias.reduce((acc, curr) => acc + Number(curr.numero_voltas), 0)}</b></div>`);
+
+         $(`#estatísticasPiloto`).html(stats.join(``));
+
+      }
+
+      function analisarResultados(piloto) {
+         let vitorias = 0;
+         let melhorResultado = Infinity;
+
+         for (let resultado of piloto.resultados) {
+            let posicaoCorrida = parseInt(resultado.resultado_corrida, 10);
+            if (posicaoCorrida === 1) {
+               vitorias++;
+            } else if (posicaoCorrida < melhorResultado) {
+               melhorResultado = posicaoCorrida;
+            }
+         }
+
+         if (vitorias > 0) {
+            return `${vitorias} vitória${vitorias > 1 ? 's' : ''}`;
+         } else {
+            return `Melhor resultado: ${melhorResultado}º`;
+         }
+      }
+   });
+
+</script>
+
+</html>

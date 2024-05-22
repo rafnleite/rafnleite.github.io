@@ -10,7 +10,7 @@
    <meta name="viewport" content="width=device-width, initial-scale=1">
    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
    <!-- site metas -->
-   <title>🏎️ | STI Kart - Regulamento</title>
+   <title>🏎️ | STI Kart - Pilotos</title>
    <meta name="keywords" content="">
    <meta name="description" content="">
    <meta name="author" content="">
@@ -71,7 +71,7 @@
                   <li class="nav-item">
                      <a class="nav-link" href="regulamento.html">Regulamento</a>
                   </li>
-    
+
                </ul>
             </div>
          </nav>
@@ -83,7 +83,16 @@
          <div class="row">
             <div class="col-sm-12">
                <div class="h1 contact_taital">Pilotos</div>
-               <p class="text-center">Página em construção. Volte em breve!</p>
+               <div class="row">
+                  <div class="col-10">
+                     <input type="text" class="form-control form-control-lg" id="filtrarPiloto"
+                        placeholder="Filtrar Piloto" />
+                  </div>
+                  <div class="col-2">
+                     <button type="button" class="btn btn-secondary btn-lg" id="limparFiltro">Limpar filtro</button>
+                  </div>
+               </div>
+               <div class="row" id="lista_pilotos"></div>
             </div>
          </div>
       </div>
@@ -93,7 +102,8 @@
       <div class="container">
          <div class="row">
             <div class="col-sm-12">
-               <p class="copyright_text">2024 | Rafael Nobre Leite.<br>Design by <a href="https://html.design">Free Html
+               <p class="copyright_text">2024 | Rafael Nobre Leite.<br>Design by <a href="https://html.design">Free
+                     Html
                      Templates</a>
                   Distribution by <a href="https://themewagon.com">ThemeWagon</a></p>
             </div>
@@ -102,5 +112,117 @@
    </div>
 </body>
 
+<script>
+
+   $(document).ready(async function () {
+
+      const CORRIDAS = {};
+      await carregarLista('corridas', CORRIDAS);
+
+      const RANKINGS = {};
+      await carregarLista('rankings', RANKINGS);
+      window.RANKINGS_VETOR = reorganizarDadosRanking(RANKINGS);
+
+      console.log(RANKINGS_VETOR);
+
+      let pilotos = [];
+      for (bateria in CORRIDAS) {
+         let corrida = CORRIDAS[bateria]['corrida'];
+         let tomada_de_tempo = CORRIDAS[bateria]['tomada_de_tempo'];
+         for (p in corrida) {
+            let piloto = corrida[p];
+            if (pilotos.map(p => p.nome).includes(piloto.NOME)) {
+               pilotos.find(p => p.nome == piloto.NOME).resultados.push({
+                  'bateria': bateria,
+                  'resultado_corrida': piloto.POS,
+                  'resultado_tomada_de_tempo': tomada_de_tempo.find(t => t.NOME == piloto.NOME) ? tomada_de_tempo.find(t => t.NOME == piloto.NOME).POS : null
+               });
+            } else {
+               pilotos.push({
+                  nome: piloto.NOME,
+                  resultados: [{
+                     'bateria': bateria,
+                     'resultado_corrida': piloto.POS,
+                     'resultado_tomada_de_tempo': tomada_de_tempo.find(t => t.NOME == piloto.NOME) ? tomada_de_tempo.find(t => t.NOME == piloto.NOME).POS : null
+                  }]
+               });
+            }
+         }
+      }
+
+      let cards = [];
+
+      pilotos.forEach(p => cards.push(criarCard(p)))
+
+      cards.sort((a, b) => a.piloto > b.piloto ? 1 : -1);
+
+      // cards.sort((a, b) => b.bateria - a.bateria);
+
+      $(`#lista_pilotos`).html(cards.map(el => el.card));
+
+      function criarCard(piloto) {
+
+         return {
+            'piloto': piloto.nome,
+            'card': `<div class="col-lg-3 col-md-6 px-0 d-flex align-items-stretch cardPiloto">
+            <div class="coffee_box flex-grow-1 d-flex flex-column">
+               <h3 class="types_text">${piloto.nome}</h3>
+               <p class="looking_text font-weight-bold">${numeroBr(RANKINGS_VETOR[RANKINGS_VETOR.length - 1].total.find(t => t.NOME == piloto.nome).PTOTAL, 2)} pontos</p>
+               <p class="looking_text">${piloto.resultados.length} ${piloto.resultados.length > 1 ? 'corridas' : 'corrida'}</p>
+               <p class="looking_text">${analisarResultados(piloto)}</p>
+               <div class="read_bt mt-auto"><a href="./piloto.html?piloto=${piloto.nome}">Ver mais</a></div>
+            </div>
+      </div>`
+         };
+      }
+
+      function analisarResultados(piloto) {
+         let vitorias = 0;
+         let melhorResultado = Infinity;
+
+         for (let resultado of piloto.resultados) {
+            let posicaoCorrida = parseInt(resultado.resultado_corrida, 10);
+            if (posicaoCorrida === 1) {
+               vitorias++;
+            } else if (posicaoCorrida < melhorResultado) {
+               melhorResultado = posicaoCorrida;
+            }
+         }
+
+         if (vitorias > 0) {
+            return `${vitorias} vitória${vitorias > 1 ? 's' : ''}`;
+         } else {
+            return `Melhor resultado: ${melhorResultado}º`;
+         }
+      }
+   });
+
+   $(`#filtrarPiloto`).on(`keyup`, function () {
+      filtrarPilotos();
+   });
+
+   $(`#limparFiltro`).on(`click`, function () {
+      $(`#filtrarPiloto`).val("");
+      filtrarPilotos();
+   });
+
+   function filtrarPilotos() {
+      let filterText = normalizarText($(`#filtrarPiloto`).val());
+
+      $('.cardPiloto').each(function () {
+         let card = $(this);
+         let h3Text = normalizarText(card.find('h3').first().text());
+
+         if (h3Text.includes(filterText)) {
+            card.addClass('d-flex align-items-stretch').removeClass('d-none');
+         } else {
+            card.removeClass('d-flex align-items-stretch').addClass('d-none');
+         }
+      });
+   }
+
+
+
+</script>
 
 </html>

@@ -10,7 +10,7 @@
    <meta name="viewport" content="width=device-width, initial-scale=1">
    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
    <!-- site metas -->
-   <title>🏎️ | STI Kart - Regulamento</title>
+   <title>🏎️ | STI Kart - Corridas</title>
    <meta name="keywords" content="">
    <meta name="description" content="">
    <meta name="author" content="">
@@ -105,12 +105,12 @@
 </body>
 
 <script>
+
    $(document).ready(async function () {
 
       const CORRIDAS = {};
-      await loadFileList();
+      await carregarLista('corridas', CORRIDAS);
 
-      console.log(CORRIDAS);
       let cards = [];
       for (corrida in CORRIDAS) {
          cards.push(criarCard(CORRIDAS[corrida], corrida));
@@ -120,57 +120,18 @@
 
       $(`#lista_corridas`).html(cards.map(el => el.card));
 
-      function loadJsonFiles(files) {
-         const fetchPromises = files.map((file) => {
-            const url = `./data/baterias/${file}`;
-            return fetch(url)
-               .then((response) => {
-                  if (!response.ok) {
-                     throw new Error(`Erro ao carregar ${file}: ${response.statusText}`);
-                  }
-                  return response.json();
-               })
-               .then((jsonData) => {
-                  const fileName = file.replace('.json', '');
-                  CORRIDAS[fileName] = jsonData;
-               })
-               .catch((error) => console.error('Erro ao carregar arquivo JSON:', error));
-         });
-
-         return Promise.all(fetchPromises);
-      }
-
-      function loadFileList() {
-         const url = './data/baterias/lista_baterias.json';
-
-         return fetch(url)
-            .then((response) => {
-               if (!response.ok) {
-                  throw new Error(`Erro ao carregar lista de arquivos: ${response.statusText}`);
-               }
-               return response.json();
-            })
-            .then((fileList) => {
-               return loadJsonFiles(fileList);
-            })
-            .then(() => {
-               console.log(CORRIDAS);
-            })
-            .catch((error) => console.error('Erro ao carregar lista de arquivos:', error));
-      }
-
       function criarCard(corrida, titulo) {
 
          return {
             bateria: titulo,
-            card: `<div class="col-lg-3 col-md-6">
-            <div class="coffee_box">
+            card: `<div class="col-lg-3 col-md-6 px-0 d-flex align-items-stretch">
+            <div class="coffee_box flex-grow-1 d-flex flex-column">
             <h3 class="types_text">${formatarData(titulo)}</h3>
             <p class="looking_text">🥇 <span class="font-weight-bold">${corrida.corrida[0].NOME}</span></p>
             <p class="looking_text">🥈 ${corrida.corrida[1].NOME}</p>
             <p class="looking_text">🥉 ${corrida.corrida[2].NOME}</p>
             <p class="looking_text mt-2">${corrida.corrida.length} participantes</p>
-            <div class="read_bt"><a href="./corrida.html?bateria=${titulo.replace(' ', '')}">Ver mais</a></div>
+            <div class="read_bt mt-auto"><a href="./corrida.html?bateria=${titulo.replace(' ', '')}">Ver mais</a></div>
             </div>
       </div>`
          };

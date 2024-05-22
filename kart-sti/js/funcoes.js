@@ -74,7 +74,7 @@ function caulcarPVC(voltas) {
 }
 
 function formatarData(dataTexto) {
-  if (dataTexto.length !== 12) {
+  if (dataTexto.length !== 12 && dataTexto.length !== 8) {
     throw new Error('Formato incorreto do texto da data');
   }
 
@@ -84,7 +84,69 @@ function formatarData(dataTexto) {
     throw new Error('Data inválida');
   }
 
-  return data.format('DD/MM/YYYY • HH:mm');
+if (dataTexto.length == 12) {
+    return data.format('DD/MM/YYYY • HH:mm');
+  }
+
+  if (dataTexto.length == 8) {
+    return data.format('DD/MM/YYYY');
+  }
+}
+
+function carregarArquivos(files, tipo, ARMAZENAMENTO) {
+  const fetchPromises = files.map((file) => {
+    const url = `./data/${tipo == 'corridas' ? 'baterias' : tipo == 'rankings' ? 'ranking' : ''}/${file}`;
+
+    return fetch(url)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Erro ao carregar ${file}: ${response.statusText}`);
+        }
+        return response.json();
+      })
+      .then((jsonData) => {
+        const fileName = file.replace('.json', '');
+        ARMAZENAMENTO[fileName] = jsonData;
+      })
+      .catch((error) => console.error('Erro ao carregar arquivo JSON:', error));
+  });
+
+  return Promise.all(fetchPromises);
+}
+
+function carregarLista(tipo = 'corridas', ARMAZENAMENTO) {
+
+  const url = tipo == 'corridas' ? './data/baterias/lista_baterias.json' : tipo == 'rankings' ? './data/ranking/lista_rankings.json' : null
+
+  return fetch(url)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`Erro ao carregar lista de arquivos: ${response.statusText}`);
+      }
+      return response.json();
+    })
+    .then((fileList) => {
+      return carregarArquivos(fileList, tipo, ARMAZENAMENTO);
+    })
+    .catch((error) => console.error('Erro ao carregar lista de arquivos:', error));
+}
+
+function reorganizarDadosRanking(ranking) {
+  const keys = Object.keys(ranking);
+
+  keys.sort();
+
+  return keys.map((key) => ({
+    'ranking': key,
+    ...ranking[key]
+  }));
+}
+
+function normalizarText(text) {
+  return text
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
 }
 
 const paletaDeCores = [
@@ -142,3 +204,4 @@ const paletaDeCores = [
   '#98fb98',
   '#7fffd4',
 ]
+

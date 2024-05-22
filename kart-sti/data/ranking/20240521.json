@@ -1,0 +1,1046 @@
+{
+    "total": [
+        {
+            "NOME": "AYRTON MENDONCA",
+            "PTOTAL": 1109.24,
+            "POS": 1
+        },
+        {
+            "NOME": "PEDRO AGUIAR",
+            "PTOTAL": 1024.92,
+            "POS": 2
+        },
+        {
+            "NOME": "BRUNO FARIA ALMADA",
+            "PTOTAL": 965.37,
+            "POS": 3
+        },
+        {
+            "NOME": "BRENER SILVA",
+            "PTOTAL": 792.16,
+            "POS": 4
+        },
+        {
+            "NOME": "ELTON LAGROTERIA DOS SANTOS",
+            "PTOTAL": 785.3,
+            "POS": 5
+        },
+        {
+            "NOME": "TOMAS TAVEIRA RABELO",
+            "PTOTAL": 773.01,
+            "POS": 6
+        },
+        {
+            "NOME": "RAFAEL ANGELO VIEIRA PESSOA LIMA",
+            "PTOTAL": 743.56,
+            "POS": 7
+        },
+        {
+            "NOME": "VINICIUS LARANJEIRAS",
+            "PTOTAL": 634.09,
+            "POS": 8
+        },
+        {
+            "NOME": "MARCIO SANTANA84",
+            "PTOTAL": 609.78,
+            "POS": 9
+        },
+        {
+            "NOME": "REGINALDO VIEIRA",
+            "PTOTAL": 604.49,
+            "POS": 10
+        },
+        {
+            "NOME": "ENRIQUE FERNANDO LIMBERGER",
+            "PTOTAL": 576.81,
+            "POS": 11
+        },
+        {
+            "NOME": "LEONARDO STADLER PEZZINI",
+            "PTOTAL": 557.52,
+            "POS": 12
+        },
+        {
+            "NOME": "ALEX NEVES",
+            "PTOTAL": 529.41,
+            "POS": 13
+        },
+        {
+            "NOME": "MURILO XAVIER",
+            "PTOTAL": 520.04,
+            "POS": 14
+        },
+        {
+            "NOME": "CESAR CARVALHO",
+            "PTOTAL": 491.34,
+            "POS": 15
+        },
+        {
+            "NOME": "MATHEUS SILVA",
+            "PTOTAL": 470.18,
+            "POS": 16
+        },
+        {
+            "NOME": "GABRIEL CARDOSO",
+            "PTOTAL": 431.67,
+            "POS": 17
+        },
+        {
+            "NOME": "PEDRO MIZUNO",
+            "PTOTAL": 355.65,
+            "POS": 18
+        },
+        {
+            "NOME": "RAFAEL LEITE",
+            "PTOTAL": 351.51,
+            "POS": 19
+        },
+        {
+            "NOME": "VITOR NOLASCO",
+            "PTOTAL": 333.63,
+            "POS": 20
+        },
+        {
+            "NOME": "GUSTAVO BASTOS",
+            "PTOTAL": 314.41,
+            "POS": 21
+        },
+        {
+            "NOME": "RAFAEL VASEL",
+            "PTOTAL": 310.15,
+            "POS": 22
+        },
+        {
+            "NOME": "GILBERTO JOS\u00c9 ROSSA JUNIOR",
+            "PTOTAL": 303.7,
+            "POS": 23
+        },
+        {
+            "NOME": "SAMUEL HUSSIN COUTO",
+            "PTOTAL": 279.07,
+            "POS": 24
+        },
+        {
+            "NOME": "PEDRO MANFRIM MAGALHAES DE PAULA",
+            "PTOTAL": 225.4,
+            "POS": 25
+        },
+        {
+            "NOME": "LUIZ  DE LIMA SOUZA",
+            "PTOTAL": 217.87,
+            "POS": 26
+        },
+        {
+            "NOME": "VINICIUS MENDONCA",
+            "PTOTAL": 199.93,
+            "POS": 27
+        },
+        {
+            "NOME": "DIOGO DA SILVA MACIEL",
+            "PTOTAL": 197.35,
+            "POS": 28
+        },
+        {
+            "NOME": "ANA JESSICA DE OLIVEIRA BATISTA",
+            "PTOTAL": 181.79,
+            "POS": 29
+        },
+        {
+            "NOME": "RICARDO DRUDI",
+            "PTOTAL": 180.87,
+            "POS": 30
+        },
+        {
+            "NOME": "LUCAS MONTEIRO",
+            "PTOTAL": 153.27,
+            "POS": 31
+        },
+        {
+            "NOME": "LEONEL SANDER",
+            "PTOTAL": 151.21,
+            "POS": 32
+        },
+        {
+            "NOME": "MOISES HENRIQUES",
+            "PTOTAL": 139.89,
+            "POS": 33
+        },
+        {
+            "NOME": "HEITOR GOMIDE DE CASTRO",
+            "PTOTAL": 133.86,
+            "POS": 34
+        },
+        {
+            "NOME": "EDGARD SANT'ANNA",
+            "PTOTAL": 129.02,
+            "POS": 35
+        },
+        {
+            "NOME": "BRENO DO NASCIMENTO MARTINS",
+            "PTOTAL": 114.4,
+            "POS": 36
+        },
+        {
+            "NOME": "VALDIR MENDONCA",
+            "PTOTAL": 114.72,
+            "POS": 37
+        },
+        {
+            "NOME": "VICTOR DOS PRAZERES",
+            "PTOTAL": 106.76,
+            "POS": 38
+        },
+        {
+            "NOME": "ALINE BICICGO",
+            "PTOTAL": 98.09,
+            "POS": 39
+        },
+        {
+            "NOME": "DANIEL NORA",
+            "PTOTAL": 96.15,
+            "POS": 40
+        },
+        {
+            "NOME": "CLARISSA MARTINS DE MELLO",
+            "PTOTAL": 85.48,
+            "POS": 41
+        },
+        {
+            "NOME": "RAPHAEL MARIANO",
+            "PTOTAL": 85.0,
+            "POS": 42
+        },
+        {
+            "NOME": "RONALU BARCELOS",
+            "PTOTAL": 60.0,
+            "POS": 43
+        }
+    ],
+    "baterias": [
+        {
+            "bateria": "202403201815",
+            "pilotos": [
+                {
+                    "NOME": "AYRTON MENDONCA",
+                    "POS_CORRIDA": 2,
+                    "POS_TOMADA_DE_TEMPO": 3,
+                    "MVC": false,
+                    "VC": 15,
+                    "PCC": 314.29,
+                    "PMV": 0,
+                    "PCTT": 11.48,
+                    "PVC": 75,
+                    "PTOTAL": 400.77
+                },
+                {
+                    "NOME": "ELTON LAGROTERIA DOS SANTOS",
+                    "POS_CORRIDA": 7,
+                    "POS_TOMADA_DE_TEMPO": 8,
+                    "MVC": false,
+                    "VC": 11,
+                    "PCC": 101.54,
+                    "PMV": 0,
+                    "PCTT": 0,
+                    "PVC": 55,
+                    "PTOTAL": 156.54
+                },
+                {
+                    "NOME": "ANA JESSICA DE OLIVEIRA BATISTA",
+                    "POS_CORRIDA": 11,
+                    "POS_TOMADA_DE_TEMPO": 9,
+                    "MVC": false,
+                    "VC": 11,
+                    "PCC": 24.78,
+                    "PMV": 0,
+                    "PCTT": 0,
+                    "PVC": 55,
+                    "PTOTAL": 79.78
+                },
+                {
+                    "NOME": "HEITOR GOMIDE DE CASTRO",
+                    "POS_CORRIDA": 8,
+                    "POS_TOMADA_DE_TEMPO": 7,
+                    "MVC": false,
+                    "VC": 11,
+                    "PCC": 78.86,
+                    "PMV": 0,
+                    "PCTT": 0,
+                    "PVC": 55,
+                    "PTOTAL": 133.86
+                },
+                {
+                    "NOME": "GUSTAVO BASTOS",
+                    "POS_CORRIDA": 9,
+                    "POS_TOMADA_DE_TEMPO": null,
+                    "MVC": false,
+                    "VC": 10,
+                    "PCC": 58.86,
+                    "PMV": 0,
+                    "PCTT": 0,
+                    "PVC": 50,
+                    "PTOTAL": 108.86
+                },
+                {
+                    "NOME": "PEDRO MANFRIM MAGALHAES DE PAULA",
+                    "POS_CORRIDA": 5,
+                    "POS_TOMADA_DE_TEMPO": 4,
+                    "MVC": false,
+                    "VC": 12,
+                    "PCC": 158.68,
+                    "PMV": 0,
+                    "PCTT": 6.72,
+                    "PVC": 60,
+                    "PTOTAL": 225.4
+                },
+                {
+                    "NOME": "GABRIEL CARDOSO",
+                    "POS_CORRIDA": 12,
+                    "POS_TOMADA_DE_TEMPO": 6,
+                    "MVC": false,
+                    "VC": 7,
+                    "PCC": 10.0,
+                    "PMV": 0,
+                    "PCTT": 0.0,
+                    "PVC": 35,
+                    "PTOTAL": 45.0
+                },
+                {
+                    "NOME": "RAFAEL ANGELO VIEIRA PESSOA LIMA",
+                    "POS_CORRIDA": 4,
+                    "POS_TOMADA_DE_TEMPO": 5,
+                    "MVC": true,
+                    "VC": 13,
+                    "PCC": 196.57,
+                    "PMV": 51.84,
+                    "PCTT": 3.02,
+                    "PVC": 65,
+                    "PTOTAL": 316.43
+                },
+                {
+                    "NOME": "RAFAEL LEITE",
+                    "POS_CORRIDA": 10,
+                    "POS_TOMADA_DE_TEMPO": 10,
+                    "MVC": false,
+                    "VC": 11,
+                    "PCC": 40.96,
+                    "PMV": 0,
+                    "PCTT": 0,
+                    "PVC": 55,
+                    "PTOTAL": 95.96
+                },
+                {
+                    "NOME": "BRENER SILVA",
+                    "POS_CORRIDA": 1,
+                    "POS_TOMADA_DE_TEMPO": 1,
+                    "MVC": false,
+                    "VC": 15,
+                    "PCC": 432.0,
+                    "PMV": 0,
+                    "PCTT": 29.68,
+                    "PVC": 75,
+                    "PTOTAL": 536.68
+                },
+                {
+                    "NOME": "REGINALDO VIEIRA",
+                    "POS_CORRIDA": 3,
+                    "POS_TOMADA_DE_TEMPO": 2,
+                    "MVC": false,
+                    "VC": 15,
+                    "PCC": 245.43,
+                    "PMV": 0,
+                    "PCTT": 18.2,
+                    "PVC": 75,
+                    "PTOTAL": 338.63
+                },
+                {
+                    "NOME": "LEONARDO STADLER PEZZINI",
+                    "POS_CORRIDA": 6,
+                    "POS_TOMADA_DE_TEMPO": 11,
+                    "MVC": false,
+                    "VC": 12,
+                    "PCC": 127.71,
+                    "PMV": 0,
+                    "PCTT": 0,
+                    "PVC": 60,
+                    "PTOTAL": 187.71
+                }
+            ],
+            "numero_participantes_corrida": 12,
+            "numero_participantes_tomada_de_tempo": 11
+        },
+        {
+            "bateria": "202404171900",
+            "pilotos": [
+                {
+                    "NOME": "GILBERTO JOS\u00c9 ROSSA JUNIOR",
+                    "POS_CORRIDA": 9,
+                    "POS_TOMADA_DE_TEMPO": 14,
+                    "MVC": false,
+                    "VC": 17,
+                    "PCC": 216.73,
+                    "PMV": 0,
+                    "PCTT": 1.97,
+                    "PVC": 85,
+                    "PTOTAL": 303.7
+                },
+                {
+                    "NOME": "PEDRO AGUIAR",
+                    "POS_CORRIDA": 1,
+                    "POS_TOMADA_DE_TEMPO": 1,
+                    "MVC": false,
+                    "VC": 19,
+                    "PCC": 584.0,
+                    "PMV": 0,
+                    "PCTT": 40.88,
+                    "PVC": 95,
+                    "PTOTAL": 719.88
+                },
+                {
+                    "NOME": "ALEX NEVES",
+                    "POS_CORRIDA": 10,
+                    "POS_TOMADA_DE_TEMPO": 7,
+                    "MVC": false,
+                    "VC": 17,
+                    "PCC": 199.12,
+                    "PMV": 0,
+                    "PCTT": 12.19,
+                    "PVC": 85,
+                    "PTOTAL": 296.31
+                },
+                {
+                    "NOME": "GUSTAVO BASTOS",
+                    "POS_CORRIDA": 16,
+                    "POS_TOMADA_DE_TEMPO": 28,
+                    "MVC": false,
+                    "VC": 17,
+                    "PCC": 120.55,
+                    "PMV": 0,
+                    "PCTT": 0,
+                    "PVC": 85,
+                    "PTOTAL": 205.55
+                },
+                {
+                    "NOME": "RAFAEL ANGELO VIEIRA PESSOA LIMA",
+                    "POS_CORRIDA": 5,
+                    "POS_TOMADA_DE_TEMPO": 5,
+                    "MVC": false,
+                    "VC": 19,
+                    "PCC": 314.98,
+                    "PMV": 0,
+                    "PCTT": 17.15,
+                    "PVC": 95,
+                    "PTOTAL": 427.13
+                },
+                {
+                    "NOME": "RICARDO DRUDI",
+                    "POS_CORRIDA": 18,
+                    "POS_TOMADA_DE_TEMPO": 22,
+                    "MVC": false,
+                    "VC": 16,
+                    "PCC": 100.87,
+                    "PMV": 0,
+                    "PCTT": 0,
+                    "PVC": 80,
+                    "PTOTAL": 180.87
+                },
+                {
+                    "NOME": "LEONARDO STADLER PEZZINI",
+                    "POS_CORRIDA": 19,
+                    "POS_TOMADA_DE_TEMPO": 26,
+                    "MVC": false,
+                    "VC": 17,
+                    "PCC": 91.83,
+                    "PMV": 0,
+                    "PCTT": 0,
+                    "PVC": 85,
+                    "PTOTAL": 176.83
+                },
+                {
+                    "NOME": "MOISES HENRIQUES",
+                    "POS_CORRIDA": 23,
+                    "POS_TOMADA_DE_TEMPO": 18,
+                    "MVC": false,
+                    "VC": 16,
+                    "PCC": 59.89,
+                    "PMV": 0,
+                    "PCTT": 0,
+                    "PVC": 80,
+                    "PTOTAL": 139.89
+                },
+                {
+                    "NOME": "ELTON LAGROTERIA DOS SANTOS",
+                    "POS_CORRIDA": 7,
+                    "POS_TOMADA_DE_TEMPO": 16,
+                    "MVC": false,
+                    "VC": 19,
+                    "PCC": 258.74,
+                    "PMV": 0,
+                    "PCTT": 0.0,
+                    "PVC": 95,
+                    "PTOTAL": 353.74
+                },
+                {
+                    "NOME": "LUIZ  DE LIMA SOUZA",
+                    "POS_CORRIDA": 14,
+                    "POS_TOMADA_DE_TEMPO": 21,
+                    "MVC": false,
+                    "VC": 15,
+                    "PCC": 142.87,
+                    "PMV": 0,
+                    "PCTT": 0,
+                    "PVC": 75,
+                    "PTOTAL": 217.87
+                },
+                {
+                    "NOME": "GABRIEL CARDOSO",
+                    "POS_CORRIDA": 15,
+                    "POS_TOMADA_DE_TEMPO": 12,
+                    "MVC": false,
+                    "VC": 17,
+                    "PCC": 131.34,
+                    "PMV": 0,
+                    "PCTT": 4.24,
+                    "PVC": 85,
+                    "PTOTAL": 220.58
+                },
+                {
+                    "NOME": "DANIEL NORA",
+                    "POS_CORRIDA": 29,
+                    "POS_TOMADA_DE_TEMPO": 29,
+                    "MVC": false,
+                    "VC": 15,
+                    "PCC": 21.15,
+                    "PMV": 0,
+                    "PCTT": 0,
+                    "PVC": 75,
+                    "PTOTAL": 96.15
+                },
+                {
+                    "NOME": "BRENER SILVA",
+                    "POS_CORRIDA": 13,
+                    "POS_TOMADA_DE_TEMPO": 8,
+                    "MVC": false,
+                    "VC": 18,
+                    "PCC": 155.26,
+                    "PMV": 0,
+                    "PCTT": 10.22,
+                    "PVC": 90,
+                    "PTOTAL": 255.48
+                },
+                {
+                    "NOME": "BRENO DO NASCIMENTO MARTINS",
+                    "POS_CORRIDA": 26,
+                    "POS_TOMADA_DE_TEMPO": 19,
+                    "MVC": false,
+                    "VC": 15,
+                    "PCC": 39.4,
+                    "PMV": 0,
+                    "PCTT": 0,
+                    "PVC": 75,
+                    "PTOTAL": 114.4
+                },
+                {
+                    "NOME": "EDGARD SANT'ANNA",
+                    "POS_CORRIDA": 25,
+                    "POS_TOMADA_DE_TEMPO": 13,
+                    "MVC": false,
+                    "VC": 16,
+                    "PCC": 45.96,
+                    "PMV": 0,
+                    "PCTT": 3.06,
+                    "PVC": 80,
+                    "PTOTAL": 129.02
+                },
+                {
+                    "NOME": "CESAR CARVALHO",
+                    "POS_CORRIDA": 12,
+                    "POS_TOMADA_DE_TEMPO": 24,
+                    "MVC": false,
+                    "VC": 15,
+                    "PCC": 168.64,
+                    "PMV": 0,
+                    "PCTT": 0,
+                    "PVC": 75,
+                    "PTOTAL": 243.64
+                },
+                {
+                    "NOME": "BRUNO FARIA ALMADA",
+                    "POS_CORRIDA": 4,
+                    "POS_TOMADA_DE_TEMPO": 2,
+                    "MVC": true,
+                    "VC": 19,
+                    "PCC": 352.28,
+                    "PMV": 70.08,
+                    "PCTT": 30.66,
+                    "PVC": 95,
+                    "PTOTAL": 548.02
+                },
+                {
+                    "NOME": "ALINE BICICGO",
+                    "POS_CORRIDA": 27,
+                    "POS_TOMADA_DE_TEMPO": 25,
+                    "MVC": false,
+                    "VC": 13,
+                    "PCC": 33.09,
+                    "PMV": 0,
+                    "PCTT": 0,
+                    "PVC": 65,
+                    "PTOTAL": 98.09
+                },
+                {
+                    "NOME": "CLARISSA MARTINS DE MELLO",
+                    "POS_CORRIDA": 30,
+                    "POS_TOMADA_DE_TEMPO": 30,
+                    "MVC": false,
+                    "VC": 14,
+                    "PCC": 15.48,
+                    "PMV": 0,
+                    "PCTT": 0,
+                    "PVC": 70,
+                    "PTOTAL": 85.48
+                },
+                {
+                    "NOME": "RONALU BARCELOS",
+                    "POS_CORRIDA": 31,
+                    "POS_TOMADA_DE_TEMPO": 31,
+                    "MVC": false,
+                    "VC": 10,
+                    "PCC": 10.0,
+                    "PMV": 0,
+                    "PCTT": 0,
+                    "PVC": 50,
+                    "PTOTAL": 60.0
+                },
+                {
+                    "NOME": "REGINALDO VIEIRA",
+                    "POS_CORRIDA": 24,
+                    "POS_TOMADA_DE_TEMPO": 23,
+                    "MVC": false,
+                    "VC": 17,
+                    "PCC": 52.78,
+                    "PMV": 0,
+                    "PCTT": 0,
+                    "PVC": 85,
+                    "PTOTAL": 137.78
+                },
+                {
+                    "NOME": "AYRTON MENDONCA",
+                    "POS_CORRIDA": 8,
+                    "POS_TOMADA_DE_TEMPO": 9,
+                    "MVC": false,
+                    "VC": 19,
+                    "PCC": 236.42,
+                    "PMV": 0,
+                    "PCTT": 8.48,
+                    "PVC": 95,
+                    "PTOTAL": 339.9
+                },
+                {
+                    "NOME": "LUCAS MONTEIRO",
+                    "POS_CORRIDA": 22,
+                    "POS_TOMADA_DE_TEMPO": 15,
+                    "MVC": false,
+                    "VC": 17,
+                    "PCC": 67.32,
+                    "PMV": 0,
+                    "PCTT": 0.95,
+                    "PVC": 85,
+                    "PTOTAL": 153.27
+                },
+                {
+                    "NOME": "TOMAS TAVEIRA RABELO",
+                    "POS_CORRIDA": 2,
+                    "POS_TOMADA_DE_TEMPO": 4,
+                    "MVC": false,
+                    "VC": 19,
+                    "PCC": 468.14,
+                    "PMV": 0,
+                    "PCTT": 20.44,
+                    "PVC": 95,
+                    "PTOTAL": 583.58
+                },
+                {
+                    "NOME": "ANA JESSICA DE OLIVEIRA BATISTA",
+                    "POS_CORRIDA": 28,
+                    "POS_TOMADA_DE_TEMPO": 27,
+                    "MVC": false,
+                    "VC": 15,
+                    "PCC": 27.01,
+                    "PMV": 0,
+                    "PCTT": 0,
+                    "PVC": 75,
+                    "PTOTAL": 102.01
+                },
+                {
+                    "NOME": "MURILO XAVIER",
+                    "POS_CORRIDA": 3,
+                    "POS_TOMADA_DE_TEMPO": 3,
+                    "MVC": false,
+                    "VC": 19,
+                    "PCC": 400.36,
+                    "PMV": 0,
+                    "PCTT": 24.68,
+                    "PVC": 95,
+                    "PTOTAL": 520.04
+                },
+                {
+                    "NOME": "DIOGO DA SILVA MACIEL",
+                    "POS_CORRIDA": 17,
+                    "POS_TOMADA_DE_TEMPO": 10,
+                    "MVC": false,
+                    "VC": 16,
+                    "PCC": 110.42,
+                    "PMV": 0,
+                    "PCTT": 6.93,
+                    "PVC": 80,
+                    "PTOTAL": 197.35
+                },
+                {
+                    "NOME": "RAFAEL VASEL",
+                    "POS_CORRIDA": 20,
+                    "POS_TOMADA_DE_TEMPO": 17,
+                    "MVC": false,
+                    "VC": 17,
+                    "PCC": 83.26,
+                    "PMV": 0,
+                    "PCTT": 0,
+                    "PVC": 85,
+                    "PTOTAL": 168.26
+                },
+                {
+                    "NOME": "RAFAEL LEITE",
+                    "POS_CORRIDA": 21,
+                    "POS_TOMADA_DE_TEMPO": 20,
+                    "MVC": false,
+                    "VC": 16,
+                    "PCC": 75.1,
+                    "PMV": 0,
+                    "PCTT": 0,
+                    "PVC": 80,
+                    "PTOTAL": 155.1
+                },
+                {
+                    "NOME": "ENRIQUE FERNANDO LIMBERGER",
+                    "POS_CORRIDA": 6,
+                    "POS_TOMADA_DE_TEMPO": 6,
+                    "MVC": false,
+                    "VC": 19,
+                    "PCC": 284.5,
+                    "PMV": 0,
+                    "PCTT": 14.46,
+                    "PVC": 95,
+                    "PTOTAL": 393.96
+                },
+                {
+                    "NOME": "PEDRO MIZUNO",
+                    "POS_CORRIDA": 11,
+                    "POS_TOMADA_DE_TEMPO": 11,
+                    "MVC": false,
+                    "VC": 15,
+                    "PCC": 183.19,
+                    "PMV": 0,
+                    "PCTT": 5.52,
+                    "PVC": 75,
+                    "PTOTAL": 263.71
+                }
+            ],
+            "numero_participantes_corrida": 31,
+            "numero_participantes_tomada_de_tempo": 31
+        },
+        {
+            "bateria": "202405211945",
+            "pilotos": [
+                {
+                    "NOME": "PEDRO AGUIAR",
+                    "POS_CORRIDA": 7,
+                    "POS_TOMADA_DE_TEMPO": 9,
+                    "MVC": false,
+                    "VC": 18,
+                    "PCC": 210.83,
+                    "PMV": 0,
+                    "PCTT": 4.21,
+                    "PVC": 90,
+                    "PTOTAL": 305.04
+                },
+                {
+                    "NOME": "ALEX NEVES",
+                    "POS_CORRIDA": 11,
+                    "POS_TOMADA_DE_TEMPO": 8,
+                    "MVC": false,
+                    "VC": 18,
+                    "PCC": 137.16,
+                    "PMV": 0,
+                    "PCTT": 5.94,
+                    "PVC": 90,
+                    "PTOTAL": 233.1
+                },
+                {
+                    "NOME": "VICTOR DOS PRAZERES",
+                    "POS_CORRIDA": 21,
+                    "POS_TOMADA_DE_TEMPO": 23,
+                    "MVC": false,
+                    "VC": 15,
+                    "PCC": 31.76,
+                    "PMV": 0,
+                    "PCTT": 0,
+                    "PVC": 75,
+                    "PTOTAL": 106.76
+                },
+                {
+                    "NOME": "RAPHAEL MARIANO",
+                    "POS_CORRIDA": 24,
+                    "POS_TOMADA_DE_TEMPO": 19,
+                    "MVC": false,
+                    "VC": 15,
+                    "PCC": 10.0,
+                    "PMV": 0,
+                    "PCTT": 0,
+                    "PVC": 75,
+                    "PTOTAL": 85.0
+                },
+                {
+                    "NOME": "VALDIR MENDONCA",
+                    "POS_CORRIDA": 20,
+                    "POS_TOMADA_DE_TEMPO": 22,
+                    "MVC": false,
+                    "VC": 15,
+                    "PCC": 39.72,
+                    "PMV": 0,
+                    "PCTT": 0,
+                    "PVC": 75,
+                    "PTOTAL": 114.72
+                },
+                {
+                    "NOME": "LEONARDO STADLER PEZZINI",
+                    "POS_CORRIDA": 12,
+                    "POS_TOMADA_DE_TEMPO": null,
+                    "MVC": false,
+                    "VC": 14,
+                    "PCC": 122.98,
+                    "PMV": 0,
+                    "PCTT": 0,
+                    "PVC": 70,
+                    "PTOTAL": 192.98
+                },
+                {
+                    "NOME": "ELTON LAGROTERIA DOS SANTOS",
+                    "POS_CORRIDA": 9,
+                    "POS_TOMADA_DE_TEMPO": 6,
+                    "MVC": false,
+                    "VC": 19,
+                    "PCC": 169.87,
+                    "PMV": 0,
+                    "PCTT": 10.15,
+                    "PVC": 95,
+                    "PTOTAL": 275.02
+                },
+                {
+                    "NOME": "VINICIUS LARANJEIRAS",
+                    "POS_CORRIDA": 1,
+                    "POS_TOMADA_DE_TEMPO": 4,
+                    "MVC": false,
+                    "VC": 18,
+                    "PCC": 528.0,
+                    "PMV": 0,
+                    "PCTT": 16.09,
+                    "PVC": 90,
+                    "PTOTAL": 634.09
+                },
+                {
+                    "NOME": "MATHEUS SILVA",
+                    "POS_CORRIDA": 3,
+                    "POS_TOMADA_DE_TEMPO": 2,
+                    "MVC": false,
+                    "VC": 19,
+                    "PCC": 348.93,
+                    "PMV": 0,
+                    "PCTT": 26.25,
+                    "PVC": 95,
+                    "PTOTAL": 470.18
+                },
+                {
+                    "NOME": "GABRIEL CARDOSO",
+                    "POS_CORRIDA": 16,
+                    "POS_TOMADA_DE_TEMPO": 15,
+                    "MVC": false,
+                    "VC": 18,
+                    "PCC": 76.09,
+                    "PMV": 0,
+                    "PCTT": 0,
+                    "PVC": 90,
+                    "PTOTAL": 166.09
+                },
+                {
+                    "NOME": "CESAR CARVALHO",
+                    "POS_CORRIDA": 10,
+                    "POS_TOMADA_DE_TEMPO": 14,
+                    "MVC": false,
+                    "VC": 19,
+                    "PCC": 152.7,
+                    "PMV": 0,
+                    "PCTT": 0,
+                    "PVC": 95,
+                    "PTOTAL": 247.7
+                },
+                {
+                    "NOME": "BRUNO FARIA ALMADA",
+                    "POS_CORRIDA": 4,
+                    "POS_TOMADA_DE_TEMPO": 3,
+                    "MVC": false,
+                    "VC": 19,
+                    "PCC": 302.04,
+                    "PMV": 0,
+                    "PCTT": 20.31,
+                    "PVC": 95,
+                    "PTOTAL": 417.35
+                },
+                {
+                    "NOME": "VITOR NOLASCO",
+                    "POS_CORRIDA": 6,
+                    "POS_TOMADA_DE_TEMPO": 10,
+                    "MVC": false,
+                    "VC": 19,
+                    "PCC": 235.96,
+                    "PMV": 0,
+                    "PCTT": 2.67,
+                    "PVC": 95,
+                    "PTOTAL": 333.63
+                },
+                {
+                    "NOME": "SAMUEL HUSSIN COUTO",
+                    "POS_CORRIDA": 8,
+                    "POS_TOMADA_DE_TEMPO": 13,
+                    "MVC": false,
+                    "VC": 18,
+                    "PCC": 189.07,
+                    "PMV": 0,
+                    "PCTT": 0,
+                    "PVC": 90,
+                    "PTOTAL": 279.07
+                },
+                {
+                    "NOME": "MARCIO SANTANA84",
+                    "POS_CORRIDA": 2,
+                    "POS_TOMADA_DE_TEMPO": 1,
+                    "MVC": true,
+                    "VC": 19,
+                    "PCC": 415.02,
+                    "PMV": 63.36,
+                    "PCTT": 36.4,
+                    "PVC": 95,
+                    "PTOTAL": 609.78
+                },
+                {
+                    "NOME": "LEONEL SANDER",
+                    "POS_CORRIDA": 17,
+                    "POS_TOMADA_DE_TEMPO": 18,
+                    "MVC": false,
+                    "VC": 17,
+                    "PCC": 66.21,
+                    "PMV": 0,
+                    "PCTT": 0,
+                    "PVC": 85,
+                    "PTOTAL": 151.21
+                },
+                {
+                    "NOME": "REGINALDO VIEIRA",
+                    "POS_CORRIDA": 19,
+                    "POS_TOMADA_DE_TEMPO": 20,
+                    "MVC": false,
+                    "VC": 16,
+                    "PCC": 48.08,
+                    "PMV": 0,
+                    "PCTT": 0,
+                    "PVC": 80,
+                    "PTOTAL": 128.08
+                },
+                {
+                    "NOME": "AYRTON MENDONCA",
+                    "POS_CORRIDA": 5,
+                    "POS_TOMADA_DE_TEMPO": 7,
+                    "MVC": false,
+                    "VC": 19,
+                    "PCC": 265.67,
+                    "PMV": 0,
+                    "PCTT": 7.9,
+                    "PVC": 95,
+                    "PTOTAL": 368.57
+                },
+                {
+                    "NOME": "TOMAS TAVEIRA RABELO",
+                    "POS_CORRIDA": 15,
+                    "POS_TOMADA_DE_TEMPO": 5,
+                    "MVC": false,
+                    "VC": 18,
+                    "PCC": 86.61,
+                    "PMV": 0,
+                    "PCTT": 12.82,
+                    "PVC": 90,
+                    "PTOTAL": 189.43
+                },
+                {
+                    "NOME": "RAFAEL VASEL",
+                    "POS_CORRIDA": 18,
+                    "POS_TOMADA_DE_TEMPO": 21,
+                    "MVC": false,
+                    "VC": 17,
+                    "PCC": 56.89,
+                    "PMV": 0,
+                    "PCTT": 0,
+                    "PVC": 85,
+                    "PTOTAL": 141.89
+                },
+                {
+                    "NOME": "VINICIUS MENDONCA",
+                    "POS_CORRIDA": 13,
+                    "POS_TOMADA_DE_TEMPO": 17,
+                    "MVC": false,
+                    "VC": 18,
+                    "PCC": 109.93,
+                    "PMV": 0,
+                    "PCTT": 0,
+                    "PVC": 90,
+                    "PTOTAL": 199.93
+                },
+                {
+                    "NOME": "RAFAEL LEITE",
+                    "POS_CORRIDA": 22,
+                    "POS_TOMADA_DE_TEMPO": 11,
+                    "MVC": false,
+                    "VC": 15,
+                    "PCC": 24.18,
+                    "PMV": 0,
+                    "PCTT": 1.27,
+                    "PVC": 75,
+                    "PTOTAL": 100.45
+                },
+                {
+                    "NOME": "ENRIQUE FERNANDO LIMBERGER",
+                    "POS_CORRIDA": 14,
+                    "POS_TOMADA_DE_TEMPO": 12,
+                    "MVC": false,
+                    "VC": 17,
+                    "PCC": 97.85,
+                    "PMV": 0,
+                    "PCTT": 0.0,
+                    "PVC": 85,
+                    "PTOTAL": 182.85
+                },
+                {
+                    "NOME": "PEDRO MIZUNO",
+                    "POS_CORRIDA": 23,
+                    "POS_TOMADA_DE_TEMPO": 16,
+                    "MVC": false,
+                    "VC": 15,
+                    "PCC": 16.94,
+                    "PMV": 0,
+                    "PCTT": 0,
+                    "PVC": 75,
+                    "PTOTAL": 91.94
+                }
+            ],
+            "numero_participantes_corrida": 24,
+            "numero_participantes_tomada_de_tempo": 23
+        }
+    ]
+}

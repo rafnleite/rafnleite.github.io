@@ -94,17 +94,17 @@
       <div class="container">
          <div class="h1 contact_taital">Ranking</div>
          <div class="row">
-            <div class="col-2 text-center d-flex align-items-center justify-content-center">
-               <i id="rankingAnterior" class="fa-solid fa-circle-left fa-2xl" data-toggle="tooltip"
-                  data-placement="top"></i>
+            <div class="col-2 text-center d-flex align-items-center justify-content-center text-dark">
+               <i id="rankingAnterior" class="fa-solid fa-circle-left fa-2xl pointer" data-toggle="tooltip" data-placement="top"
+                  data-original-title="Ver ranking anterior"></i>
             </div>
             <div class="col-8 d-flex justify-content-center">
                <select id="selecionadorDeRanking">
                </select>
             </div>
-            <div class="col-2 text-center d-flex align-items-center justify-content-center">
-               <i id="rankingPosterior" class="fa-solid fa-circle-right fa-2xl" data-toggle="tooltip"
-                  data-placement="top"></i>
+            <div class="col-2 text-center d-flex align-items-center justify-content-center text-dark">
+               <i id="rankingPosterior" class="fa-solid fa-circle-right fa-2xl pointer" data-toggle="tooltip"
+                  data-placement="top" data-original-title="Ver ranking posterior" style="display:none"></i>
             </div>
          </div>
          <hr>
@@ -133,49 +133,11 @@
    $(document).ready(async function () {
 
       const RANKINGS = {};
-      await loadFileList();
+      await carregarLista('rankings', RANKINGS);
+
       window.RANKINGS_VETOR = reorganizarDadosRanking(RANKINGS);
       preencherSelecionadorRanking(RANKINGS_VETOR);
       gerarTabelaDeRanking();
-
-      function loadJsonFiles(files) {
-         const fetchPromises = files.map((file) => {
-            const url = `./data/ranking/${file}`;
-            return fetch(url)
-               .then((response) => {
-                  if (!response.ok) {
-                     throw new Error(`Erro ao carregar ${file}: ${response.statusText}`);
-                  }
-                  return response.json();
-               })
-               .then((jsonData) => {
-                  const fileName = file.replace('.json', '');
-                  RANKINGS[fileName] = jsonData;
-               })
-               .catch((error) => console.error('Erro ao carregar arquivo JSON:', error));
-         });
-
-         return Promise.all(fetchPromises);
-      }
-
-      function loadFileList() {
-         const url = './data/ranking/lista_rankings.json';
-
-         return fetch(url)
-            .then((response) => {
-               if (!response.ok) {
-                  throw new Error(`Erro ao carregar lista de arquivos: ${response.statusText}`);
-               }
-               return response.json();
-            })
-            .then((fileList) => {
-               return loadJsonFiles(fileList);
-            })
-            .then(() => {
-               console.log('Rankings carregados');
-            })
-            .catch((error) => console.error('Erro ao carregar lista de arquivos:', error));
-      }
    });
 
    function preencherSelecionadorRanking(RANKINGS_VETOR) {
@@ -190,7 +152,6 @@
    }
 
    function gerarTabelaDeRanking() {
-
 
       dadosIdx = RANKINGS_VETOR.findIndex(r => r.ranking == $(`#selecionadorDeRanking`).val());
       window.callDetalhesTabelaDeRankings = false;
@@ -245,12 +206,9 @@
       });
 
       if (dadosIdx == 0) {
-         $(`#rankingAnterior`).parent().removeClass(`text-dark pointer`);
-         $("#rankingAnterior").removeAttr("data-original-title");
-         $("#rankingAnterior").off("click");
+         $(`#rankingAnterior`).hide();
       } else {
-         $(`#rankingAnterior`).parent().addClass(`text-dark pointer`);
-         $(`#rankingAnterior`).attr(`data-original-title`, `Ver ranking anterior`);
+         $(`#rankingAnterior`).show();
          $(`#rankingAnterior`).click((el, idx) => {
             $(`#selecionadorDeRanking`).val(RANKINGS_VETOR[dadosIdx - 1].ranking);
             gerarTabelaDeRanking();
@@ -259,12 +217,9 @@
       }
 
       if (dadosIdx == RANKINGS_VETOR.length - 1) {
-         $(`#rankingPosterior`).parent().removeClass(`text-dark pointer`);
-         $("#rankingPosterior").removeAttr("data-original-title");
-         $("#rankingPosterior").off("click");
+         $(`#rankingPosterior`).hide();
       } else {
-         $(`#rankingPosterior`).parent().addClass(`text-dark pointer`);
-         $(`#rankingPosterior`).attr(`data-original-title`, `Ver ranking posterior`);
+         $(`#rankingPosterior`).show();
          $(`#rankingPosterior`).click((el, idx) => {
             $(`#selecionadorDeRanking`).val(RANKINGS_VETOR[dadosIdx + 1].ranking);
             gerarTabelaDeRanking();
@@ -285,7 +240,7 @@
       $(`#tabelaRanking tbody`).on(`click`, `td.pointer`, async function () {
          let tr = $(this).closest(`tr`);
          let row = tabelaRanking.row(tr);
-         
+
          if (row.child.isShown()) {
             row.child.hide();
             tr.removeClass(`active`);
@@ -346,17 +301,6 @@
       } else {
          return null;
       }
-   }
-
-   function reorganizarDadosRanking(ranking) {
-      const keys = Object.keys(ranking);
-
-      keys.sort();
-
-      return keys.map((key) => ({
-         'ranking': key,
-         ...ranking[key]
-      }));
    }
 </script>
 

@@ -3873,8 +3873,8 @@ input[type="button"].btn-block {
 
 .nav-tabs .nav-link.active,
 .nav-tabs .nav-item.show .nav-link {
-  color: #495057;
-  background-color: #fff;
+  color: #fff;
+  background-color: #ff0000;
   border-color: #dee2e6 #dee2e6 #fff;
 }
 
