@@ -117,7 +117,7 @@
          </div>
          <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="tabelaClassificaçãoCorrida" role="tabelaClassificaçãoCorrida"
-               aria-labelledby="tabelaClassificaçãoCorrida-tab">
+               aria-labelledby="tabelaClassificaçãoCorrida-tab" width="100%">
                <div class="table-responsive">
                   <table id="tabelaDeClassificaçãoCorrida" class="table-hover-coffee table-coffee" style="width:100%">
                   </table>
@@ -367,14 +367,16 @@
                }
             });
 
-            gerarDetalhePiloto(row.data(), CORRIDA).then(el => row.child(el, 'child p-3').show());
+            gerarDetalhePiloto(row.data(), CORRIDA)
+               .then(el => row.child(el, 'child p-3').show())
+               .then(el => atualizarGráficoMapaDeVoltas(row.data(), CORRIDA));
             tr.addClass(`active`);
          }
       });
    }
 
    async function gerarDetalhePiloto(d, CORRIDA) {
-
+      console.log(d);
       let tt = CORRIDA.tomada_de_tempo.find(el => el.NOME == d.NOME);
       let detalhesPiloto = [`<div class="h6">Estatísticas</div>`];
       let pontuacao = [`<div class="h6">Pontuação</div>`];
@@ -396,11 +398,17 @@
       pontuacao.push(`<div><b>P<sub>VC</sub>: </b>${numeroBr(pvc, 2, 2)}</div>`);
       pontuacao.push(`<div><b>Pontuação Total: </b>${numeroBr(pcc + pmv + pctt + pvc, 2, 2)}</div>`);
 
-
       return `<div class="row">
-         <div class="col-6">${detalhesPiloto.join('')}</div>
-         <div class="col-6">${pontuacao.join('')}</div>
-         </div>`
+            <div class="col-6">${detalhesPiloto.join('')}</div>
+            <div class="col-6">${pontuacao.join('')}</div>
+         </div>
+         <div class="row mt-3">
+            <div class="col-12">
+               <div style="position: relative; height: 400px;">
+               <canvas id="graficoMapaDeVoltasCanvas_${d['NOME']}" style="height: 100%; width: 100%"></canvas>
+               </div>
+            </div>
+         </div>`;
    }
 
    function atualizarGráficoDeClassificaçãoCorrida() {
@@ -554,6 +562,74 @@
          setTimeout(() => { atualizarGráficoDeClassificaçãoCorrida(); }, 250);
       }
    });
+
+   function atualizarGráficoMapaDeVoltas(d, CORRIDA) {
+
+
+      if (typeof window[`graficoMapaDeVoltas_${d["NOME"]}`] !== 'undefined' && window[`graficoMapaDeVoltas_${d["NOME"]}`]) {
+         window[`graficoMapaDeVoltas_${d["NOME"]}`].destroy();
+      }
+
+      const RÓTULOS = Array.from({ length: d["MAPA_VOLTAS_ms"].length }, (_, i) => (i + 1).toString());;
+
+      const ctx = document.getElementById(`graficoMapaDeVoltasCanvas_${d["NOME"]}`).getContext("2d");
+      window[`graficoMapaDeVoltas_${d["NOME"]}`] = new Chart(ctx, {
+         type: "bar",
+         data: {
+            labels: RÓTULOS,
+            datasets: [{
+               label: 'Tempo das Voltas',
+               data: d["MAPA_VOLTAS_ms"],
+               backgroundColor: 'rgba(75, 192, 192, 0.2)',
+               borderColor: 'rgba(75, 192, 192, 1)',
+               borderWidth: 1
+            }],
+         },
+         options: {
+            scales: {
+               y: {
+                  beginAtZero: true,
+                  title: {
+                     display: true,
+                     text: "Tempo",
+                  },
+                  ticks: {
+                     callback: function (value) {
+                        return converterParaMMSS(value);
+                     }
+                  }
+               },
+               x: {
+                  title: {
+                     display: true,
+                     text: "Volta",
+                  },
+               },
+            },
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+               tooltip: {
+                  callbacks: {
+                     label: function (context) {
+                        const value = context.raw;
+                        return `Tempo: ${converterParaMMSS(value)}`;
+                     }
+                  }
+               }
+            },
+            layout: {
+               padding: {
+                  left: 10,
+                  right: 10,
+                  top: 0,
+                  bottom: 0
+               }
+            }
+         },
+      });
+
+   }
 
 </script>
 

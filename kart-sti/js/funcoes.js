@@ -84,7 +84,7 @@ function formatarData(dataTexto) {
     throw new Error('Data inválida');
   }
 
-if (dataTexto.length == 12) {
+  if (dataTexto.length == 12) {
     return data.format('DD/MM/YYYY • HH:mm');
   }
 
@@ -205,3 +205,10 @@ const paletaDeCores = [
   '#7fffd4',
 ]
 
+function converterParaMMSS(ms) {
+  seg = ms / 1000;
+  const min = Math.floor(seg / 60);
+  let segRestantes = numeroBr((seg % 60), 3, 3);
+  segRestantes = segRestantes.indexOf(',') == 1 ? `0${segRestantes}` : segRestantes;
+  return `${String(min).padStart(2, '0')}:${segRestantes}`;
+}
