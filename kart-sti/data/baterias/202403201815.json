@@ -18,6 +18,7 @@
             "TT_ms": 1359959,
             "DL_ms": "---",
             "DA_ms": "---",
+            "QUALIFICADO": true,
             "MVC": false,
             "MAPA_VOLTAS": [
                 "01:51.397",
@@ -92,6 +93,7 @@
             "TT_ms": 1380828,
             "DL_ms": 20869,
             "DA_ms": 20869,
+            "QUALIFICADO": true,
             "MVC": false,
             "MAPA_VOLTAS": [
                 "01:53.521",
@@ -166,6 +168,7 @@
             "TT_ms": 1465848,
             "DL_ms": 105889,
             "DA_ms": 85020,
+            "QUALIFICADO": true,
             "MVC": false,
             "MAPA_VOLTAS": [
                 "02:06.676",
@@ -240,6 +243,7 @@
             "TT_ms": 1427861,
             "DL_ms": "-1 VOLTA",
             "DA_ms": "-1 VOLTA",
+            "QUALIFICADO": true,
             "MVC": true,
             "MAPA_VOLTAS": [
                 "02:13.653",
@@ -314,6 +318,7 @@
             "TT_ms": 1429836,
             "DL_ms": "-2 VOLTAS",
             "DA_ms": "-1 VOLTA",
+            "QUALIFICADO": true,
             "MVC": false,
             "MAPA_VOLTAS": [
                 "02:35.221",
@@ -388,6 +393,7 @@
             "TT_ms": 1450754,
             "DL_ms": "-2 VOLTAS",
             "DA_ms": 20918,
+            "QUALIFICADO": true,
             "MVC": false,
             "MAPA_VOLTAS": [
                 "02:03.814",
@@ -462,6 +468,7 @@
             "TT_ms": 1481056,
             "DL_ms": "-2 VOLTAS",
             "DA_ms": 30302,
+            "QUALIFICADO": true,
             "MVC": false,
             "MAPA_VOLTAS": [
                 "02:13.673",
@@ -536,6 +543,7 @@
             "TT_ms": 1481064,
             "DL_ms": "-2 VOLTAS",
             "DA_ms": 8,
+            "QUALIFICADO": true,
             "MVC": false,
             "MAPA_VOLTAS": [
                 "02:13.663",
@@ -610,6 +618,7 @@
             "TT_ms": 1481072,
             "DL_ms": "-2 VOLTAS",
             "DA_ms": 8,
+            "QUALIFICADO": true,
             "MVC": false,
             "MAPA_VOLTAS": [
                 "02:08.684",
@@ -684,6 +693,7 @@
             "TT_ms": 1419132,
             "DL_ms": "-3 VOLTAS",
             "DA_ms": "-1 VOLTA",
+            "QUALIFICADO": true,
             "MVC": false,
             "MAPA_VOLTAS": [
                 "02:26.278",
@@ -758,6 +768,7 @@
             "TT_ms": 1422166,
             "DL_ms": "-3 VOLTAS",
             "DA_ms": 3034,
+            "QUALIFICADO": true,
             "MVC": false,
             "MAPA_VOLTAS": [
                 "03:14.854",
@@ -832,6 +843,7 @@
             "TT_ms": 1323569,
             "DL_ms": "-7 VOLTAS",
             "DA_ms": "-4 VOLTAS",
+            "QUALIFICADO": true,
             "MVC": false,
             "MAPA_VOLTAS": [
                 "03:43.238",

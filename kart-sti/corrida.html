@@ -220,7 +220,8 @@
                data: 'NOME',
                class: 'align-middle pointer',
                render: function (data, type, full, meta) {
-                  return `<strong>#${full['#']}</strong> ${full['NOME']} ${full['MVC'] ? `<span class="badge badge-pill badge-warning">MELHOR VOLTA</span>` : ''}`;
+                  console.log(full)
+                  return `<strong>#${full['#']}</strong> ${full['NOME']} ${full['MVC'] ? `<span class="badge badge-pill badge-warning">MELHOR VOLTA</span>` : ''}${full['QUALIFICADO'] === false ? `<span class="badge badge-pill badge-info">NÃO QUALIFICADO PARA RANKING</span>` : ''}`;
                }
             },
             {

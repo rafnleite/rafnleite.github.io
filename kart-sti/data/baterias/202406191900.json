@@ -18,6 +18,7 @@
             "TT_ms": 1245906,
             "DL_ms": "---",
             "DA_ms": "---",
+            "QUALIFICADO": true,
             "MVC": false,
             "MAPA_VOLTAS": [
                 "01:23.661",
@@ -108,6 +109,7 @@
             "TT_ms": 1247415,
             "DL_ms": 1509,
             "DA_ms": 1509,
+            "QUALIFICADO": true,
             "MVC": false,
             "MAPA_VOLTAS": [
                 "01:23.508",
@@ -198,6 +200,7 @@
             "TT_ms": 1249094,
             "DL_ms": 3188,
             "DA_ms": 1679,
+            "QUALIFICADO": true,
             "MVC": false,
             "MAPA_VOLTAS": [
                 "01:25.454",
@@ -288,6 +291,7 @@
             "TT_ms": 1259259,
             "DL_ms": 13353,
             "DA_ms": 10165,
+            "QUALIFICADO": true,
             "MVC": true,
             "MAPA_VOLTAS": [
                 "01:38.197",
@@ -378,6 +382,7 @@
             "TT_ms": 1272487,
             "DL_ms": 26581,
             "DA_ms": 13228,
+            "QUALIFICADO": true,
             "MVC": false,
             "MAPA_VOLTAS": [
                 "01:26.163",
@@ -468,6 +473,7 @@
             "TT_ms": 1297632,
             "DL_ms": 51726,
             "DA_ms": 25145,
+            "QUALIFICADO": true,
             "MVC": false,
             "MAPA_VOLTAS": [
                 "01:31.140",
@@ -558,6 +564,7 @@
             "TT_ms": 1299216,
             "DL_ms": 53310,
             "DA_ms": 1584,
+            "QUALIFICADO": true,
             "MVC": false,
             "MAPA_VOLTAS": [
                 "01:24.656",
@@ -648,6 +655,7 @@
             "TT_ms": 1305048,
             "DL_ms": 59142,
             "DA_ms": 5832,
+            "QUALIFICADO": true,
             "MVC": false,
             "MAPA_VOLTAS": [
                 "01:35.923",
@@ -738,6 +746,7 @@
             "TT_ms": 1312091,
             "DL_ms": 66185,
             "DA_ms": 7043,
+            "QUALIFICADO": true,
             "MVC": false,
             "MAPA_VOLTAS": [
                 "01:53.764",
@@ -828,6 +837,7 @@
             "TT_ms": 1312856,
             "DL_ms": 66950,
             "DA_ms": 765,
+            "QUALIFICADO": true,
             "MVC": false,
             "MAPA_VOLTAS": [
                 "01:29.015",
@@ -918,6 +928,7 @@
             "TT_ms": 1313468,
             "DL_ms": 67562,
             "DA_ms": 612,
+            "QUALIFICADO": true,
             "MVC": false,
             "MAPA_VOLTAS": [
                 "01:29.154",
@@ -1008,6 +1019,7 @@
             "TT_ms": 1320219,
             "DL_ms": 74313,
             "DA_ms": 6751,
+            "QUALIFICADO": true,
             "MVC": false,
             "MAPA_VOLTAS": [
                 "01:35.180",
@@ -1098,6 +1110,7 @@
             "TT_ms": 1324265,
             "DL_ms": 78359,
             "DA_ms": 4046,
+            "QUALIFICADO": true,
             "MVC": false,
             "MAPA_VOLTAS": [
                 "01:25.838",
@@ -1188,6 +1201,7 @@
             "TT_ms": 1234765,
             "DL_ms": "-1 VOLTA",
             "DA_ms": "-1 VOLTA",
+            "QUALIFICADO": true,
             "MVC": false,
             "MAPA_VOLTAS": [
                 "02:06.927",
@@ -1278,6 +1292,7 @@
             "TT_ms": 1251810,
             "DL_ms": "-1 VOLTA",
             "DA_ms": 17045,
+            "QUALIFICADO": true,
             "MVC": false,
             "MAPA_VOLTAS": [
                 "01:31.956",
@@ -1368,6 +1383,7 @@
             "TT_ms": 1271681,
             "DL_ms": "-1 VOLTA",
             "DA_ms": 19871,
+            "QUALIFICADO": true,
             "MVC": false,
             "MAPA_VOLTAS": [
                 "01:36.195",
@@ -1458,6 +1474,7 @@
             "TT_ms": 1281406,
             "DL_ms": "-1 VOLTA",
             "DA_ms": 9725,
+            "QUALIFICADO": true,
             "MVC": false,
             "MAPA_VOLTAS": [
                 "01:46.756",
@@ -1548,6 +1565,7 @@
             "TT_ms": 1298063,
             "DL_ms": "-1 VOLTA",
             "DA_ms": 16657,
+            "QUALIFICADO": true,
             "MVC": false,
             "MAPA_VOLTAS": [
                 "01:24.764",
@@ -1638,6 +1656,7 @@
             "TT_ms": 1309848,
             "DL_ms": "-1 VOLTA",
             "DA_ms": 11785,
+            "QUALIFICADO": true,
             "MVC": false,
             "MAPA_VOLTAS": [
                 "01:44.115",
@@ -1728,6 +1747,7 @@
             "TT_ms": 1311151,
             "DL_ms": "-1 VOLTA",
             "DA_ms": 1303,
+            "QUALIFICADO": true,
             "MVC": false,
             "MAPA_VOLTAS": [
                 "01:38.317",
@@ -1818,6 +1838,7 @@
             "TT_ms": 1285556,
             "DL_ms": "-2 VOLTAS",
             "DA_ms": "-1 VOLTA",
+            "QUALIFICADO": true,
             "MVC": false,
             "MAPA_VOLTAS": [
                 "01:34.216",
@@ -1908,6 +1929,7 @@
             "TT_ms": 1294413,
             "DL_ms": "-2 VOLTAS",
             "DA_ms": 8857,
+            "QUALIFICADO": true,
             "MVC": false,
             "MAPA_VOLTAS": [
                 "01:44.999",
@@ -1998,6 +2020,7 @@
             "TT_ms": 1296766,
             "DL_ms": "-2 VOLTAS",
             "DA_ms": 2353,
+            "QUALIFICADO": true,
             "MVC": false,
             "MAPA_VOLTAS": [
                 "01:52.373",
@@ -2088,6 +2111,7 @@
             "TT_ms": 1272334,
             "DL_ms": "-3 VOLTAS",
             "DA_ms": "-1 VOLTA",
+            "QUALIFICADO": true,
             "MVC": false,
             "MAPA_VOLTAS": [
                 "01:40.626",
@@ -2178,6 +2202,7 @@
             "TT_ms": 1310599,
             "DL_ms": "-3 VOLTAS",
             "DA_ms": 38265,
+            "QUALIFICADO": true,
             "MVC": false,
             "MAPA_VOLTAS": [
                 "01:41.267",
@@ -2268,6 +2293,7 @@
             "TT_ms": 1307711,
             "DL_ms": "-4 VOLTAS",
             "DA_ms": "-1 VOLTA",
+            "QUALIFICADO": true,
             "MVC": false,
             "MAPA_VOLTAS": [
                 "01:44.109",

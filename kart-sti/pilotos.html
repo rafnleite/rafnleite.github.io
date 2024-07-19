@@ -121,6 +121,7 @@
 
       const RANKINGS = {};
       await carregarLista('rankings', RANKINGS);
+
       window.RANKINGS_VETOR = reorganizarDadosRanking(RANKINGS);
 
       console.log(RANKINGS_VETOR);
@@ -138,17 +139,20 @@
                   'resultado_tomada_de_tempo': tomada_de_tempo.find(t => t.NOME == piloto.NOME) ? tomada_de_tempo.find(t => t.NOME == piloto.NOME).POS : null
                });
             } else {
-               pilotos.push({
-                  nome: piloto.NOME,
-                  resultados: [{
-                     'bateria': bateria,
-                     'resultado_corrida': piloto.POS,
-                     'resultado_tomada_de_tempo': tomada_de_tempo.find(t => t.NOME == piloto.NOME) ? tomada_de_tempo.find(t => t.NOME == piloto.NOME).POS : null
-                  }]
-               });
+               if (piloto.QUALIFICADO) {
+                  pilotos.push({
+                     nome: piloto.NOME,
+                     resultados: [{
+                        'bateria': bateria,
+                        'resultado_corrida': piloto.POS,
+                        'resultado_tomada_de_tempo': tomada_de_tempo.find(t => t.NOME == piloto.NOME) ? tomada_de_tempo.find(t => t.NOME == piloto.NOME).POS : null
+                     }]
+                  });
+               }
             }
          }
       }
+      console.log(pilotos);
 
       let cards = [];
 
