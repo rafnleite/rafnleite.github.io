@@ -398,10 +398,10 @@
       let pctt = caulcarPCTT(posTomadaDeTempo, pilotos_qualificados_tomada_de_tempo);
       let pvc = caulcarPVC(d.MAPA_VOLTAS.filter(el => el).length + tt.MAPA_VOLTAS.filter(el => el).length);
 
-      pontuacao.push(`<div><b>P<sub>CC</sub>:</b> <span data-toggle="tooltip" data-placement="top" title="${posCorrida}º de ${pilotos_qualificados_corrida} pilotos qualificados">${numeroBr(pcc, 2, 2)}</span></div>`);
-      pontuacao.push(`<div><b>P<sub>MV</sub>:</b> <span data-toggle="tooltip" data-placement="top" title="${d.MVC === false ? `Não fez melhor volta` : `Melhor volta com ${pilotos_qualificados_corrida} pilotos qualificados`}">${numeroBr(pmv, 2, 2)}</span></div>`);
-      pontuacao.push(`<div><b>P<sub>CTT</sub>:</b> <span data-toggle="tooltip" data-placement="top" title="${posTomadaDeTempo}º de ${pilotos_qualificados_tomada_de_tempo} pilotos qualificados">${numeroBr(pctt, 2, 2)}</span></div>`);
-      pontuacao.push(`<div><b>P<sub>VC</sub>:</b> <span data-toggle="tooltip" data-placement="top" title="${d.MAPA_VOLTAS.filter(el => el).length + tt.MAPA_VOLTAS.filter(el => el).length} voltas concluídas">${numeroBr(pvc, 2, 2)}</span></div>`);
+      pontuacao.push(`<div><b>P<sub>CC</sub>:</b> <span data-toggle="tooltip" data-placement="right" title="${posCorrida}º de ${pilotos_qualificados_corrida} pilotos qualificados">${numeroBr(pcc, 2, 2)}</span></div>`);
+      pontuacao.push(`<div><b>P<sub>MV</sub>:</b> <span data-toggle="tooltip" data-placement="right" title="${d.MVC === false ? `Não fez melhor volta` : `Melhor volta com ${pilotos_qualificados_corrida} pilotos qualificados`}">${numeroBr(pmv, 2, 2)}</span></div>`);
+      pontuacao.push(`<div><b>P<sub>CTT</sub>:</b> <span data-toggle="tooltip" data-placement="right" title="${posTomadaDeTempo}º de ${pilotos_qualificados_tomada_de_tempo} pilotos qualificados">${numeroBr(pctt, 2, 2)}</span></div>`);
+      pontuacao.push(`<div><b>P<sub>VC</sub>:</b> <span data-toggle="tooltip" data-placement="right" title="${d.MAPA_VOLTAS.filter(el => el).length + tt.MAPA_VOLTAS.filter(el => el).length} voltas concluídas">${numeroBr(pvc, 2, 2)}</span></div>`);
       pontuacao.push(`<div><b>Pontuação Total:</b> ${numeroBr(pcc + pmv + pctt + pvc, 2, 2)}</div>`);
 
       return `<div class="row">
