@@ -95,8 +95,8 @@
          <div class="h1 contact_taital">Ranking</div>
          <div class="row">
             <div class="col-2 text-center d-flex align-items-center justify-content-center text-dark">
-               <i id="rankingAnterior" class="fa-solid fa-circle-left fa-2xl pointer" data-toggle="tooltip" data-placement="top"
-                  data-original-title="Ver ranking anterior"></i>
+               <i id="rankingAnterior" class="fa-solid fa-circle-left fa-2xl pointer" data-toggle="tooltip"
+                  data-placement="top" data-original-title="Ver ranking anterior"></i>
             </div>
             <div class="col-8 d-flex justify-content-center">
                <select id="selecionadorDeRanking">
@@ -278,11 +278,11 @@
          let dadosPiloto = b.pilotos.find(p => p.NOME == d.NOME);
          tabela.push(`<tr>
             <td>${formatarData(b.bateria)}</td>
-            <td>${numeroBr(dadosPiloto.PCC, 2, 2)}</td>
-            <td>${numeroBr(dadosPiloto.PMV, 2, 2)}</td>
-            <td>${numeroBr(dadosPiloto.PCTT, 2, 2)}</td>
-            <td>${numeroBr(dadosPiloto.PVC, 2, 2)}</td>
-            <td>${numeroBr(dadosPiloto.PTOTAL, 2, 2)}</td>
+            <td><span data-toggle="tooltip" data-placement="top" title="${dadosPiloto.POS_CORRIDA}º de ${b.numero_participantes_corrida} pilotos qualificados">${numeroBr(dadosPiloto.PCC, 2, 2)}</span></td>
+            <td><span data-toggle="tooltip" data-placement="top" title="${dadosPiloto.MVC === false ? `Não fez melhor volta` : `Melhor volta com ${b.numero_participantes_corrida} pilotos qualificados`}">${numeroBr(dadosPiloto.PMV, 2, 2)}</span></td>
+            <td><span data-toggle="tooltip" data-placement="top" title="${dadosPiloto.POS_TOMADA_DE_TEMPO}º de ${b.numero_participantes_tomada_de_tempo} pilotos qualificados">${numeroBr(dadosPiloto.PCTT, 2, 2)}</span></td>
+            <td><span data-toggle="tooltip" data-placement="top" title="${dadosPiloto.VC} voltas concluídas">${numeroBr(dadosPiloto.PVC, 2, 2)}</span></td>
+            <td><b>${numeroBr(dadosPiloto.PTOTAL, 2, 2)}</b></td>
             </tr>`);
       });
 
@@ -302,6 +302,11 @@
          return null;
       }
    }
+
+   setInterval(function () {
+      $('[data-toggle="tooltip"]').tooltip();
+   }, 100);
+
 </script>
 
 </html>

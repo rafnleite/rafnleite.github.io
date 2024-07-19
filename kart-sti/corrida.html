@@ -220,8 +220,7 @@
                data: 'NOME',
                class: 'align-middle pointer',
                render: function (data, type, full, meta) {
-                  console.log(full)
-                  return `<strong>#${full['#']}</strong> ${full['NOME']} ${full['MVC'] ? `<span class="badge badge-pill badge-warning">MELHOR VOLTA</span>` : ''}${full['QUALIFICADO'] === false ? `<span class="badge badge-pill badge-info">NÃO QUALIFICADO PARA RANKING</span>` : ''}`;
+                  return `<strong>#${full['#']}</strong> ${full['NOME']} ${full['MVC'] ? `<span class="badge badge-pill badge-warning">MELHOR VOLTA</span>` : ''}${full['QUALIFICADO'] === false ? `<span class="badge badge-pill badge-light">NÃO QUALIFICADO PARA RANKING</span>` : ''}`;
                }
             },
             {
@@ -378,6 +377,9 @@
 
    async function gerarDetalhePiloto(d, CORRIDA) {
       console.log(d);
+      let posCorrida = CORRIDA.corrida.filter(p => p.QUALIFICADO).findIndex(p => p.NOME === d.NOME) + 1;
+      let posTomadaDeTempo = CORRIDA.tomada_de_tempo.filter(p => p.QUALIFICADO).findIndex(p => p.NOME === d.NOME) + 1;
+
       let tt = CORRIDA.tomada_de_tempo.find(el => el.NOME == d.NOME);
       let detalhesPiloto = [`<div class="h6">Estatísticas</div>`];
       let pontuacao = [`<div class="h6">Pontuação</div>`];
@@ -388,20 +390,23 @@
       d['TMV'] && detalhesPiloto.push(`<div><b>Tempo da Melhor Volta: </b>${d['TMV'].replace('.', ',')}</div>`);
       d['DA'] && d['DA'] != '---' && detalhesPiloto.push(`<div> <b>Diferença para o anterior: </b>${d['DA'].replace('.', ',')}</div>`);
 
-      let pcc = caulcarPCC(d['POS'], CORRIDA.corrida.length);
-      let pmv = d['MVC'] ? caulcarPMV(CORRIDA.corrida.length) : 0;
-      let pctt = caulcarPCTT(tt['POS'], CORRIDA.tomada_de_tempo.length);
+      let pilotos_qualificados_corrida = CORRIDA.corrida.filter(p => p.QUALIFICADO).length;
+      let pilotos_qualificados_tomada_de_tempo = CORRIDA.tomada_de_tempo.filter(p => p.QUALIFICADO).length;
+
+      let pcc = caulcarPCC(posCorrida, pilotos_qualificados_corrida);
+      let pmv = d['MVC'] ? caulcarPMV(pilotos_qualificados_corrida) : 0;
+      let pctt = caulcarPCTT(posTomadaDeTempo, pilotos_qualificados_tomada_de_tempo);
       let pvc = caulcarPVC(d.MAPA_VOLTAS.filter(el => el).length + tt.MAPA_VOLTAS.filter(el => el).length);
 
-      pontuacao.push(`<div><b>P<sub>CC</sub>: </b>${numeroBr(pcc, 2, 2)}</div>`);
-      pontuacao.push(`<div><b>P<sub>MV</sub>: </b>${numeroBr(pmv, 2, 2)}</div>`);
-      pontuacao.push(`<div><b>P<sub>CTT</sub>: </b>${numeroBr(pctt, 2, 2)}</div>`);
-      pontuacao.push(`<div><b>P<sub>VC</sub>: </b>${numeroBr(pvc, 2, 2)}</div>`);
-      pontuacao.push(`<div><b>Pontuação Total: </b>${numeroBr(pcc + pmv + pctt + pvc, 2, 2)}</div>`);
+      pontuacao.push(`<div><b>P<sub>CC</sub>:</b> <span data-toggle="tooltip" data-placement="top" title="${posCorrida}º de ${pilotos_qualificados_corrida} pilotos qualificados">${numeroBr(pcc, 2, 2)}</span></div>`);
+      pontuacao.push(`<div><b>P<sub>MV</sub>:</b> <span data-toggle="tooltip" data-placement="top" title="${d.MVC === false ? `Não fez melhor volta` : `Melhor volta com ${pilotos_qualificados_corrida} pilotos qualificados`}">${numeroBr(pmv, 2, 2)}</span></div>`);
+      pontuacao.push(`<div><b>P<sub>CTT</sub>:</b> <span data-toggle="tooltip" data-placement="top" title="${posTomadaDeTempo}º de ${pilotos_qualificados_tomada_de_tempo} pilotos qualificados">${numeroBr(pctt, 2, 2)}</span></div>`);
+      pontuacao.push(`<div><b>P<sub>VC</sub>:</b> <span data-toggle="tooltip" data-placement="top" title="${d.MAPA_VOLTAS.filter(el => el).length + tt.MAPA_VOLTAS.filter(el => el).length} voltas concluídas">${numeroBr(pvc, 2, 2)}</span></div>`);
+      pontuacao.push(`<div><b>Pontuação Total:</b> ${numeroBr(pcc + pmv + pctt + pvc, 2, 2)}</div>`);
 
       return `<div class="row">
             <div class="col-6">${detalhesPiloto.join('')}</div>
-            <div class="col-6">${pontuacao.join('')}</div>
+            <div class="col-6">${d.QUALIFICADO ? `${pontuacao.join('')}` : `Piloto não participa do Ranking.`}</div>
          </div>
          <div class="row mt-3">
             <div class="col-12">
@@ -632,6 +637,9 @@
 
    }
 
+   setInterval(function () {
+      $('[data-toggle="tooltip"]').tooltip();
+   }, 100);
 </script>
 
 </html>
