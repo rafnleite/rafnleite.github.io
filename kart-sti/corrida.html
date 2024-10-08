@@ -447,7 +447,7 @@
          let volta = dados.corrida.map(el => {
             return {
                NOME: el.NOME,
-               TEMPO: el['MAPA_VOLTAS_ACC_ms'][i]
+               TEMPO: el['MAPA_VOLTAS_ACC_ms'][i] ? el['MAPA_VOLTAS_ACC_ms'][i] + el['TT_ms'] - el['MAPA_VOLTAS_ACC_ms'][el['MAPA_VOLTAS_ACC_ms'].filter(x => x).length - 1] : null
             }
          });
 
