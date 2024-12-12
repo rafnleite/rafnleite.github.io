@@ -2,7 +2,7 @@
     "total": [
         {
             "NOME": "SAMUEL HUSSIN COUTO",
-            "PTOTAL": 2292.45,
+            "PTOTAL": 2591.45,
             "POS": 1
         },
         {
@@ -156,169 +156,164 @@
             "POS": 31
         },
         {
-            "NOME": "SAMUEL HUSSIN",
-            "PTOTAL": 299.0,
-            "POS": 32
-        },
-        {
             "NOME": "FERNANDO MOREIRA SOUSA",
             "PTOTAL": 249.68,
-            "POS": 33
+            "POS": 32
         },
         {
             "NOME": "PEDRO MANFRIM MAGALHAES DE PAULA",
             "PTOTAL": 225.4,
-            "POS": 34
+            "POS": 33
         },
         {
             "NOME": "LUIZ  DE LIMA SOUZA",
             "PTOTAL": 217.87,
-            "POS": 35
+            "POS": 34
         },
         {
             "NOME": "VINICIUS MENDONCA",
             "PTOTAL": 199.93,
-            "POS": 36
+            "POS": 35
         },
         {
             "NOME": "DIOGO DA SILVA MACIEL",
             "PTOTAL": 197.35,
-            "POS": 37
+            "POS": 36
         },
         {
             "NOME": "ANA JESSICA DE OLIVEIRA BATISTA",
             "PTOTAL": 181.79,
-            "POS": 38
+            "POS": 37
         },
         {
             "NOME": "RICARDO DRUDI",
             "PTOTAL": 180.87,
-            "POS": 39
+            "POS": 38
         },
         {
             "NOME": "LUCAS MONTEIRO",
             "PTOTAL": 153.27,
-            "POS": 40
+            "POS": 39
         },
         {
             "NOME": "LEONEL SANDER",
             "PTOTAL": 151.21,
-            "POS": 41
+            "POS": 40
         },
         {
             "NOME": "MOISES HENRIQUES",
             "PTOTAL": 139.89,
-            "POS": 42
+            "POS": 41
         },
         {
             "NOME": "JOAO PAULO VIEIRA MACHADO",
             "PTOTAL": 136.2,
-            "POS": 43
+            "POS": 42
         },
         {
             "NOME": "HEITOR GOMIDE DE CASTRO",
             "PTOTAL": 133.86,
-            "POS": 44
+            "POS": 43
         },
         {
             "NOME": "EDGARD SANT'ANNA",
             "PTOTAL": 129.02,
-            "POS": 45
+            "POS": 44
         },
         {
             "NOME": "LUCAS FIGUEIREDO RESENDE PEREIRA",
             "PTOTAL": 127.38,
-            "POS": 46
+            "POS": 45
         },
         {
             "NOME": "FILIPE FIGUEIRA",
             "PTOTAL": 126.37,
-            "POS": 47
+            "POS": 46
         },
         {
             "NOME": "JOSE BARBOSA",
             "PTOTAL": 116.33,
-            "POS": 48
+            "POS": 47
         },
         {
             "NOME": "BRENO DO NASCIMENTO MARTINS",
             "PTOTAL": 114.4,
-            "POS": 49
+            "POS": 48
         },
         {
             "NOME": "VALDIR MENDONCA",
             "PTOTAL": 114.72,
-            "POS": 50
+            "POS": 49
         },
         {
             "NOME": "ALISSON DISCACCIATI",
             "PTOTAL": 112.09,
-            "POS": 51
+            "POS": 50
         },
         {
             "NOME": "BRUNO  LIMA",
             "PTOTAL": 110.09,
-            "POS": 52
+            "POS": 51
         },
         {
             "NOME": "FELIPE AMARAL MENDONCA",
             "PTOTAL": 108.12,
-            "POS": 53
+            "POS": 52
         },
         {
             "NOME": "VICTOR DOS PRAZERES",
             "PTOTAL": 106.76,
-            "POS": 54
+            "POS": 53
         },
         {
             "NOME": "RAFAEL SAMPAIO",
             "PTOTAL": 100.0,
-            "POS": 55
+            "POS": 54
         },
         {
             "NOME": "ALINE BICICGO",
             "PTOTAL": 98.09,
-            "POS": 56
+            "POS": 55
         },
         {
             "NOME": "DANIEL NORA",
             "PTOTAL": 96.15,
-            "POS": 57
+            "POS": 56
         },
         {
             "NOME": "JOAO PAULO  VIEIRA MACHADO",
             "PTOTAL": 96.43,
-            "POS": 58
+            "POS": 57
         },
         {
             "NOME": "RAFAEL VESEL",
             "PTOTAL": 95.0,
-            "POS": 59
+            "POS": 58
         },
         {
             "NOME": "WALDIR DE OLIVEIRA PINTO",
             "PTOTAL": 93.32,
-            "POS": 60
+            "POS": 59
         },
         {
             "NOME": "CLARISSA MARTINS DE MELLO",
             "PTOTAL": 85.48,
-            "POS": 61
+            "POS": 60
         },
         {
             "NOME": "ANDRE VIANA DOS SANTOS",
             "PTOTAL": 85.0,
-            "POS": 62
+            "POS": 61
         },
         {
             "NOME": "ANTONIO HENRIQUE GONCALVES LEITE",
             "PTOTAL": 75.0,
-            "POS": 63
+            "POS": 62
         },
         {
             "NOME": "RONALU BARCELOS",
             "PTOTAL": 60.0,
-            "POS": 64
+            "POS": 63
         }
     ],
     "baterias": [
@@ -1911,6 +1906,18 @@
                     "PTOTAL": 546.96
                 },
                 {
+                    "NOME": "SAMUEL HUSSIN COUTO",
+                    "POS_CORRIDA": 3,
+                    "POS_TOMADA_DE_TEMPO": null,
+                    "MVC": false,
+                    "VC": 18,
+                    "PCC": 209.0,
+                    "PMV": 0,
+                    "PCTT": 0,
+                    "PVC": 90,
+                    "PTOTAL": 299.0
+                },
+                {
                     "NOME": "ALEX NEVES",
                     "POS_CORRIDA": 5,
                     "POS_TOMADA_DE_TEMPO": null,
@@ -1969,18 +1976,6 @@
                     "PCTT": 0,
                     "PVC": 90,
                     "PTOTAL": 372.44
-                },
-                {
-                    "NOME": "SAMUEL HUSSIN",
-                    "POS_CORRIDA": 3,
-                    "POS_TOMADA_DE_TEMPO": null,
-                    "MVC": false,
-                    "VC": 18,
-                    "PCC": 209.0,
-                    "PMV": 0,
-                    "PCTT": 0,
-                    "PVC": 90,
-                    "PTOTAL": 299.0
                 }
             ],
             "numero_participantes_corrida": 9,
