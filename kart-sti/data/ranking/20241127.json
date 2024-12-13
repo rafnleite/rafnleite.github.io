@@ -111,23 +111,23 @@
             "POS": 22
         },
         {
+            "NOME": "RAFAEL VASEL",
+            "PTOTAL": 566.56,
+            "POS": 23
+        },
+        {
             "NOME": "LUCAS ANDRE DOS SANTOS",
             "PTOTAL": 531.3,
-            "POS": 23
+            "POS": 24
         },
         {
             "NOME": "CESAR CARVALHO",
             "PTOTAL": 491.34,
-            "POS": 24
+            "POS": 25
         },
         {
             "NOME": "GUSTAVO REZENDE",
             "PTOTAL": 479.99,
-            "POS": 25
-        },
-        {
-            "NOME": "RAFAEL VASEL",
-            "PTOTAL": 471.56,
             "POS": 26
         },
         {
@@ -281,34 +281,29 @@
             "POS": 56
         },
         {
-            "NOME": "RAFAEL VESEL",
-            "PTOTAL": 95.0,
-            "POS": 57
-        },
-        {
             "NOME": "WALDIR DE OLIVEIRA PINTO",
             "PTOTAL": 93.32,
-            "POS": 58
+            "POS": 57
         },
         {
             "NOME": "CLARISSA MARTINS DE MELLO",
             "PTOTAL": 85.48,
-            "POS": 59
+            "POS": 58
         },
         {
             "NOME": "ANDRE VIANA DOS SANTOS",
             "PTOTAL": 85.0,
-            "POS": 60
+            "POS": 59
         },
         {
             "NOME": "ANTONIO HENRIQUE GONCALVES LEITE",
             "PTOTAL": 75.0,
-            "POS": 61
+            "POS": 60
         },
         {
             "NOME": "RONALU BARCELOS",
             "PTOTAL": 60.0,
-            "POS": 62
+            "POS": 61
         }
     ],
     "baterias": [
@@ -1865,18 +1860,6 @@
             "bateria": "202411271900",
             "pilotos": [
                 {
-                    "NOME": "RAFAEL VESEL",
-                    "POS_CORRIDA": 9,
-                    "POS_TOMADA_DE_TEMPO": null,
-                    "MVC": false,
-                    "VC": 17,
-                    "PCC": 10.0,
-                    "PMV": 0,
-                    "PCTT": 0,
-                    "PVC": 85,
-                    "PTOTAL": 95.0
-                },
-                {
                     "NOME": "JOSE BARBOSA",
                     "POS_CORRIDA": 8,
                     "POS_TOMADA_DE_TEMPO": null,
@@ -1911,6 +1894,18 @@
                     "PCTT": 0,
                     "PVC": 90,
                     "PTOTAL": 546.96
+                },
+                {
+                    "NOME": "RAFAEL VASEL",
+                    "POS_CORRIDA": 9,
+                    "POS_TOMADA_DE_TEMPO": null,
+                    "MVC": false,
+                    "VC": 17,
+                    "PCC": 10.0,
+                    "PMV": 0,
+                    "PCTT": 0,
+                    "PVC": 85,
+                    "PTOTAL": 95.0
                 },
                 {
                     "NOME": "SAMUEL HUSSIN COUTO",

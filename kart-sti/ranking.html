@@ -209,10 +209,12 @@
          $(`#rankingAnterior`).hide();
       } else {
          $(`#rankingAnterior`).show();
+         $(`#rankingAnterior`).off("click");
          $(`#rankingAnterior`).click((el, idx) => {
             $(`#selecionadorDeRanking`).val(RANKINGS_VETOR[dadosIdx - 1].ranking);
-            gerarTabelaDeRanking();
+            $('.selectpicker').selectpicker('refresh');
             $(`select`).niceSelect('update');
+            gerarTabelaDeRanking();
          });
       }
 
@@ -220,10 +222,12 @@
          $(`#rankingPosterior`).hide();
       } else {
          $(`#rankingPosterior`).show();
+         $(`#rankingPosterior`).off("click");
          $(`#rankingPosterior`).click((el, idx) => {
             $(`#selecionadorDeRanking`).val(RANKINGS_VETOR[dadosIdx + 1].ranking);
-            gerarTabelaDeRanking();
+            $('.selectpicker').selectpicker('refresh');
             $(`select`).niceSelect('update');
+            gerarTabelaDeRanking();
          });
       };
 
