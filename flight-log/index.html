@@ -552,6 +552,7 @@ img, video { max-width: 100%; height: auto; }
 .ring-2 { --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color); --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color); box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000); }
 .ring-blue-500 { --tw-ring-opacity: 1; --tw-ring-color: rgb(59 130 246 / var(--tw-ring-opacity, 1)); }
 .blur-sm { --tw-blur: blur(4px); filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow); }
+.blur { --tw-blur: blur(8px); filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow); }
 .filter { filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow); }
 .backdrop-blur-sm { --tw-backdrop-blur: blur(4px); backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia); }
 .transition-all { transition-property: all; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
@@ -907,6 +908,24 @@ svg.leaflet-zoom-animated { will-change: transform; }
 .scene-nav-info { position: absolute; bottom: 5px; width: 100%; text-align: center; color: slategrey; opacity: 0.7; font-size: 10px; font-family: sans-serif; pointer-events: none; user-select: none; }
 .scene-container canvas:focus { outline: none; }
 .scene-container .clickable { cursor: pointer; }
+@font-face { font-family: McAfeePoppins; src: url("../../../fonts/Poppins-Thin.ttf") format("truetype"); font-weight: 100; font-style: normal; }
+@font-face { font-family: McAfeePoppins; src: url("../../../fonts/Poppins-ThinItalic.ttf") format("truetype"); font-weight: 100; font-style: italic; }
+@font-face { font-family: McAfeePoppins; src: url("../../../fonts/Poppins-ExtraLight.ttf") format("truetype"); font-weight: 200; font-style: normal; }
+@font-face { font-family: McAfeePoppins; src: url("../../../fonts/Poppins-ExtraLightItalic.ttf") format("truetype"); font-weight: 200; font-style: italic; }
+@font-face { font-family: McAfeePoppins; src: url("../../../fonts/Poppins-Light.ttf") format("truetype"); font-weight: 300; font-style: normal; }
+@font-face { font-family: McAfeePoppins; src: url("../../../fonts/Poppins-LightItalic.ttf") format("truetype"); font-weight: 300; font-style: italic; }
+@font-face { font-family: McAfeePoppins; src: url("../../../fonts/Poppins-Regular.ttf") format("truetype"); font-weight: 400; font-style: normal; }
+@font-face { font-family: McAfeePoppins; src: url("../../../fonts/Poppins-Italic.ttf") format("truetype"); font-weight: 400; font-style: italic; }
+@font-face { font-family: McAfeePoppins; src: url("../../../fonts/Poppins-Medium.ttf") format("truetype"); font-weight: 500; font-style: normal; }
+@font-face { font-family: McAfeePoppins; src: url("../../../fonts/Poppins-MediumItalic.ttf") format("truetype"); font-weight: 500; font-style: italic; }
+@font-face { font-family: McAfeePoppins; src: url("../../../fonts/Poppins-SemiBold.ttf") format("truetype"); font-weight: 600; font-style: normal; }
+@font-face { font-family: McAfeePoppins; src: url("../../../fonts/Poppins-SemiBoldItalic.ttf") format("truetype"); font-weight: 600; font-style: italic; }
+@font-face { font-family: McAfeePoppins; src: url("../../../fonts/Poppins-Bold.ttf") format("truetype"); font-weight: 700; font-style: normal; }
+@font-face { font-family: McAfeePoppins; src: url("../../../fonts/Poppins-BoldItalic.ttf") format("truetype"); font-weight: 700; font-style: italic; }
+@font-face { font-family: McAfeePoppins; src: url("../../../fonts/Poppins-ExtraBold.ttf") format("truetype"); font-weight: 800; font-style: normal; }
+@font-face { font-family: McAfeePoppins; src: url("../../../fonts/Poppins-ExtraBoldItalic.ttf") format("truetype"); font-weight: 800; font-style: italic; }
+@font-face { font-family: McAfeePoppins; src: url("../../../fonts/Poppins-Black.ttf") format("truetype"); font-weight: 900; font-style: normal; }
+@font-face { font-family: McAfeePoppins; src: url("../../../fonts/Poppins-BlackItalic.ttf") format("truetype"); font-weight: 900; font-style: italic; }
 input[type="range"] { appearance: none; }
 input[type="range"]::-webkit-slider-thumb { appearance: none; width: 18px; height: 18px; background: rgb(37, 99, 235); border: 2px solid white; border-radius: 50%; cursor: pointer; box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 4px; position: relative; z-index: 100; }
 input[type="range"]::-webkit-slider-thumb:hover { background: rgb(29, 78, 216); }
@@ -1041,7 +1060,7 @@ input[type="range"]::-webkit-slider-runnable-track { width: 100%; height: 8px; b
           <div id="globeContainer" style="height: 500px; width: 100%; display: none; position: relative;">
             <div id="globeLoading" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.9); z-index: 1000;">
               <div style="text-align: center;">
-                <div style="width: 50px; height: 50px; border: 4px solid #e5e7eb; border-top-color: #3b82f6; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 12px;"></div>
+                <div style="width: 50px; height: 50px; border: 4px solid #e5e7eb; border-top-color: #2563eb; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 12px;"></div>
                 <div style="color: #6b7280; font-size: 14px; font-weight: 500;">Carregando visualização 3D...</div>
               </div>
             </div>
@@ -1123,7 +1142,7 @@ input[type="range"]::-webkit-slider-runnable-track { width: 100%; height: 8px; b
 
     <!-- Componentes de Estatísticas - Renderização Dinâmica -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-      <!-- Macro Números -->
+      <!-- Macronúmeros -->
       <div id="macroNumerosContainer"></div>
       
       <!-- Voos por Ano - COM interação de métrica -->
@@ -23526,7 +23545,7 @@ input[type="range"]::-webkit-slider-runnable-track { width: 100%; height: 8px; b
       "dataHoraChegadaUltimoVoo": "2012-07-05T12:35:00.000Z"
     }
   ],
-  "timestamp": "2025-12-15T05:52:42.186Z",
+  "timestamp": "2025-12-15T06:52:41.570Z",
   "usuario": "Rafael"
 };
     
@@ -23829,10 +23848,10 @@ input[type="range"]::-webkit-slider-runnable-track { width: 100%; height: 8px; b
         // VERDE: não foi visitado, mas tem previsto
         // CINZA: não foi visitado, sem previsto, mas tem cancelado
         if (status.has('realizado')) {
-          cor = '#3b82f6'; // AZUL - visitado
+          cor = '#2563eb'; // AZUL - visitado
           if (mostrarAeroportosVisitados) mostrar = true;
         } else if (status.has('previsto')) {
-          cor = '#10b981'; // VERDE - não visitado mas tem previsto
+          cor = '#16a34a'; // VERDE - não visitado mas tem previsto
           if (mostrarAeroportosPrevistos) mostrar = true;
         } else if (status.has('cancelado') || status.has('nao_realizado') || status.has('não realizado')) {
           cor = '#94a3b8'; // CINZA - só cancelado
@@ -23900,12 +23919,12 @@ input[type="range"]::-webkit-slider-runnable-track { width: 100%; height: 8px; b
           'Ver mais</button></div>';
         
         var marker = L.circleMarker([aeroporto.latitude, aeroporto.longitude], {
-          radius: 6,
+          radius: 9,
           fillColor: cor,
+          fillOpacity: 1,
           color: '#fff',
           weight: 2,
           opacity: 1,
-          fillOpacity: 0.9,
           pane: 'markerPane'
         }).bindPopup(popupContent, { autoPan: true, closeButton: true });
         aeroportosLayer.addLayer(marker);
@@ -23920,8 +23939,8 @@ input[type="range"]::-webkit-slider-runnable-track { width: 100%; height: 8px; b
             voo.destino.latitude, voo.destino.longitude
           );
           
-          var cor = '#3b82f6';
-          if (voo.status === 'previsto') cor = '#10b981';
+          var cor = '#2563eb';
+          if (voo.status === 'previsto') cor = '#16a34a';
           if (voo.status === 'cancelado' || voo.status === 'nao_realizado' || voo.status === 'não realizado') cor = '#6b7280';
           
           var statusBadgeClass = voo.status === 'realizado' ? 'bg-green-100 text-green-800' :
@@ -23948,8 +23967,8 @@ input[type="range"]::-webkit-slider-runnable-track { width: 100%; height: 8px; b
           
           var linha = L.polyline(pontos, {
             color: cor,
-            weight: 2,
-            opacity: 0.5,
+            weight: 3,
+            opacity: 0.7,
             pane: 'overlayPane',
             interactive: true
           }).bindPopup(popupVoo, { autoPan: false });
@@ -24383,8 +24402,8 @@ input[type="range"]::-webkit-slider-runnable-track { width: 100%; height: 8px; b
             startLng: voo.origem.longitude,
             endLat: voo.destino.latitude,
             endLng: voo.destino.longitude,
-            color: voo.status === 'realizado' ? '#3b82f6' : 
-                   voo.status === 'previsto' ? '#10b981' : '#6b7280'
+            color: voo.status === 'realizado' ? '#2563eb' : 
+                   voo.status === 'previsto' ? '#16a34a' : '#6b7280'
           });
         }
       });
@@ -25293,15 +25312,20 @@ input[type="range"]::-webkit-slider-runnable-track { width: 100%; height: 8px; b
           
           // Origem
           conteudo += '<div class="text-left">';
-          var horaProgramadaPartida = voo.dataHoraPartidaProgramadoLocal ? new Date(voo.dataHoraPartidaProgramadoLocal) : null;
-          var horaRealPartida = voo.dataHoraPartidaRealLocal ? new Date(voo.dataHoraPartidaRealLocal) : null;
+          // Extrair hora diretamente da string sem conversão de fuso
+          var extrairHora = function(dataStr) {
+            if (!dataStr) return null;
+            var match = dataStr.match(/(\d{4})-(\d{2})-(\d{2})[T ](\d{2}):(\d{2}):(\d{2})/);
+            if (match) return { ano: match[1], mes: match[2], dia: match[3], hora: match[4], minuto: match[5] };
+            return null;
+          };
+          var horaProgramadaPartida = extrairHora(voo.dataHoraPartidaProgramadoLocal);
+          var horaRealPartida = extrairHora(voo.dataHoraPartidaRealLocal);
           conteudo += '<div class="text-xl font-bold text-gray-800">';
           if (horaProgramadaPartida && horaRealPartida && voo.dataHoraPartidaRealLocal !== voo.dataHoraPartidaProgramadoLocal) {
-            var hP = horaProgramadaPartida.getHours().toString().padStart(2,'0') + ':' + horaProgramadaPartida.getMinutes().toString().padStart(2,'0');
-            var hR = horaRealPartida.getHours().toString().padStart(2,'0') + ':' + horaRealPartida.getMinutes().toString().padStart(2,'0');
-            conteudo += '<span class="line-through text-gray-400">' + hP + '</span> <span class="ml-2">' + hR + '</span>';
+            conteudo += '<span class="line-through text-gray-400">' + horaProgramadaPartida.hora + ':' + horaProgramadaPartida.minuto + '</span> <span class="ml-2">' + horaRealPartida.hora + ':' + horaRealPartida.minuto + '</span>';
           } else if (horaProgramadaPartida) {
-            conteudo += horaProgramadaPartida.getHours().toString().padStart(2,'0') + ':' + horaProgramadaPartida.getMinutes().toString().padStart(2,'0');
+            conteudo += horaProgramadaPartida.hora + ':' + horaProgramadaPartida.minuto;
           } else {
             conteudo += '—';
           }
@@ -25309,8 +25333,9 @@ input[type="range"]::-webkit-slider-runnable-track { width: 100%; height: 8px; b
           if (horaProgramadaPartida) {
             var diasSemana = ['Domingo','Segunda-feira','Terça-feira','Quarta-feira','Quinta-feira','Sexta-feira','Sábado'];
             var meses = ['JAN','FEV','MAR','ABR','MAI','JUN','JUL','AGO','SET','OUT','NOV','DEZ'];
-            var diaSemana = diasSemana[horaProgramadaPartida.getDay()];
-            var dataStr = diaSemana + ', ' + horaProgramadaPartida.getDate().toString().padStart(2,'0') + '/' + meses[horaProgramadaPartida.getMonth()] + '/' + horaProgramadaPartida.getFullYear();
+            var tempDate = new Date(horaProgramadaPartida.ano, parseInt(horaProgramadaPartida.mes)-1, horaProgramadaPartida.dia);
+            var diaSemana = diasSemana[tempDate.getDay()];
+            var dataStr = diaSemana + ', ' + horaProgramadaPartida.dia + '/' + meses[parseInt(horaProgramadaPartida.mes)-1] + '/' + horaProgramadaPartida.ano;
             conteudo += '<div class="text-xs text-gray-700">' + dataStr.toUpperCase() + '</div>';
           }
           conteudo += '<div class="text-xs text-gray-700">' + (voo.origem?.cidade || '') + (voo.origem?.estado ? ', ' + voo.origem.estado : '') + '</div>';
@@ -25319,7 +25344,7 @@ input[type="range"]::-webkit-slider-runnable-track { width: 100%; height: 8px; b
           
           // Centro - Info do voo
           conteudo += '<div class="text-center">';
-          conteudo += '<div class="font-medium text-gray-900">' + [voo.companhia, voo.numero].filter(Boolean).join(' | ') + '</div>';
+          conteudo += '<div class="font-medium text-gray-900">' + [voo.companhiaAerea, voo.numeroVoo].filter(Boolean).join(' | ') + '</div>';
           if (voo.aeronave) conteudo += '<div class="text-xs text-gray-700">Aeronave: ' + voo.aeronave + '</div>';
           if (voo.assento) conteudo += '<div class="text-xs text-gray-700">Assento: ' + voo.assento + '</div>';
           
@@ -25346,15 +25371,13 @@ input[type="range"]::-webkit-slider-runnable-track { width: 100%; height: 8px; b
           
           // Destino
           conteudo += '<div class="text-right">';
-          var horaProgramadaChegada = voo.dataHoraChegadaProgramadoLocal ? new Date(voo.dataHoraChegadaProgramadoLocal) : null;
-          var horaRealChegada = voo.dataHoraChegadaRealLocal ? new Date(voo.dataHoraChegadaRealLocal) : null;
+          var horaProgramadaChegada = extrairHora(voo.dataHoraChegadaProgramadoLocal);
+          var horaRealChegada = extrairHora(voo.dataHoraChegadaRealLocal);
           conteudo += '<div class="text-xl font-bold text-gray-800">';
           if (horaProgramadaChegada && horaRealChegada && voo.dataHoraChegadaRealLocal !== voo.dataHoraChegadaProgramadoLocal) {
-            var hPC = horaProgramadaChegada.getHours().toString().padStart(2,'0') + ':' + horaProgramadaChegada.getMinutes().toString().padStart(2,'0');
-            var hRC = horaRealChegada.getHours().toString().padStart(2,'0') + ':' + horaRealChegada.getMinutes().toString().padStart(2,'0');
-            conteudo += '<span class="line-through text-gray-400">' + hPC + '</span> <span class="ml-2">' + hRC + '</span>';
+            conteudo += '<span class="line-through text-gray-400">' + horaProgramadaChegada.hora + ':' + horaProgramadaChegada.minuto + '</span> <span class="ml-2">' + horaRealChegada.hora + ':' + horaRealChegada.minuto + '</span>';
           } else if (horaProgramadaChegada) {
-            conteudo += horaProgramadaChegada.getHours().toString().padStart(2,'0') + ':' + horaProgramadaChegada.getMinutes().toString().padStart(2,'0');
+            conteudo += horaProgramadaChegada.hora + ':' + horaProgramadaChegada.minuto;
           } else {
             conteudo += '—';
           }
@@ -25362,8 +25385,9 @@ input[type="range"]::-webkit-slider-runnable-track { width: 100%; height: 8px; b
           if (horaProgramadaChegada) {
             var diasSemana = ['Domingo','Segunda-feira','Terça-feira','Quarta-feira','Quinta-feira','Sexta-feira','Sábado'];
             var meses = ['JAN','FEV','MAR','ABR','MAI','JUN','JUL','AGO','SET','OUT','NOV','DEZ'];
-            var diaSemana = diasSemana[horaProgramadaChegada.getDay()];
-            var dataStr = diaSemana + ', ' + horaProgramadaChegada.getDate().toString().padStart(2,'0') + '/' + meses[horaProgramadaChegada.getMonth()] + '/' + horaProgramadaChegada.getFullYear();
+            var tempDate = new Date(horaProgramadaChegada.ano, parseInt(horaProgramadaChegada.mes)-1, horaProgramadaChegada.dia);
+            var diaSemana = diasSemana[tempDate.getDay()];
+            var dataStr = diaSemana + ', ' + horaProgramadaChegada.dia + '/' + meses[parseInt(horaProgramadaChegada.mes)-1] + '/' + horaProgramadaChegada.ano;
             conteudo += '<div class="text-xs text-gray-700">' + dataStr.toUpperCase() + '</div>';
           }
           conteudo += '<div class="text-xs text-gray-700">' + (voo.destino?.cidade || '') + (voo.destino?.estado ? ', ' + voo.destino.estado : '') + '</div>';
@@ -25437,7 +25461,7 @@ input[type="range"]::-webkit-slider-runnable-track { width: 100%; height: 8px; b
       renderizarReservas();
     }
     
-    // Renderizar Macro Números (layout EXATO de MacroNumeros.tsx)
+    // Renderizar Macronúmeros (layout EXATO de MacroNumeros.tsx)
     function renderMacroNumeros() {
       var voosRealizados = DADOS.voos.filter(function(v) { return v.status === 'realizado'; });
       var voosPrevistos = DADOS.voos.filter(function(v) { return v.status === 'previsto'; }).length;
