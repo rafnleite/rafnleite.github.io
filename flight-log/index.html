@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard de Voos</title>
-  <!-- Google tag (gtag.js) -->
+    <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-XC1Q9GLX52"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -23555,7 +23555,7 @@ input[type="range"]::-webkit-slider-runnable-track { width: 100%; height: 8px; b
       "dataHoraChegadaUltimoVoo": "2012-07-05T12:35:00.000Z"
     }
   ],
-  "timestamp": "2025-12-15T11:59:58.709Z",
+  "timestamp": "2025-12-15T12:13:14.643Z",
   "usuario": "Rafael"
 };
     
@@ -25541,8 +25541,8 @@ input[type="range"]::-webkit-slider-runnable-track { width: 100%; height: 8px; b
       
       var formatarKm = function(km) {
         if (km < 1000) return km.toLocaleString() + ' Km';
-        if (km < 1000000) return (km / 1000).toFixed(1) + ' mil Km';
-        return (km / 1000000).toFixed(1) + ' milhão Km';
+        if (km < 1000000) return (km / 1000).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' mil Km';
+        return (km / 1000000).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' milhão Km';
       };
       
       var html = '<div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">';
