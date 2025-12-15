@@ -3,7 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard de Voos - 15/12/2025</title>
+  <title>Dashboard de Voos</title>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XC1Q9GLX52"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-XC1Q9GLX52');
+  </script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -962,6 +971,7 @@ input[type="range"]::-webkit-slider-runnable-track { width: 100%; height: 8px; b
 </head>
 <body class="bg-gray-50">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  Atualização de dados: 15/12/2025
     
     <!-- Mapa Mundial dos Aeroportos -->
     <div class="mb-8">
@@ -23545,7 +23555,7 @@ input[type="range"]::-webkit-slider-runnable-track { width: 100%; height: 8px; b
       "dataHoraChegadaUltimoVoo": "2012-07-05T12:35:00.000Z"
     }
   ],
-  "timestamp": "2025-12-15T06:52:41.570Z",
+  "timestamp": "2025-12-15T11:59:58.709Z",
   "usuario": "Rafael"
 };
     
@@ -23947,7 +23957,26 @@ input[type="range"]::-webkit-slider-runnable-track { width: 100%; height: 8px; b
             voo.status === 'previsto' ? 'bg-blue-100 text-blue-700' :
             (voo.status === 'cancelado' || voo.status === 'nao_realizado') ? 'bg-gray-100 text-gray-700' : 'bg-yellow-100 text-yellow-800';
           
-          var dataPartida = new Date(voo.dataHoraPartidaRealLocal || voo.dataHoraPartidaProgramadoLocal);
+          // Extrair data e hora sem conversão de fuso
+          var dataPartidaStr = voo.dataHoraPartidaRealLocal || voo.dataHoraPartidaProgramadoLocal;
+          var dataPartidaFormatada = '—';
+          var horaPartidaFormatada = '';
+          
+          if (dataPartidaStr) {
+            console.log('String de data:', dataPartidaStr);
+            // Extrair diretamente as partes da string ISO
+            var partes = dataPartidaStr.split('T');
+            if (partes.length === 2) {
+              var dataParte = partes[0].split('-');
+              var horaParte = partes[1].split(':');
+              if (dataParte.length === 3 && horaParte.length >= 2) {
+                dataPartidaFormatada = dataParte[2] + '/' + dataParte[1] + '/' + dataParte[0];
+                horaPartidaFormatada = horaParte[0] + ':' + horaParte[1];
+                console.log('Data formatada:', dataPartidaFormatada, horaPartidaFormatada);
+              }
+            }
+          }
+          
           var popupVoo = '<div class="text-sm">' +
             '<div class="font-bold text-blue-600 mb-2">' +
             '<i class="fas fa-plane mr-2"></i>' + (voo.numeroVoo || 'Voo sem número') + '</div>' +
@@ -23959,8 +23988,9 @@ input[type="range"]::-webkit-slider-runnable-track { width: 100%; height: 8px; b
             popupVoo += '<div><strong>Aeronave:</strong> ' + voo.aeronave + '</div>';
           }
           
-          popupVoo += '<div><strong>Partida:</strong> ' + dataPartida.toLocaleDateString('pt-BR') + ' ' + dataPartida.toLocaleTimeString('pt-BR', {hour: '2-digit', minute: '2-digit'}) + '</div>' +
-            '<div><strong>Status:</strong> ' +
+          popupVoo += '<div><strong>Partida:</strong> ' + dataPartidaFormatada + (horaPartidaFormatada ? ' ' + horaPartidaFormatada : '') + '</div>';
+          
+          popupVoo += '<div><strong>Status:</strong> ' +
             '<span class="ml-1 px-2 py-1 rounded-full text-xs ' + statusBadgeClass + '">' +
             voo.status + '</span></div>' +
             '</div></div>';
