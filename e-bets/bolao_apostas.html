@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bolão Copa 2026</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #f0f2f5;
+  --white: #ffffff;
+  --border: #e0e3ea;
+  --text: #111827;
+  --sub: #6b7280;
+  --light: #adb5c0;
+  --accent: #166534;
+  --accent-light: #dcfce7;
+  --col-a: #1d4ed8;
+  --col-emp: #92400e;
+  --col-b: #b91c1c;
+  --radius: 14px;
+}
+
+html, body {
+  min-height: 100vh;
+  background: var(--bg);
+  font-family: 'Inter', sans-serif;
+  color: var(--text);
+}
+
+/* ── PAGE HEADER ─────────────────────────── */
+.page-header {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 1px 4px rgba(0,0,0,.06);
+}
+.logo-title h1 {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 1.35rem;
+  letter-spacing: 3px;
+  color: var(--accent);
+}
+.logo-title p {
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--sub);
+  margin-top: 1px;
+}
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.nav-btn {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 6px 13px;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: all .15s;
+  white-space: nowrap;
+}
+.nav-btn:hover:not(:disabled) {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: white;
+}
+.nav-btn:disabled { opacity: .35; cursor: not-allowed; }
+.nav-select {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.78rem;
+  padding: 6px 11px;
+  border-radius: 7px;
+  cursor: pointer;
+  max-width: 280px;
+  width: 100%;
+  outline: none;
+}
+.nav-select:focus { border-color: var(--accent); }
+.nav-counter {
+  font-size: 0.72rem;
+  color: var(--sub);
+  font-weight: 500;
+  white-space: nowrap;
+}
+.btn-img {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--accent);
+  border: none;
+  color: white;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: opacity .15s;
+  white-space: nowrap;
+}
+.btn-img:hover { opacity: .85; }
+
+/* ── MAIN ─────────────────────────────────── */
+.content {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 28px 16px 72px;
+}
+
+/* ── GAME CARD ─────────────────────────────── */
+#game-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0,0,0,.06);
+}
+
+/* ── GAME HEADER ──────────────────────────── */
+.game-header {
+  padding: 18px 22px 14px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+}
+.gh-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  background: var(--accent-light);
+  color: var(--accent);
+}
+.gh-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.78rem;
+  color: var(--sub);
+}
+.meta-item strong { color: var(--text); font-weight: 600; }
+
+/* ── TEAMS ────────────────────────────────── */
+.teams-section {
+  padding: 26px 22px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid var(--border);
+  background: var(--white);
+}
+.team-block {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.team-flag {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--border);
+  display: block;
+  background: var(--bg);
+}
+.team-name {
+  font-size: 0.95rem;
+  font-weight: 800;
+  text-align: center;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  line-height: 1.15;
+}
+.team-count {
+  font-size: 0.63rem;
+  font-weight: 600;
+  color: var(--light);
+  letter-spacing: .5px;
+  text-transform: uppercase;
+}
+.vs-center {
+  flex-shrink: 0;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+.vs-text {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 1.8rem;
+  letter-spacing: 4px;
+  color: var(--border);
+  line-height: 1;
+}
+.score-real {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 1.5rem;
+  letter-spacing: 3px;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 2px 12px;
+  line-height: 1.3;
+}
+.emp-count {
+  font-size: 0.63rem;
+  color: var(--light);
+  letter-spacing: .8px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+/* ── BETS COLUMNS ─────────────────────────── */
+.bets-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+.bet-col {
+  border-right: 1px solid var(--border);
+}
+.bet-col:last-child { border-right: none; }
+
+.bet-col-head {
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--border);
+  text-align: center;
+}
+.bch-label {
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--light);
+  display: block;
+  margin-bottom: 2px;
+}
+.bch-team {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .4px;
+  display: block;
+}
+.bch-team-a   { color: var(--col-a); }
+.bch-team-emp { color: var(--col-emp); }
+.bch-team-b   { color: var(--col-b); }
+.bch-count {
+  font-size: 0.58rem;
+  color: var(--light);
+  font-weight: 500;
+  display: block;
+  margin-top: 2px;
+}
+
+/* ── BET ROWS ─────────────────────────────── */
+.bet-list { list-style: none; }
+.bet-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 13px;
+  border-bottom: 1px solid var(--border);
+  gap: 6px;
+}
+.bet-item:last-child { border-bottom: none; }
+.bi-name {
+  font-size: 0.77rem;
+  font-weight: 500;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+.bi-score {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 0.92rem;
+  letter-spacing: 1.5px;
+  flex-shrink: 0;
+}
+.bi-score-a   { color: var(--col-a); }
+.bi-score-emp { color: var(--col-emp); }
+.bi-score-b   { color: var(--col-b); }
+
+.empty-bet {
+  padding: 18px 12px;
+  text-align: center;
+  font-size: 0.68rem;
+  color: var(--border);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+/* ── STATS BAR ────────────────────────────── */
+.stats-bar {
+  padding: 13px 22px;
+  border-top: 1px solid var(--border);
+  background: var(--bg);
+  border-radius: 0 0 var(--radius) var(--radius);
+}
+.stats-track {
+  height: 7px;
+  border-radius: 4px;
+  overflow: hidden;
+  background: var(--border);
+  display: flex;
+  margin-bottom: 7px;
+}
+.seg-a   { background: var(--col-a);  transition: width .4s; }
+.seg-emp { background: #d97706;       transition: width .4s; }
+.seg-b   { background: var(--col-b);  transition: width .4s; }
+.stats-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.65rem;
+  font-weight: 600;
+}
+.sl-a   { color: var(--col-a); }
+.sl-emp { color: #92400e; }
+.sl-b   { color: var(--col-b); }
+
+/* ── SEARCH BOX ──────────────────────────── */
+.search-wrap {
+  position: relative;
+  width: 280px;
+  flex-shrink: 0;
+}
+.search-input {
+  width: 100%;
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.78rem;
+  padding: 6px 32px 6px 30px;
+  border-radius: 7px;
+  outline: none;
+  transition: border-color .15s;
+}
+.search-input:focus { border-color: var(--accent); }
+.search-icon {
+  position: absolute;
+  left: 9px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: var(--light);
+}
+.search-clear {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--light);
+  font-size: 1rem;
+  line-height: 1;
+  padding: 0;
+  display: none;
+}
+.search-clear:hover { color: var(--text); }
+.search-dropdown {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 0;
+  right: 0;
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 9px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.12);
+  max-height: 320px;
+  overflow-y: auto;
+  z-index: 200;
+  display: none;
+}
+.search-dropdown.open { display: block; }
+.sd-item {
+  padding: 9px 13px;
+  font-size: 0.78rem;
+  cursor: pointer;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.sd-item:last-child { border-bottom: none; }
+.sd-item:hover, .sd-item.active { background: var(--accent-light); }
+.sd-teams {
+  font-weight: 700;
+  color: var(--text);
+}
+.sd-teams mark {
+  background: #fef08a;
+  color: var(--text);
+  border-radius: 2px;
+  padding: 0 1px;
+}
+.sd-meta {
+  font-size: 0.66rem;
+  color: var(--sub);
+  font-weight: 400;
+}
+.sd-empty {
+  padding: 14px 13px;
+  font-size: 0.75rem;
+  color: var(--sub);
+  text-align: center;
+}
+
+/* ── RESPONSIVE ───────────────────────────── */
+@media (max-width: 520px) {
+  .team-flag { width: 54px; height: 54px; }
+  .team-name { font-size: .82rem; }
+  .bet-item  { padding: 7px 9px; }
+  .bi-name   { font-size: .7rem; }
+}
+</style>
+</head>
+<body>
+
+<header class="page-header">
+  <div class="logo-title">
+    <h1>Bolão Copa 2026</h1>
+    <p>Apostas por jogo</p>
+  </div>
+  <div class="header-nav">
+    <a class="nav-btn" href="bolao_ranking_consenso.html">🤝 Consenso</a>
+    <a class="nav-btn" href="bolao_ranking_selecoes.html">🌍 Seleções</a>
+    <button class="nav-btn" id="btn-prev" onclick="navigate(-1)">&#9664; Anterior</button>
+    <div class="search-wrap" id="search-wrap">
+      <svg class="search-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input class="search-input" id="search-input" type="text" placeholder="Buscar jogo..." autocomplete="off">
+      <button class="search-clear" id="search-clear" onclick="clearSearch()" tabindex="-1">&#x2715;</button>
+      <div class="search-dropdown" id="search-dropdown"></div>
+    </div>
+    <span class="nav-counter" id="nav-counter"></span>
+    <button class="nav-btn" id="btn-next" onclick="navigate(1)">Próximo &#9654;</button>
+    <button class="btn-img" onclick="exportImage()">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+        <polyline points="7,10 12,15 17,10"/>
+        <line x1="12" y1="15" x2="12" y2="3"/>
+      </svg>
+      Salvar imagem
+    </button>
+  </div>
+</header>
+
+<main class="content">
+  <div id="game-card"></div>
+</main>
+
+<script>
+const JOGOS = [{"id": 1, "data": "2026-06-11 16:00", "estadio": "Estádio da Cidade do México", "cidade": "México", "grupo": "A", "sede": "México", "time_a": {"nome": "México", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/MEX", "id": 261}, "time_b": {"nome": "África do Sul", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/RSA", "id": 262}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [{"nome": "Alan Cardoso", "placar": "2x0"}, {"nome": "Cassio Oliveira", "placar": "2x1"}, {"nome": "Ricardo Drudi", "placar": "2x1"}, {"nome": "Gustavo Bastos", "placar": "2x0"}, {"nome": "Elton Lagroteria", "placar": "3x1"}, {"nome": "Gilberto Rossa", "placar": "2x0"}, {"nome": "Leonardo Pezzini", "placar": "2x0"}, {"nome": "Douglas Zanardi", "placar": "2x1"}, {"nome": "Gustavo Brito", "placar": "2x1"}, {"nome": "Gabriel Roleto", "placar": "3x1"}, {"nome": "Luiz Souza", "placar": "1x0"}, {"nome": "Ayrton Mendonça", "placar": "1x0"}, {"nome": "Heitor de Castro", "placar": "1x0"}, {"nome": "Rafael Leite", "placar": "2x0"}, {"nome": "Fabio Dias", "placar": "2x1"}, {"nome": "Lucas Monteiro", "placar": "2x1"}], "apostadores_empate": [], "apostadores_b": []}, {"id": 23, "data": "2026-06-11 23:00", "estadio": "Guadalajara", "cidade": "Guadalajara", "grupo": "A", "sede": "México", "time_a": {"nome": "Coreia do Sul", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/KOR", "id": 263}, "time_b": {"nome": "Tchéquia", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/CZE", "id": 264}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [{"nome": "Alan Cardoso", "placar": "1x0"}, {"nome": "Cassio Oliveira", "placar": "2x1"}, {"nome": "Gustavo Bastos", "placar": "2x1"}, {"nome": "Elton Lagroteria", "placar": "3x0"}, {"nome": "Douglas Zanardi", "placar": "3x1"}, {"nome": "Gustavo Brito", "placar": "1x0"}, {"nome": "Ayrton Mendonça", "placar": "1x0"}, {"nome": "Rafael Leite", "placar": "1x0"}], "apostadores_empate": [{"nome": "Ricardo Drudi", "placar": "1x1"}, {"nome": "Gilberto Rossa", "placar": "1x1"}, {"nome": "Leonardo Pezzini", "placar": "1x1"}, {"nome": "Luiz Souza", "placar": "1x1"}, {"nome": "Fabio Dias", "placar": "1x1"}], "apostadores_b": [{"nome": "Gabriel Roleto", "placar": "0x2"}, {"nome": "Heitor de Castro", "placar": "0x1"}, {"nome": "Lucas Monteiro", "placar": "0x1"}]}, {"id": 26, "data": "2026-06-12 13:00", "estadio": null, "cidade": "Toronto", "grupo": "B", "sede": "Canadá / Estados Unidos", "time_a": {"nome": "Canadá", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/CAN", "id": 265}, "time_b": {"nome": "Bósnia e Herzegovina", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/BIH", "id": 266}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [{"nome": "Lucas Monteiro", "placar": "2x0"}, {"nome": "Cassio Oliveira", "placar": "2x1"}, {"nome": "Ricardo Drudi", "placar": "1x0"}, {"nome": "Gustavo Bastos", "placar": "2x0"}, {"nome": "Elton Lagroteria", "placar": "3x1"}, {"nome": "Gilberto Rossa", "placar": "2x1"}, {"nome": "Leonardo Pezzini", "placar": "2x1"}, {"nome": "Luiz Souza", "placar": "1x0"}, {"nome": "Ayrton Mendonça", "placar": "1x0"}, {"nome": "Rafael Leite", "placar": "2x0"}, {"nome": "Fabio Dias", "placar": "2x1"}, {"nome": "Heitor de Castro", "placar": "1x0"}, {"nome": "Douglas Zanardi", "placar": "2x0"}], "apostadores_empate": [{"nome": "Gustavo Brito", "placar": "1x1"}], "apostadores_b": [{"nome": "Alan Cardoso", "placar": "0x2"}, {"nome": "Gabriel Roleto", "placar": "0x3"}]}, {"id": 35, "data": "2026-06-12 22:00", "estadio": null, "cidade": "Los Angeles", "grupo": "D", "sede": "Estados Unidos", "time_a": {"nome": "Estados Unidos", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/USA", "id": 273}, "time_b": {"nome": "Paraguai", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/PAR", "id": 274}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [{"nome": "Cassio Oliveira", "placar": "2x1"}, {"nome": "Ricardo Drudi", "placar": "1x0"}, {"nome": "Gustavo Bastos", "placar": "2x0"}, {"nome": "Elton Lagroteria", "placar": "1x0"}, {"nome": "Gilberto Rossa", "placar": "2x1"}, {"nome": "Leonardo Pezzini", "placar": "2x1"}, {"nome": "Gustavo Brito", "placar": "2x0"}, {"nome": "Luiz Souza", "placar": "1x0"}, {"nome": "Ayrton Mendonça", "placar": "1x0"}, {"nome": "Rafael Leite", "placar": "2x1"}, {"nome": "Fabio Dias", "placar": "2x1"}, {"nome": "Heitor de Castro", "placar": "1x0"}, {"nome": "Douglas Zanardi", "placar": "3x0"}], "apostadores_empate": [{"nome": "Lucas Monteiro", "placar": "1x1"}, {"nome": "Alan Cardoso", "placar": "1x1"}, {"nome": "Gabriel Roleto", "placar": "0x0"}], "apostadores_b": []}, {"id": 91, "data": "2026-06-13 16:00", "estadio": null, "cidade": "São Francisco", "grupo": "B", "sede": "Canadá / Estados Unidos", "time_a": {"nome": "Catar", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/QAT", "id": 267}, "time_b": {"nome": "Suíça", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/SUI", "id": 268}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [], "apostadores_empate": [], "apostadores_b": [{"nome": "Lucas Monteiro", "placar": "0x1"}, {"nome": "Alan Cardoso", "placar": "0x2"}, {"nome": "Cassio Oliveira", "placar": "0x2"}, {"nome": "Ricardo Drudi", "placar": "0x2"}, {"nome": "Gustavo Bastos", "placar": "0x4"}, {"nome": "Elton Lagroteria", "placar": "0x2"}, {"nome": "Gilberto Rossa", "placar": "0x2"}, {"nome": "Leonardo Pezzini", "placar": "0x2"}, {"nome": "Gustavo Brito", "placar": "1x3"}, {"nome": "Gabriel Roleto", "placar": "0x2"}, {"nome": "Luiz Souza", "placar": "0x2"}, {"nome": "Ayrton Mendonça", "placar": "0x1"}, {"nome": "Rafael Leite", "placar": "0x3"}, {"nome": "Fabio Dias", "placar": "0x2"}, {"nome": "Heitor de Castro", "placar": "0x2"}, {"nome": "Douglas Zanardi", "placar": "0x3"}]}, {"id": 29, "data": "2026-06-13 19:00", "estadio": null, "cidade": "Nova Iorque", "grupo": "C", "sede": "Estados Unidos", "time_a": {"nome": "Brasil", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/BRA", "id": 269}, "time_b": {"nome": "Marrocos", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/MAR", "id": 270}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [{"nome": "Lucas Monteiro", "placar": "2x1"}, {"nome": "Alan Cardoso", "placar": "3x1"}, {"nome": "Cassio Oliveira", "placar": "2x0"}, {"nome": "Gustavo Bastos", "placar": "3x0"}, {"nome": "Elton Lagroteria", "placar": "3x2"}, {"nome": "Gilberto Rossa", "placar": "2x1"}, {"nome": "Leonardo Pezzini", "placar": "2x1"}, {"nome": "Gustavo Brito", "placar": "2x1"}, {"nome": "Gabriel Roleto", "placar": "2x1"}, {"nome": "Luiz Souza", "placar": "1x0"}, {"nome": "Ayrton Mendonça", "placar": "1x0"}, {"nome": "Fabio Dias", "placar": "2x1"}, {"nome": "Heitor de Castro", "placar": "1x0"}], "apostadores_empate": [{"nome": "Ricardo Drudi", "placar": "1x1"}, {"nome": "Douglas Zanardi", "placar": "1x1"}], "apostadores_b": [{"nome": "Rafael Leite", "placar": "0x2"}]}, {"id": 34, "data": "2026-06-13 22:00", "estadio": null, "cidade": "Boston", "grupo": "C", "sede": "Estados Unidos", "time_a": {"nome": "Haiti", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/HAI", "id": 271}, "time_b": {"nome": "Escócia", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/SCO", "id": 272}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [], "apostadores_empate": [{"nome": "Gustavo Brito", "placar": "1x1"}], "apostadores_b": [{"nome": "Lucas Monteiro", "placar": "0x3"}, {"nome": "Alan Cardoso", "placar": "0x2"}, {"nome": "Cassio Oliveira", "placar": "0x2"}, {"nome": "Ricardo Drudi", "placar": "0x2"}, {"nome": "Gustavo Bastos", "placar": "0x2"}, {"nome": "Elton Lagroteria", "placar": "0x2"}, {"nome": "Gilberto Rossa", "placar": "0x2"}, {"nome": "Leonardo Pezzini", "placar": "0x2"}, {"nome": "Gabriel Roleto", "placar": "0x2"}, {"nome": "Luiz Souza", "placar": "0x1"}, {"nome": "Ayrton Mendonça", "placar": "0x1"}, {"nome": "Rafael Leite", "placar": "0x1"}, {"nome": "Fabio Dias", "placar": "0x2"}, {"nome": "Heitor de Castro", "placar": "0x3"}, {"nome": "Douglas Zanardi", "placar": "1x3"}]}, {"id": 40, "data": "2026-06-14 01:00", "estadio": null, "cidade": "Vancouver", "grupo": "D", "sede": "Estados Unidos", "time_a": {"nome": "Austrália", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/AUS", "id": 275}, "time_b": {"nome": "Turquia", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/TUR", "id": 276}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [{"nome": "Alan Cardoso", "placar": "2x1"}, {"nome": "Ayrton Mendonça", "placar": "1x0"}], "apostadores_empate": [{"nome": "Gilberto Rossa", "placar": "1x1"}], "apostadores_b": [{"nome": "Lucas Monteiro", "placar": "0x1"}, {"nome": "Cassio Oliveira", "placar": "1x2"}, {"nome": "Ricardo Drudi", "placar": "0x3"}, {"nome": "Gustavo Bastos", "placar": "0x2"}, {"nome": "Elton Lagroteria", "placar": "1x2"}, {"nome": "Leonardo Pezzini", "placar": "1x2"}, {"nome": "Gustavo Brito", "placar": "1x2"}, {"nome": "Gabriel Roleto", "placar": "0x2"}, {"nome": "Luiz Souza", "placar": "0x1"}, {"nome": "Rafael Leite", "placar": "0x1"}, {"nome": "Fabio Dias", "placar": "1x2"}, {"nome": "Heitor de Castro", "placar": "0x1"}, {"nome": "Douglas Zanardi", "placar": "1x2"}]}, {"id": 41, "data": "2026-06-14 14:00", "estadio": null, "cidade": "Houston", "grupo": "E", "sede": "Estados Unidos / Canadá", "time_a": {"nome": "Alemanha", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/GER", "id": 277}, "time_b": {"nome": "Curaçao", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/CUW", "id": 278}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [{"nome": "Lucas Monteiro", "placar": "8x0"}, {"nome": "Alan Cardoso", "placar": "6x0"}, {"nome": "Cassio Oliveira", "placar": "6x0"}, {"nome": "Ricardo Drudi", "placar": "5x0"}, {"nome": "Gustavo Bastos", "placar": "4x0"}, {"nome": "Elton Lagroteria", "placar": "5x0"}, {"nome": "Gilberto Rossa", "placar": "5x0"}, {"nome": "Leonardo Pezzini", "placar": "4x0"}, {"nome": "Gustavo Brito", "placar": "4x0"}, {"nome": "Gabriel Roleto", "placar": "5x0"}, {"nome": "Luiz Souza", "placar": "3x0"}, {"nome": "Ayrton Mendonça", "placar": "1x0"}, {"nome": "Rafael Leite", "placar": "4x0"}, {"nome": "Fabio Dias", "placar": "3x0"}, {"nome": "Heitor de Castro", "placar": "3x0"}, {"nome": "Douglas Zanardi", "placar": "4x0"}], "apostadores_empate": [], "apostadores_b": []}, {"id": 47, "data": "2026-06-14 17:00", "estadio": null, "cidade": "Dallas", "grupo": "F", "sede": "Estados Unidos / México", "time_a": {"nome": "Holanda", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/NED", "id": 281}, "time_b": {"nome": "Japão", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/JPN", "id": 282}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [{"nome": "Lucas Monteiro", "placar": "1x0"}, {"nome": "Alan Cardoso", "placar": "3x2"}, {"nome": "Ricardo Drudi", "placar": "2x1"}, {"nome": "Elton Lagroteria", "placar": "1x0"}, {"nome": "Leonardo Pezzini", "placar": "2x1"}, {"nome": "Gustavo Brito", "placar": "3x1"}, {"nome": "Gabriel Roleto", "placar": "2x0"}, {"nome": "Luiz Souza", "placar": "1x0"}, {"nome": "Ayrton Mendonça", "placar": "1x0"}, {"nome": "Heitor de Castro", "placar": "1x0"}, {"nome": "Douglas Zanardi", "placar": "2x0"}], "apostadores_empate": [{"nome": "Gustavo Bastos", "placar": "2x2"}, {"nome": "Fabio Dias", "placar": "1x1"}], "apostadores_b": [{"nome": "Cassio Oliveira", "placar": "1x2"}, {"nome": "Gilberto Rossa", "placar": "1x2"}, {"nome": "Rafael Leite", "placar": "0x1"}]}, {"id": 45, "data": "2026-06-14 20:00", "estadio": null, "cidade": "Filadélfia", "grupo": "E", "sede": "Estados Unidos / Canadá", "time_a": {"nome": "Costa do Marfim", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/CIV", "id": 279}, "time_b": {"nome": "Equador", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/ECU", "id": 280}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [{"nome": "Alan Cardoso", "placar": "2x1"}, {"nome": "Elton Lagroteria", "placar": "2x1"}, {"nome": "Ayrton Mendonça", "placar": "1x0"}, {"nome": "Rafael Leite", "placar": "2x0"}, {"nome": "Douglas Zanardi", "placar": "2x1"}], "apostadores_empate": [{"nome": "Ricardo Drudi", "placar": "1x1"}, {"nome": "Gilberto Rossa", "placar": "2x2"}, {"nome": "Leonardo Pezzini", "placar": "1x1"}, {"nome": "Gabriel Roleto", "placar": "1x1"}, {"nome": "Luiz Souza", "placar": "0x0"}, {"nome": "Fabio Dias", "placar": "1x1"}], "apostadores_b": [{"nome": "Lucas Monteiro", "placar": "0x2"}, {"nome": "Cassio Oliveira", "placar": "1x2"}, {"nome": "Gustavo Bastos", "placar": "1x2"}, {"nome": "Gustavo Brito", "placar": "1x2"}, {"nome": "Heitor de Castro", "placar": "0x1"}]}, {"id": 52, "data": "2026-06-14 23:00", "estadio": null, "cidade": "Monterrey", "grupo": "F", "sede": "Estados Unidos / México", "time_a": {"nome": "Suécia", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/SWE", "id": 283}, "time_b": {"nome": "Tunísia", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/TUN", "id": 284}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [{"nome": "Lucas Monteiro", "placar": "1x0"}, {"nome": "Alan Cardoso", "placar": "1x0"}, {"nome": "Ricardo Drudi", "placar": "2x0"}, {"nome": "Gustavo Bastos", "placar": "2x1"}, {"nome": "Elton Lagroteria", "placar": "2x1"}, {"nome": "Gilberto Rossa", "placar": "2x0"}, {"nome": "Leonardo Pezzini", "placar": "2x0"}, {"nome": "Gustavo Brito", "placar": "2x0"}, {"nome": "Luiz Souza", "placar": "1x0"}, {"nome": "Ayrton Mendonça", "placar": "1x0"}, {"nome": "Rafael Leite", "placar": "2x1"}, {"nome": "Fabio Dias", "placar": "1x0"}, {"nome": "Heitor de Castro", "placar": "1x0"}, {"nome": "Douglas Zanardi", "placar": "2x0"}], "apostadores_empate": [], "apostadores_b": [{"nome": "Cassio Oliveira", "placar": "1x2"}, {"nome": "Gabriel Roleto", "placar": "0x1"}]}, {"id": 59, "data": "2026-06-15 13:00", "estadio": null, "cidade": "Atlanta", "grupo": "H", "sede": "Estados Unidos", "time_a": {"nome": "Espanha", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/ESP", "id": 289}, "time_b": {"nome": "Cabo Verde", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/CPV", "id": 290}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [{"nome": "Lucas Monteiro", "placar": "11x1"}, {"nome": "Alan Cardoso", "placar": "4x0"}, {"nome": "Cassio Oliveira", "placar": "4x0"}, {"nome": "Ricardo Drudi", "placar": "6x0"}, {"nome": "Gustavo Bastos", "placar": "4x0"}, {"nome": "Elton Lagroteria", "placar": "4x0"}, {"nome": "Gilberto Rossa", "placar": "4x0"}, {"nome": "Leonardo Pezzini", "placar": "3x0"}, {"nome": "Gustavo Brito", "placar": "3x1"}, {"nome": "Gabriel Roleto", "placar": "3x0"}, {"nome": "Luiz Souza", "placar": "3x0"}, {"nome": "Ayrton Mendonça", "placar": "1x0"}, {"nome": "Rafael Leite", "placar": "4x0"}, {"nome": "Fabio Dias", "placar": "3x0"}, {"nome": "Heitor de Castro", "placar": "2x0"}, {"nome": "Douglas Zanardi", "placar": "5x0"}], "apostadores_empate": [], "apostadores_b": []}, {"id": 53, "data": "2026-06-15 16:00", "estadio": null, "cidade": "Seattle", "grupo": "G", "sede": "Estados Unidos / Canadá", "time_a": {"nome": "Bélgica", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/BEL", "id": 285}, "time_b": {"nome": "Egito", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/EGY", "id": 286}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [{"nome": "Lucas Monteiro", "placar": "2x0"}, {"nome": "Alan Cardoso", "placar": "3x1"}, {"nome": "Cassio Oliveira", "placar": "2x1"}, {"nome": "Ricardo Drudi", "placar": "2x0"}, {"nome": "Gustavo Bastos", "placar": "2x0"}, {"nome": "Elton Lagroteria", "placar": "3x1"}, {"nome": "Gilberto Rossa", "placar": "2x1"}, {"nome": "Leonardo Pezzini", "placar": "2x1"}, {"nome": "Gustavo Brito", "placar": "3x1"}, {"nome": "Luiz Souza", "placar": "1x0"}, {"nome": "Ayrton Mendonça", "placar": "1x0"}, {"nome": "Fabio Dias", "placar": "2x1"}, {"nome": "Heitor de Castro", "placar": "1x0"}, {"nome": "Douglas Zanardi", "placar": "2x1"}], "apostadores_empate": [], "apostadores_b": [{"nome": "Gabriel Roleto", "placar": "1x2"}, {"nome": "Rafael Leite", "placar": "0x1"}]}, {"id": 64, "data": "2026-06-15 19:00", "estadio": null, "cidade": "Miami", "grupo": "H", "sede": "Estados Unidos", "time_a": {"nome": "Arábia Saudita", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/KSA", "id": 291}, "time_b": {"nome": "Uruguai", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/URU", "id": 292}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [{"nome": "Gustavo Brito", "placar": "2x1"}, {"nome": "Rafael Leite", "placar": "1x0"}], "apostadores_empate": [], "apostadores_b": [{"nome": "Lucas Monteiro", "placar": "2x3"}, {"nome": "Alan Cardoso", "placar": "0x2"}, {"nome": "Cassio Oliveira", "placar": "0x1"}, {"nome": "Ricardo Drudi", "placar": "0x2"}, {"nome": "Gustavo Bastos", "placar": "0x2"}, {"nome": "Elton Lagroteria", "placar": "1x2"}, {"nome": "Gilberto Rossa", "placar": "0x2"}, {"nome": "Leonardo Pezzini", "placar": "0x2"}, {"nome": "Gabriel Roleto", "placar": "1x2"}, {"nome": "Luiz Souza", "placar": "0x1"}, {"nome": "Ayrton Mendonça", "placar": "0x1"}, {"nome": "Fabio Dias", "placar": "0x2"}, {"nome": "Heitor de Castro", "placar": "0x1"}, {"nome": "Douglas Zanardi", "placar": "1x3"}]}, {"id": 58, "data": "2026-06-15 22:00", "estadio": null, "cidade": "Los Angeles", "grupo": "G", "sede": "Estados Unidos / Canadá", "time_a": {"nome": "Irã", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/IRN", "id": 287}, "time_b": {"nome": "Nova Zelândia", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/NZL", "id": 288}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [{"nome": "Lucas Monteiro", "placar": "1x0"}, {"nome": "Cassio Oliveira", "placar": "2x1"}, {"nome": "Ricardo Drudi", "placar": "1x0"}, {"nome": "Elton Lagroteria", "placar": "2x0"}, {"nome": "Gilberto Rossa", "placar": "2x0"}, {"nome": "Leonardo Pezzini", "placar": "2x0"}, {"nome": "Gustavo Brito", "placar": "3x2"}, {"nome": "Gabriel Roleto", "placar": "3x0"}, {"nome": "Luiz Souza", "placar": "1x0"}, {"nome": "Rafael Leite", "placar": "2x0"}, {"nome": "Fabio Dias", "placar": "1x0"}, {"nome": "Heitor de Castro", "placar": "1x0"}], "apostadores_empate": [{"nome": "Gustavo Bastos", "placar": "1x1"}], "apostadores_b": [{"nome": "Alan Cardoso", "placar": "1x2"}, {"nome": "Ayrton Mendonça", "placar": "0x1"}, {"nome": "Douglas Zanardi", "placar": "0x4"}]}, {"id": 65, "data": "2026-06-16 16:00", "estadio": null, "cidade": "Nova Iorque", "grupo": "I", "sede": "Canadá / Estados Unidos", "time_a": {"nome": "França", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/FRA", "id": 293}, "time_b": {"nome": "Senegal", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/SEN", "id": 294}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [{"nome": "Lucas Monteiro", "placar": "2x1"}, {"nome": "Alan Cardoso", "placar": "3x0"}, {"nome": "Cassio Oliveira", "placar": "2x0"}, {"nome": "Ricardo Drudi", "placar": "1x0"}, {"nome": "Gustavo Bastos", "placar": "3x1"}, {"nome": "Elton Lagroteria", "placar": "3x1"}, {"nome": "Gilberto Rossa", "placar": "2x1"}, {"nome": "Leonardo Pezzini", "placar": "2x1"}, {"nome": "Gustavo Brito", "placar": "4x0"}, {"nome": "Luiz Souza", "placar": "1x0"}, {"nome": "Ayrton Mendonça", "placar": "1x0"}, {"nome": "Fabio Dias", "placar": "2x0"}, {"nome": "Heitor de Castro", "placar": "1x0"}, {"nome": "Douglas Zanardi", "placar": "3x1"}], "apostadores_empate": [{"nome": "Rafael Leite", "placar": "0x0"}], "apostadores_b": [{"nome": "Gabriel Roleto", "placar": "0x2"}]}, {"id": 70, "data": "2026-06-16 19:00", "estadio": null, "cidade": "Boston", "grupo": "I", "sede": "Canadá / Estados Unidos", "time_a": {"nome": "Iraque", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/IRQ", "id": 295}, "time_b": {"nome": "Noruega", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/NOR", "id": 296}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [], "apostadores_empate": [], "apostadores_b": [{"nome": "Lucas Monteiro", "placar": "1x2"}, {"nome": "Alan Cardoso", "placar": "0x3"}, {"nome": "Cassio Oliveira", "placar": "0x2"}, {"nome": "Ricardo Drudi", "placar": "0x2"}, {"nome": "Gustavo Bastos", "placar": "0x2"}, {"nome": "Elton Lagroteria", "placar": "1x2"}, {"nome": "Gilberto Rossa", "placar": "0x2"}, {"nome": "Leonardo Pezzini", "placar": "0x2"}, {"nome": "Gustavo Brito", "placar": "2x3"}, {"nome": "Gabriel Roleto", "placar": "0x3"}, {"nome": "Luiz Souza", "placar": "0x2"}, {"nome": "Ayrton Mendonça", "placar": "0x1"}, {"nome": "Rafael Leite", "placar": "0x1"}, {"nome": "Fabio Dias", "placar": "0x2"}, {"nome": "Heitor de Castro", "placar": "0x2"}, {"nome": "Douglas Zanardi", "placar": "0x3"}]}, {"id": 71, "data": "2026-06-16 22:00", "estadio": null, "cidade": "Kansas", "grupo": "J", "sede": "Estados Unidos", "time_a": {"nome": "Argentina", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/ARG", "id": 297}, "time_b": {"nome": "Argélia", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/ALG", "id": 298}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [{"nome": "Alan Cardoso", "placar": "3x0"}, {"nome": "Cassio Oliveira", "placar": "2x1"}, {"nome": "Ricardo Drudi", "placar": "2x0"}, {"nome": "Gustavo Bastos", "placar": "3x0"}, {"nome": "Elton Lagroteria", "placar": "3x1"}, {"nome": "Gilberto Rossa", "placar": "2x0"}, {"nome": "Leonardo Pezzini", "placar": "2x0"}, {"nome": "Gustavo Brito", "placar": "2x0"}, {"nome": "Gabriel Roleto", "placar": "2x0"}, {"nome": "Luiz Souza", "placar": "1x0"}, {"nome": "Ayrton Mendonça", "placar": "1x0"}, {"nome": "Rafael Leite", "placar": "3x0"}, {"nome": "Fabio Dias", "placar": "2x0"}, {"nome": "Heitor de Castro", "placar": "1x0"}], "apostadores_empate": [{"nome": "Lucas Monteiro", "placar": "1x1"}], "apostadores_b": [{"nome": "Douglas Zanardi", "placar": "1x2"}]}, {"id": 76, "data": "2026-06-17 01:00", "estadio": null, "cidade": "São Francisco", "grupo": "J", "sede": "Estados Unidos", "time_a": {"nome": "Áustria", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/AUT", "id": 299}, "time_b": {"nome": "Jordânia", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/JOR", "id": 300}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [{"nome": "Lucas Monteiro", "placar": "1x0"}, {"nome": "Alan Cardoso", "placar": "2x0"}, {"nome": "Cassio Oliveira", "placar": "2x0"}, {"nome": "Ricardo Drudi", "placar": "3x0"}, {"nome": "Gustavo Bastos", "placar": "2x0"}, {"nome": "Elton Lagroteria", "placar": "2x1"}, {"nome": "Gilberto Rossa", "placar": "3x1"}, {"nome": "Leonardo Pezzini", "placar": "2x0"}, {"nome": "Gustavo Brito", "placar": "2x1"}, {"nome": "Gabriel Roleto", "placar": "1x0"}, {"nome": "Luiz Souza", "placar": "1x0"}, {"nome": "Ayrton Mendonça", "placar": "1x0"}, {"nome": "Rafael Leite", "placar": "2x0"}, {"nome": "Fabio Dias", "placar": "2x0"}, {"nome": "Heitor de Castro", "placar": "2x0"}, {"nome": "Douglas Zanardi", "placar": "3x0"}], "apostadores_empate": [], "apostadores_b": []}, {"id": 77, "data": "2026-06-17 14:00", "estadio": null, "cidade": "Houston", "grupo": "K", "sede": "México / Estados Unidos", "time_a": {"nome": "Portugal", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/POR", "id": 301}, "time_b": {"nome": "RD Congo", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/COD", "id": 302}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [{"nome": "Lucas Monteiro", "placar": "3x1"}, {"nome": "Alan Cardoso", "placar": "2x0"}, {"nome": "Cassio Oliveira", "placar": "2x1"}, {"nome": "Ricardo Drudi", "placar": "4x0"}, {"nome": "Gustavo Bastos", "placar": "3x0"}, {"nome": "Elton Lagroteria", "placar": "4x1"}, {"nome": "Gilberto Rossa", "placar": "3x0"}, {"nome": "Leonardo Pezzini", "placar": "2x0"}, {"nome": "Gustavo Brito", "placar": "3x1"}, {"nome": "Gabriel Roleto", "placar": "1x0"}, {"nome": "Luiz Souza", "placar": "2x0"}, {"nome": "Ayrton Mendonça", "placar": "1x0"}, {"nome": "Rafael Leite", "placar": "3x1"}, {"nome": "Fabio Dias", "placar": "3x0"}, {"nome": "Heitor de Castro", "placar": "2x0"}, {"nome": "Douglas Zanardi", "placar": "4x0"}], "apostadores_empate": [], "apostadores_b": []}, {"id": 83, "data": "2026-06-17 17:00", "estadio": null, "cidade": "Dallas", "grupo": "L", "sede": "Canadá / Estados Unidos", "time_a": {"nome": "Inglaterra", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/ENG", "id": 305}, "time_b": {"nome": "Croácia", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/CRO", "id": 306}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [{"nome": "Lucas Monteiro", "placar": "2x0"}, {"nome": "Alan Cardoso", "placar": "2x1"}, {"nome": "Cassio Oliveira", "placar": "2x1"}, {"nome": "Ricardo Drudi", "placar": "1x0"}, {"nome": "Elton Lagroteria", "placar": "2x0"}, {"nome": "Gilberto Rossa", "placar": "2x1"}, {"nome": "Leonardo Pezzini", "placar": "2x1"}, {"nome": "Gustavo Brito", "placar": "3x2"}, {"nome": "Luiz Souza", "placar": "1x0"}, {"nome": "Ayrton Mendonça", "placar": "1x0"}, {"nome": "Rafael Leite", "placar": "2x1"}, {"nome": "Fabio Dias", "placar": "2x1"}, {"nome": "Heitor de Castro", "placar": "1x0"}, {"nome": "Douglas Zanardi", "placar": "3x1"}], "apostadores_empate": [{"nome": "Gustavo Bastos", "placar": "1x1"}], "apostadores_b": [{"nome": "Gabriel Roleto", "placar": "0x1"}]}, {"id": 88, "data": "2026-06-17 20:00", "estadio": null, "cidade": "Toronto", "grupo": "L", "sede": "Canadá / Estados Unidos", "time_a": {"nome": "Gana", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/GHA", "id": 307}, "time_b": {"nome": "Panamá", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/PAN", "id": 308}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [{"nome": "Lucas Monteiro", "placar": "2x1"}, {"nome": "Alan Cardoso", "placar": "2x0"}, {"nome": "Cassio Oliveira", "placar": "2x0"}, {"nome": "Ricardo Drudi", "placar": "3x1"}, {"nome": "Gustavo Bastos", "placar": "1x0"}, {"nome": "Gilberto Rossa", "placar": "2x0"}, {"nome": "Gabriel Roleto", "placar": "3x0"}, {"nome": "Luiz Souza", "placar": "1x0"}, {"nome": "Ayrton Mendonça", "placar": "1x0"}, {"nome": "Rafael Leite", "placar": "2x0"}, {"nome": "Fabio Dias", "placar": "1x0"}, {"nome": "Heitor de Castro", "placar": "1x0"}, {"nome": "Douglas Zanardi", "placar": "2x1"}], "apostadores_empate": [{"nome": "Leonardo Pezzini", "placar": "1x1"}], "apostadores_b": [{"nome": "Elton Lagroteria", "placar": "1x2"}, {"nome": "Gustavo Brito", "placar": "1x2"}]}, {"id": 82, "data": "2026-06-17 23:00", "estadio": null, "cidade": "México", "grupo": "K", "sede": "México / Estados Unidos", "time_a": {"nome": "Uzbequistão", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/UZB", "id": 303}, "time_b": {"nome": "Colômbia", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/COL", "id": 304}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [], "apostadores_empate": [], "apostadores_b": [{"nome": "Lucas Monteiro", "placar": "1x2"}, {"nome": "Alan Cardoso", "placar": "0x2"}, {"nome": "Cassio Oliveira", "placar": "0x2"}, {"nome": "Ricardo Drudi", "placar": "0x1"}, {"nome": "Gustavo Bastos", "placar": "0x3"}, {"nome": "Elton Lagroteria", "placar": "0x3"}, {"nome": "Gilberto Rossa", "placar": "0x2"}, {"nome": "Leonardo Pezzini", "placar": "0x2"}, {"nome": "Gustavo Brito", "placar": "1x2"}, {"nome": "Gabriel Roleto", "placar": "0x2"}, {"nome": "Luiz Souza", "placar": "0x1"}, {"nome": "Ayrton Mendonça", "placar": "0x1"}, {"nome": "Rafael Leite", "placar": "0x2"}, {"nome": "Fabio Dias", "placar": "0x2"}, {"nome": "Heitor de Castro", "placar": "0x1"}, {"nome": "Douglas Zanardi", "placar": "0x2"}]}, {"id": 22, "data": "2026-06-18 13:00", "estadio": null, "cidade": "Atlanta", "grupo": "A", "sede": "México", "time_a": {"nome": "África do Sul", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/RSA", "id": 262}, "time_b": {"nome": "Tchéquia", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/CZE", "id": 264}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [{"nome": "Alan Cardoso", "placar": "1x0"}, {"nome": "Cassio Oliveira", "placar": "2x1"}, {"nome": "Gustavo Brito", "placar": "2x0"}, {"nome": "Gabriel Roleto", "placar": "1x0"}, {"nome": "Ayrton Mendonça", "placar": "1x0"}], "apostadores_empate": [{"nome": "Elton Lagroteria", "placar": "1x1"}, {"nome": "Leonardo Pezzini", "placar": "1x1"}, {"nome": "Douglas Zanardi", "placar": "1x1"}, {"nome": "Rafael Leite", "placar": "0x0"}], "apostadores_b": [{"nome": "Ricardo Drudi", "placar": "0x2"}, {"nome": "Gustavo Bastos", "placar": "0x2"}, {"nome": "Gilberto Rossa", "placar": "0x2"}, {"nome": "Luiz Souza", "placar": "0x1"}, {"nome": "Heitor de Castro", "placar": "0x1"}, {"nome": "Fabio Dias", "placar": "0x1"}, {"nome": "Lucas Monteiro", "placar": "0x1"}]}, {"id": 90, "data": "2026-06-18 16:00", "estadio": null, "cidade": "Los Angeles", "grupo": "B", "sede": "Canadá / Estados Unidos", "time_a": {"nome": "Bósnia e Herzegovina", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/BIH", "id": 266}, "time_b": {"nome": "Suíça", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/SUI", "id": 268}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [{"nome": "Alan Cardoso", "placar": "2x1"}], "apostadores_empate": [{"nome": "Lucas Monteiro", "placar": "0x0"}, {"nome": "Ricardo Drudi", "placar": "1x1"}, {"nome": "Leonardo Pezzini", "placar": "1x1"}], "apostadores_b": [{"nome": "Cassio Oliveira", "placar": "1x2"}, {"nome": "Gustavo Bastos", "placar": "1x2"}, {"nome": "Elton Lagroteria", "placar": "0x2"}, {"nome": "Gilberto Rossa", "placar": "0x1"}, {"nome": "Gustavo Brito", "placar": "0x2"}, {"nome": "Gabriel Roleto", "placar": "0x1"}, {"nome": "Luiz Souza", "placar": "0x1"}, {"nome": "Ayrton Mendonça", "placar": "0x1"}, {"nome": "Rafael Leite", "placar": "0x2"}, {"nome": "Fabio Dias", "placar": "0x2"}, {"nome": "Heitor de Castro", "placar": "0x1"}, {"nome": "Douglas Zanardi", "placar": "0x3"}]}, {"id": 27, "data": "2026-06-18 19:00", "estadio": null, "cidade": "Vancouver", "grupo": "B", "sede": "Canadá / Estados Unidos", "time_a": {"nome": "Canadá", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/CAN", "id": 265}, "time_b": {"nome": "Catar", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/QAT", "id": 267}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [{"nome": "Alan Cardoso", "placar": "1x0"}, {"nome": "Cassio Oliveira", "placar": "2x1"}, {"nome": "Ricardo Drudi", "placar": "2x1"}, {"nome": "Gustavo Bastos", "placar": "3x1"}, {"nome": "Elton Lagroteria", "placar": "2x0"}, {"nome": "Gilberto Rossa", "placar": "3x0"}, {"nome": "Leonardo Pezzini", "placar": "2x0"}, {"nome": "Gustavo Brito", "placar": "1x0"}, {"nome": "Luiz Souza", "placar": "1x0"}, {"nome": "Ayrton Mendonça", "placar": "1x0"}, {"nome": "Fabio Dias", "placar": "2x0"}, {"nome": "Heitor de Castro", "placar": "1x0"}, {"nome": "Douglas Zanardi", "placar": "3x0"}], "apostadores_empate": [{"nome": "Gabriel Roleto", "placar": "2x2"}, {"nome": "Rafael Leite", "placar": "1x1"}], "apostadores_b": [{"nome": "Lucas Monteiro", "placar": "1x2"}]}, {"id": 24, "data": "2026-06-18 22:00", "estadio": null, "cidade": "Guadalajara", "grupo": "A", "sede": "México", "time_a": {"nome": "México", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/MEX", "id": 261}, "time_b": {"nome": "Coreia do Sul", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/KOR", "id": 263}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [{"nome": "Alan Cardoso", "placar": "2x1"}, {"nome": "Cassio Oliveira", "placar": "2x1"}, {"nome": "Gustavo Bastos", "placar": "2x0"}, {"nome": "Gabriel Roleto", "placar": "2x0"}, {"nome": "Luiz Souza", "placar": "1x0"}, {"nome": "Ayrton Mendonça", "placar": "1x0"}, {"nome": "Heitor de Castro", "placar": "1x0"}, {"nome": "Lucas Monteiro", "placar": "3x2"}], "apostadores_empate": [{"nome": "Ricardo Drudi", "placar": "2x2"}, {"nome": "Elton Lagroteria", "placar": "1x1"}, {"nome": "Gilberto Rossa", "placar": "2x2"}, {"nome": "Leonardo Pezzini", "placar": "1x1"}, {"nome": "Gustavo Brito", "placar": "1x1"}, {"nome": "Fabio Dias", "placar": "1x1"}, {"nome": "Douglas Zanardi", "placar": "2x2"}], "apostadores_b": [{"nome": "Rafael Leite", "placar": "0x2"}]}, {"id": 36, "data": "2026-06-19 16:00", "estadio": null, "cidade": "Seattle", "grupo": "D", "sede": "Estados Unidos", "time_a": {"nome": "Estados Unidos", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/USA", "id": 273}, "time_b": {"nome": "Austrália", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/AUS", "id": 275}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [{"nome": "Cassio Oliveira", "placar": "2x1"}, {"nome": "Ricardo Drudi", "placar": "2x0"}, {"nome": "Gustavo Bastos", "placar": "3x1"}, {"nome": "Elton Lagroteria", "placar": "3x1"}, {"nome": "Gilberto Rossa", "placar": "2x1"}, {"nome": "Leonardo Pezzini", "placar": "2x0"}, {"nome": "Gustavo Brito", "placar": "2x1"}, {"nome": "Gabriel Roleto", "placar": "2x0"}, {"nome": "Luiz Souza", "placar": "1x0"}, {"nome": "Ayrton Mendonça", "placar": "1x0"}, {"nome": "Rafael Leite", "placar": "1x0"}, {"nome": "Fabio Dias", "placar": "1x0"}, {"nome": "Heitor de Castro", "placar": "1x0"}], "apostadores_empate": [{"nome": "Douglas Zanardi", "placar": "1x1"}], "apostadores_b": [{"nome": "Lucas Monteiro", "placar": "0x1"}, {"nome": "Alan Cardoso", "placar": "1x2"}]}, {"id": 33, "data": "2026-06-19 19:00", "estadio": null, "cidade": "Boston", "grupo": "C", "sede": "Estados Unidos", "time_a": {"nome": "Marrocos", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/MAR", "id": 270}, "time_b": {"nome": "Escócia", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/SCO", "id": 272}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [{"nome": "Alan Cardoso", "placar": "2x0"}, {"nome": "Cassio Oliveira", "placar": "2x1"}, {"nome": "Ricardo Drudi", "placar": "2x0"}, {"nome": "Elton Lagroteria", "placar": "2x0"}, {"nome": "Gilberto Rossa", "placar": "1x0"}, {"nome": "Leonardo Pezzini", "placar": "2x1"}, {"nome": "Gabriel Roleto", "placar": "1x0"}, {"nome": "Luiz Souza", "placar": "1x0"}, {"nome": "Heitor de Castro", "placar": "1x0"}, {"nome": "Douglas Zanardi", "placar": "2x1"}], "apostadores_empate": [{"nome": "Lucas Monteiro", "placar": "1x1"}, {"nome": "Gustavo Bastos", "placar": "2x2"}, {"nome": "Gustavo Brito", "placar": "1x1"}, {"nome": "Rafael Leite", "placar": "1x1"}, {"nome": "Fabio Dias", "placar": "1x1"}], "apostadores_b": [{"nome": "Ayrton Mendonça", "placar": "0x1"}]}, {"id": 30, "data": "2026-06-19 21:30", "estadio": null, "cidade": "Filadélfia", "grupo": "C", "sede": "Estados Unidos", "time_a": {"nome": "Brasil", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/BRA", "id": 269}, "time_b": {"nome": "Haiti", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/HAI", "id": 271}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [{"nome": "Lucas Monteiro", "placar": "2x0"}, {"nome": "Alan Cardoso", "placar": "3x0"}, {"nome": "Cassio Oliveira", "placar": "3x0"}, {"nome": "Ricardo Drudi", "placar": "4x1"}, {"nome": "Gustavo Bastos", "placar": "4x0"}, {"nome": "Elton Lagroteria", "placar": "5x1"}, {"nome": "Gilberto Rossa", "placar": "4x0"}, {"nome": "Leonardo Pezzini", "placar": "4x0"}, {"nome": "Gustavo Brito", "placar": "3x0"}, {"nome": "Gabriel Roleto", "placar": "4x1"}, {"nome": "Luiz Souza", "placar": "3x0"}, {"nome": "Ayrton Mendonça", "placar": "1x0"}, {"nome": "Rafael Leite", "placar": "5x0"}, {"nome": "Fabio Dias", "placar": "3x0"}, {"nome": "Heitor de Castro", "placar": "3x0"}, {"nome": "Douglas Zanardi", "placar": "3x0"}], "apostadores_empate": [], "apostadores_b": []}, {"id": 39, "data": "2026-06-20 00:00", "estadio": null, "cidade": "São Francisco", "grupo": "D", "sede": "Estados Unidos", "time_a": {"nome": "Paraguai", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/PAR", "id": 274}, "time_b": {"nome": "Turquia", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/TUR", "id": 276}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [{"nome": "Lucas Monteiro", "placar": "2x0"}, {"nome": "Ayrton Mendonça", "placar": "1x0"}], "apostadores_empate": [{"nome": "Gustavo Brito", "placar": "1x1"}, {"nome": "Luiz Souza", "placar": "1x1"}, {"nome": "Fabio Dias", "placar": "1x1"}, {"nome": "Douglas Zanardi", "placar": "1x1"}], "apostadores_b": [{"nome": "Alan Cardoso", "placar": "0x2"}, {"nome": "Cassio Oliveira", "placar": "1x2"}, {"nome": "Ricardo Drudi", "placar": "1x2"}, {"nome": "Gustavo Bastos", "placar": "1x2"}, {"nome": "Elton Lagroteria", "placar": "1x2"}, {"nome": "Gilberto Rossa", "placar": "0x1"}, {"nome": "Leonardo Pezzini", "placar": "1x2"}, {"nome": "Gabriel Roleto", "placar": "0x1"}, {"nome": "Rafael Leite", "placar": "0x2"}, {"nome": "Heitor de Castro", "placar": "0x1"}]}, {"id": 48, "data": "2026-06-20 14:00", "estadio": null, "cidade": "Houston", "grupo": "F", "sede": "Estados Unidos / México", "time_a": {"nome": "Holanda", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/NED", "id": 281}, "time_b": {"nome": "Suécia", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/SWE", "id": 283}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [{"nome": "Alan Cardoso", "placar": "2x1"}, {"nome": "Cassio Oliveira", "placar": "2x1"}, {"nome": "Gustavo Bastos", "placar": "2x0"}, {"nome": "Elton Lagroteria", "placar": "3x0"}, {"nome": "Gilberto Rossa", "placar": "2x1"}, {"nome": "Leonardo Pezzini", "placar": "2x1"}, {"nome": "Luiz Souza", "placar": "1x0"}, {"nome": "Ayrton Mendonça", "placar": "1x0"}, {"nome": "Rafael Leite", "placar": "2x0"}, {"nome": "Fabio Dias", "placar": "2x1"}, {"nome": "Heitor de Castro", "placar": "1x0"}], "apostadores_empate": [{"nome": "Lucas Monteiro", "placar": "1x1"}, {"nome": "Ricardo Drudi", "placar": "1x1"}, {"nome": "Gustavo Brito", "placar": "2x2"}, {"nome": "Douglas Zanardi", "placar": "3x3"}], "apostadores_b": [{"nome": "Gabriel Roleto", "placar": "1x2"}]}, {"id": 43, "data": "2026-06-20 17:00", "estadio": null, "cidade": "Toronto", "grupo": "E", "sede": "Estados Unidos / Canadá", "time_a": {"nome": "Alemanha", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/GER", "id": 277}, "time_b": {"nome": "Costa do Marfim", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/CIV", "id": 279}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [{"nome": "Lucas Monteiro", "placar": "1x0"}, {"nome": "Alan Cardoso", "placar": "2x0"}, {"nome": "Cassio Oliveira", "placar": "2x0"}, {"nome": "Ricardo Drudi", "placar": "2x1"}, {"nome": "Gustavo Bastos", "placar": "3x0"}, {"nome": "Gilberto Rossa", "placar": "3x1"}, {"nome": "Leonardo Pezzini", "placar": "2x1"}, {"nome": "Gabriel Roleto", "placar": "2x1"}, {"nome": "Luiz Souza", "placar": "1x0"}, {"nome": "Ayrton Mendonça", "placar": "1x0"}, {"nome": "Fabio Dias", "placar": "2x1"}, {"nome": "Heitor de Castro", "placar": "1x0"}], "apostadores_empate": [{"nome": "Elton Lagroteria", "placar": "2x2"}, {"nome": "Gustavo Brito", "placar": "1x1"}, {"nome": "Rafael Leite", "placar": "1x1"}], "apostadores_b": [{"nome": "Douglas Zanardi", "placar": "1x2"}]}, {"id": 44, "data": "2026-06-20 21:00", "estadio": null, "cidade": "Kansas", "grupo": "E", "sede": "Estados Unidos / Canadá", "time_a": {"nome": "Curaçao", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/CUW", "id": 278}, "time_b": {"nome": "Equador", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/ECU", "id": 280}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [], "apostadores_empate": [], "apostadores_b": [{"nome": "Lucas Monteiro", "placar": "1x4"}, {"nome": "Alan Cardoso", "placar": "0x2"}, {"nome": "Cassio Oliveira", "placar": "0x2"}, {"nome": "Ricardo Drudi", "placar": "0x3"}, {"nome": "Gustavo Bastos", "placar": "0x2"}, {"nome": "Elton Lagroteria", "placar": "0x2"}, {"nome": "Gilberto Rossa", "placar": "0x3"}, {"nome": "Leonardo Pezzini", "placar": "0x3"}, {"nome": "Gustavo Brito", "placar": "1x2"}, {"nome": "Gabriel Roleto", "placar": "1x3"}, {"nome": "Luiz Souza", "placar": "0x2"}, {"nome": "Ayrton Mendonça", "placar": "0x1"}, {"nome": "Rafael Leite", "placar": "1x3"}, {"nome": "Fabio Dias", "placar": "0x2"}, {"nome": "Heitor de Castro", "placar": "0x2"}, {"nome": "Douglas Zanardi", "placar": "1x3"}]}, {"id": 51, "data": "2026-06-21 01:00", "estadio": null, "cidade": "Monterrey", "grupo": "F", "sede": "Estados Unidos / México", "time_a": {"nome": "Japão", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/JPN", "id": 282}, "time_b": {"nome": "Tunísia", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/TUN", "id": 284}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [{"nome": "Lucas Monteiro", "placar": "1x0"}, {"nome": "Alan Cardoso", "placar": "2x0"}, {"nome": "Cassio Oliveira", "placar": "2x1"}, {"nome": "Ricardo Drudi", "placar": "2x0"}, {"nome": "Gustavo Bastos", "placar": "2x0"}, {"nome": "Elton Lagroteria", "placar": "3x0"}, {"nome": "Gilberto Rossa", "placar": "1x0"}, {"nome": "Leonardo Pezzini", "placar": "2x0"}, {"nome": "Gustavo Brito", "placar": "1x0"}, {"nome": "Gabriel Roleto", "placar": "1x0"}, {"nome": "Luiz Souza", "placar": "1x0"}, {"nome": "Ayrton Mendonça", "placar": "1x0"}, {"nome": "Fabio Dias", "placar": "2x0"}, {"nome": "Heitor de Castro", "placar": "1x0"}, {"nome": "Douglas Zanardi", "placar": "2x0"}], "apostadores_empate": [{"nome": "Rafael Leite", "placar": "1x1"}], "apostadores_b": []}, {"id": 60, "data": "2026-06-21 13:00", "estadio": null, "cidade": "Atlanta", "grupo": "H", "sede": "Estados Unidos", "time_a": {"nome": "Espanha", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/ESP", "id": 289}, "time_b": {"nome": "Arábia Saudita", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/KSA", "id": 291}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [{"nome": "Lucas Monteiro", "placar": "2x0"}, {"nome": "Alan Cardoso", "placar": "4x0"}, {"nome": "Cassio Oliveira", "placar": "2x0"}, {"nome": "Ricardo Drudi", "placar": "3x0"}, {"nome": "Gustavo Bastos", "placar": "3x0"}, {"nome": "Elton Lagroteria", "placar": "3x0"}, {"nome": "Gilberto Rossa", "placar": "3x0"}, {"nome": "Leonardo Pezzini", "placar": "3x0"}, {"nome": "Gustavo Brito", "placar": "3x2"}, {"nome": "Gabriel Roleto", "placar": "3x2"}, {"nome": "Luiz Souza", "placar": "2x0"}, {"nome": "Ayrton Mendonça", "placar": "1x0"}, {"nome": "Rafael Leite", "placar": "2x1"}, {"nome": "Fabio Dias", "placar": "3x0"}, {"nome": "Heitor de Castro", "placar": "3x0"}, {"nome": "Douglas Zanardi", "placar": "3x0"}], "apostadores_empate": [], "apostadores_b": []}, {"id": 54, "data": "2026-06-21 16:00", "estadio": null, "cidade": "Los Angeles", "grupo": "G", "sede": "Estados Unidos / Canadá", "time_a": {"nome": "Bélgica", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/BEL", "id": 285}, "time_b": {"nome": "Irã", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/IRN", "id": 287}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [{"nome": "Alan Cardoso", "placar": "3x0"}, {"nome": "Cassio Oliveira", "placar": "2x0"}, {"nome": "Ricardo Drudi", "placar": "1x0"}, {"nome": "Gustavo Bastos", "placar": "3x0"}, {"nome": "Elton Lagroteria", "placar": "3x1"}, {"nome": "Gilberto Rossa", "placar": "3x1"}, {"nome": "Leonardo Pezzini", "placar": "2x0"}, {"nome": "Gabriel Roleto", "placar": "1x0"}, {"nome": "Luiz Souza", "placar": "1x0"}, {"nome": "Ayrton Mendonça", "placar": "1x0"}, {"nome": "Fabio Dias", "placar": "2x0"}, {"nome": "Heitor de Castro", "placar": "1x0"}, {"nome": "Douglas Zanardi", "placar": "5x1"}], "apostadores_empate": [{"nome": "Lucas Monteiro", "placar": "1x1"}, {"nome": "Gustavo Brito", "placar": "2x2"}, {"nome": "Rafael Leite", "placar": "1x1"}], "apostadores_b": []}, {"id": 63, "data": "2026-06-21 19:00", "estadio": null, "cidade": "Miami", "grupo": "H", "sede": "Estados Unidos", "time_a": {"nome": "Cabo Verde", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/CPV", "id": 290}, "time_b": {"nome": "Uruguai", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/URU", "id": 292}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [{"nome": "Gustavo Brito", "placar": "2x1"}], "apostadores_empate": [], "apostadores_b": [{"nome": "Lucas Monteiro", "placar": "0x3"}, {"nome": "Alan Cardoso", "placar": "0x2"}, {"nome": "Cassio Oliveira", "placar": "0x2"}, {"nome": "Ricardo Drudi", "placar": "0x2"}, {"nome": "Gustavo Bastos", "placar": "0x2"}, {"nome": "Elton Lagroteria", "placar": "1x3"}, {"nome": "Gilberto Rossa", "placar": "0x3"}, {"nome": "Leonardo Pezzini", "placar": "0x2"}, {"nome": "Gabriel Roleto", "placar": "0x1"}, {"nome": "Luiz Souza", "placar": "0x1"}, {"nome": "Ayrton Mendonça", "placar": "0x1"}, {"nome": "Rafael Leite", "placar": "0x2"}, {"nome": "Fabio Dias", "placar": "0x2"}, {"nome": "Heitor de Castro", "placar": "0x1"}, {"nome": "Douglas Zanardi", "placar": "0x1"}]}, {"id": 57, "data": "2026-06-21 22:00", "estadio": null, "cidade": "Vancouver", "grupo": "G", "sede": "Estados Unidos / Canadá", "time_a": {"nome": "Egito", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/EGY", "id": 286}, "time_b": {"nome": "Nova Zelândia", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/NZL", "id": 288}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [{"nome": "Lucas Monteiro", "placar": "2x0"}, {"nome": "Alan Cardoso", "placar": "2x1"}, {"nome": "Cassio Oliveira", "placar": "2x0"}, {"nome": "Ricardo Drudi", "placar": "2x0"}, {"nome": "Gustavo Bastos", "placar": "1x0"}, {"nome": "Elton Lagroteria", "placar": "2x0"}, {"nome": "Gilberto Rossa", "placar": "3x1"}, {"nome": "Leonardo Pezzini", "placar": "2x0"}, {"nome": "Gabriel Roleto", "placar": "2x0"}, {"nome": "Luiz Souza", "placar": "1x0"}, {"nome": "Rafael Leite", "placar": "3x0"}, {"nome": "Fabio Dias", "placar": "1x0"}, {"nome": "Heitor de Castro", "placar": "2x0"}], "apostadores_empate": [], "apostadores_b": [{"nome": "Gustavo Brito", "placar": "1x2"}, {"nome": "Ayrton Mendonça", "placar": "0x1"}, {"nome": "Douglas Zanardi", "placar": "1x2"}]}, {"id": 72, "data": "2026-06-22 14:00", "estadio": null, "cidade": "Dallas", "grupo": "J", "sede": "Estados Unidos", "time_a": {"nome": "Argentina", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/ARG", "id": 297}, "time_b": {"nome": "Áustria", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/AUT", "id": 299}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [{"nome": "Lucas Monteiro", "placar": "2x0"}, {"nome": "Alan Cardoso", "placar": "3x2"}, {"nome": "Cassio Oliveira", "placar": "2x0"}, {"nome": "Ricardo Drudi", "placar": "1x0"}, {"nome": "Gustavo Bastos", "placar": "2x0"}, {"nome": "Elton Lagroteria", "placar": "3x0"}, {"nome": "Gilberto Rossa", "placar": "2x1"}, {"nome": "Leonardo Pezzini", "placar": "2x1"}, {"nome": "Gustavo Brito", "placar": "2x1"}, {"nome": "Gabriel Roleto", "placar": "2x0"}, {"nome": "Luiz Souza", "placar": "1x0"}, {"nome": "Ayrton Mendonça", "placar": "1x0"}, {"nome": "Rafael Leite", "placar": "2x0"}, {"nome": "Heitor de Castro", "placar": "1x0"}], "apostadores_empate": [{"nome": "Fabio Dias", "placar": "1x1"}, {"nome": "Douglas Zanardi", "placar": "2x2"}], "apostadores_b": []}, {"id": 66, "data": "2026-06-22 18:00", "estadio": null, "cidade": "Filadélfia", "grupo": "I", "sede": "Canadá / Estados Unidos", "time_a": {"nome": "França", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/FRA", "id": 293}, "time_b": {"nome": "Iraque", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/IRQ", "id": 295}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [{"nome": "Alan Cardoso", "placar": "4x0"}, {"nome": "Cassio Oliveira", "placar": "4x0"}, {"nome": "Ricardo Drudi", "placar": "3x0"}, {"nome": "Gustavo Bastos", "placar": "4x0"}, {"nome": "Elton Lagroteria", "placar": "3x1"}, {"nome": "Gilberto Rossa", "placar": "4x0"}, {"nome": "Leonardo Pezzini", "placar": "3x0"}, {"nome": "Gustavo Brito", "placar": "3x1"}, {"nome": "Gabriel Roleto", "placar": "4x0"}, {"nome": "Luiz Souza", "placar": "2x0"}, {"nome": "Ayrton Mendonça", "placar": "1x0"}, {"nome": "Fabio Dias", "placar": "3x0"}, {"nome": "Heitor de Castro", "placar": "2x0"}, {"nome": "Douglas Zanardi", "placar": "3x0"}], "apostadores_empate": [{"nome": "Lucas Monteiro", "placar": "1x1"}, {"nome": "Rafael Leite", "placar": "1x1"}], "apostadores_b": []}, {"id": 69, "data": "2026-06-22 21:00", "estadio": null, "cidade": "Nova Iorque", "grupo": "I", "sede": "Canadá / Estados Unidos", "time_a": {"nome": "Senegal", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/SEN", "id": 294}, "time_b": {"nome": "Noruega", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/NOR", "id": 296}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [{"nome": "Alan Cardoso", "placar": "2x1"}, {"nome": "Cassio Oliveira", "placar": "2x1"}, {"nome": "Gilberto Rossa", "placar": "2x1"}, {"nome": "Gabriel Roleto", "placar": "1x0"}], "apostadores_empate": [{"nome": "Lucas Monteiro", "placar": "1x1"}, {"nome": "Ricardo Drudi", "placar": "1x1"}, {"nome": "Elton Lagroteria", "placar": "2x2"}, {"nome": "Leonardo Pezzini", "placar": "1x1"}, {"nome": "Luiz Souza", "placar": "1x1"}, {"nome": "Fabio Dias", "placar": "1x1"}], "apostadores_b": [{"nome": "Gustavo Bastos", "placar": "1x2"}, {"nome": "Gustavo Brito", "placar": "1x2"}, {"nome": "Ayrton Mendonça", "placar": "0x1"}, {"nome": "Rafael Leite", "placar": "0x2"}, {"nome": "Heitor de Castro", "placar": "0x1"}, {"nome": "Douglas Zanardi", "placar": "1x2"}]}, {"id": 75, "data": "2026-06-23 00:00", "estadio": null, "cidade": "São Francisco", "grupo": "J", "sede": "Estados Unidos", "time_a": {"nome": "Argélia", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/ALG", "id": 298}, "time_b": {"nome": "Jordânia", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/JOR", "id": 300}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [{"nome": "Lucas Monteiro", "placar": "1x0"}, {"nome": "Cassio Oliveira", "placar": "2x0"}, {"nome": "Ricardo Drudi", "placar": "2x1"}, {"nome": "Elton Lagroteria", "placar": "3x0"}, {"nome": "Gilberto Rossa", "placar": "2x0"}, {"nome": "Leonardo Pezzini", "placar": "2x1"}, {"nome": "Gustavo Brito", "placar": "2x1"}, {"nome": "Gabriel Roleto", "placar": "3x1"}, {"nome": "Luiz Souza", "placar": "1x0"}, {"nome": "Rafael Leite", "placar": "1x0"}, {"nome": "Fabio Dias", "placar": "1x0"}, {"nome": "Heitor de Castro", "placar": "1x0"}, {"nome": "Douglas Zanardi", "placar": "3x1"}], "apostadores_empate": [{"nome": "Alan Cardoso", "placar": "1x1"}, {"nome": "Gustavo Bastos", "placar": "1x1"}], "apostadores_b": [{"nome": "Ayrton Mendonça", "placar": "0x1"}]}, {"id": 78, "data": "2026-06-23 14:00", "estadio": null, "cidade": "Houston", "grupo": "K", "sede": "México / Estados Unidos", "time_a": {"nome": "Portugal", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/POR", "id": 301}, "time_b": {"nome": "Uzbequistão", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/UZB", "id": 303}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [{"nome": "Lucas Monteiro", "placar": "2x0"}, {"nome": "Alan Cardoso", "placar": "3x0"}, {"nome": "Cassio Oliveira", "placar": "2x0"}, {"nome": "Ricardo Drudi", "placar": "2x0"}, {"nome": "Gustavo Bastos", "placar": "3x0"}, {"nome": "Elton Lagroteria", "placar": "4x0"}, {"nome": "Gilberto Rossa", "placar": "2x0"}, {"nome": "Leonardo Pezzini", "placar": "3x0"}, {"nome": "Gustavo Brito", "placar": "2x1"}, {"nome": "Gabriel Roleto", "placar": "3x0"}, {"nome": "Luiz Souza", "placar": "2x0"}, {"nome": "Ayrton Mendonça", "placar": "1x0"}, {"nome": "Rafael Leite", "placar": "2x0"}, {"nome": "Fabio Dias", "placar": "2x0"}, {"nome": "Heitor de Castro", "placar": "2x0"}, {"nome": "Douglas Zanardi", "placar": "2x0"}], "apostadores_empate": [], "apostadores_b": []}, {"id": 84, "data": "2026-06-23 17:00", "estadio": null, "cidade": "Boston", "grupo": "L", "sede": "Canadá / Estados Unidos", "time_a": {"nome": "Inglaterra", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/ENG", "id": 305}, "time_b": {"nome": "Gana", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/GHA", "id": 307}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [{"nome": "Lucas Monteiro", "placar": "3x1"}, {"nome": "Alan Cardoso", "placar": "1x0"}, {"nome": "Cassio Oliveira", "placar": "2x1"}, {"nome": "Ricardo Drudi", "placar": "2x0"}, {"nome": "Gustavo Bastos", "placar": "2x0"}, {"nome": "Elton Lagroteria", "placar": "3x0"}, {"nome": "Gilberto Rossa", "placar": "2x0"}, {"nome": "Leonardo Pezzini", "placar": "3x0"}, {"nome": "Gustavo Brito", "placar": "2x0"}, {"nome": "Luiz Souza", "placar": "2x0"}, {"nome": "Ayrton Mendonça", "placar": "1x0"}, {"nome": "Rafael Leite", "placar": "2x1"}, {"nome": "Fabio Dias", "placar": "2x0"}, {"nome": "Heitor de Castro", "placar": "2x0"}, {"nome": "Douglas Zanardi", "placar": "3x1"}], "apostadores_empate": [], "apostadores_b": [{"nome": "Gabriel Roleto", "placar": "1x2"}]}, {"id": 87, "data": "2026-06-23 20:00", "estadio": null, "cidade": "Toronto", "grupo": "L", "sede": "Canadá / Estados Unidos", "time_a": {"nome": "Croácia", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/CRO", "id": 306}, "time_b": {"nome": "Panamá", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/PAN", "id": 308}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [{"nome": "Alan Cardoso", "placar": "2x1"}, {"nome": "Cassio Oliveira", "placar": "2x0"}, {"nome": "Ricardo Drudi", "placar": "3x1"}, {"nome": "Gustavo Bastos", "placar": "3x0"}, {"nome": "Elton Lagroteria", "placar": "2x1"}, {"nome": "Gilberto Rossa", "placar": "2x0"}, {"nome": "Leonardo Pezzini", "placar": "2x0"}, {"nome": "Gustavo Brito", "placar": "2x0"}, {"nome": "Gabriel Roleto", "placar": "2x0"}, {"nome": "Luiz Souza", "placar": "1x0"}, {"nome": "Ayrton Mendonça", "placar": "1x0"}, {"nome": "Rafael Leite", "placar": "2x0"}, {"nome": "Fabio Dias", "placar": "2x0"}, {"nome": "Heitor de Castro", "placar": "1x0"}, {"nome": "Douglas Zanardi", "placar": "2x1"}], "apostadores_empate": [{"nome": "Lucas Monteiro", "placar": "1x1"}], "apostadores_b": []}, {"id": 81, "data": "2026-06-23 23:00", "estadio": null, "cidade": "Guadalajara", "grupo": "K", "sede": "México / Estados Unidos", "time_a": {"nome": "RD Congo", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/COD", "id": 302}, "time_b": {"nome": "Colômbia", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/COL", "id": 304}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [], "apostadores_empate": [{"nome": "Gustavo Brito", "placar": "1x1"}], "apostadores_b": [{"nome": "Lucas Monteiro", "placar": "0x2"}, {"nome": "Alan Cardoso", "placar": "1x2"}, {"nome": "Cassio Oliveira", "placar": "1x2"}, {"nome": "Ricardo Drudi", "placar": "1x4"}, {"nome": "Gustavo Bastos", "placar": "0x3"}, {"nome": "Elton Lagroteria", "placar": "1x3"}, {"nome": "Gilberto Rossa", "placar": "0x2"}, {"nome": "Leonardo Pezzini", "placar": "1x2"}, {"nome": "Gabriel Roleto", "placar": "0x2"}, {"nome": "Luiz Souza", "placar": "0x1"}, {"nome": "Ayrton Mendonça", "placar": "0x1"}, {"nome": "Rafael Leite", "placar": "1x2"}, {"nome": "Fabio Dias", "placar": "0x1"}, {"nome": "Heitor de Castro", "placar": "0x1"}, {"nome": "Douglas Zanardi", "placar": "1x2"}]}, {"id": 28, "data": "2026-06-24 16:00", "estadio": null, "cidade": "Seattle", "grupo": "B", "sede": "Canadá / Estados Unidos", "time_a": {"nome": "Bósnia e Herzegovina", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/BIH", "id": 266}, "time_b": {"nome": "Catar", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/QAT", "id": 267}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [{"nome": "Lucas Monteiro", "placar": "2x0"}, {"nome": "Alan Cardoso", "placar": "2x0"}, {"nome": "Cassio Oliveira", "placar": "2x1"}, {"nome": "Ricardo Drudi", "placar": "2x0"}, {"nome": "Elton Lagroteria", "placar": "1x0"}, {"nome": "Gilberto Rossa", "placar": "2x1"}, {"nome": "Leonardo Pezzini", "placar": "2x0"}, {"nome": "Gabriel Roleto", "placar": "3x1"}, {"nome": "Rafael Leite", "placar": "1x0"}, {"nome": "Heitor de Castro", "placar": "1x0"}, {"nome": "Douglas Zanardi", "placar": "2x1"}], "apostadores_empate": [{"nome": "Gustavo Brito", "placar": "1x1"}, {"nome": "Luiz Souza", "placar": "1x1"}, {"nome": "Fabio Dias", "placar": "1x1"}], "apostadores_b": [{"nome": "Gustavo Bastos", "placar": "2x3"}, {"nome": "Ayrton Mendonça", "placar": "0x1"}]}, {"id": 31, "data": "2026-06-24 19:00", "estadio": null, "cidade": "Atlanta", "grupo": "C", "sede": "Estados Unidos", "time_a": {"nome": "Marrocos", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/MAR", "id": 270}, "time_b": {"nome": "Haiti", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/HAI", "id": 271}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [{"nome": "Lucas Monteiro", "placar": "2x0"}, {"nome": "Alan Cardoso", "placar": "2x0"}, {"nome": "Cassio Oliveira", "placar": "2x0"}, {"nome": "Ricardo Drudi", "placar": "3x0"}, {"nome": "Gustavo Bastos", "placar": "2x1"}, {"nome": "Elton Lagroteria", "placar": "6x0"}, {"nome": "Gilberto Rossa", "placar": "3x0"}, {"nome": "Leonardo Pezzini", "placar": "3x0"}, {"nome": "Gabriel Roleto", "placar": "2x0"}, {"nome": "Luiz Souza", "placar": "1x0"}, {"nome": "Ayrton Mendonça", "placar": "1x0"}, {"nome": "Rafael Leite", "placar": "2x0"}, {"nome": "Fabio Dias", "placar": "2x0"}, {"nome": "Heitor de Castro", "placar": "2x0"}, {"nome": "Douglas Zanardi", "placar": "1x0"}], "apostadores_empate": [], "apostadores_b": [{"nome": "Gustavo Brito", "placar": "1x2"}]}, {"id": 32, "data": "2026-06-24 19:00", "estadio": null, "cidade": "Miami", "grupo": "C", "sede": "Estados Unidos", "time_a": {"nome": "Brasil", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/BRA", "id": 269}, "time_b": {"nome": "Escócia", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/SCO", "id": 272}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [{"nome": "Lucas Monteiro", "placar": "3x0"}, {"nome": "Alan Cardoso", "placar": "3x1"}, {"nome": "Cassio Oliveira", "placar": "2x1"}, {"nome": "Ricardo Drudi", "placar": "2x1"}, {"nome": "Gustavo Bastos", "placar": "2x0"}, {"nome": "Elton Lagroteria", "placar": "4x1"}, {"nome": "Gilberto Rossa", "placar": "2x0"}, {"nome": "Leonardo Pezzini", "placar": "3x0"}, {"nome": "Luiz Souza", "placar": "1x0"}, {"nome": "Ayrton Mendonça", "placar": "1x0"}, {"nome": "Fabio Dias", "placar": "2x0"}, {"nome": "Heitor de Castro", "placar": "1x0"}, {"nome": "Douglas Zanardi", "placar": "2x1"}], "apostadores_empate": [{"nome": "Gabriel Roleto", "placar": "2x2"}, {"nome": "Rafael Leite", "placar": "2x2"}], "apostadores_b": [{"nome": "Gustavo Brito", "placar": "1x2"}]}, {"id": 89, "data": "2026-06-24 19:00", "estadio": null, "cidade": "Vancouver", "grupo": "B", "sede": "Canadá / Estados Unidos", "time_a": {"nome": "Canadá", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/CAN", "id": 265}, "time_b": {"nome": "Suíça", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/SUI", "id": 268}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [{"nome": "Elton Lagroteria", "placar": "2x1"}], "apostadores_empate": [{"nome": "Lucas Monteiro", "placar": "0x0"}, {"nome": "Gustavo Bastos", "placar": "1x1"}, {"nome": "Gilberto Rossa", "placar": "1x1"}, {"nome": "Leonardo Pezzini", "placar": "1x1"}, {"nome": "Luiz Souza", "placar": "1x1"}, {"nome": "Fabio Dias", "placar": "1x1"}], "apostadores_b": [{"nome": "Alan Cardoso", "placar": "1x2"}, {"nome": "Cassio Oliveira", "placar": "1x2"}, {"nome": "Ricardo Drudi", "placar": "0x2"}, {"nome": "Gustavo Brito", "placar": "0x1"}, {"nome": "Gabriel Roleto", "placar": "0x3"}, {"nome": "Ayrton Mendonça", "placar": "0x1"}, {"nome": "Rafael Leite", "placar": "0x1"}, {"nome": "Heitor de Castro", "placar": "0x1"}, {"nome": "Douglas Zanardi", "placar": "1x3"}]}, {"id": 21, "data": "2026-06-24 22:00", "estadio": null, "cidade": "Cidade do México", "grupo": "A", "sede": "México", "time_a": {"nome": "México", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/MEX", "id": 261}, "time_b": {"nome": "Tchéquia", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/CZE", "id": 264}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [{"nome": "Alan Cardoso", "placar": "3x0"}, {"nome": "Cassio Oliveira", "placar": "2x1"}, {"nome": "Gustavo Bastos", "placar": "2x0"}, {"nome": "Elton Lagroteria", "placar": "3x0"}, {"nome": "Gilberto Rossa", "placar": "2x1"}, {"nome": "Leonardo Pezzini", "placar": "2x1"}, {"nome": "Douglas Zanardi", "placar": "3x1"}, {"nome": "Luiz Souza", "placar": "1x0"}, {"nome": "Ayrton Mendonça", "placar": "1x0"}, {"nome": "Heitor de Castro", "placar": "1x0"}, {"nome": "Rafael Leite", "placar": "3x1"}], "apostadores_empate": [{"nome": "Gustavo Brito", "placar": "1x1"}, {"nome": "Fabio Dias", "placar": "1x1"}, {"nome": "Lucas Monteiro", "placar": "0x0"}], "apostadores_b": [{"nome": "Ricardo Drudi", "placar": "1x2"}, {"nome": "Gabriel Roleto", "placar": "1x2"}]}, {"id": 25, "data": "2026-06-24 22:00", "estadio": null, "cidade": "Monterrey", "grupo": "A", "sede": "México", "time_a": {"nome": "África do Sul", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/RSA", "id": 262}, "time_b": {"nome": "Coreia do Sul", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/KOR", "id": 263}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [{"nome": "Cassio Oliveira", "placar": "2x1"}, {"nome": "Ayrton Mendonça", "placar": "1x0"}], "apostadores_empate": [{"nome": "Alan Cardoso", "placar": "1x1"}, {"nome": "Ricardo Drudi", "placar": "0x0"}, {"nome": "Douglas Zanardi", "placar": "1x1"}, {"nome": "Lucas Monteiro", "placar": "1x1"}], "apostadores_b": [{"nome": "Gustavo Bastos", "placar": "1x2"}, {"nome": "Elton Lagroteria", "placar": "1x2"}, {"nome": "Gilberto Rossa", "placar": "0x2"}, {"nome": "Leonardo Pezzini", "placar": "1x2"}, {"nome": "Gustavo Brito", "placar": "1x2"}, {"nome": "Gabriel Roleto", "placar": "0x3"}, {"nome": "Luiz Souza", "placar": "0x1"}, {"nome": "Rafael Leite", "placar": "0x1"}, {"nome": "Fabio Dias", "placar": "0x1"}, {"nome": "Heitor de Castro", "placar": "0x1"}]}, {"id": 42, "data": "2026-06-25 17:00", "estadio": null, "cidade": "Filadélfia", "grupo": "E", "sede": "Estados Unidos / Canadá", "time_a": {"nome": "Curaçao", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/CUW", "id": 278}, "time_b": {"nome": "Costa do Marfim", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/CIV", "id": 279}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [], "apostadores_empate": [{"nome": "Gustavo Brito", "placar": "1x1"}, {"nome": "Douglas Zanardi", "placar": "0x0"}], "apostadores_b": [{"nome": "Lucas Monteiro", "placar": "1x3"}, {"nome": "Alan Cardoso", "placar": "0x2"}, {"nome": "Cassio Oliveira", "placar": "0x2"}, {"nome": "Ricardo Drudi", "placar": "1x3"}, {"nome": "Gustavo Bastos", "placar": "0x2"}, {"nome": "Elton Lagroteria", "placar": "0x3"}, {"nome": "Gilberto Rossa", "placar": "0x3"}, {"nome": "Leonardo Pezzini", "placar": "0x2"}, {"nome": "Gabriel Roleto", "placar": "0x4"}, {"nome": "Luiz Souza", "placar": "0x2"}, {"nome": "Ayrton Mendonça", "placar": "0x1"}, {"nome": "Rafael Leite", "placar": "1x2"}, {"nome": "Fabio Dias", "placar": "0x2"}, {"nome": "Heitor de Castro", "placar": "0x2"}]}, {"id": 46, "data": "2026-06-25 17:00", "estadio": null, "cidade": "Nova Iorque", "grupo": "E", "sede": "Estados Unidos / Canadá", "time_a": {"nome": "Alemanha", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/GER", "id": 277}, "time_b": {"nome": "Equador", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/ECU", "id": 280}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [{"nome": "Alan Cardoso", "placar": "3x1"}, {"nome": "Cassio Oliveira", "placar": "1x0"}, {"nome": "Gustavo Bastos", "placar": "3x0"}, {"nome": "Elton Lagroteria", "placar": "2x1"}, {"nome": "Gilberto Rossa", "placar": "2x1"}, {"nome": "Leonardo Pezzini", "placar": "2x1"}, {"nome": "Gustavo Brito", "placar": "2x0"}, {"nome": "Gabriel Roleto", "placar": "2x1"}, {"nome": "Luiz Souza", "placar": "1x0"}, {"nome": "Ayrton Mendonça", "placar": "1x0"}, {"nome": "Fabio Dias", "placar": "2x1"}, {"nome": "Heitor de Castro", "placar": "1x0"}], "apostadores_empate": [{"nome": "Lucas Monteiro", "placar": "2x2"}, {"nome": "Ricardo Drudi", "placar": "1x1"}, {"nome": "Rafael Leite", "placar": "0x0"}, {"nome": "Douglas Zanardi", "placar": "1x1"}], "apostadores_b": []}, {"id": 49, "data": "2026-06-25 20:00", "estadio": null, "cidade": "Dallas", "grupo": "F", "sede": "Estados Unidos / México", "time_a": {"nome": "Japão", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/JPN", "id": 282}, "time_b": {"nome": "Suécia", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/SWE", "id": 283}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [{"nome": "Alan Cardoso", "placar": "2x1"}, {"nome": "Cassio Oliveira", "placar": "2x1"}, {"nome": "Elton Lagroteria", "placar": "2x0"}, {"nome": "Ayrton Mendonça", "placar": "1x0"}, {"nome": "Heitor de Castro", "placar": "1x0"}], "apostadores_empate": [{"nome": "Lucas Monteiro", "placar": "0x0"}, {"nome": "Ricardo Drudi", "placar": "1x1"}, {"nome": "Gustavo Bastos", "placar": "1x1"}, {"nome": "Gilberto Rossa", "placar": "2x2"}, {"nome": "Leonardo Pezzini", "placar": "1x1"}, {"nome": "Gustavo Brito", "placar": "1x1"}, {"nome": "Luiz Souza", "placar": "1x1"}, {"nome": "Rafael Leite", "placar": "1x1"}, {"nome": "Fabio Dias", "placar": "1x1"}], "apostadores_b": [{"nome": "Gabriel Roleto", "placar": "0x1"}, {"nome": "Douglas Zanardi", "placar": "2x3"}]}, {"id": 50, "data": "2026-06-25 20:00", "estadio": null, "cidade": "Kansas", "grupo": "F", "sede": "Estados Unidos / México", "time_a": {"nome": "Holanda", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/NED", "id": 281}, "time_b": {"nome": "Tunísia", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/TUN", "id": 284}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [{"nome": "Lucas Monteiro", "placar": "2x0"}, {"nome": "Alan Cardoso", "placar": "3x0"}, {"nome": "Cassio Oliveira", "placar": "2x1"}, {"nome": "Ricardo Drudi", "placar": "3x0"}, {"nome": "Gustavo Bastos", "placar": "2x0"}, {"nome": "Elton Lagroteria", "placar": "4x1"}, {"nome": "Gilberto Rossa", "placar": "2x0"}, {"nome": "Leonardo Pezzini", "placar": "3x0"}, {"nome": "Gustavo Brito", "placar": "2x0"}, {"nome": "Gabriel Roleto", "placar": "3x0"}, {"nome": "Luiz Souza", "placar": "1x0"}, {"nome": "Ayrton Mendonça", "placar": "1x0"}, {"nome": "Rafael Leite", "placar": "4x0"}, {"nome": "Fabio Dias", "placar": "2x0"}, {"nome": "Heitor de Castro", "placar": "1x0"}, {"nome": "Douglas Zanardi", "placar": "2x1"}], "apostadores_empate": [], "apostadores_b": []}, {"id": 37, "data": "2026-06-25 23:00", "estadio": null, "cidade": "São Francisco", "grupo": "D", "sede": "Estados Unidos", "time_a": {"nome": "Paraguai", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/PAR", "id": 274}, "time_b": {"nome": "Austrália", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/AUS", "id": 275}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [{"nome": "Lucas Monteiro", "placar": "2x0"}, {"nome": "Cassio Oliveira", "placar": "2x1"}, {"nome": "Ricardo Drudi", "placar": "2x1"}, {"nome": "Elton Lagroteria", "placar": "2x1"}, {"nome": "Gabriel Roleto", "placar": "2x0"}, {"nome": "Ayrton Mendonça", "placar": "1x0"}, {"nome": "Rafael Leite", "placar": "1x0"}, {"nome": "Fabio Dias", "placar": "1x0"}, {"nome": "Heitor de Castro", "placar": "1x0"}], "apostadores_empate": [{"nome": "Gustavo Bastos", "placar": "1x1"}, {"nome": "Gilberto Rossa", "placar": "0x0"}, {"nome": "Leonardo Pezzini", "placar": "1x1"}, {"nome": "Gustavo Brito", "placar": "1x1"}, {"nome": "Luiz Souza", "placar": "1x1"}], "apostadores_b": [{"nome": "Alan Cardoso", "placar": "0x1"}, {"nome": "Douglas Zanardi", "placar": "0x1"}]}, {"id": 38, "data": "2026-06-25 23:00", "estadio": null, "cidade": "Los Angeles", "grupo": "D", "sede": "Estados Unidos", "time_a": {"nome": "Estados Unidos", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/USA", "id": 273}, "time_b": {"nome": "Turquia", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/TUR", "id": 276}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [{"nome": "Lucas Monteiro", "placar": "2x0"}, {"nome": "Cassio Oliveira", "placar": "2x1"}, {"nome": "Gustavo Bastos", "placar": "3x0"}, {"nome": "Luiz Souza", "placar": "1x0"}, {"nome": "Ayrton Mendonça", "placar": "1x0"}, {"nome": "Heitor de Castro", "placar": "1x0"}], "apostadores_empate": [{"nome": "Ricardo Drudi", "placar": "1x1"}, {"nome": "Gilberto Rossa", "placar": "1x1"}, {"nome": "Leonardo Pezzini", "placar": "1x1"}, {"nome": "Gustavo Brito", "placar": "1x1"}, {"nome": "Rafael Leite", "placar": "1x1"}, {"nome": "Fabio Dias", "placar": "1x1"}], "apostadores_b": [{"nome": "Alan Cardoso", "placar": "1x2"}, {"nome": "Elton Lagroteria", "placar": "2x3"}, {"nome": "Gabriel Roleto", "placar": "1x3"}, {"nome": "Douglas Zanardi", "placar": "1x2"}]}, {"id": 67, "data": "2026-06-26 16:00", "estadio": null, "cidade": "Toronto", "grupo": "I", "sede": "Canadá / Estados Unidos", "time_a": {"nome": "Senegal", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/SEN", "id": 294}, "time_b": {"nome": "Iraque", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/IRQ", "id": 295}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [{"nome": "Lucas Monteiro", "placar": "2x0"}, {"nome": "Alan Cardoso", "placar": "2x0"}, {"nome": "Cassio Oliveira", "placar": "2x0"}, {"nome": "Ricardo Drudi", "placar": "3x1"}, {"nome": "Gustavo Bastos", "placar": "2x1"}, {"nome": "Elton Lagroteria", "placar": "2x1"}, {"nome": "Gilberto Rossa", "placar": "2x0"}, {"nome": "Leonardo Pezzini", "placar": "2x0"}, {"nome": "Gabriel Roleto", "placar": "3x0"}, {"nome": "Luiz Souza", "placar": "1x0"}, {"nome": "Ayrton Mendonça", "placar": "1x0"}, {"nome": "Rafael Leite", "placar": "1x0"}, {"nome": "Fabio Dias", "placar": "1x0"}, {"nome": "Heitor de Castro", "placar": "1x0"}, {"nome": "Douglas Zanardi", "placar": "2x0"}], "apostadores_empate": [], "apostadores_b": [{"nome": "Gustavo Brito", "placar": "1x2"}]}, {"id": 68, "data": "2026-06-26 16:00", "estadio": null, "cidade": "Boston", "grupo": "I", "sede": "Canadá / Estados Unidos", "time_a": {"nome": "França", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/FRA", "id": 293}, "time_b": {"nome": "Noruega", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/NOR", "id": 296}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [{"nome": "Alan Cardoso", "placar": "3x1"}, {"nome": "Cassio Oliveira", "placar": "2x0"}, {"nome": "Ricardo Drudi", "placar": "2x1"}, {"nome": "Gustavo Bastos", "placar": "2x0"}, {"nome": "Elton Lagroteria", "placar": "3x1"}, {"nome": "Gilberto Rossa", "placar": "3x1"}, {"nome": "Leonardo Pezzini", "placar": "2x1"}, {"nome": "Gustavo Brito", "placar": "2x1"}, {"nome": "Gabriel Roleto", "placar": "2x1"}, {"nome": "Luiz Souza", "placar": "1x0"}, {"nome": "Ayrton Mendonça", "placar": "1x0"}, {"nome": "Heitor de Castro", "placar": "1x0"}], "apostadores_empate": [{"nome": "Lucas Monteiro", "placar": "2x2"}, {"nome": "Fabio Dias", "placar": "1x1"}, {"nome": "Douglas Zanardi", "placar": "1x1"}], "apostadores_b": [{"nome": "Rafael Leite", "placar": "2x3"}]}, {"id": 61, "data": "2026-06-26 21:00", "estadio": null, "cidade": "Houston", "grupo": "H", "sede": "Estados Unidos", "time_a": {"nome": "Cabo Verde", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/CPV", "id": 290}, "time_b": {"nome": "Arábia Saudita", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/KSA", "id": 291}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [{"nome": "Luiz Souza", "placar": "1x0"}], "apostadores_empate": [{"nome": "Lucas Monteiro", "placar": "1x1"}, {"nome": "Gustavo Bastos", "placar": "1x1"}, {"nome": "Gilberto Rossa", "placar": "1x1"}, {"nome": "Leonardo Pezzini", "placar": "1x1"}, {"nome": "Rafael Leite", "placar": "0x0"}, {"nome": "Fabio Dias", "placar": "1x1"}], "apostadores_b": [{"nome": "Alan Cardoso", "placar": "0x1"}, {"nome": "Cassio Oliveira", "placar": "1x2"}, {"nome": "Ricardo Drudi", "placar": "0x1"}, {"nome": "Elton Lagroteria", "placar": "1x2"}, {"nome": "Gustavo Brito", "placar": "1x2"}, {"nome": "Gabriel Roleto", "placar": "0x2"}, {"nome": "Ayrton Mendonça", "placar": "0x1"}, {"nome": "Heitor de Castro", "placar": "0x1"}, {"nome": "Douglas Zanardi", "placar": "0x1"}]}, {"id": 62, "data": "2026-06-26 21:00", "estadio": null, "cidade": "Guadalajara", "grupo": "H", "sede": "Estados Unidos", "time_a": {"nome": "Espanha", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/ESP", "id": 289}, "time_b": {"nome": "Uruguai", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/URU", "id": 292}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [{"nome": "Lucas Monteiro", "placar": "2x1"}, {"nome": "Alan Cardoso", "placar": "3x2"}, {"nome": "Cassio Oliveira", "placar": "2x0"}, {"nome": "Ricardo Drudi", "placar": "2x1"}, {"nome": "Gustavo Bastos", "placar": "2x0"}, {"nome": "Gustavo Brito", "placar": "2x1"}, {"nome": "Luiz Souza", "placar": "1x0"}, {"nome": "Ayrton Mendonça", "placar": "1x0"}, {"nome": "Rafael Leite", "placar": "3x1"}, {"nome": "Heitor de Castro", "placar": "1x0"}], "apostadores_empate": [{"nome": "Elton Lagroteria", "placar": "2x2"}, {"nome": "Gilberto Rossa", "placar": "1x1"}, {"nome": "Leonardo Pezzini", "placar": "1x1"}, {"nome": "Gabriel Roleto", "placar": "1x1"}, {"nome": "Fabio Dias", "placar": "1x1"}, {"nome": "Douglas Zanardi", "placar": "1x1"}], "apostadores_b": []}, {"id": 55, "data": "2026-06-27 00:00", "estadio": null, "cidade": "Seattle", "grupo": "G", "sede": "Estados Unidos / Canadá", "time_a": {"nome": "Egito", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/EGY", "id": 286}, "time_b": {"nome": "Irã", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/IRN", "id": 287}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [{"nome": "Lucas Monteiro", "placar": "2x1"}, {"nome": "Alan Cardoso", "placar": "2x1"}, {"nome": "Cassio Oliveira", "placar": "2x0"}, {"nome": "Gustavo Bastos", "placar": "2x1"}, {"nome": "Luiz Souza", "placar": "1x0"}, {"nome": "Ayrton Mendonça", "placar": "1x0"}, {"nome": "Rafael Leite", "placar": "2x1"}, {"nome": "Fabio Dias", "placar": "1x0"}, {"nome": "Heitor de Castro", "placar": "1x0"}, {"nome": "Douglas Zanardi", "placar": "3x0"}], "apostadores_empate": [{"nome": "Ricardo Drudi", "placar": "0x0"}, {"nome": "Elton Lagroteria", "placar": "1x1"}, {"nome": "Gilberto Rossa", "placar": "1x1"}, {"nome": "Leonardo Pezzini", "placar": "1x1"}, {"nome": "Gustavo Brito", "placar": "1x1"}, {"nome": "Gabriel Roleto", "placar": "2x2"}], "apostadores_b": []}, {"id": 56, "data": "2026-06-27 00:00", "estadio": null, "cidade": "Vancouver", "grupo": "G", "sede": "Estados Unidos / Canadá", "time_a": {"nome": "Bélgica", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/BEL", "id": 285}, "time_b": {"nome": "Nova Zelândia", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/NZL", "id": 288}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [{"nome": "Lucas Monteiro", "placar": "3x0"}, {"nome": "Alan Cardoso", "placar": "3x0"}, {"nome": "Cassio Oliveira", "placar": "2x0"}, {"nome": "Ricardo Drudi", "placar": "3x0"}, {"nome": "Gustavo Bastos", "placar": "3x0"}, {"nome": "Elton Lagroteria", "placar": "4x0"}, {"nome": "Gilberto Rossa", "placar": "3x0"}, {"nome": "Leonardo Pezzini", "placar": "3x0"}, {"nome": "Gabriel Roleto", "placar": "4x0"}, {"nome": "Luiz Souza", "placar": "2x0"}, {"nome": "Ayrton Mendonça", "placar": "1x0"}, {"nome": "Rafael Leite", "placar": "2x0"}, {"nome": "Fabio Dias", "placar": "2x0"}, {"nome": "Heitor de Castro", "placar": "2x0"}, {"nome": "Douglas Zanardi", "placar": "3x0"}], "apostadores_empate": [{"nome": "Gustavo Brito", "placar": "2x2"}], "apostadores_b": []}, {"id": 85, "data": "2026-06-27 18:00", "estadio": null, "cidade": "Filadélfia", "grupo": "L", "sede": "Canadá / Estados Unidos", "time_a": {"nome": "Croácia", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/CRO", "id": 306}, "time_b": {"nome": "Gana", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/GHA", "id": 307}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [{"nome": "Lucas Monteiro", "placar": "2x0"}, {"nome": "Alan Cardoso", "placar": "2x1"}, {"nome": "Cassio Oliveira", "placar": "2x1"}, {"nome": "Gustavo Bastos", "placar": "2x1"}, {"nome": "Elton Lagroteria", "placar": "3x1"}, {"nome": "Gilberto Rossa", "placar": "2x1"}, {"nome": "Leonardo Pezzini", "placar": "2x1"}, {"nome": "Gustavo Brito", "placar": "2x1"}, {"nome": "Luiz Souza", "placar": "1x0"}, {"nome": "Ayrton Mendonça", "placar": "1x0"}, {"nome": "Rafael Leite", "placar": "2x1"}, {"nome": "Heitor de Castro", "placar": "1x0"}, {"nome": "Douglas Zanardi", "placar": "1x0"}], "apostadores_empate": [{"nome": "Ricardo Drudi", "placar": "1x1"}, {"nome": "Gabriel Roleto", "placar": "2x2"}, {"nome": "Fabio Dias", "placar": "1x1"}], "apostadores_b": []}, {"id": 86, "data": "2026-06-27 18:00", "estadio": null, "cidade": "Nova Iorque", "grupo": "L", "sede": "Canadá / Estados Unidos", "time_a": {"nome": "Inglaterra", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/ENG", "id": 305}, "time_b": {"nome": "Panamá", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/PAN", "id": 308}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [{"nome": "Lucas Monteiro", "placar": "3x0"}, {"nome": "Alan Cardoso", "placar": "4x0"}, {"nome": "Cassio Oliveira", "placar": "3x0"}, {"nome": "Ricardo Drudi", "placar": "3x0"}, {"nome": "Gustavo Bastos", "placar": "3x1"}, {"nome": "Elton Lagroteria", "placar": "4x0"}, {"nome": "Gilberto Rossa", "placar": "3x0"}, {"nome": "Leonardo Pezzini", "placar": "3x0"}, {"nome": "Gabriel Roleto", "placar": "3x0"}, {"nome": "Luiz Souza", "placar": "2x0"}, {"nome": "Ayrton Mendonça", "placar": "1x0"}, {"nome": "Rafael Leite", "placar": "3x0"}, {"nome": "Fabio Dias", "placar": "3x0"}, {"nome": "Heitor de Castro", "placar": "2x0"}, {"nome": "Douglas Zanardi", "placar": "5x1"}], "apostadores_empate": [{"nome": "Gustavo Brito", "placar": "2x2"}], "apostadores_b": []}, {"id": 79, "data": "2026-06-27 20:30", "estadio": null, "cidade": "Atlanta", "grupo": "K", "sede": "México / Estados Unidos", "time_a": {"nome": "RD Congo", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/COD", "id": 302}, "time_b": {"nome": "Uzbequistão", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/UZB", "id": 303}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [{"nome": "Cassio Oliveira", "placar": "2x0"}, {"nome": "Elton Lagroteria", "placar": "3x2"}, {"nome": "Gabriel Roleto", "placar": "1x0"}, {"nome": "Rafael Leite", "placar": "2x0"}, {"nome": "Heitor de Castro", "placar": "1x0"}, {"nome": "Douglas Zanardi", "placar": "3x0"}], "apostadores_empate": [{"nome": "Alan Cardoso", "placar": "1x1"}, {"nome": "Gustavo Bastos", "placar": "0x0"}, {"nome": "Gilberto Rossa", "placar": "0x0"}, {"nome": "Leonardo Pezzini", "placar": "1x1"}, {"nome": "Gustavo Brito", "placar": "1x1"}, {"nome": "Luiz Souza", "placar": "1x1"}, {"nome": "Fabio Dias", "placar": "1x1"}], "apostadores_b": [{"nome": "Lucas Monteiro", "placar": "1x2"}, {"nome": "Ricardo Drudi", "placar": "1x2"}, {"nome": "Ayrton Mendonça", "placar": "0x1"}]}, {"id": 80, "data": "2026-06-27 20:30", "estadio": null, "cidade": "Miami", "grupo": "K", "sede": "México / Estados Unidos", "time_a": {"nome": "Portugal", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/POR", "id": 301}, "time_b": {"nome": "Colômbia", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/COL", "id": 304}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [{"nome": "Alan Cardoso", "placar": "3x2"}, {"nome": "Cassio Oliveira", "placar": "2x1"}, {"nome": "Ricardo Drudi", "placar": "2x1"}, {"nome": "Gustavo Bastos", "placar": "2x1"}, {"nome": "Elton Lagroteria", "placar": "2x1"}, {"nome": "Ayrton Mendonça", "placar": "1x0"}, {"nome": "Heitor de Castro", "placar": "1x0"}], "apostadores_empate": [{"nome": "Lucas Monteiro", "placar": "2x2"}, {"nome": "Gilberto Rossa", "placar": "1x1"}, {"nome": "Leonardo Pezzini", "placar": "1x1"}, {"nome": "Gabriel Roleto", "placar": "2x2"}, {"nome": "Luiz Souza", "placar": "1x1"}, {"nome": "Rafael Leite", "placar": "1x1"}, {"nome": "Fabio Dias", "placar": "1x1"}, {"nome": "Douglas Zanardi", "placar": "1x1"}], "apostadores_b": [{"nome": "Gustavo Brito", "placar": "1x2"}]}, {"id": 73, "data": "2026-06-27 23:00", "estadio": null, "cidade": "Kansas", "grupo": "J", "sede": "Estados Unidos", "time_a": {"nome": "Argélia", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/ALG", "id": 298}, "time_b": {"nome": "Áustria", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/AUT", "id": 299}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [{"nome": "Cassio Oliveira", "placar": "2x1"}, {"nome": "Elton Lagroteria", "placar": "2x1"}, {"nome": "Gabriel Roleto", "placar": "2x1"}], "apostadores_empate": [{"nome": "Lucas Monteiro", "placar": "1x1"}, {"nome": "Ricardo Drudi", "placar": "0x0"}, {"nome": "Gilberto Rossa", "placar": "1x1"}, {"nome": "Leonardo Pezzini", "placar": "1x1"}, {"nome": "Luiz Souza", "placar": "1x1"}], "apostadores_b": [{"nome": "Alan Cardoso", "placar": "1x2"}, {"nome": "Gustavo Bastos", "placar": "0x1"}, {"nome": "Gustavo Brito", "placar": "1x3"}, {"nome": "Ayrton Mendonça", "placar": "0x1"}, {"nome": "Rafael Leite", "placar": "1x2"}, {"nome": "Fabio Dias", "placar": "1x2"}, {"nome": "Heitor de Castro", "placar": "0x1"}, {"nome": "Douglas Zanardi", "placar": "1x2"}]}, {"id": 74, "data": "2026-06-27 23:00", "estadio": null, "cidade": "Dallas", "grupo": "J", "sede": "Estados Unidos", "time_a": {"nome": "Argentina", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/ARG", "id": 297}, "time_b": {"nome": "Jordânia", "logo": "https://api.fifa.com/api/v3/picture/flags-sq-4/JOR", "id": 300}, "gols_a": null, "gols_b": null, "status": "A", "apostadores_a": [{"nome": "Lucas Monteiro", "placar": "4x0"}, {"nome": "Alan Cardoso", "placar": "3x0"}, {"nome": "Cassio Oliveira", "placar": "3x0"}, {"nome": "Ricardo Drudi", "placar": "4x0"}, {"nome": "Gustavo Bastos", "placar": "2x0"}, {"nome": "Elton Lagroteria", "placar": "4x0"}, {"nome": "Gilberto Rossa", "placar": "3x0"}, {"nome": "Leonardo Pezzini", "placar": "3x0"}, {"nome": "Gustavo Brito", "placar": "3x1"}, {"nome": "Gabriel Roleto", "placar": "4x0"}, {"nome": "Luiz Souza", "placar": "2x0"}, {"nome": "Ayrton Mendonça", "placar": "1x0"}, {"nome": "Rafael Leite", "placar": "3x0"}, {"nome": "Fabio Dias", "placar": "2x0"}, {"nome": "Heitor de Castro", "placar": "2x0"}, {"nome": "Douglas Zanardi", "placar": "2x0"}], "apostadores_empate": [], "apostadores_b": []}];
+let currentIndex = 0;
+
+const WEEKDAY   = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+const MONTH_BR  = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+
+function formatDate(s) {
+  if (!s) return '—';
+  const d = new Date(s.replace(' ', 'T') + ':00');
+  const h = String(d.getHours()).padStart(2, '0');
+  const m = d.getMinutes();
+  const mStr = m ? String(m).padStart(2, '0') : '';
+  return WEEKDAY[d.getDay()] + ', ' + d.getDate() + ' de ' + MONTH_BR[d.getMonth()] + ' · ' + h + 'h' + mStr;
+}
+
+function pct(n, t) { return t === 0 ? 0 : Math.round(n / t * 100); }
+
+function shortName(name) {
+  if (!name) return '—';
+  const p = name.trim().split(' ');
+  if (p.length === 1) return name;
+  const f = p[0], l = p[p.length - 1];
+  return (f.length + l.length <= 17) ? (f + ' ' + l) : (f + ' ' + l[0] + '.');
+}
+
+function betItem(ap, type) {
+  return '<li class="bet-item"><span class="bi-name">' + shortName(ap.nome) +
+    '</span><span class="bi-score bi-score-' + type + '">' + ap.placar + '</span></li>';
+}
+
+function parsePlacar(placar) {
+  var parts = (placar || '0x0').split('x');
+  return { a: parseInt(parts[0]) || 0, b: parseInt(parts[1]) || 0 };
+}
+
+// Sort: 1) maior saldo de gols desc; 2) mais gols do vencedor desc; 3) alfabético
+function sortBets(list, type) {
+  return list.slice().sort(function(x, y) {
+    var px = parsePlacar(x.placar), py = parsePlacar(y.placar);
+    var sdx, sdy, vx, vy;
+    if (type === 'a') {
+      sdx = px.a - px.b; sdy = py.a - py.b;
+      vx  = px.a;        vy  = py.a;
+    } else if (type === 'b') {
+      sdx = px.b - px.a; sdy = py.b - py.a;
+      vx  = px.b;        vy  = py.b;
+    } else { // empate
+      sdx = px.a; sdy = py.a;
+      vx  = px.a; vy  = py.a;
+    }
+    if (sdy !== sdx) return sdy - sdx;
+    if (vy  !== vx)  return vy  - vx;
+    return x.nome.localeCompare(y.nome, 'pt-BR', { sensitivity: 'base' });
+  });
+}
+
+function flagImg(team, cls) {
+  if (!team.logo) return '<div class="team-flag" style="display:flex;align-items:center;justify-content:center;font-size:1.6rem">🏴</div>';
+  return '<img class="team-flag ' + cls + '" src="' + team.logo + '" alt="' + team.nome + '">';
+}
+
+function renderGame(idx) {
+  const j = JOGOS[idx];
+  const total = j.apostadores_a.length + j.apostadores_empate.length + j.apostadores_b.length;
+  const pA = pct(j.apostadores_a.length, total);
+  const pE = pct(j.apostadores_empate.length, total);
+  const pB = 100 - pA - pE;
+
+  const centerBot = (j.gols_a !== null && j.gols_b !== null)
+    ? '<div class="score-real">' + j.gols_a + '–' + j.gols_b + '</div>'
+    : '';
+
+  const listA = j.apostadores_a.length
+    ? '<ul class="bet-list">' + sortBets(j.apostadores_a, 'a').map(function(a) { return betItem(a, 'a'); }).join('') + '</ul>'
+    : '<div class="empty-bet">—</div>';
+  const listE = j.apostadores_empate.length
+    ? '<ul class="bet-list">' + sortBets(j.apostadores_empate, 'emp').map(function(a) { return betItem(a, 'emp'); }).join('') + '</ul>'
+    : '<div class="empty-bet">—</div>';
+  const listB = j.apostadores_b.length
+    ? '<ul class="bet-list">' + sortBets(j.apostadores_b, 'b').map(function(a) { return betItem(a, 'b'); }).join('') + '</ul>'
+    : '<div class="empty-bet">—</div>';
+
+  const localParts = [j.cidade, j.estadio].filter(Boolean);
+  const localStr = localParts.join(' · ');
+
+  const groupPill = j.grupo ? '<span class="pill">Grupo ' + j.grupo + '</span>' : '';
+
+  const localMeta = localStr
+    ? '<span class="meta-item"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg><strong>' + localStr + '</strong></span>'
+    : '';
+
+  document.getElementById('game-card').innerHTML =
+    '<div class="game-header">' +
+      '<div class="gh-top">' + groupPill + '</div>' +
+      '<div class="gh-meta">' +
+        '<span class="meta-item"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><strong>' + formatDate(j.data) + '</strong></span>' +
+        localMeta +
+      '</div>' +
+    '</div>' +
+    '<div class="teams-section">' +
+      '<div class="team-block">' + flagImg(j.time_a, 'flag-a') + '<div class="team-name">' + j.time_a.nome + '</div></div>' +
+      '<div class="vs-center"><div class="vs-text">×</div>' + centerBot + '</div>' +
+      '<div class="team-block">' + flagImg(j.time_b, 'flag-b') + '<div class="team-name">' + j.time_b.nome + '</div></div>' +
+    '</div>' +
+    '<div class="bets-grid">' +
+      '<div class="bet-col"><div class="bet-col-head"><span class="bch-label">Apostam em</span><span class="bch-team bch-team-a">' + j.time_a.nome + '</span><span class="bch-count">' + j.apostadores_a.length + ' apostador' + (j.apostadores_a.length !== 1 ? 'es' : '') + '</span></div>' + listA + '</div>' +
+      '<div class="bet-col"><div class="bet-col-head"><span class="bch-label">Apostam em</span><span class="bch-team bch-team-emp">Empate</span><span class="bch-count">' + j.apostadores_empate.length + ' apostador' + (j.apostadores_empate.length !== 1 ? 'es' : '') + '</span></div>' + listE + '</div>' +
+      '<div class="bet-col"><div class="bet-col-head"><span class="bch-label">Apostam em</span><span class="bch-team bch-team-b">' + j.time_b.nome + '</span><span class="bch-count">' + j.apostadores_b.length + ' apostador' + (j.apostadores_b.length !== 1 ? 'es' : '') + '</span></div>' + listB + '</div>' +
+    '</div>' +
+    '<div class="stats-bar">' +
+      '<div class="stats-track"><div class="seg-a" style="width:' + pA + '%"></div><div class="seg-emp" style="width:' + pE + '%"></div><div class="seg-b" style="width:' + pB + '%"></div></div>' +
+      '<div class="stats-labels"><span class="sl-a">' + j.time_a.nome + ' ' + pA + '%</span><span class="sl-emp">Empate ' + pE + '%</span><span class="sl-b">' + pB + '% ' + j.time_b.nome + '</span></div>' +
+    '</div>';
+}
+
+// ── Search helpers ────────────────────────
+const searchInput    = document.getElementById('search-input');
+const searchDropdown = document.getElementById('search-dropdown');
+const searchClear    = document.getElementById('search-clear');
+let activeDropdownIdx = -1;
+
+function gameLabel(j) {
+  const ds = j.data ? j.data.slice(5, 10).replace('-', '/') : '??/??';
+  return j.time_a.nome + ' × ' + j.time_b.nome + '  ' + ds;
+}
+
+function highlight(text, q) {
+  if (!q) return text;
+  const re = new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
+  return text.replace(re, '<mark>$1</mark>');
+}
+
+function buildSelect() {
+  // no-op – search replaces select
+}
+
+function openDropdown(q) {
+  const term = (q || '').trim().toLowerCase();
+  const matches = [];
+  JOGOS.forEach(function(j, i) {
+    const label = gameLabel(j);
+    if (!term || label.toLowerCase().includes(term)) {
+      matches.push({ i: i, j: j, label: label });
+    }
+  });
+
+  if (matches.length === 0) {
+    searchDropdown.innerHTML = '<div class="sd-empty">Nenhum jogo encontrado</div>';
+  } else {
+    searchDropdown.innerHTML = matches.map(function(m, pos) {
+      let ds = '??/??';
+      if (m.j.data) {
+        const d = new Date(m.j.data.replace(' ', 'T') + ':00');
+        ds = d.getDate() + ' de ' + MONTH_BR[d.getMonth()];
+      }
+      const teams = highlight(m.j.time_a.nome + ' × ' + m.j.time_b.nome, term);
+      return '<div class="sd-item" data-idx="' + m.i + '" data-pos="' + pos + '">' +
+        '<span class="sd-teams">' + teams + '</span>' +
+        '<span class="sd-meta">' + ds + (m.j.grupo ? ' · Grupo ' + m.j.grupo : '') + (m.j.cidade ? ' · ' + m.j.cidade : '') + '</span>' +
+        '</div>';
+    }).join('');
+  }
+
+  activeDropdownIdx = -1;
+  searchDropdown.classList.add('open');
+}
+
+function closeDropdown() {
+  searchDropdown.classList.remove('open');
+  activeDropdownIdx = -1;
+}
+
+function clearSearch() {
+  searchInput.value = '';
+  searchClear.style.display = 'none';
+  closeDropdown();
+  searchInput.focus();
+}
+
+searchInput.addEventListener('input', function() {
+  const q = searchInput.value;
+  searchClear.style.display = q ? 'block' : 'none';
+  if (q.trim()) {
+    openDropdown(q);
+  } else {
+    closeDropdown();
+  }
+});
+
+searchInput.addEventListener('focus', function() {
+  if (searchInput.value.trim()) openDropdown(searchInput.value);
+});
+
+searchInput.addEventListener('keydown', function(e) {
+  const items = searchDropdown.querySelectorAll('.sd-item');
+  if (!items.length) return;
+  if (e.key === 'ArrowDown') {
+    e.preventDefault();
+    activeDropdownIdx = Math.min(activeDropdownIdx + 1, items.length - 1);
+    items.forEach(function(el, i) { el.classList.toggle('active', i === activeDropdownIdx); });
+    items[activeDropdownIdx].scrollIntoView({ block: 'nearest' });
+  } else if (e.key === 'ArrowUp') {
+    e.preventDefault();
+    activeDropdownIdx = Math.max(activeDropdownIdx - 1, 0);
+    items.forEach(function(el, i) { el.classList.toggle('active', i === activeDropdownIdx); });
+    items[activeDropdownIdx].scrollIntoView({ block: 'nearest' });
+  } else if (e.key === 'Enter') {
+    if (activeDropdownIdx >= 0) {
+      const el = items[activeDropdownIdx];
+      selectFromDropdown(parseInt(el.dataset.idx), el.textContent.trim());
+    } else if (items.length === 1) {
+      selectFromDropdown(parseInt(items[0].dataset.idx), items[0].querySelector('.sd-teams').textContent.trim());
+    }
+  } else if (e.key === 'Escape') {
+    closeDropdown();
+  }
+});
+
+searchDropdown.addEventListener('mousedown', function(e) {
+  const item = e.target.closest('.sd-item');
+  if (!item) return;
+  e.preventDefault();
+  selectFromDropdown(parseInt(item.dataset.idx), item.querySelector('.sd-teams').textContent.trim());
+});
+
+document.addEventListener('click', function(e) {
+  if (!document.getElementById('search-wrap').contains(e.target)) closeDropdown();
+});
+
+function selectFromDropdown(idx, labelText) {
+  currentIndex = idx;
+  // strip HTML tags from label
+  searchInput.value = JOGOS[idx].time_a.nome + ' × ' + JOGOS[idx].time_b.nome;
+  searchClear.style.display = 'block';
+  closeDropdown();
+  renderGame(currentIndex);
+  updateNav();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function navigate(dir) {
+  const n = currentIndex + dir;
+  if (n < 0 || n >= JOGOS.length) return;
+  currentIndex = n;
+  renderGame(currentIndex);
+  updateNav();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function updateNav() {
+  document.getElementById('btn-prev').disabled = (currentIndex === 0);
+  document.getElementById('btn-next').disabled = (currentIndex === JOGOS.length - 1);
+  document.getElementById('nav-counter').textContent = (currentIndex + 1) + ' / ' + JOGOS.length;
+  const j = JOGOS[currentIndex];
+  searchInput.value = j.time_a.nome + ' × ' + j.time_b.nome;
+  searchClear.style.display = 'block';
+}
+
+function imgToDataURL(img) {
+  return new Promise(function(resolve) {
+    if (!img.src || img.src.startsWith('data:')) { resolve(); return; }
+    const original = img.src;
+    // Render as a square canvas mimicking object-fit: cover
+    const size = 140; // 70px * scale:2
+    const canvas = document.createElement('canvas');
+    canvas.width = size;
+    canvas.height = size;
+    const ctx = canvas.getContext('2d');
+    const ci = new Image();
+    ci.crossOrigin = 'anonymous';
+    ci.onload = function() {
+      const iw = ci.naturalWidth  || ci.width;
+      const ih = ci.naturalHeight || ci.height;
+      // object-fit: cover — scale so shorter side fills, then center-crop
+      const scale = Math.max(size / iw, size / ih);
+      const sw = iw * scale;
+      const sh = ih * scale;
+      const sx = (size - sw) / 2;
+      const sy = (size - sh) / 2;
+      try {
+        ctx.drawImage(ci, sx, sy, sw, sh);
+        img.src = canvas.toDataURL('image/png');
+      } catch(e) {
+        img.style.visibility = 'hidden';
+      }
+      resolve();
+    };
+    ci.onerror = function() { img.style.visibility = 'hidden'; resolve(); };
+    ci.src = original + (original.includes('?') ? '&' : '?') + '_cb=' + Date.now();
+  });
+}
+
+function exportImage() {
+  const card = document.getElementById('game-card');
+  const j = JOGOS[currentIndex];
+  const fname = 'bolao_jogo' + j.id + '_' + j.time_a.nome.replace(/ /g, '-') + '_x_' + j.time_b.nome.replace(/ /g, '-') + '.png';
+
+  // Convert all flag images to inline data URLs first
+  const imgs = Array.from(card.querySelectorAll('img.team-flag'));
+  const origSrcs = imgs.map(function(img) { return img.src; });
+
+  Promise.all(imgs.map(imgToDataURL)).then(function() {
+    html2canvas(card, {
+      scale: 2,
+      useCORS: false,
+      allowTaint: false,
+      backgroundColor: '#ffffff',
+      logging: false
+    }).then(function(canvas) {
+      // Restore original src values
+      imgs.forEach(function(img, i) {
+        img.src = origSrcs[i];
+        img.style.visibility = '';
+      });
+      const a = document.createElement('a');
+      a.download = fname;
+      a.href = canvas.toDataURL('image/png');
+      a.click();
+    });
+  });
+}
+
+buildSelect();
+renderGame(0);
+updateNav();
+</script>
+</body>
+</html>
