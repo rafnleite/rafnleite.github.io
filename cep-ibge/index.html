@@ -30,44 +30,57 @@
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* Spinner pequeno para detalhe sob demanda */
+    #panel {
+      position: absolute; top: 10px; right: 10px; z-index: 1000;
+      background: rgba(255,255,255,0.95); padding: 10px 16px;
+      border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+      font-size: 13px; line-height: 1.7; max-width: 260px;
+    }
+    #detail-info { margin-top: 4px; font-size: 12px; color: #333; display: none; }
+
     #loading-detail {
       position: absolute; bottom: 30px; left: 10px; z-index: 1000;
-      background: rgba(255,255,255,0.93);
-      padding: 7px 14px; border-radius: 6px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      background: rgba(255,255,255,0.93); padding: 7px 14px;
+      border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.2);
       display: flex; align-items: center; gap: 10px; font-size: 13px;
     }
     #loading-detail.hidden { display: none; }
     .spinner-sm {
       width: 16px; height: 16px;
-      border: 3px solid rgba(0,0,0,0.15);
-      border-top-color: #1a6fb5;
-      border-radius: 50%;
-      animation: spin 0.7s linear infinite;
-      flex-shrink: 0;
+      border: 3px solid rgba(0,0,0,0.15); border-top-color: #1a6fb5;
+      border-radius: 50%; animation: spin 0.7s linear infinite; flex-shrink: 0;
     }
 
-    /* Painel info */
-    #panel {
-      position: absolute; top: 10px; right: 10px; z-index: 1000;
-      background: rgba(255,255,255,0.95);
-      padding: 10px 16px; border-radius: 8px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-      font-size: 13px; line-height: 1.7; max-width: 260px;
-    }
-    #detail-info { margin-top: 4px; font-size: 12px; color: #333; display: none; }
-
-    /* Botão Voltar */
     #btn-voltar {
       display: none;
       position: absolute; top: 10px; left: 50px; z-index: 1000;
-      background: #1a6fb5; color: #fff;
-      border: none; border-radius: 6px;
+      background: #1a6fb5; color: #fff; border: none; border-radius: 6px;
       padding: 9px 18px; font-size: 14px; font-weight: bold;
       cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.3);
     }
-    #btn-voltar:hover { background: #145a96; }
+    /* Barra de pesquisa */
+    #search-bar {
+      position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
+      z-index: 1000; display: flex; gap: 6px;
+      background: rgba(255,255,255,0.97); padding: 7px 10px;
+      border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.25);
+    }
+    #search-input {
+      width: 170px; padding: 6px 10px; font-size: 14px;
+      border: 1.5px solid #ccc; border-radius: 5px; outline: none;
+      letter-spacing: 1px;
+    }
+    #search-input:focus { border-color: #1a6fb5; }
+    #search-btn {
+      padding: 6px 14px; background: #1a6fb5; color: #fff;
+      border: none; border-radius: 5px; font-size: 14px;
+      cursor: pointer; font-weight: bold;
+    }
+    #search-btn:hover { background: #145a96; }
+    #search-msg {
+      font-size: 12px; color: #c0392b; margin-top: 3px; display: none;
+      padding: 0 2px;
+    }
   </style>
 </head>
 <body>
@@ -79,18 +92,30 @@
 
   <div id="map"></div>
 
+  <div id="search-bar">
+    <div style="display:flex;flex-direction:column">
+      <div style="display:flex;gap:6px">
+        <input id="search-input" type="text" placeholder="Ex: 30130-010"
+          maxlength="9" oninput="fmtInput(this)" onkeydown="if(event.key==='Enter')searchCep()"/>
+        <button id="search-btn" onclick="searchCep()">Buscar</button>
+      </div>
+      <span id="search-msg">CEP não encontrado</span>
+    </div>
+  </div>
+
   <div id="loading-detail" class="hidden">
     <div class="spinner-sm"></div>
     <span id="detail-text">Carregando...</span>
   </div>
 
   <div id="panel">
-    <strong>CEPs – UF 31 (MG)</strong>
-    <div id="panel-count"></div>
+    <strong>CEPs – UF 31 (MG)</strong><br/>
+    <span id="panel-count"></span><br/>
+    <small>Clique num centróide para ver endereços</small>
     <div id="detail-info"></div>
   </div>
 
-  <button id="btn-voltar" onclick="backToAverages()">&#8592; Voltar às médias</button>
+  <button id="btn-voltar" onclick="backToAverages()">← Voltar às médias</button>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
@@ -103,15 +128,12 @@
 
     let clusterLayer = null;
     let detailLayer  = null;
-
-    // Cache de chunks já baixados (prefixo → objeto {cep: [[lat,lon],…]})
     const chunkCache = {};
+    const cepIndex   = {};
 
-    function fmtCep(cep) {
-      return cep.replace(/^(\d{5})(\d{3})$/, '$1-$2');
-    }
+    function fmtCep(cep) { return cep.replace(/^(\d{5})(\d{3})$/, '$1-$2'); }
 
-    // ── Carrega TODOS os centroides de uma vez ─────────────────────────────
+    // ── Carrega todos os centroides de uma vez ─────────────────────────────
     async function loadAverages() {
       document.getElementById('loading-text').textContent = 'Buscando centroides...';
 
@@ -122,50 +144,57 @@
         `Renderizando ${data.length.toLocaleString('pt-BR')} CEPs...`;
 
       clusterLayer = L.markerClusterGroup({
-        chunkedLoading: true,
-        chunkInterval: 200,
-        chunkDelay: 50,
         maxClusterRadius: 60,
         disableClusteringAtZoom: 15,
-        chunkProgress: (processed, total) => {
-          document.getElementById('loading-text').textContent =
-            `Renderizando... ${processed.toLocaleString('pt-BR')} / ${total.toLocaleString('pt-BR')}`;
-        },
       });
 
-      const markers = data.map(([cep, lat, lon, qtd]) => {
+      const markers = data.map(([cep, lat, lon]) => {
+        const fmt = fmtCep(cep);
         const m = L.circleMarker([lat, lon], {
-          radius: 5, color: '#1a6fb5', fillColor: '#4a9edd',
-          fillOpacity: 0.85, weight: 1,
+          radius: 5, color: '#1a6fb5', fillColor: '#4a9edd', fillOpacity: 0.85, weight: 1,
         });
-        m.on('click', () => showCepDetail(cep, qtd));
+        m.bindPopup(`
+          <div style="min-width:160px;font-size:13px">
+            <b>CEP: ${fmt}</b><br/>
+            Lat: ${lat.toFixed(6)}<br/>
+            Lon: ${lon.toFixed(6)}<br/>
+            <button onclick="showCepDetail('${cep}');map.closePopup()"
+              style="margin-top:8px;width:100%;padding:5px 0;background:#1a6fb5;
+                     color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:12px">
+              Ver todos os endereços deste CEP
+            </button>
+          </div>
+        `);
+        cepIndex[cep] = { lat, lon, marker: m };
         return m;
       });
 
-      clusterLayer.on('chunkingfinished', () => {
-        document.getElementById('loading').classList.add('hidden');
-      });
-
-      clusterLayer.addLayers(markers);
       map.addLayer(clusterLayer);
+
+      // Chunking manual — garante que o loading desaparece ao terminar
+      const CHUNK = 3000;
+      const loadingText = document.getElementById('loading-text');
+      for (let i = 0; i < markers.length; i += CHUNK) {
+        clusterLayer.addLayers(markers.slice(i, i + CHUNK));
+        loadingText.textContent =
+          `Renderizando... ${Math.min(i + CHUNK, markers.length).toLocaleString('pt-BR')} / ${markers.length.toLocaleString('pt-BR')}`;
+        await new Promise(r => setTimeout(r, 0));
+      }
+      document.getElementById('loading').classList.add('hidden');
 
       document.getElementById('panel-count').textContent =
         `${data.length.toLocaleString('pt-BR')} CEPs carregados`;
     }
 
     // ── Detalha CEP: busca chunk estático e filtra pelo CEP ───────────────
-    window.showCepDetail = async function(cep, qtd) {
-      document.getElementById('detail-text').textContent =
-        `Carregando ${Number(qtd).toLocaleString('pt-BR')} endereços — CEP ${fmtCep(cep)}`;
+    window.showCepDetail = async function(cep) {
+      document.getElementById('detail-text').textContent = `Carregando CEP ${fmtCep(cep)}...`;
       document.getElementById('loading-detail').classList.remove('hidden');
       try {
-        // O chunk agrupa todos os CEPs com mesmo prefixo de 3 dígitos
         const prefix = cep.slice(0, 3);
-
         if (!chunkCache[prefix]) {
           chunkCache[prefix] = await fetch(`ceps/${prefix}.json`).then(r => r.json());
         }
-
         const pts = chunkCache[prefix][cep] || [];
 
         if (clusterLayer) map.removeLayer(clusterLayer);
@@ -174,20 +203,15 @@
         detailLayer = L.layerGroup();
         pts.forEach(([lat, lon]) => {
           L.circleMarker([lat, lon], {
-            radius: 4, color: '#e63946', fillColor: '#ff6b6b',
-            fillOpacity: 0.75, weight: 1,
+            radius: 4, color: '#e63946', fillColor: '#ff6b6b', fillOpacity: 0.75, weight: 1,
           })
-          .bindPopup(`<b>CEP: ${fmtCep(cep)}</b><br/>Lat: ${lat.toFixed(6)}<br/>Lon: ${lon.toFixed(6)}`)
+          .bindPopup(`<div style="font-size:13px"><b>CEP: ${fmtCep(cep)}</b><br/>Lat: ${lat.toFixed(6)}<br/>Lon: ${lon.toFixed(6)}</div>`)
           .addTo(detailLayer);
         });
         detailLayer.addTo(map);
 
-        if (pts.length > 0) {
-          map.fitBounds(
-            L.latLngBounds(pts.map(([la, lo]) => [la, lo])),
-            { padding: [50, 50], maxZoom: 17 }
-          );
-        }
+        if (pts.length > 0)
+          map.fitBounds(L.latLngBounds(pts.map(([la, lo]) => [la, lo])), { padding: [50,50], maxZoom: 17 });
 
         const info = document.getElementById('detail-info');
         info.style.display = 'block';
@@ -199,14 +223,32 @@
     };
 
     // ── Volta para os centroides ───────────────────────────────────────────
-    window.backToAverages = function() {
+    function backToAverages() {
       if (detailLayer)  { map.removeLayer(detailLayer); detailLayer = null; }
       if (clusterLayer) map.addLayer(clusterLayer);
       document.getElementById('btn-voltar').style.display = 'none';
       const info = document.getElementById('detail-info');
-      info.style.display = 'none';
-      info.innerHTML = '';
-    };
+      info.style.display = 'none'; info.innerHTML = '';
+    }
+
+    // ── Pesquisa por CEP ──────────────────────────────────────────────────
+    function fmtInput(el) {
+      let v = el.value.replace(/\D/g, '').slice(0, 8);
+      if (v.length > 5) v = v.slice(0,5) + '-' + v.slice(5);
+      el.value = v;
+    }
+
+    function searchCep() {
+      const raw = document.getElementById('search-input').value.replace(/\D/g,'').padStart(8,'0');
+      const msg = document.getElementById('search-msg');
+      const entry = cepIndex[raw];
+      if (!entry) { msg.style.display = 'block'; return; }
+      msg.style.display = 'none';
+      backToAverages();
+      clusterLayer.zoomToShowLayer(entry.marker, () => {
+        setTimeout(() => entry.marker.openPopup(), 100);
+      });
+    }
 
     loadAverages();
   </script>
