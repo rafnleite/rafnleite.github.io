@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Mapa CEPs – MG</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css"/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css"/>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: sans-serif; }
+    #map { width: 100vw; height: 100vh; }
+
+    /* Loading overlay tela cheia (startup) */
+    #loading {
+      position: fixed; inset: 0; z-index: 9999;
+      background: #1a1a2e; color: #fff;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 18px;
+      font-size: 18px;
+    }
+    #loading.hidden { display: none; }
+    .spinner {
+      width: 48px; height: 48px;
+      border: 5px solid rgba(255,255,255,0.2);
+      border-top-color: #4a9edd;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Spinner pequeno para detalhe sob demanda */
+    #loading-detail {
+      position: absolute; bottom: 30px; left: 10px; z-index: 1000;
+      background: rgba(255,255,255,0.93);
+      padding: 7px 14px; border-radius: 6px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      display: flex; align-items: center; gap: 10px; font-size: 13px;
+    }
+    #loading-detail.hidden { display: none; }
+    .spinner-sm {
+      width: 16px; height: 16px;
+      border: 3px solid rgba(0,0,0,0.15);
+      border-top-color: #1a6fb5;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      flex-shrink: 0;
+    }
+
+    /* Painel info */
+    #panel {
+      position: absolute; top: 10px; right: 10px; z-index: 1000;
+      background: rgba(255,255,255,0.95);
+      padding: 10px 16px; border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+      font-size: 13px; line-height: 1.7; max-width: 260px;
+    }
+    #detail-info { margin-top: 4px; font-size: 12px; color: #333; display: none; }
+
+    /* Botão Voltar */
+    #btn-voltar {
+      display: none;
+      position: absolute; top: 10px; left: 50px; z-index: 1000;
+      background: #1a6fb5; color: #fff;
+      border: none; border-radius: 6px;
+      padding: 9px 18px; font-size: 14px; font-weight: bold;
+      cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    #btn-voltar:hover { background: #145a96; }
+  </style>
+</head>
+<body>
+
+  <div id="loading">
+    <div class="spinner"></div>
+    <span id="loading-text">Carregando 102 mil CEPs...</span>
+  </div>
+
+  <div id="map"></div>
+
+  <div id="loading-detail" class="hidden">
+    <div class="spinner-sm"></div>
+    <span id="detail-text">Carregando...</span>
+  </div>
+
+  <div id="panel">
+    <strong>CEPs – UF 31 (MG)</strong>
+    <div id="panel-count"></div>
+    <div id="detail-info"></div>
+  </div>
+
+  <button id="btn-voltar" onclick="backToAverages()">&#8592; Voltar às médias</button>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+  <script>
+    const map = L.map('map').setView([-18.5, -44.5], 7);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      maxZoom: 19
+    }).addTo(map);
+
+    let clusterLayer = null;
+    let detailLayer  = null;
+
+    // Cache de chunks já baixados (prefixo → objeto {cep: [[lat,lon],…]})
+    const chunkCache = {};
+
+    function fmtCep(cep) {
+      return cep.replace(/^(\d{5})(\d{3})$/, '$1-$2');
+    }
+
+    // ── Carrega TODOS os centroides de uma vez ─────────────────────────────
+    async function loadAverages() {
+      document.getElementById('loading-text').textContent = 'Buscando centroides...';
+
+      // Arquivo estático gerado por generate_static.py
+      const data = await fetch('averages.json').then(r => r.json());
+
+      document.getElementById('loading-text').textContent =
+        `Renderizando ${data.length.toLocaleString('pt-BR')} CEPs...`;
+
+      clusterLayer = L.markerClusterGroup({
+        chunkedLoading: true,
+        chunkInterval: 200,
+        chunkDelay: 50,
+        maxClusterRadius: 60,
+        disableClusteringAtZoom: 15,
+        chunkProgress: (processed, total) => {
+          document.getElementById('loading-text').textContent =
+            `Renderizando... ${processed.toLocaleString('pt-BR')} / ${total.toLocaleString('pt-BR')}`;
+        },
+      });
+
+      const markers = data.map(([cep, lat, lon, qtd]) => {
+        const m = L.circleMarker([lat, lon], {
+          radius: 5, color: '#1a6fb5', fillColor: '#4a9edd',
+          fillOpacity: 0.85, weight: 1,
+        });
+        m.on('click', () => showCepDetail(cep, qtd));
+        return m;
+      });
+
+      clusterLayer.on('chunkingfinished', () => {
+        document.getElementById('loading').classList.add('hidden');
+      });
+
+      clusterLayer.addLayers(markers);
+      map.addLayer(clusterLayer);
+
+      document.getElementById('panel-count').textContent =
+        `${data.length.toLocaleString('pt-BR')} CEPs carregados`;
+    }
+
+    // ── Detalha CEP: busca chunk estático e filtra pelo CEP ───────────────
+    window.showCepDetail = async function(cep, qtd) {
+      document.getElementById('detail-text').textContent =
+        `Carregando ${Number(qtd).toLocaleString('pt-BR')} endereços — CEP ${fmtCep(cep)}`;
+      document.getElementById('loading-detail').classList.remove('hidden');
+      try {
+        // O chunk agrupa todos os CEPs com mesmo prefixo de 3 dígitos
+        const prefix = cep.slice(0, 3);
+
+        if (!chunkCache[prefix]) {
+          chunkCache[prefix] = await fetch(`ceps/${prefix}.json`).then(r => r.json());
+        }
+
+        const pts = chunkCache[prefix][cep] || [];
+
+        if (clusterLayer) map.removeLayer(clusterLayer);
+        if (detailLayer)  map.removeLayer(detailLayer);
+
+        detailLayer = L.layerGroup();
+        pts.forEach(([lat, lon]) => {
+          L.circleMarker([lat, lon], {
+            radius: 4, color: '#e63946', fillColor: '#ff6b6b',
+            fillOpacity: 0.75, weight: 1,
+          })
+          .bindPopup(`<b>CEP: ${fmtCep(cep)}</b><br/>Lat: ${lat.toFixed(6)}<br/>Lon: ${lon.toFixed(6)}`)
+          .addTo(detailLayer);
+        });
+        detailLayer.addTo(map);
+
+        if (pts.length > 0) {
+          map.fitBounds(
+            L.latLngBounds(pts.map(([la, lo]) => [la, lo])),
+            { padding: [50, 50], maxZoom: 17 }
+          );
+        }
+
+        const info = document.getElementById('detail-info');
+        info.style.display = 'block';
+        info.innerHTML = `<b>CEP: ${fmtCep(cep)}</b><br/>${pts.length.toLocaleString('pt-BR')} endereços`;
+        document.getElementById('btn-voltar').style.display = 'block';
+      } finally {
+        document.getElementById('loading-detail').classList.add('hidden');
+      }
+    };
+
+    // ── Volta para os centroides ───────────────────────────────────────────
+    window.backToAverages = function() {
+      if (detailLayer)  { map.removeLayer(detailLayer); detailLayer = null; }
+      if (clusterLayer) map.addLayer(clusterLayer);
+      document.getElementById('btn-voltar').style.display = 'none';
+      const info = document.getElementById('detail-info');
+      info.style.display = 'none';
+      info.innerHTML = '';
+    };
+
+    loadAverages();
+  </script>
+</body>
+</html>
