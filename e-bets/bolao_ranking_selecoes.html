@@ -122,6 +122,11 @@
   font-weight: 700;
   border-color: #bbf7d0;
 }
+.gtab-disabled {
+  opacity: .38;
+  cursor: not-allowed;
+  font-style: italic;
+}
 .p-check {
   display: flex;
   align-items: center;
@@ -322,6 +327,25 @@
   cursor: pointer; line-height: 1; padding: 2px 4px;
 }
 .mob-drawer-body { flex: 1; overflow-y: auto; display: flex; flex-direction: column; }
+/* ── Collapsible drawer sections ── */
+.mob-section-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 11px 16px; cursor: pointer; user-select: none;
+  border-bottom: 1px solid var(--border); background: #fafafa;
+}
+.mob-section-title {
+  font-family: 'Bebas Neue', cursive; font-size: 0.88rem;
+  letter-spacing: 2px; color: var(--text);
+  display: flex; align-items: center; gap: 8px;
+}
+.mob-section-chevron {
+  color: var(--sub); transition: transform .2s; flex-shrink: 0;
+}
+.mob-section-head.open .mob-section-chevron { transform: rotate(180deg); }
+.mob-section-body {
+  display: none; border-bottom: 1px solid var(--border);
+}
+.mob-section-body.open { display: block; }
 @media (max-width: 700px) {
   .sidebar { display: none; }
   .main-content { padding: 12px 10px 72px; max-width: 100%; }
@@ -427,23 +451,31 @@
       </label>
     </div>
     <!-- Group navigation -->
-    <div style="border-bottom:1px solid var(--border)">
-      <div class="sidebar-section-head">
-        <span class="sidebar-section-title">Grupos</span>
+    <div>
+      <div class="mob-section-head open" onclick="toggleMobSection(this)">
+        <span class="mob-section-title">Grupos</span>
+        <svg class="mob-section-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6,9 12,15 18,9"/></svg>
       </div>
-      <div class="sidebar-tabs" id="group-tabs-mob" style="flex-direction:row;flex-wrap:wrap;padding:6px 8px;gap:5px"></div>
+      <div class="mob-section-body open">
+        <div class="sidebar-tabs" id="group-tabs-mob" style="flex-direction:row;flex-wrap:wrap;padding:8px 10px;gap:6px"></div>
+      </div>
     </div>
     <!-- Participant filter -->
     <div style="flex:1;overflow:hidden;display:flex;flex-direction:column">
-      <div class="sidebar-section-head">
-        <span class="sidebar-section-title">Apostadores</span>
-        <span class="sidebar-count" id="sidebar-count-mob"></span>
+      <div class="mob-section-head open" onclick="toggleMobSection(this)">
+        <span class="mob-section-title">
+          Apostadores
+          <span class="sidebar-count" id="sidebar-count-mob"></span>
+        </span>
+        <svg class="mob-section-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6,9 12,15 18,9"/></svg>
       </div>
-      <div class="sidebar-actions">
-        <button class="sidebar-btn" onclick="selectAll()">Todos</button>
-        <button class="sidebar-btn" onclick="selectNone()">Nenhum</button>
+      <div class="mob-section-body open">
+        <div class="sidebar-actions">
+          <button class="sidebar-btn" onclick="selectAll()">Todos</button>
+          <button class="sidebar-btn" onclick="selectNone()">Nenhum</button>
+        </div>
+        <div class="sidebar-list" id="participant-list-mob" style="overflow-y:auto;max-height:260px"></div>
       </div>
-      <div class="sidebar-list" id="participant-list-mob" style="overflow-y:auto;flex:1;max-height:220px"></div>
     </div>
   </div>
 </div>
@@ -532,6 +564,11 @@ function closeMobDrawer() {
   document.getElementById('mob-overlay').classList.remove('open');
   document.body.style.overflow = '';
 }
+function toggleMobSection(headEl) {
+  headEl.classList.toggle('open');
+  var body = headEl.nextElementSibling;
+  if (body) body.classList.toggle('open');
+}
 // ── State ─────────────────────────────────────────────────────────────────────
 var activeView = 'total'; // 'total', 'todos', or a group letter
 var selectedParticipants = new Set();
@@ -598,14 +635,24 @@ function sortTeams(arr) {
 
 // ── Render tabs ───────────────────────────────────────────────────────────────
 function renderTabs() {
-  var html = '<button class="gtab' + (activeView === 'total' ? ' active' : '') +
-             '" onclick="switchView(\'total\')">Geral</button>';
-  html += '<button class="gtab' + (activeView === 'todos' ? ' active' : '') +
-          '" onclick="switchView(\'todos\')">Todos os grupos</button>';
-  groups.forEach(function(g) {
-    html += '<button class="gtab' + (activeView === g ? ' active' : '') +
-            '" onclick="switchView(\'' + g + '\')">Grupo ' + g + '</button>';
-  });
+  // Fixed phase list — only 'total' and 'todos' are active in the group stage
+  var PHASES = [
+    { id: 'total',   label: 'Geral',                    active: true },
+    { id: 'todos',   label: 'Por grupos',               active: true },
+    { id: 'r16',     label: '16 avos',                  active: false },
+    { id: 'r8',      label: 'Oitavas',                  active: false },
+    { id: 'r4',      label: 'Quartas',                  active: false },
+    { id: 'semi',    label: 'Semis',                    active: false },
+    { id: '3rd',     label: '3º lugar',                 active: false },
+    { id: 'final',   label: 'Final',                    active: false }
+  ];
+  var html = PHASES.map(function(p) {
+    if (!p.active) {
+      return '<button class="gtab gtab-disabled" disabled title="Em breve">' + p.label + '</button>';
+    }
+    var cls = 'gtab' + (activeView === p.id ? ' active' : '');
+    return '<button class="' + cls + '" onclick="switchView(\'' + p.id + '\')">' + p.label + '</button>';
+  }).join('');
   document.getElementById('group-tabs').innerHTML     = html;
   document.getElementById('group-tabs-mob').innerHTML = html;
 }
@@ -715,9 +762,6 @@ function renderContent() {
       terceiros, true, false, true, 'terceiros'
     );
     html = '<div class="todos-groups-wrap">' + groupCards + terceirosCard + '</div>';
-  } else {
-    var groupTeams = allTeams.filter(function(t) { return t.grupo === activeView; });
-    html = tableCardHtml('Grupo ' + activeView, '', groupTeams, false, true, false, 'group');
   }
 
   container.innerHTML = html;
