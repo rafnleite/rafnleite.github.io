@@ -26,21 +26,18 @@ html, body {
 .btn-img {
   display: flex;
   align-items: center;
-  gap: 6px;
-  background: var(--accent);
+  justify-content: center;
+  background: rgba(0,0,0,.07);
   border: none;
-  color: white;
-  font-family: 'Inter', sans-serif;
-  font-size: 0.78rem;
-  font-weight: 600;
-  padding: 6px 14px;
-  border-radius: 7px;
+  color: var(--sub);
+  padding: 5px 6px;
+  border-radius: 6px;
   cursor: pointer;
-  transition: opacity .15s;
-  white-space: nowrap;
+  flex-shrink: 0;
+  transition: background .15s, color .15s;
 }
-.btn-img:hover { opacity: .85; }
-.card-actions { display: flex; justify-content: flex-end; margin-bottom: 10px; }
+.btn-img:hover { background: var(--accent); color: #fff; }
+.card-actions { display: none; }
 
 /* ── Navigation buttons (apostas game nav) ── */
 .nav-btn {

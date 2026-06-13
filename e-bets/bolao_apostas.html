@@ -55,6 +55,7 @@
   flex-direction: column;
   align-items: center;
   gap: 7px;
+  position: relative;
 }
 .gh-top {
   display: flex;
@@ -432,7 +433,6 @@
   .nav-counter { display: none; }
   .stats-bar { overflow-x: auto; }
   .stats-labels { font-size: 0.6rem; gap: 4px; }
-  .btn-img span { display: none; }
 }
 
 </style>
@@ -459,14 +459,6 @@
       <span class="nav-counter" id="nav-counter"></span>
       <button class="nav-btn" id="btn-next" onclick="navigate(1)">Próximo &#9654;</button>
     </div>
-    <button class="btn-img" onclick="exportImage()">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
-        <polyline points="7,10 12,15 17,10"/>
-        <line x1="12" y1="15" x2="12" y2="3"/>
-      </svg>
-      Salvar imagem
-    </button>
   </div>
   <div id="game-card"></div>
 </main>
@@ -655,6 +647,13 @@ function renderGame(idx) {
 
   document.getElementById('game-card').innerHTML =
     '<div class="game-header">' +
+      '<button class="btn-img" onclick="exportImage()" title="Salvar imagem" style="position:absolute;top:10px;right:12px">' +
+        '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">' +
+          '<path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>' +
+          '<polyline points="7,10 12,15 17,10"/>' +
+          '<line x1="12" y1="15" x2="12" y2="3"/>' +
+        '</svg>' +
+      '</button>' +
       '<div class="gh-top">' + livePill + groupPill + '</div>' +
       '<div class="gh-meta">' +
         '<span class="meta-item"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><strong>' + formatDate(j.data) + '</strong></span>' +

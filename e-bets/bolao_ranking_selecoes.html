@@ -283,11 +283,51 @@
 }
 
 /* ── RESPONSIVE ────────────────────────────── */
+/* ── MOBILE DRAWER ───────────────────────── */
+.mob-fab {
+  display: none;
+  position: fixed; bottom: 18px; right: 18px; z-index: 400;
+  background: var(--accent); color: #fff;
+  border: none; border-radius: 28px;
+  padding: 10px 18px 10px 14px;
+  font-family: 'Inter', sans-serif; font-size: 0.78rem; font-weight: 700;
+  box-shadow: 0 4px 16px rgba(0,0,0,.22);
+  cursor: pointer; align-items: center; gap: 7px;
+  transition: opacity .15s;
+}
+.mob-fab:hover { opacity: .88; }
+.mob-overlay {
+  display: none; position: fixed; inset: 0; z-index: 500;
+  background: rgba(0,0,0,.4); backdrop-filter: blur(2px);
+}
+.mob-overlay.open { display: block; }
+.mob-drawer {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 501;
+  background: var(--white); border-radius: 18px 18px 0 0;
+  box-shadow: 0 -4px 32px rgba(0,0,0,.18);
+  max-height: 82vh; display: flex; flex-direction: column;
+  transform: translateY(100%); transition: transform .28s cubic-bezier(.4,0,.2,1);
+}
+.mob-drawer.open { transform: translateY(0); }
+.mob-drawer-handle {
+  flex-shrink: 0; display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 16px 10px;
+  border-bottom: 1px solid var(--border);
+}
+.mob-drawer-title {
+  font-family: 'Bebas Neue', cursive; font-size: 1rem; letter-spacing: 2px; color: var(--text);
+}
+.mob-drawer-close {
+  background: none; border: none; font-size: 1.3rem; color: var(--sub);
+  cursor: pointer; line-height: 1; padding: 2px 4px;
+}
+.mob-drawer-body { flex: 1; overflow-y: auto; display: flex; flex-direction: column; }
 @media (max-width: 700px) {
   .sidebar { display: none; }
-  .main-content { padding: 12px 10px 60px; max-width: 100%; }
+  .main-content { padding: 12px 10px 72px; max-width: 100%; }
   .team-group-badge { display: none; }
   .stand-table { min-width: 440px; }
+  .mob-fab { display: flex; }
 }
 @media (max-width: 480px) {
   .stand-table { min-width: 0; font-size: 0.72rem; }
@@ -354,21 +394,59 @@
     </div>
   </aside>
 
-  <div class="main-content">
-    <div class="card-actions">
-      <button class="btn-img" onclick="exportImage()">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-          <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
-          <polyline points="7,10 12,15 17,10"/>
-          <line x1="12" y1="15" x2="12" y2="3"/>
-        </svg>
-        Salvar imagem
-      </button>
-    </div>
+  <div class="main-content" style="position:relative">
+    <button class="btn-img" onclick="exportImage()" title="Salvar imagem" style="position:absolute;top:12px;right:12px;z-index:10">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+        <polyline points="7,10 12,15 17,10"/>
+        <line x1="12" y1="15" x2="12" y2="3"/>
+      </svg>
+    </button>
     <div id="tables-container"></div>
   </div>
 
 </main>
+
+<!-- ── MOBILE FAB + DRAWER ──────────────── -->
+<button class="mob-fab" id="mob-fab" onclick="openMobDrawer()">
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  Filtros
+</button>
+<div class="mob-overlay" id="mob-overlay" onclick="closeMobDrawer()"></div>
+<div class="mob-drawer" id="mob-drawer">
+  <div class="mob-drawer-handle">
+    <span class="mob-drawer-title">Filtros</span>
+    <button class="mob-drawer-close" onclick="closeMobDrawer()">✕</button>
+  </div>
+  <div class="mob-drawer-body">
+    <!-- Mode checkbox -->
+    <div style="border-bottom:1px solid var(--border)">
+      <label class="sidebar-mode-label">
+        <input type="checkbox" id="use-results-mob" onchange="onModeChangeMob(this)">
+        <span>Substituir jogos já ocorridos por resultados reais</span>
+      </label>
+    </div>
+    <!-- Group navigation -->
+    <div style="border-bottom:1px solid var(--border)">
+      <div class="sidebar-section-head">
+        <span class="sidebar-section-title">Grupos</span>
+      </div>
+      <div class="sidebar-tabs" id="group-tabs-mob" style="flex-direction:row;flex-wrap:wrap;padding:6px 8px;gap:5px"></div>
+    </div>
+    <!-- Participant filter -->
+    <div style="flex:1;overflow:hidden;display:flex;flex-direction:column">
+      <div class="sidebar-section-head">
+        <span class="sidebar-section-title">Apostadores</span>
+        <span class="sidebar-count" id="sidebar-count-mob"></span>
+      </div>
+      <div class="sidebar-actions">
+        <button class="sidebar-btn" onclick="selectAll()">Todos</button>
+        <button class="sidebar-btn" onclick="selectNone()">Nenhum</button>
+      </div>
+      <div class="sidebar-list" id="participant-list-mob" style="overflow-y:auto;flex:1;max-height:220px"></div>
+    </div>
+  </div>
+</div>
 
 <script src="bolao_utils.js"></script>
 <script>
@@ -433,8 +511,26 @@ var useActualResults = false;
 
 function onModeChange(cb) {
   useActualResults = cb.checked;
+  // keep both checkboxes in sync
+  var chk0 = document.getElementById('use-results');
+  var chkM = document.getElementById('use-results-mob');
+  if (chk0) chk0.checked = cb.checked;
+  if (chkM) chkM.checked = cb.checked;
   computeAllTeams();
   renderContent();
+}
+function onModeChangeMob(cb) { onModeChange(cb); }
+
+// ── Mobile drawer ─────────────────────────────────────────────────────────────
+function openMobDrawer() {
+  document.getElementById('mob-drawer').classList.add('open');
+  document.getElementById('mob-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeMobDrawer() {
+  document.getElementById('mob-drawer').classList.remove('open');
+  document.getElementById('mob-overlay').classList.remove('open');
+  document.body.style.overflow = '';
 }
 // ── State ─────────────────────────────────────────────────────────────────────
 var activeView = 'total'; // 'total', 'todos', or a group letter
@@ -502,7 +598,6 @@ function sortTeams(arr) {
 
 // ── Render tabs ───────────────────────────────────────────────────────────────
 function renderTabs() {
-  var tabsEl = document.getElementById('group-tabs');
   var html = '<button class="gtab' + (activeView === 'total' ? ' active' : '') +
              '" onclick="switchView(\'total\')">Geral</button>';
   html += '<button class="gtab' + (activeView === 'todos' ? ' active' : '') +
@@ -511,7 +606,8 @@ function renderTabs() {
     html += '<button class="gtab' + (activeView === g ? ' active' : '') +
             '" onclick="switchView(\'' + g + '\')">Grupo ' + g + '</button>';
   });
-  tabsEl.innerHTML = html;
+  document.getElementById('group-tabs').innerHTML     = html;
+  document.getElementById('group-tabs-mob').innerHTML = html;
 }
 
 // ── Build standings row HTML ──────────────────────────────────────────────────
@@ -641,14 +737,27 @@ function renderSidebar() {
     return '<label class="p-check"><input type="checkbox" value="' +
       p.replace(/"/g, '&quot;') + '"' + chk + ' onchange="toggleParticipant(this)"> ' + p + '</label>';
   }).join('');
-  document.getElementById('participant-list').innerHTML = html;
-  document.getElementById('sidebar-count').textContent = selectedParticipants.size + ' / ' + allParticipants.length;
+  document.getElementById('participant-list').innerHTML     = html;
+  document.getElementById('participant-list-mob').innerHTML = html;
+  var badge = selectedParticipants.size + ' / ' + allParticipants.length;
+  document.getElementById('sidebar-count').textContent     = badge;
+  document.getElementById('sidebar-count-mob').textContent = badge;
 }
 
 function toggleParticipant(cb) {
   if (cb.checked) selectedParticipants.add(cb.value);
   else selectedParticipants.delete(cb.value);
-  document.getElementById('sidebar-count').textContent = selectedParticipants.size + ' / ' + allParticipants.length;
+  // keep both lists in sync
+  ['participant-list', 'participant-list-mob'].forEach(function(listId) {
+    var el = document.getElementById(listId);
+    if (!el) return;
+    el.querySelectorAll('input[type=checkbox]').forEach(function(input) {
+      input.checked = selectedParticipants.has(input.value);
+    });
+  });
+  var badge = selectedParticipants.size + ' / ' + allParticipants.length;
+  document.getElementById('sidebar-count').textContent     = badge;
+  document.getElementById('sidebar-count-mob').textContent = badge;
   computeAllTeams();
   renderContent();
 }

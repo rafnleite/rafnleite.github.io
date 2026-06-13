@@ -304,11 +304,53 @@
 }
 
 
+/* ── MOBILE DRAWER ───────────────────────── */
+.mob-fab {
+  display: none;
+  position: fixed; bottom: 18px; right: 18px; z-index: 400;
+  background: var(--accent); color: #fff;
+  border: none; border-radius: 28px;
+  padding: 10px 18px 10px 14px;
+  font-family: 'Inter', sans-serif; font-size: 0.78rem; font-weight: 700;
+  box-shadow: 0 4px 16px rgba(0,0,0,.22);
+  cursor: pointer; align-items: center; gap: 7px;
+  transition: opacity .15s;
+}
+.mob-fab:hover { opacity: .88; }
+.mob-overlay {
+  display: none; position: fixed; inset: 0; z-index: 500;
+  background: rgba(0,0,0,.4); backdrop-filter: blur(2px);
+}
+.mob-overlay.open { display: block; }
+.mob-drawer {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 501;
+  background: var(--white); border-radius: 18px 18px 0 0;
+  box-shadow: 0 -4px 32px rgba(0,0,0,.18);
+  max-height: 82vh; display: flex; flex-direction: column;
+  transform: translateY(100%); transition: transform .28s cubic-bezier(.4,0,.2,1);
+}
+.mob-drawer.open { transform: translateY(0); }
+.mob-drawer-handle {
+  flex-shrink: 0; display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 16px 10px;
+  border-bottom: 1px solid var(--border);
+}
+.mob-drawer-title {
+  font-family: 'Bebas Neue', cursive; font-size: 1rem; letter-spacing: 2px; color: var(--text);
+  display: flex; align-items: center; gap: 8px;
+}
+.mob-drawer-close {
+  background: none; border: none; font-size: 1.3rem; color: var(--sub);
+  cursor: pointer; line-height: 1; padding: 2px 4px;
+}
+.mob-drawer-body { flex: 1; overflow-y: auto; display: flex; flex-direction: column; }
+
 /* ── RESPONSIVE ─────────────────────────── */
 @media (max-width: 800px) {
   .sidebar { display: none; }
-  .main-col { padding: 16px 12px 64px; }
+  .main-col { padding: 16px 12px 72px; }
   .bar-cell { display: none; }
+  .mob-fab { display: flex; }
 }
 @media (max-width: 480px) {
   .summary-row { grid-template-columns: 1fr 1fr; }
@@ -337,16 +379,6 @@
   <!-- ── MAIN COLUMN ─────────────────────── -->
   <div class="main-col">
 
-    <div class="card-actions">
-      <button class="btn-img" onclick="exportImage()">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-          <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
-          <polyline points="7,10 12,15 17,10"/>
-          <line x1="12" y1="15" x2="12" y2="3"/>
-        </svg>
-        Salvar imagem
-      </button>
-    </div>
     <div class="card" id="ranking-card">
       <div class="card-head">
         <span class="card-head-title">Ranking</span>
@@ -355,6 +387,13 @@
           <button class="rvt-btn active" id="btn-view-table" onclick="switchView('table')">Tabela</button>
           <button class="rvt-btn" id="btn-view-chart" onclick="switchView('chart')">Gráfico</button>
         </div>
+        <button class="btn-img" onclick="exportImage()" title="Salvar imagem">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+            <polyline points="7,10 12,15 17,10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+        </button>
       </div>
       <div id="view-table">
         <div class="info-strip">
@@ -427,6 +466,37 @@
     <div class="sidebar-scroll" id="sidebar-games"></div>
   </aside>
 
+</div>
+
+<!-- ── MOBILE FAB + DRAWER ──────────────── -->
+<button class="mob-fab" id="mob-fab" onclick="openMobDrawer()">
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  Simular
+</button>
+<div class="mob-overlay" id="mob-overlay" onclick="closeMobDrawer()"></div>
+<div class="mob-drawer" id="mob-drawer">
+  <div class="mob-drawer-handle">
+    <span class="mob-drawer-title">
+      ⚽ Simular partidas
+      <span class="sb-count-badge" id="sb-count-mob"></span>
+    </span>
+    <button class="mob-drawer-close" onclick="closeMobDrawer()">✕</button>
+  </div>
+  <div class="mob-drawer-body">
+    <div class="sidebar-actions">
+      <button class="sim-btn" onclick="useMostVoted()" title="Preencher com o palpite mais votado em cada jogo futuro">★ Mais votado</button>
+      <button class="sim-btn" onclick="resetSim()">Limpar</button>
+    </div>
+    <div class="sim-toggle-row">
+      <span class="sim-toggle-label">Considerar simulações</span>
+      <label class="sim-toggle-switch">
+        <input type="checkbox" id="sim-toggle-chk-mob" checked onchange="syncToggle(this)">
+        <span class="sim-toggle-track"></span>
+        <span class="sim-toggle-thumb"></span>
+      </label>
+    </div>
+    <div id="sidebar-games-mob" style="flex:1;overflow-y:auto"></div>
+  </div>
 </div>
 
 <script src="bolao_utils.js"></script>
@@ -565,9 +635,30 @@ function recomputeSim() {
 
 function toggleShowSim(checked) {
   showSim = checked;
+  // keep both toggles in sync
+  var chk0 = document.getElementById('sim-toggle-chk');
+  var chkM = document.getElementById('sim-toggle-chk-mob');
+  if (chk0) chk0.checked = checked;
+  if (chkM) chkM.checked = checked;
   renderRanking();
   updateSubtitle();
   if (document.getElementById('view-chart').style.display !== 'none') renderChart();
+}
+
+function syncToggle(el) {
+  toggleShowSim(el.checked);
+}
+
+// ── Mobile drawer ────────────────────────────────────────────────────────────
+function openMobDrawer() {
+  document.getElementById('mob-drawer').classList.add('open');
+  document.getElementById('mob-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeMobDrawer() {
+  document.getElementById('mob-drawer').classList.remove('open');
+  document.getElementById('mob-overlay').classList.remove('open');
+  document.body.style.overflow = '';
 }
 
 // ── Render ranking ───────────────────────────────────────────────────────────
@@ -737,25 +828,28 @@ function renderSidebar() {
     byDay[day].push(j);
   });
 
-  var el = document.getElementById('sidebar-games');
-  if (!JOGOS.length) {
-    el.innerHTML = '<div style="padding:20px;text-align:center;color:var(--sub);font-size:.72rem">Nenhum jogo encontrado.</div>';
-    return;
+  function buildHtml(pfx) {
+    if (!JOGOS.length) return '<div style="padding:20px;text-align:center;color:var(--sub);font-size:.72rem">Nenhum jogo encontrado.</div>';
+    return Object.keys(byDay).sort().map(function(day) {
+      var games = byDay[day].map(function(j) { return sidebarCardHtml(j, pfx); }).join('');
+      var n = byDay[day].length;
+      return '<div class="sim-day-header"><span>' + fmtDayHeader(day) + '</span>' +
+             '<span>' + n + (n === 1 ? ' jogo' : ' jogos') + '</span></div>' +
+             '<div class="sim-day-games">' + games + '</div>';
+    }).join('');
   }
 
-  el.innerHTML = Object.keys(byDay).sort().map(function(day) {
-    var games = byDay[day].map(function(j) { return sidebarCardHtml(j); }).join('');
-    var n = byDay[day].length;
-    return '<div class="sim-day-header"><span>' + fmtDayHeader(day) + '</span>' +
-           '<span>' + n + (n === 1 ? ' jogo' : ' jogos') + '</span></div>' +
-           '<div class="sim-day-games">' + games + '</div>';
-  }).join('');
+  document.getElementById('sidebar-games').innerHTML     = buildHtml('');
+  document.getElementById('sidebar-games-mob').innerHTML = buildHtml('m');
 
   var future = JOGOS.filter(function(j) { return j.gols_a === null && j.gols_b === null; }).length;
-  document.getElementById('sb-count').textContent = future + ' pendente' + (future !== 1 ? 's' : '');
+  var badge = future + ' pendente' + (future !== 1 ? 's' : '');
+  document.getElementById('sb-count').textContent     = badge;
+  document.getElementById('sb-count-mob').textContent = badge;
 }
 
-function sidebarCardHtml(j) {
+function sidebarCardHtml(j, pfx) {
+  pfx = pfx || '';
   var isDone = j.gols_a !== null && j.gols_b !== null;
   var fA = j.time_a.logo ? '<img src="' + j.time_a.logo + '" class="sim-flag" alt="">' : '';
   var fB = j.time_b.logo ? '<img src="' + j.time_b.logo + '" class="sim-flag" alt="">' : '';
@@ -773,9 +867,9 @@ function sidebarCardHtml(j) {
     var vB  = sv && sv.b !== null ? sv.b : '';
     midHtml =
       '<div class="sim-inputs">' +
-        '<input class="sim-inp" id="sia-' + j.id + '" type="number" min="0" max="30" value="' + vA + '" placeholder="—" oninput="onSim(' + j.id + ')">' +
-        '<span class="sim-vs">×</span>' +
-        '<input class="sim-inp" id="sib-' + j.id + '" type="number" min="0" max="30" value="' + vB + '" placeholder="—" oninput="onSim(' + j.id + ')">' +
+        '<input class="sim-inp" id="sia-' + pfx + j.id + '" type="number" min="0" max="30" value="' + vA + '" placeholder="\u2014" oninput="onSim(' + j.id + ')">' +
+        '<span class="sim-vs">\xd7</span>' +
+        '<input class="sim-inp" id="sib-' + pfx + j.id + '" type="number" min="0" max="30" value="' + vB + '" placeholder="\u2014" oninput="onSim(' + j.id + ')">' +
       '</div>';
   }
 
@@ -783,7 +877,7 @@ function sidebarCardHtml(j) {
   var filled = !isDone && sv2 && sv2.a !== null && sv2.b !== null;
   var cls    = isDone ? ' done' : (filled ? ' filled' : '');
 
-  return '<div class="sim-game-card' + cls + '" id="sgc-' + j.id + '">' +
+  return '<div class="sim-game-card' + cls + '" id="sgc-' + pfx + j.id + '">' +
     '<div class="sim-meta">' + meta + '</div>' +
     '<div class="sim-row">' +
       '<div class="sim-team-side">' + fA + '<span class="sim-team-lbl">' + j.time_a.nome + '</span></div>' +
@@ -795,17 +889,32 @@ function sidebarCardHtml(j) {
 
 // ── Simulator actions ────────────────────────────────────────────────────────
 function onSim(id) {
-  var aEl  = document.getElementById('sia-' + id);
-  var bEl  = document.getElementById('sib-' + id);
-  var card = document.getElementById('sgc-' + id);
-  if (!aEl || !bEl) return;
-  var a = aEl.value.trim(), b = bEl.value.trim();
+  // Read from whichever pair of inputs has the value (desktop or mobile)
+  var aEl  = document.getElementById('sia-'  + id) || document.getElementById('sia-m' + id);
+  var bEl  = document.getElementById('sib-'  + id) || document.getElementById('sib-m' + id);
+  var aElM = document.getElementById('sia-m' + id);
+  var bElM = document.getElementById('sib-m' + id);
+  var aEl0 = document.getElementById('sia-'  + id);
+  var bEl0 = document.getElementById('sib-'  + id);
+  // Determine which fired and sync the other
+  var a, b;
+  if (document.activeElement === aEl0 || document.activeElement === bEl0) {
+    a = aEl0 ? aEl0.value.trim() : ''; b = bEl0 ? bEl0.value.trim() : '';
+    if (aElM) aElM.value = a; if (bElM) bElM.value = b;
+  } else {
+    a = aElM ? aElM.value.trim() : ''; b = bElM ? bElM.value.trim() : '';
+    if (aEl0) aEl0.value = a; if (bEl0) bEl0.value = b;
+  }
+  var card0 = document.getElementById('sgc-'  + id);
+  var cardM = document.getElementById('sgc-m' + id);
   if (a !== '' && b !== '') {
     simScores[id] = { a: +a, b: +b };
-    if (card) card.classList.add('filled');
+    if (card0) card0.classList.add('filled');
+    if (cardM) cardM.classList.add('filled');
   } else {
     simScores[id] = null;
-    if (card) card.classList.remove('filled');
+    if (card0) card0.classList.remove('filled');
+    if (cardM) cardM.classList.remove('filled');
   }
   recomputeSim();
 }
@@ -822,12 +931,14 @@ function useMostVoted() {
     if (!top) return;
     var sp = top.split('x'), va = +sp[0] || 0, vb = +sp[1] || 0;
     simScores[j.id] = { a: va, b: vb };
-    var ia = document.getElementById('sia-' + j.id);
-    var ib = document.getElementById('sib-' + j.id);
-    var card = document.getElementById('sgc-' + j.id);
-    if (ia) ia.value = va;
-    if (ib) ib.value = vb;
-    if (card) card.classList.add('filled');
+    ['', 'm'].forEach(function(pfx) {
+      var ia = document.getElementById('sia-' + pfx + j.id);
+      var ib = document.getElementById('sib-' + pfx + j.id);
+      var card = document.getElementById('sgc-' + pfx + j.id);
+      if (ia) ia.value = va;
+      if (ib) ib.value = vb;
+      if (card) card.classList.add('filled');
+    });
   });
   recomputeSim();
 }
@@ -836,12 +947,14 @@ function resetSim() {
   simScores = {};
   JOGOS.forEach(function(j) {
     if (j.gols_a !== null && j.gols_b !== null) return;
-    var ia = document.getElementById('sia-' + j.id);
-    var ib = document.getElementById('sib-' + j.id);
-    var card = document.getElementById('sgc-' + j.id);
-    if (ia) ia.value = '';
-    if (ib) ib.value = '';
-    if (card) card.classList.remove('filled');
+    ['', 'm'].forEach(function(pfx) {
+      var ia = document.getElementById('sia-' + pfx + j.id);
+      var ib = document.getElementById('sib-' + pfx + j.id);
+      var card = document.getElementById('sgc-' + pfx + j.id);
+      if (ia) ia.value = '';
+      if (ib) ib.value = '';
+      if (card) card.classList.remove('filled');
+    });
   });
   recomputeSim();
 }

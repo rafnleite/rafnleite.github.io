@@ -304,6 +304,11 @@
   text-align: right;
   padding-right: 10px;
   max-width: 120px;
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  background: var(--white);
+  box-shadow: 2px 0 4px rgba(0,0,0,.06);
 }
 .matrix-table td {
   width: 38px;
@@ -427,20 +432,17 @@
     <div class="loading-spinner"></div>
     <div class="loading-text">Carregando dados...</div>
   </div>
-  <div class="card-actions">
-    <button class="btn-img" onclick="exportCardImage('ranking-card','bolao_consenso_ranking.png')">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
-        <polyline points="7,10 12,15 17,10"/>
-        <line x1="12" y1="15" x2="12" y2="3"/>
-      </svg>
-      Salvar imagem
-    </button>
-  </div>
   <div class="card" id="ranking-card">
     <div class="card-head">
       <span class="card-head-title">Ranking de Consenso</span>
       <span class="card-head-sub">Quanto cada participante concorda com os demais</span>
+      <button class="btn-img" onclick="exportCardImage('ranking-card','bolao_consenso_ranking.png')" title="Salvar imagem">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+          <polyline points="7,10 12,15 17,10"/>
+          <line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+      </button>
     </div>
     <div style="padding:12px 20px 14px;border-bottom:1px solid var(--border);background:#fafafa;font-size:0.75rem;color:var(--sub);line-height:1.6">
       <strong style="color:var(--text)">Como os pontos são calculados:</strong>
@@ -473,39 +475,33 @@
     </div>
   </div>
 
-  <div class="card-actions">
-    <button class="btn-img" onclick="exportCardImage('matrix-card','bolao_consenso_mapa_afinidade.png')">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
-        <polyline points="7,10 12,15 17,10"/>
-        <line x1="12" y1="15" x2="12" y2="3"/>
-      </svg>
-      Salvar imagem
-    </button>
-  </div>
   <div class="card" id="matrix-card">
     <div class="card-head">
       <span class="card-head-title">Mapa de Afinidade</span>
       <span class="card-head-sub">% de jogos em que cada par apostou no mesmo resultado</span>
+      <button class="btn-img" onclick="exportCardImage('matrix-card','bolao_consenso_mapa_afinidade.png')" title="Salvar imagem">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+          <polyline points="7,10 12,15 17,10"/>
+          <line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+      </button>
     </div>
     <div class="matrix-wrap">
       <table class="matrix-table" id="matrix-table"></table>
     </div>
   </div>
 
-  <div class="card-actions">
-    <button class="btn-img" onclick="exportCardImage('games-card','bolao_consenso_homogeneidade_jogos.png')">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
-        <polyline points="7,10 12,15 17,10"/>
-        <line x1="12" y1="15" x2="12" y2="3"/>
-      </svg>
-      Salvar imagem
-    </button>
-  </div>
   <div class="card" id="games-card">
     <div class="card-head">
       <span class="card-head-title">Homogeneidade por Jogo</span>
+      <button class="btn-img" onclick="exportCardImage('games-card','bolao_consenso_homogeneidade_jogos.png')" title="Salvar imagem">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+          <polyline points="7,10 12,15 17,10"/>
+          <line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+      </button>
     </div>
     <div class="sort-tabs">
       <button class="sort-tab" onclick="setSortGames('homo-desc')">Mais consenso primeiro</button>
