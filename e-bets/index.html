@@ -123,6 +123,19 @@
       align-items: center;
       gap: 5px;
     }
+
+    @media (max-width: 520px) {
+      html, body { padding: 24px 14px; justify-content: flex-start; padding-top: 40px; }
+      .hero { margin-bottom: 32px; }
+      .hero h1 { font-size: 2.4rem; letter-spacing: 4px; }
+      .hero p { font-size: 0.68rem; }
+      .cards { grid-template-columns: 1fr; gap: 14px; }
+      .page-card { padding: 22px 20px; flex-direction: row; align-items: center; gap: 16px; }
+      .card-icon { font-size: 1.6rem; flex-shrink: 0; }
+      .card-title { font-size: 1.15rem; }
+      .card-desc { font-size: 0.72rem; }
+      .card-arrow { display: none; }
+    }
   </style>
 </head>
 

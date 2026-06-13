@@ -80,6 +80,14 @@
   height:2px;\
   background:var(--accent);\
 }\
+@media(max-width:640px){\
+  .page-header{min-height:48px;}\
+  .logo-title{padding:8px 14px;}\
+  .logo-title h1{font-size:1.05rem;letter-spacing:2px;}\
+  .logo-title p{display:none;}\
+  .header-nav{overflow-x:auto;-webkit-overflow-scrolling:touch;flex-shrink:1;}\
+  .nav-link{padding:0 14px;font-size:0.6rem;letter-spacing:1px;}\
+}\
 ';
 
   var PAGES = [
