@@ -1,154 +1,174 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bolão Copa 2026</title>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600;700;800&display=swap');
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bolão Copa 2026</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600;700;800&display=swap');
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-:root {
-  --bg: #f0f2f5;
-  --white: #ffffff;
-  --border: #e0e3ea;
-  --text: #111827;
-  --sub: #6b7280;
-  --accent: #166534;
-  --accent-light: #dcfce7;
-  --radius: 16px;
-}
+    :root {
+      --bg: #f0f2f5;
+      --white: #ffffff;
+      --border: #e0e3ea;
+      --text: #111827;
+      --sub: #6b7280;
+      --accent: #166534;
+      --accent-light: #dcfce7;
+      --radius: 16px;
+    }
 
-html, body {
-  min-height: 100vh;
-  background: var(--bg);
-  font-family: 'Inter', sans-serif;
-  color: var(--text);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 32px 16px;
-}
+    html,
+    body {
+      min-height: 100vh;
+      background: var(--bg);
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 16px;
+    }
 
-.hero {
-  text-align: center;
-  margin-bottom: 48px;
-}
-.hero h1 {
-  font-family: 'Bebas Neue', cursive;
-  font-size: 3.2rem;
-  letter-spacing: 6px;
-  color: var(--accent);
-  line-height: 1;
-}
-.hero p {
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: var(--sub);
-  margin-top: 6px;
-}
+    .hero {
+      text-align: center;
+      margin-bottom: 48px;
+    }
 
-.cards {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
-  max-width: 560px;
-  width: 100%;
-}
+    .hero h1 {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 3.2rem;
+      letter-spacing: 6px;
+      color: var(--accent);
+      line-height: 1;
+    }
 
-.page-card {
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 28px 24px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 10px;
-  text-decoration: none;
-  color: var(--text);
-  box-shadow: 0 2px 12px rgba(0,0,0,.06);
-  transition: transform .15s, box-shadow .15s, border-color .15s;
-}
-.page-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 28px rgba(0,0,0,.12);
-  border-color: var(--accent);
-}
+    .hero p {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--sub);
+      margin-top: 6px;
+    }
 
-.card-icon {
-  font-size: 2rem;
-  line-height: 1;
-}
-.card-title {
-  font-family: 'Bebas Neue', cursive;
-  font-size: 1.4rem;
-  letter-spacing: 3px;
-  color: var(--text);
-  line-height: 1.1;
-}
-.card-desc {
-  font-size: 0.75rem;
-  color: var(--sub);
-  line-height: 1.6;
-  font-weight: 400;
-}
-.card-arrow {
-  margin-top: auto;
-  padding-top: 14px;
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: var(--accent);
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-</style>
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      max-width: 560px;
+      width: 100%;
+    }
+
+    .page-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text);
+      box-shadow: 0 2px 12px rgba(0, 0, 0, .06);
+      transition: transform .15s, box-shadow .15s, border-color .15s;
+    }
+
+    .page-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 28px rgba(0, 0, 0, .12);
+      border-color: var(--accent);
+    }
+
+    .card-icon {
+      font-size: 2rem;
+      line-height: 1;
+    }
+
+    .card-title {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 1.4rem;
+      letter-spacing: 3px;
+      color: var(--text);
+      line-height: 1.1;
+    }
+
+    .card-desc {
+      font-size: 0.75rem;
+      color: var(--sub);
+      line-height: 1.6;
+      font-weight: 400;
+    }
+
+    .card-arrow {
+      margin-top: auto;
+      padding-top: 14px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+  </style>
 </head>
+
 <body>
 
-<div class="hero">
-  <h1>Bolão Copa 2026</h1>
-  <p>Escolha uma página</p>
-</div>
+  <div class="hero">
+    <h1>Bolão Copa 2026</h1>
+    <p>Escolha uma página</p>
+  </div>
 
-<div class="cards">
+  <div class="cards">
 
-  <a class="page-card" href="bolao_apostas.html">
-    <div class="card-icon">🏆</div>
-    <div class="card-title">Apostas por Jogo</div>
-    <div class="card-desc">Veja os palpites de cada participante em todos os jogos da Copa, com placar e distribuição de apostas.</div>
-    <div class="card-arrow">Acessar →</div>
-  </a>
+    <a class="page-card" href="bolao_ranking.html">
+      <div class="card-icon">🏅</div>
+      <div class="card-title">Ranking do Bolão</div>
+      <div class="card-desc">Pontuação real de cada apostador com critérios oficiais. Simule resultados dos jogos
+        futuros e veja como o ranking mudaria.</div>
+      <div class="card-arrow">Acessar →</div>
+    </a>
 
-  <a class="page-card" href="bolao_ranking_consenso.html">
-    <div class="card-icon">🤝</div>
-    <div class="card-title">Ranking de Consenso</div>
-    <div class="card-desc">Descubra quem aposta igual à maioria ("Maria vai com as outras") e quem é o diferentão do bolão.</div>
-    <div class="card-arrow">Acessar →</div>
-  </a>
+    <a class="page-card" href="bolao_apostas.html">
+      <div class="card-icon">🏆</div>
+      <div class="card-title">Apostas por Jogo</div>
+      <div class="card-desc">Veja os palpites de cada participante em todos os jogos da Copa, com placar e distribuição
+        de apostas.</div>
+      <div class="card-arrow">Acessar →</div>
+    </a>
 
-  <a class="page-card" href="bolao_ranking_selecoes.html">
-    <div class="card-icon">🌍</div>
-    <div class="card-title">Ranking de Seleções</div>
-    <div class="card-desc">Classificação esperada de todas as seleções por grupo, com pontos, saldo de gols e melhores terceiros colocados.</div>
-    <div class="card-arrow">Acessar →</div>
-  </a>
+    <a class="page-card" href="bolao_ranking_selecoes.html">
+      <div class="card-icon">🌍</div>
+      <div class="card-title">Ranking de Seleções</div>
+      <div class="card-desc">Classificação esperada de todas as seleções por grupo, com pontos, saldo de gols e melhores
+        terceiros colocados.</div>
+      <div class="card-arrow">Acessar →</div>
+    </a>
 
-  <a class="page-card" href="bolao_ranking.html">
-    <div class="card-icon">🏅</div>
-    <div class="card-title">Ranking do Bolão</div>
-    <div class="card-desc">Pontuação real de cada apostador com critérios oficiais. Simule resultados dos jogos futuros e veja como o ranking mudaria.</div>
-    <div class="card-arrow">Acessar →</div>
-  </a>
+    <a class="page-card" href="bolao_ranking_consenso.html">
+      <div class="card-icon">🤝</div>
+      <div class="card-title">Ranking de Consenso</div>
+      <div class="card-desc">Descubra quem aposta igual à maioria ("Maria vai com as outras") e quem é o diferentão do
+        bolão.</div>
+      <div class="card-arrow">Acessar →</div>
+    </a>
 
-</div>
+  </div>
 
 </body>
+
 </html>
