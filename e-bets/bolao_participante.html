@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Participante – Bolão Copa 2026</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script src="bolao_header.js"></script>
+<link rel="stylesheet" href="bolao_styles.css">
+<style>
+/* ── PAGE LAYOUT ─────────────────────────── */
+.part-layout {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 24px 20px 72px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ── PLAYER SELECTOR ─────────────────────── */
+.player-selector-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.player-arrow {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  color: var(--text);
+  font-size: 0.9rem;
+  width: 30px; height: 30px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .12s; flex-shrink: 0;
+}
+.player-arrow:hover { background: var(--accent); border-color: var(--accent); color: white; }
+.player-select {
+  flex: 1; min-width: 160px;
+  font-family: 'Inter', sans-serif; font-size: 0.78rem; font-weight: 600;
+  color: var(--text); background: var(--white);
+  border: 1.5px solid var(--border); border-radius: 7px;
+  padding: 6px 10px; cursor: pointer; outline: none;
+  transition: border-color .15s;
+}
+.player-select:focus { border-color: var(--accent); }
+
+/* ── HERO CARD ───────────────────────────── */
+.hero-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0,0,0,.05);
+  padding: 24px 28px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.hero-pos {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 3.5rem;
+  line-height: 1;
+  letter-spacing: 2px;
+  color: var(--light);
+  flex-shrink: 0;
+  width: 56px;
+  text-align: center;
+}
+.hero-pos.gold   { color: #ca8a04; }
+.hero-pos.silver { color: #6b7280; }
+.hero-pos.bronze { color: #92400e; }
+.hero-info { flex: 1; min-width: 0; }
+.hero-name {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 2rem; letter-spacing: 2px;
+  color: var(--text); line-height: 1;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.hero-sub { font-size: 0.68rem; color: var(--sub); margin-top: 4px; font-weight: 500; }
+.hero-pts-wrap { text-align: right; flex-shrink: 0; }
+.hero-pts-num {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 3rem; line-height: 1; letter-spacing: 2px;
+  color: var(--accent);
+}
+.hero-pts-label { font-size: 0.58rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--sub); }
+
+/* ── STATS GRID ──────────────────────────── */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.stat-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  display: flex; flex-direction: column; gap: 3px;
+}
+.stat-card-label {
+  font-size: 0.57rem; font-weight: 700; letter-spacing: 1.5px;
+  text-transform: uppercase; color: var(--sub);
+}
+.stat-card-value {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 1.9rem; letter-spacing: 2px; color: var(--text); line-height: 1;
+}
+.stat-card-sub { font-size: 0.63rem; color: var(--light); font-weight: 500; }
+
+/* ── DISTRIBUTION BAR ────────────────────── */
+.dist-bar-wrap {
+  display: flex;
+  height: 22px;
+  border-radius: 6px;
+  overflow: hidden;
+  margin: 10px 0 6px;
+}
+.dist-seg {
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.6rem; font-weight: 700; color: white;
+  transition: width .4s ease;
+  min-width: 0;
+  overflow: hidden;
+}
+.dist-seg.a   { background: #2563eb; }
+.dist-seg.emp { background: #9ca3af; }
+.dist-seg.b   { background: #dc2626; }
+.dist-legend {
+  display: flex; gap: 12px; flex-wrap: wrap;
+  font-size: 0.63rem; font-weight: 600; color: var(--sub);
+}
+.dist-legend span { display: flex; align-items: center; gap: 4px; }
+.dist-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+/* ── CHART CARD ──────────────────────────── */
+.chart-area {
+  position: relative;
+  height: 300px;
+  padding: 12px 12px 4px;
+}
+
+/* ── PAGINATION ─────────────────────────── */
+.bets-pager {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px 10px;
+  border-top: 1px solid var(--border);
+  gap: 8px;
+}
+.bets-pager-info { font-size: 0.62rem; color: var(--sub); white-space: nowrap; }
+.bets-pager-btns { display: flex; gap: 4px; }
+.pg-btn {
+  font-family: 'Inter', sans-serif; font-size: 0.62rem; font-weight: 700;
+  padding: 3px 9px; border-radius: 5px; border: 1.5px solid var(--border);
+  background: var(--white); color: var(--sub); cursor: pointer; transition: all .12s;
+}
+.pg-btn:hover:not(:disabled) { background: var(--accent); border-color: var(--accent); color: white; }
+.pg-btn:disabled { opacity: .32; cursor: not-allowed; }
+.pg-btn.active { background: var(--accent); border-color: var(--accent); color: white; }
+.pg-input {
+  font-family: 'Inter', sans-serif; font-size: 0.62rem; font-weight: 700;
+  width: 36px; height: 26px; text-align: center;
+  border: 1.5px solid var(--border); border-radius: 5px;
+  background: var(--white); color: var(--text); outline: none;
+  transition: border-color .15s;
+}
+.pg-input:focus { border-color: var(--accent); }
+.pg-input::-webkit-outer-spin-button, .pg-input::-webkit-inner-spin-button { -webkit-appearance: none; }
+.pg-input[type=number] { -moz-appearance: textfield; }
+
+/* ── BETS LIST ───────────────────────────── */
+.bets-list { display: flex; flex-direction: column; }
+.bet-row {
+  display: flex; align-items: center;
+  padding: 9px 16px;
+  border-bottom: 1px solid var(--border);
+  gap: 10px;
+  font-size: 0.72rem;
+}
+.bet-row:last-child { border-bottom: none; }
+.bet-row.hit   { background: #f0fdf4; }
+.bet-row.miss  { background: #fef2f2; }
+.bet-row.partial { background: #fffbeb; }
+.bet-row.future { background: var(--white); }
+.bet-meta { color: var(--sub); font-size: 0.58rem; white-space: nowrap; flex-shrink: 0; min-width: 60px; }
+.bet-teams { flex: 1; font-weight: 600; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bet-score { font-family: 'Bebas Neue', cursive; font-size: 1rem; letter-spacing: 1px; color: var(--text); flex-shrink: 0; white-space: nowrap; }
+.bet-palpite { font-size: 0.62rem; color: var(--sub); flex-shrink: 0; white-space: nowrap; }
+.bet-pts-badge {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 0.95rem;
+  width: 32px; text-align: right;
+  flex-shrink: 0;
+}
+.bet-pts-badge.full    { color: #166534; }
+.bet-pts-badge.partial { color: #b45309; }
+.bet-pts-badge.zero    { color: #ef4444; }
+.bet-pts-badge.future  { color: var(--light); }
+
+.bets-empty { padding: 24px 16px; text-align: center; color: var(--sub); font-size: 0.72rem; }
+
+/* ── STREAKS ─────────────────────────────── */
+.extra-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+/* ── RESPONSIVE ──────────────────────────── */
+@media (max-width: 600px) {
+  .part-layout { padding: 14px 12px 56px; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .extra-grid { grid-template-columns: 1fr; }
+  .hero-pos { font-size: 2.5rem; width: 42px; }
+  .hero-name { font-size: 1.5rem; }
+  .hero-pts-num { font-size: 2.2rem; }
+  .bet-palpite { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div id="site-header"></div>
+<script>injectHeader('participante', 'Dados do Participante');</script>
+
+<div id="loading-overlay">
+  <div class="loading-spinner"></div>
+  <div class="loading-text">Carregando dados...</div>
+</div>
+
+<div class="part-layout" id="main-content" style="display:none">
+
+  <!-- ── SELETOR ─────────────────────────── -->
+  <div class="card" id="selector-card">
+    <div class="card-head" style="flex-wrap:nowrap">
+      <span class="card-head-title">Participante</span>
+      <div class="player-selector-bar">
+        <button class="player-arrow" id="btn-prev" onclick="stepPlayer(-1)" title="Anterior">&#8249;</button>
+        <select class="player-select" id="player-select" onchange="selectPlayer(this.value)"></select>
+        <button class="player-arrow" id="btn-next" onclick="stepPlayer(1)" title="Próximo">&#8250;</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── HERO ────────────────────────────── -->
+  <div class="hero-card" id="hero-card">
+    <div class="hero-pos" id="hero-pos">—</div>
+    <div class="hero-info">
+      <div class="hero-name" id="hero-name">—</div>
+    </div>
+    <div class="hero-pts-wrap">
+      <div class="hero-pts-num" id="hero-pts">—</div>
+      <div class="hero-pts-label">pontos</div>
+    </div>
+  </div>
+
+  <!-- ── STATS ───────────────────────────── -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-card-label">Resultados</div>
+      <div class="stat-card-value" id="s-res">—</div>
+      <div class="stat-card-sub" id="s-res-sub">—</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-label">Vencedores</div>
+      <div class="stat-card-value" id="s-ven">—</div>
+      <div class="stat-card-sub" id="s-ven-sub">—</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-label">Empates</div>
+      <div class="stat-card-value" id="s-emp">—</div>
+      <div class="stat-card-sub" id="s-emp-sub">—</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-label">Gols exatos</div>
+      <div class="stat-card-value" id="s-gol">—</div>
+      <div class="stat-card-sub" id="s-gol-sub">—</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-label">Dif. de gols exata</div>
+      <div class="stat-card-value" id="s-dif">—</div>
+      <div class="stat-card-sub" id="s-dif-sub">—</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-label">Pontos / jogo</div>
+      <div class="stat-card-value" id="s-avg">—</div>
+      <div class="stat-card-sub" id="s-avg-sub">—</div>
+    </div>
+  </div>
+
+  <!-- ── EXTRAS: distribuição + sequências ── -->
+  <div class="extra-grid">
+    <div class="card" id="card-dist">
+      <div class="card-head">
+        <span class="card-head-title">Distribuição de palpites</span>
+
+      </div>
+      <div style="padding:12px 16px 16px">
+        <div class="dist-bar-wrap" id="dist-bar">
+          <div class="dist-seg a"   id="dist-a">—</div>
+          <div class="dist-seg emp" id="dist-e">—</div>
+          <div class="dist-seg b"   id="dist-b">—</div>
+        </div>
+        <div class="dist-legend">
+          <span><span class="dist-dot" style="background:#2563eb"></span><span id="dist-la">—</span></span>
+          <span><span class="dist-dot" style="background:#9ca3af"></span><span id="dist-le">—</span></span>
+          <span><span class="dist-dot" style="background:#dc2626"></span><span id="dist-lb">—</span></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" id="card-streaks">
+      <div class="card-head">
+        <span class="card-head-title">Sequências</span>
+      </div>
+      <div style="padding:14px 16px 16px; display:flex; flex-direction:column; gap:12px;">
+        <div class="stat-card" style="border:none;padding:0;gap:2px;">
+          <div class="stat-card-label">Sequência atual de acertos</div>
+          <div class="stat-card-value" id="s-streak-cur">—</div>
+          <div class="stat-card-sub" id="s-streak-cur-sub">—</div>
+        </div>
+        <div style="height:1px;background:var(--border)"></div>
+        <div class="stat-card" style="border:none;padding:0;gap:2px;">
+          <div class="stat-card-label">Maior sequência do bolão</div>
+          <div class="stat-card-value" id="s-streak-max">—</div>
+          <div class="stat-card-sub" id="s-streak-max-sub">—</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── EVOLUÇÃO DA CLASSIFICAÇÃO ─────────── -->
+  <div class="card">
+    <div class="card-head">
+      <span class="card-head-title">Evolução da classificação</span>
+      <span class="card-head-sub" id="chart-sub">jogo a jogo</span>
+    </div>
+    <div class="chart-area">
+      <canvas id="pos-chart"></canvas>
+    </div>
+  </div>
+
+  <!-- ── APOSTAS REALIZADAS ─────────────────── -->
+  <div class="card">
+    <div class="card-head">
+      <span class="card-head-title">Apostas realizadas</span>
+      <span class="card-head-sub" id="past-sub">—</span>
+    </div>
+    <div class="bets-list" id="past-bets"></div>
+    <div class="bets-pager" id="past-pager" style="display:none">
+      <span class="bets-pager-info" id="past-pager-info"></span>
+      <div class="bets-pager-btns" id="past-pager-btns"></div>
+    </div>
+  </div>
+
+  <!-- ── PRÓXIMAS APOSTAS ─────────────────── -->
+  <div class="card">
+    <div class="card-head">
+      <span class="card-head-title">Próximas apostas</span>
+      <span class="card-head-sub" id="next-sub">—</span>
+    </div>
+    <div class="bets-list" id="next-bets"></div>
+    <div class="bets-pager" id="next-pager" style="display:none">
+      <span class="bets-pager-info" id="next-pager-info"></span>
+      <div class="bets-pager-btns" id="next-pager-btns"></div>
+    </div>
+  </div>
+
+</div>
+
+<script src="bolao_utils.js"></script>
+<script>
+// ── Constants ─────────────────────────────────────────────────────────────────
+var PLAYER_COLORS = [
+  '#2563eb','#dc2626','#16a34a','#ca8a04','#9333ea',
+  '#ea580c','#0891b2','#db2777','#84cc16','#0284c7',
+  '#7c3aed','#c2410c','#15803d','#a16207','#1d4ed8',
+  '#be123c','#0f766e','#92400e','#6d28d9','#b45309',
+  '#0369a1','#047857','#1e40af','#b91c1c','#7e22ce'
+];
+
+// ── State ─────────────────────────────────────────────────────────────────────
+var JOGOS       = [];
+var scoreboard  = {};  // { nome: { pts, res, ven, emp, gol, dif, game_pts:{id:pts} } }
+var gameHistory = [];  // [{ jogo, posMap }]
+var sortedPlayers = []; // sorted by final rank
+var colorMap    = {};
+var currentNome = null;
+var posChart    = null;
+
+// ── Scoring helpers ───────────────────────────────────────────────────────────
+function calcBreakdown(betA, betB, realA, realB) {
+  var gol = (betA === realA ? 1 : 0) + (betB === realB ? 1 : 0);
+  var dif = (betA - betB) === (realA - realB) ? 1 : 0;
+  var bR = betA > betB ? 'A' : betA < betB ? 'B' : 'E';
+  var rR = realA > realB ? 'A' : realA < realB ? 'B' : 'E';
+  var isRes = bR === rR ? 1 : 0;
+  var isVen = (isRes && rR !== 'E') ? 1 : 0;
+  var isEmp = (isRes && rR === 'E') ? 1 : 0;
+  var pts = gol + dif + (isRes ? (rR === 'E' ? 1 : 2) : 0);
+  return { pts: pts, res: isRes, ven: isVen, emp: isEmp, gol: gol, dif: dif };
+}
+
+function getMultiplier(j) {
+  var g = (j.grupo || '').toUpperCase().trim();
+  if (!g || /^[A-L]$/.test(g)) return 1;
+  if (/^3/.test(g) || g === 'TER') return 4;
+  if (g === 'FIN' || g === 'FINAL') return 10;
+  return 1;
+}
+
+// ── Build data ────────────────────────────────────────────────────────────────
+async function buildJogos() {
+  var res = await Promise.all([
+    fetchAll('/jogo'), fetchAll('/aposta'), fetchAll('/grupo'),
+    fetchAll('/time'), fetchAll('/chutador')
+  ]);
+  var jogos = res[0], apostas = res[1], grupos = res[2], times = res[3], chutadores = res[4];
+  var gMap = {}, tMap = {}, cMap = {}, aPorJ = {};
+  grupos.forEach(function(g) { gMap[g.id_grupo] = g; });
+  times.forEach(function(t) { tMap[t.id_time] = t; });
+  chutadores.forEach(function(c) { cMap[c.id_chutador] = c; });
+  apostas.forEach(function(a) {
+    if (!aPorJ[a.id_jogo]) aPorJ[a.id_jogo] = [];
+    aPorJ[a.id_jogo].push(a);
+  });
+  var list = jogos.map(function(j) {
+    var gr = gMap[j.id_grupo] || {}, tA = tMap[j.id_time_a] || {}, tB = tMap[j.id_time_b] || {};
+    var aA = [], aE = [], aB = [];
+    (aPorJ[j.id_jogo] || []).forEach(function(a) {
+      var ch = cMap[a.id_chutador] || {};
+      var e = { nome: ch.nome || '?', placar: a.gols_a + 'x' + a.gols_b };
+      if (a.gols_a > a.gols_b) aA.push(e);
+      else if (a.gols_a < a.gols_b) aB.push(e);
+      else aE.push(e);
+    });
+    return {
+      id: j.id_jogo,
+      data: j.data ? j.data.slice(0, 16).replace('T', ' ') : null,
+      grupo: gr.sigla || '', cidade: j.cidade || '',
+      time_a: { nome: tA.nome || '', logo: tA.logo || '' },
+      time_b: { nome: tB.nome || '', logo: tB.logo || '' },
+      gols_a: j.gols_a, gols_b: j.gols_b,
+      apostadores_a: aA, apostadores_empate: aE, apostadores_b: aB
+    };
+  });
+  list.sort(function(a, b) {
+    return !a.data ? 1 : !b.data ? -1 : a.data < b.data ? -1 : a.data > b.data ? 1 : 0;
+  });
+  await applyESPNOverrides(list);
+  return list;
+}
+
+function buildScoreboard() {
+  scoreboard = {};
+  JOGOS.forEach(function(j) {
+    [].concat(j.apostadores_a, j.apostadores_empate, j.apostadores_b)
+      .forEach(function(a) { if (!scoreboard[a.nome]) scoreboard[a.nome] = { pts:0, res:0, ven:0, emp:0, gol:0, dif:0, game_pts:{} }; });
+    if (j.gols_a === null || j.gols_b === null) return;
+    var mult = getMultiplier(j);
+    [].concat(j.apostadores_a, j.apostadores_empate, j.apostadores_b).forEach(function(a) {
+      var p = a.placar.split('x');
+      var bd = calcBreakdown(+p[0]||0, +p[1]||0, j.gols_a, j.gols_b);
+      var s = scoreboard[a.nome];
+      s.pts  += bd.pts * mult; s.res += bd.res; s.ven += bd.ven;
+      s.emp  += bd.emp; s.gol += bd.gol; s.dif += bd.dif;
+      s.game_pts[j.id] = (s.game_pts[j.id] || 0) + bd.pts * mult;
+    });
+  });
+}
+
+function rankPlayers() {
+  var players = Object.keys(scoreboard);
+  players.sort(function(a, b) {
+    var sa = scoreboard[a], sb = scoreboard[b];
+    if (sb.pts !== sa.pts) return sb.pts - sa.pts;
+    if (sb.res !== sa.res) return sb.res - sa.res;
+    if (sb.ven !== sa.ven) return sb.ven - sa.ven;
+    if (sb.emp !== sa.emp) return sb.emp - sa.emp;
+    return a.localeCompare(b, 'pt-BR', { sensitivity: 'base' });
+  });
+  return players;
+}
+
+function buildGameHistory() {
+  var done = JOGOS.filter(function(j) { return j.gols_a !== null && j.gols_b !== null; });
+  var players = Object.keys(scoreboard);
+  var acc = {};
+  players.forEach(function(n) { acc[n] = {pts:0,res:0,ven:0,emp:0}; });
+
+  gameHistory = done.map(function(j) {
+    var mult = getMultiplier(j);
+    [].concat(j.apostadores_a, j.apostadores_empate, j.apostadores_b).forEach(function(a) {
+      if (!acc[a.nome]) return;
+      var sp = a.placar.split('x');
+      var bd = calcBreakdown(+sp[0]||0, +sp[1]||0, j.gols_a, j.gols_b);
+      var r = acc[a.nome];
+      r.pts += bd.pts*mult; r.res += bd.res; r.ven += bd.ven; r.emp += bd.emp;
+    });
+    var entries = players.map(function(n) { var r=acc[n]; return {nome:n,pts:r.pts,res:r.res,ven:r.ven,emp:r.emp}; });
+    entries.sort(function(a,b) {
+      return b.pts!==a.pts?b.pts-a.pts : b.res!==a.res?b.res-a.res :
+             b.ven!==a.ven?b.ven-a.ven : b.emp!==a.emp?b.emp-a.emp :
+             a.nome.localeCompare(b.nome,'pt-BR',{sensitivity:'base'});
+    });
+    var posMap = {};
+    var rank = 1;
+    entries.forEach(function(e, i) {
+      if (i > 0 && (e.pts !== entries[i-1].pts || e.res !== entries[i-1].res ||
+                    e.ven !== entries[i-1].ven || e.emp !== entries[i-1].emp)) rank = i + 1;
+      posMap[e.nome] = rank;
+    });
+    return { jogo: j, posMap: posMap };
+  });
+}
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+function fmtDate(str) {
+  if (!str) return '';
+  var d = new Date(str.replace(' ', 'T') + ':00');
+  return WEEKDAY[d.getDay()] + ' ' + d.getDate() + '/' + (d.getMonth()+1);
+}
+
+function fmtHora(str) {
+  if (!str) return '';
+  return str.slice(11, 16) + 'h';
+}
+
+function pct(n, total) {
+  if (!total) return '0%';
+  return Math.round(n / total * 100) + '%';
+}
+
+function getBetFor(j, nome) {
+  var all = [].concat(j.apostadores_a, j.apostadores_empate, j.apostadores_b);
+  for (var i = 0; i < all.length; i++) {
+    if (all[i].nome === nome) return all[i].placar;
+  }
+  return null;
+}
+
+// ── Populate player selector ──────────────────────────────────────────────────
+function populateSelector(players) {
+  var sel = document.getElementById('player-select');
+  sel.innerHTML = players.map(function(n) {
+    var safe = n.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    return '<option value="' + safe + '">' + safe + '</option>';
+  }).join('');
+}
+
+function stepPlayer(dir) {
+  var idx = sortedPlayers.indexOf(currentNome);
+  var next = sortedPlayers[(idx + dir + sortedPlayers.length) % sortedPlayers.length];
+  document.getElementById('player-select').value = next;
+  selectPlayer(next);
+}
+
+// ── Render profile ────────────────────────────────────────────────────────────
+function renderProfile(nome) {
+  var s = scoreboard[nome];
+  var N = sortedPlayers.length;
+  var done = JOGOS.filter(function(j){ return j.gols_a!==null&&j.gols_b!==null; });
+  var total = JOGOS.length;
+  // Compute tied rank for this player (standard competition ranking: 1,2,2,4)
+  var idx = sortedPlayers.indexOf(nome);
+  var pos = 1;
+  for (var ri = 1; ri <= idx; ri++) {
+    var sp = scoreboard[sortedPlayers[ri-1]], sc2 = scoreboard[sortedPlayers[ri]];
+    if (sp.pts !== sc2.pts || sp.res !== sc2.res || sp.ven !== sc2.ven || sp.emp !== sc2.emp) pos = ri + 1;
+  }
+
+  // Hero
+  var posEl = document.getElementById('hero-pos');
+  posEl.textContent = pos;
+  posEl.className = 'hero-pos' + (pos===1?' gold':pos===2?' silver':pos===3?' bronze':'');
+  document.getElementById('hero-name').textContent = nome;
+  document.getElementById('hero-pts').textContent  = s.pts;
+  // hero-sub removed (redundant info)
+
+  // Stats grid
+  var playedForPlayer = done.filter(function(j) {
+    return [].concat(j.apostadores_a, j.apostadores_empate, j.apostadores_b).some(function(a){ return a.nome === nome; });
+  }).length;
+  var avgPts = playedForPlayer ? (s.pts / playedForPlayer).toFixed(1) : '—';
+  var maxPossible = 0;
+  done.forEach(function(j) {
+    var hasbet = [].concat(j.apostadores_a, j.apostadores_empate, j.apostadores_b).some(function(a){ return a.nome === nome; });
+    if (hasbet) maxPossible += 5 * getMultiplier(j);
+  });
+  var effPct = maxPossible ? Math.round(s.pts / maxPossible * 100) + '%' : '—';
+
+  document.getElementById('s-res').textContent     = s.res;
+  document.getElementById('s-res-sub').textContent = pct(s.res, playedForPlayer) + ' de ' + playedForPlayer + ' jogos';
+  document.getElementById('s-ven').textContent     = s.ven;
+  document.getElementById('s-ven-sub').textContent = pct(s.ven, playedForPlayer) + ' dos jogos apostados';
+  document.getElementById('s-emp').textContent     = s.emp;
+  document.getElementById('s-emp-sub').textContent = pct(s.emp, playedForPlayer) + ' dos jogos apostados';
+  document.getElementById('s-gol').textContent     = s.gol;
+  document.getElementById('s-gol-sub').textContent = s.gol + ' gols individuais exatos';
+  document.getElementById('s-dif').textContent     = s.dif;
+  document.getElementById('s-dif-sub').textContent = pct(s.dif, playedForPlayer) + ' dos jogos apostados';
+  document.getElementById('s-avg').textContent     = avgPts;
+  document.getElementById('s-avg-sub').textContent = effPct + ' do máximo possível';
+
+  // Distribution
+  var bA = 0, bE = 0, bB = 0;
+  JOGOS.forEach(function(j) {
+    if (j.apostadores_a.some(function(a){ return a.nome===nome; })) bA++;
+    else if (j.apostadores_empate.some(function(a){ return a.nome===nome; })) bE++;
+    else if (j.apostadores_b.some(function(a){ return a.nome===nome; })) bB++;
+  });
+  var bTotal = bA + bE + bB || 1;
+  var pA = Math.round(bA/bTotal*100), pE = Math.round(bE/bTotal*100), pB = 100 - pA - pE;
+  document.getElementById('dist-a').style.width = pA + '%';
+  document.getElementById('dist-e').style.width = pE + '%';
+  document.getElementById('dist-b').style.width = pB + '%';
+  document.getElementById('dist-a').textContent = pA >= 8 ? pA + '%' : '';
+  document.getElementById('dist-e').textContent = pE >= 8 ? pE + '%' : '';
+  document.getElementById('dist-b').textContent = pB >= 8 ? pB + '%' : '';
+  document.getElementById('dist-la').textContent = 'Time A: ' + bA + ' (' + pA + '%)';
+  document.getElementById('dist-le').textContent = 'Empate: ' + bE + ' (' + pE + '%)';
+  document.getElementById('dist-lb').textContent = 'Time B: ' + bB + ' (' + pB + '%)';
+
+  // Streaks (over played games in order)
+  var streakCur = 0, streakMax = 0, tmpStreak = 0, lastStreak = 0, lastStreakGame = '';
+  done.forEach(function(j) {
+    var bet = getBetFor(j, nome);
+    if (!bet) return;
+    var sp = bet.split('x');
+    var bd = calcBreakdown(+sp[0]||0, +sp[1]||0, j.gols_a, j.gols_b);
+    if (bd.res) {
+      tmpStreak++;
+      streakCur = tmpStreak;
+      if (tmpStreak > streakMax) {
+        streakMax = tmpStreak;
+        lastStreakGame = j.time_a.nome + ' × ' + j.time_b.nome;
+      }
+    } else {
+      streakCur = 0;
+      tmpStreak = 0;
+    }
+  });
+  document.getElementById('s-streak-cur').textContent = streakCur;
+  document.getElementById('s-streak-cur-sub').textContent = streakCur === 0 ? 'sem sequência ativa' : 'resultados corretos seguidos';
+  document.getElementById('s-streak-max').textContent = streakMax;
+  document.getElementById('s-streak-max-sub').textContent = streakMax > 0 ? 'atingido em ' + lastStreakGame : '—';
+}
+
+// ── Render chart ──────────────────────────────────────────────────────────────
+function renderChart(nome) {
+  var canvas = document.getElementById('pos-chart');
+  var N = sortedPlayers.length;
+
+  if (posChart) { posChart.destroy(); posChart = null; }
+
+  if (!gameHistory.length) {
+    canvas.style.display = 'none';
+    document.getElementById('chart-sub').textContent = 'Nenhum jogo realizado ainda';
+    return;
+  }
+  canvas.style.display = '';
+  document.getElementById('chart-sub').textContent = gameHistory.length + ' jogos realizados';
+
+  var color = colorMap[nome] || '#2563eb';
+  var labels = gameHistory.map(function(s) {
+    return s.jogo.time_a.nome.split(' ')[0] + ' × ' + s.jogo.time_b.nome.split(' ')[0];
+  });
+  var data = gameHistory.map(function(s) { return s.posMap[nome] || N; });
+
+  posChart = new Chart(canvas.getContext('2d'), {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: nome,
+        data: data,
+        borderColor: color,
+        backgroundColor: color + '18',
+        fill: false,
+        pointBackgroundColor: data.map(function(v) {
+          return v === 1 ? '#ca8a04' : v <= 3 ? color : color;
+        }),
+        pointBorderColor: '#fff',
+        pointBorderWidth: 1.5,
+        pointRadius: 5, pointHoverRadius: 7,
+        borderWidth: 2.5, tension: 0.3,
+        clip: false
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      scales: {
+        y: {
+          reverse: true, min: 1, max: N,
+          ticks: { stepSize: 1, precision: 0, color: '#9ca3af', font: { size: 10 } },
+          grid: { color: '#f3f4f6' }
+        },
+        x: {
+          ticks: { maxRotation: 45, minRotation: 45, font: { size: 9 }, color: '#9ca3af' },
+          grid: { color: '#f3f4f6' }
+        }
+      },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            title: function(items) { return items[0].label; },
+            label: function(item) { return nome + ': ' + item.raw + 'º lugar'; }
+          }
+        }
+      }
+    }
+  });
+}
+
+// ── Paginated bets ────────────────────────────────────────────────────────────
+var BETS_PER_PAGE = 5;
+var pastPage = 0, nextPage = 0, pastRows = [], nextRows = [];
+
+function buildPastRow(j, nome) {
+  var bet = getBetFor(j, nome);
+  var rowClass = '', ptsClass = 'zero', ptsLabel = '0';
+  if (bet) {
+    var sp = bet.split('x');
+    var bd = calcBreakdown(+sp[0]||0, +sp[1]||0, j.gols_a, j.gols_b);
+    var mult = getMultiplier(j);
+    var pts = bd.pts * mult, maxPts = 5 * mult;
+    if (pts === maxPts)  { rowClass = 'hit';     ptsClass = 'full';    }
+    else if (pts > 0)    { rowClass = 'partial'; ptsClass = 'partial'; }
+    else                 { rowClass = 'miss'; }
+    ptsLabel = '+' + pts;
+  } else { bet = '—'; ptsLabel = '—'; ptsClass = 'future'; }
+  var meta = fmtDate(j.data), hora = fmtHora(j.data);
+  var groups = j.grupo ? ' · ' + j.grupo : '';
+  var betDisp = bet !== '—' ? bet.replace('x',' × ') : '—';
+  return '<div class="bet-row ' + rowClass + '">' +
+    '<div class="bet-meta">' + meta + (hora?' · '+hora:'') + groups + '</div>' +
+    '<div class="bet-teams">' + j.time_a.nome + ' × ' + j.time_b.nome + '</div>' +
+    '<div class="bet-score">' + j.gols_a + ' × ' + j.gols_b + '</div>' +
+    '<div class="bet-palpite">palpite: ' + betDisp + '</div>' +
+    '<div class="bet-pts-badge ' + ptsClass + '">' + ptsLabel + '</div>' +
+  '</div>';
+}
+
+function buildNextRow(j, nome) {
+  var bet = getBetFor(j, nome);
+  var betDisp = bet ? bet.replace('x',' × ') : '—';
+  var meta = fmtDate(j.data), hora = fmtHora(j.data);
+  var groups = j.grupo ? ' · ' + j.grupo : '';
+  return '<div class="bet-row future">' +
+    '<div class="bet-meta">' + meta + (hora?' · '+hora:'') + groups + '</div>' +
+    '<div class="bet-teams">' + j.time_a.nome + ' × ' + j.time_b.nome + '</div>' +
+    '<div class="bet-score" style="color:var(--light)">—</div>' +
+    '<div class="bet-palpite">palpite: ' + betDisp + '</div>' +
+    '<div class="bet-pts-badge future">—</div>' +
+  '</div>';
+}
+
+function renderPage(listId, pagerId, infoId, btnsId, rows, page) {
+  var total = rows.length;
+  var pages = Math.max(1, Math.ceil(total / BETS_PER_PAGE));
+  page = Math.max(0, Math.min(page, pages - 1));
+  document.getElementById(listId).innerHTML = rows.slice(page * BETS_PER_PAGE, (page + 1) * BETS_PER_PAGE).join('');
+  var pagerEl = document.getElementById(pagerId);
+  if (total <= BETS_PER_PAGE) { pagerEl.style.display = 'none'; return page; }
+  pagerEl.style.display = '';
+  var start = page * BETS_PER_PAGE;
+  document.getElementById(infoId).textContent =
+    (start + 1) + '–' + Math.min(start + BETS_PER_PAGE, total) + ' de ' + total;
+  var fn = btnsId.replace(/-/g, '_');
+  var lo = Math.max(0, page - 2), hi = Math.min(pages - 1, lo + 4);
+  lo = Math.max(0, hi - 4);
+  var btns = '<button class="pg-btn" onclick="' + fn + '_prev()" ' + (page===0?'disabled':'') + '>‹</button>';
+  for (var p = lo; p <= hi; p++) {
+    btns += '<button class="pg-btn' + (p===page?' active':'') + '" onclick="' + fn + '_go(' + p + ')">' + (p+1) + '</button>';
+  }
+  btns += '<button class="pg-btn" onclick="' + fn + '_next()" ' + (page>=pages-1?'disabled':'') + '>›</button>';
+  btns += '<input class="pg-input" type="number" min="1" max="' + pages + '" value="' + (page+1) + '"'
+    + ' title="Ir para página" onkeydown="if(event.key===\'Enter\'){var v=+this.value-1;if(v>=0&&v<' + pages + ')' + fn + '_go(v);}"';
+  btns += '>';
+  document.getElementById(btnsId).innerHTML = btns;
+  return page;
+}
+
+// ── Render past bets ──────────────────────────────────────────────────────────
+function renderPastBets(nome) {
+  var done = JOGOS.filter(function(j) { return j.gols_a !== null && j.gols_b !== null; });
+  var played = done.filter(function(j) {
+    return [].concat(j.apostadores_a, j.apostadores_empate, j.apostadores_b).some(function(a){ return a.nome===nome; });
+  }).length;
+  document.getElementById('past-sub').textContent = played + ' apostas · ' + done.length + ' jogos';
+  if (!done.length) {
+    document.getElementById('past-bets').innerHTML = '<div class="bets-empty">Nenhum jogo realizado ainda.</div>';
+    document.getElementById('past-pager').style.display = 'none';
+    return;
+  }
+  pastRows = done.slice().reverse().map(function(j){ return buildPastRow(j, nome); });
+  pastPage = renderPage('past-bets','past-pager','past-pager-info','past-pager-btns', pastRows, 0);
+}
+window.past_pager_btns_prev = function(){ pastPage = renderPage('past-bets','past-pager','past-pager-info','past-pager-btns', pastRows, pastPage-1); };
+window.past_pager_btns_next = function(){ pastPage = renderPage('past-bets','past-pager','past-pager-info','past-pager-btns', pastRows, pastPage+1); };
+window.past_pager_btns_go   = function(p){ pastPage = renderPage('past-bets','past-pager','past-pager-info','past-pager-btns', pastRows, p); };
+
+// ── Render upcoming bets ──────────────────────────────────────────────────────
+function renderNextBets(nome) {
+  var future = JOGOS.filter(function(j) { return j.gols_a === null && j.gols_b === null; });
+  document.getElementById('next-sub').textContent = future.length + ' jogos restantes';
+  if (!future.length) {
+    document.getElementById('next-bets').innerHTML = '<div class="bets-empty">Nenhum jogo pendente.</div>';
+    document.getElementById('next-pager').style.display = 'none';
+    return;
+  }
+  nextRows = future.map(function(j){ return buildNextRow(j, nome); });
+  nextPage = renderPage('next-bets','next-pager','next-pager-info','next-pager-btns', nextRows, 0);
+}
+window.next_pager_btns_prev = function(){ nextPage = renderPage('next-bets','next-pager','next-pager-info','next-pager-btns', nextRows, nextPage-1); };
+window.next_pager_btns_next = function(){ nextPage = renderPage('next-bets','next-pager','next-pager-info','next-pager-btns', nextRows, nextPage+1); };
+window.next_pager_btns_go   = function(p){ nextPage = renderPage('next-bets','next-pager','next-pager-info','next-pager-btns', nextRows, p); };
+
+// ── Select player ─────────────────────────────────────────────────────────────
+function selectPlayer(nome) {
+  currentNome = nome;
+  // Update URL without reload
+  var url = new URL(window.location.href);
+  url.searchParams.set('nome', nome);
+  window.history.replaceState({}, '', url.toString());
+
+  renderProfile(nome);
+  renderChart(nome);
+  renderPastBets(nome);
+  renderNextBets(nome);
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+async function init() {
+  try {
+    JOGOS = await buildJogos();
+  } catch(e) {
+    document.getElementById('loading-overlay').innerHTML =
+      '<div class="loading-text">Erro ao carregar dados. Tente recarregar a página.</div>';
+    return;
+  }
+
+  buildScoreboard();
+  buildGameHistory();
+
+  // Rank players and assign colors consistently
+  sortedPlayers = rankPlayers();
+  sortedPlayers.forEach(function(nome, i) {
+    colorMap[nome] = PLAYER_COLORS[i % PLAYER_COLORS.length];
+  });
+
+  populateSelector(sortedPlayers);
+
+  // Pick player from URL or first
+  var urlNome = new URLSearchParams(window.location.search).get('nome');
+  var startNome = (urlNome && scoreboard[urlNome]) ? urlNome : sortedPlayers[0];
+  document.getElementById('player-select').value = startNome;
+
+  document.getElementById('loading-overlay').style.display = 'none';
+  document.getElementById('main-content').style.display = '';
+
+  selectPlayer(startNome);
+}
+init();
+</script>
+</body>
+</html>

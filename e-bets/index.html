@@ -53,11 +53,10 @@ html, body {
 }
 
 .cards {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: 20px;
-  flex-wrap: wrap;
-  justify-content: center;
-  max-width: 860px;
+  max-width: 560px;
   width: 100%;
 }
 
@@ -65,16 +64,13 @@ html, body {
   background: var(--white);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 32px 28px;
+  padding: 28px 24px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 10px;
   text-decoration: none;
   color: var(--text);
-  flex: 1;
-  min-width: 220px;
-  max-width: 260px;
   box-shadow: 0 2px 12px rgba(0,0,0,.06);
   transition: transform .15s, box-shadow .15s, border-color .15s;
 }
@@ -142,6 +138,13 @@ html, body {
     <div class="card-icon">🌍</div>
     <div class="card-title">Ranking de Seleções</div>
     <div class="card-desc">Classificação esperada de todas as seleções por grupo, com pontos, saldo de gols e melhores terceiros colocados.</div>
+    <div class="card-arrow">Acessar →</div>
+  </a>
+
+  <a class="page-card" href="bolao_ranking.html">
+    <div class="card-icon">🏅</div>
+    <div class="card-title">Ranking do Bolão</div>
+    <div class="card-desc">Pontuação real de cada apostador com critérios oficiais. Simule resultados dos jogos futuros e veja como o ranking mudaria.</div>
     <div class="card-arrow">Acessar →</div>
   </a>
 

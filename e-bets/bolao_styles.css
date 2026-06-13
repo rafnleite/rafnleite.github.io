@@ -1,0 +1,111 @@
+/* ── Shared stylesheet for all Bolão Copa 2026 pages ── */
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #f0f2f5;
+  --white: #ffffff;
+  --border: #e0e3ea;
+  --text: #111827;
+  --sub: #6b7280;
+  --light: #adb5c0;
+  --accent: #166534;
+  --accent-light: #dcfce7;
+  --radius: 14px;
+}
+
+html, body {
+  min-height: 100vh;
+  background: var(--bg);
+  font-family: 'Inter', sans-serif;
+  color: var(--text);
+}
+
+/* ── Save image button ───────────────────── */
+.btn-img {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--accent);
+  border: none;
+  color: white;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: opacity .15s;
+  white-space: nowrap;
+}
+.btn-img:hover { opacity: .85; }
+.card-actions { display: flex; justify-content: flex-end; margin-bottom: 10px; }
+
+/* ── Navigation buttons (apostas game nav) ── */
+.nav-btn {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 6px 13px;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: all .15s;
+  white-space: nowrap;
+  text-decoration: none;
+}
+.nav-btn:hover:not(:disabled) { background: var(--accent); border-color: var(--accent); color: white; }
+.nav-btn:disabled { opacity: .35; cursor: not-allowed; }
+.nav-counter { font-size: 0.72rem; color: var(--sub); font-weight: 500; white-space: nowrap; }
+
+/* ── Card ────────────────────────────────── */
+.card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0,0,0,.05);
+}
+.card-head {
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  background: #fafafa;
+}
+.card-head-title {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 1.1rem;
+  letter-spacing: 2.5px;
+  color: var(--text);
+}
+.card-head-sub { font-size: 0.65rem; color: var(--sub); font-weight: 500; }
+
+/* ── Loading overlay ─────────────────────── */
+#loading-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+.loading-spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin .8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-text { font-size: .82rem; font-weight: 600; color: var(--sub); }
