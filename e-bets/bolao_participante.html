@@ -126,15 +126,34 @@
   min-width: 0;
   overflow: hidden;
 }
-.dist-seg.a   { background: #2563eb; }
+.dist-seg.ven { background: #2563eb; }
 .dist-seg.emp { background: #9ca3af; }
-.dist-seg.b   { background: #dc2626; }
 .dist-legend {
   display: flex; gap: 12px; flex-wrap: wrap;
   font-size: 0.63rem; font-weight: 600; color: var(--sub);
 }
 .dist-legend span { display: flex; align-items: center; gap: 4px; }
 .dist-dot { width: 8px; height: 8px; border-radius: 50%; }
+.dist-avgs {
+  display: flex; gap: 20px; margin-top: 14px; flex-wrap: wrap;
+}
+.dist-avg-item { display: flex; flex-direction: column; gap: 2px; }
+.dist-avg-label {
+  font-size: 0.57rem; font-weight: 700; letter-spacing: 1.5px;
+  text-transform: uppercase; color: var(--sub);
+}
+.dist-avg-value {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 1.6rem; letter-spacing: 1px; color: var(--text); line-height: 1;
+}
+
+/* ── BETS ROW (side-by-side) ─────────────── */
+.bets-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  align-items: start;
+}
 
 /* ── CHART CARD ──────────────────────────── */
 .chart-area {
@@ -216,6 +235,7 @@
   .part-layout { padding: 14px 12px 56px; }
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
   .extra-grid { grid-template-columns: 1fr; }
+  .bets-row   { grid-template-columns: 1fr; }
   .hero-pos { font-size: 2.5rem; width: 42px; }
   .hero-name { font-size: 1.5rem; }
   .hero-pts-num { font-size: 2.2rem; }
@@ -264,52 +284,84 @@
     <div class="stat-card">
       <div class="stat-card-label">Resultados</div>
       <div class="stat-card-value" id="s-res">—</div>
-      <div class="stat-card-sub" id="s-res-sub">—</div>
+      <div class="stat-card-sub" id="s-res-sub"></div>
     </div>
     <div class="stat-card">
       <div class="stat-card-label">Vencedores</div>
       <div class="stat-card-value" id="s-ven">—</div>
-      <div class="stat-card-sub" id="s-ven-sub">—</div>
+      <div class="stat-card-sub" id="s-ven-sub"></div>
     </div>
     <div class="stat-card">
       <div class="stat-card-label">Empates</div>
       <div class="stat-card-value" id="s-emp">—</div>
-      <div class="stat-card-sub" id="s-emp-sub">—</div>
+      <div class="stat-card-sub" id="s-emp-sub"></div>
     </div>
     <div class="stat-card">
       <div class="stat-card-label">Gols exatos</div>
       <div class="stat-card-value" id="s-gol">—</div>
-      <div class="stat-card-sub" id="s-gol-sub">—</div>
+      <div class="stat-card-sub" id="s-gol-sub"></div>
     </div>
     <div class="stat-card">
       <div class="stat-card-label">Dif. de gols exata</div>
       <div class="stat-card-value" id="s-dif">—</div>
-      <div class="stat-card-sub" id="s-dif-sub">—</div>
+      <div class="stat-card-sub" id="s-dif-sub"></div>
     </div>
     <div class="stat-card">
       <div class="stat-card-label">Pontos / jogo</div>
       <div class="stat-card-value" id="s-avg">—</div>
-      <div class="stat-card-sub" id="s-avg-sub">—</div>
+      <div class="stat-card-sub" id="s-avg-sub"></div>
     </div>
   </div>
 
-  <!-- ── EXTRAS: distribuição + sequências ── -->
+  <!-- ── APOSTAS LADO A LADO ────────────────── -->
+  <div class="bets-row">
+    <div class="card">
+      <div class="card-head">
+        <span class="card-head-title">&#218;ltimas apostas</span>
+      </div>
+      <div class="bets-list" id="past-bets"></div>
+      <div class="bets-pager" id="past-pager" style="display:none">
+        <span class="bets-pager-info" id="past-pager-info"></span>
+        <div class="bets-pager-btns" id="past-pager-btns"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <span class="card-head-title">Pr&#243;ximas apostas</span>
+        <span class="card-head-sub" id="next-sub">—</span>
+      </div>
+      <div class="bets-list" id="next-bets"></div>
+      <div class="bets-pager" id="next-pager" style="display:none">
+        <span class="bets-pager-info" id="next-pager-info"></span>
+        <div class="bets-pager-btns" id="next-pager-btns"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── EXTRAS: palpites + sequências ────── -->
   <div class="extra-grid">
     <div class="card" id="card-dist">
       <div class="card-head">
-        <span class="card-head-title">Distribuição de palpites</span>
-
+        <span class="card-head-title">Palpites</span>
       </div>
       <div style="padding:12px 16px 16px">
         <div class="dist-bar-wrap" id="dist-bar">
-          <div class="dist-seg a"   id="dist-a">—</div>
+          <div class="dist-seg ven" id="dist-ven">—</div>
           <div class="dist-seg emp" id="dist-e">—</div>
-          <div class="dist-seg b"   id="dist-b">—</div>
         </div>
         <div class="dist-legend">
-          <span><span class="dist-dot" style="background:#2563eb"></span><span id="dist-la">—</span></span>
+          <span><span class="dist-dot" style="background:#2563eb"></span><span id="dist-lven">—</span></span>
           <span><span class="dist-dot" style="background:#9ca3af"></span><span id="dist-le">—</span></span>
-          <span><span class="dist-dot" style="background:#dc2626"></span><span id="dist-lb">—</span></span>
+        </div>
+        <div class="dist-avgs">
+          <div class="dist-avg-item">
+            <div class="dist-avg-label">M&#233;dia gols / jogo</div>
+            <div class="dist-avg-value" id="dist-avg-gols">—</div>
+          </div>
+          <div class="dist-avg-item">
+            <div class="dist-avg-label">M&#233;dia dif. gols / jogo</div>
+            <div class="dist-avg-value" id="dist-avg-dif">—</div>
+          </div>
         </div>
       </div>
     </div>
@@ -322,13 +374,13 @@
         <div class="stat-card" style="border:none;padding:0;gap:2px;">
           <div class="stat-card-label">Sequência atual de acertos</div>
           <div class="stat-card-value" id="s-streak-cur">—</div>
-          <div class="stat-card-sub" id="s-streak-cur-sub">—</div>
+          <div class="stat-card-sub" id="s-streak-cur-sub"></div>
         </div>
         <div style="height:1px;background:var(--border)"></div>
         <div class="stat-card" style="border:none;padding:0;gap:2px;">
           <div class="stat-card-label">Maior sequência do bolão</div>
           <div class="stat-card-value" id="s-streak-max">—</div>
-          <div class="stat-card-sub" id="s-streak-max-sub">—</div>
+          <div class="stat-card-sub" id="s-streak-max-sub"></div>
         </div>
       </div>
     </div>
@@ -342,32 +394,6 @@
     </div>
     <div class="chart-area">
       <canvas id="pos-chart"></canvas>
-    </div>
-  </div>
-
-  <!-- ── APOSTAS REALIZADAS ─────────────────── -->
-  <div class="card">
-    <div class="card-head">
-      <span class="card-head-title">Apostas realizadas</span>
-      <span class="card-head-sub" id="past-sub">—</span>
-    </div>
-    <div class="bets-list" id="past-bets"></div>
-    <div class="bets-pager" id="past-pager" style="display:none">
-      <span class="bets-pager-info" id="past-pager-info"></span>
-      <div class="bets-pager-btns" id="past-pager-btns"></div>
-    </div>
-  </div>
-
-  <!-- ── PRÓXIMAS APOSTAS ─────────────────── -->
-  <div class="card">
-    <div class="card-head">
-      <span class="card-head-title">Próximas apostas</span>
-      <span class="card-head-sub" id="next-sub">—</span>
-    </div>
-    <div class="bets-list" id="next-bets"></div>
-    <div class="bets-pager" id="next-pager" style="display:none">
-      <span class="bets-pager-info" id="next-pager-info"></span>
-      <div class="bets-pager-btns" id="next-pager-btns"></div>
     </div>
   </div>
 
@@ -475,6 +501,7 @@ function buildScoreboard() {
 }
 
 function rankPlayers() {
+  var done = JOGOS.filter(function(j){ return j.gols_a !== null && j.gols_b !== null; });
   var players = Object.keys(scoreboard);
   players.sort(function(a, b) {
     var sa = scoreboard[a], sb = scoreboard[b];
@@ -482,6 +509,11 @@ function rankPlayers() {
     if (sb.res !== sa.res) return sb.res - sa.res;
     if (sb.ven !== sa.ven) return sb.ven - sa.ven;
     if (sb.emp !== sa.emp) return sb.emp - sa.emp;
+    for (var k = done.length - 1; k >= 0; k--) {
+      var id = done[k].id;
+      var pa = sa.game_pts[id]||0, pb = sb.game_pts[id]||0;
+      if (pb !== pa) return pb - pa;
+    }
     return a.localeCompare(b, 'pt-BR', { sensitivity: 'base' });
   });
   return players;
@@ -501,18 +533,37 @@ function buildGameHistory() {
       var bd = calcBreakdown(+sp[0]||0, +sp[1]||0, j.gols_a, j.gols_b);
       var r = acc[a.nome];
       r.pts += bd.pts*mult; r.res += bd.res; r.ven += bd.ven; r.emp += bd.emp;
+      if (!r.gp) r.gp = {};
+      r.gp[j.id] = (r.gp[j.id]||0) + bd.pts*mult;
     });
-    var entries = players.map(function(n) { var r=acc[n]; return {nome:n,pts:r.pts,res:r.res,ven:r.ven,emp:r.emp}; });
+    var entries = players.map(function(n) { var r=acc[n]; return {nome:n,pts:r.pts,res:r.res,ven:r.ven,emp:r.emp,gp:r.gp||{}}; });
+    var doneIds = done.slice(0, done.indexOf(j) + 1).map(function(x){ return x.id; });
     entries.sort(function(a,b) {
-      return b.pts!==a.pts?b.pts-a.pts : b.res!==a.res?b.res-a.res :
-             b.ven!==a.ven?b.ven-a.ven : b.emp!==a.emp?b.emp-a.emp :
-             a.nome.localeCompare(b.nome,'pt-BR',{sensitivity:'base'});
+      if (b.pts!==a.pts) return b.pts-a.pts;
+      if (b.res!==a.res) return b.res-a.res;
+      if (b.ven!==a.ven) return b.ven-a.ven;
+      if (b.emp!==a.emp) return b.emp-a.emp;
+      for (var k = doneIds.length-1; k >= 0; k--) {
+        var id = doneIds[k];
+        var pa = a.gp[id]||0, pb = b.gp[id]||0;
+        if (pb !== pa) return pb - pa;
+      }
+      return a.nome.localeCompare(b.nome,'pt-BR',{sensitivity:'base'});
     });
     var posMap = {};
     var rank = 1;
     entries.forEach(function(e, i) {
-      if (i > 0 && (e.pts !== entries[i-1].pts || e.res !== entries[i-1].res ||
-                    e.ven !== entries[i-1].ven || e.emp !== entries[i-1].emp)) rank = i + 1;
+      if (i > 0) {
+        var prev = entries[i-1];
+        var diff = e.pts!==prev.pts || e.res!==prev.res || e.ven!==prev.ven || e.emp!==prev.emp;
+        if (!diff) {
+          for (var k = doneIds.length-1; k >= 0; k--) {
+            var id = doneIds[k];
+            if ((e.gp[id]||0) !== (prev.gp[id]||0)) { diff = true; break; }
+          }
+        }
+        if (diff) rank = i + 1;
+      }
       posMap[e.nome] = rank;
     });
     return { jogo: j, posMap: posMap };
@@ -568,10 +619,18 @@ function renderProfile(nome) {
   var total = JOGOS.length;
   // Compute tied rank for this player (standard competition ranking: 1,2,2,4)
   var idx = sortedPlayers.indexOf(nome);
+  var doneFinal = JOGOS.filter(function(j){ return j.gols_a!==null && j.gols_b!==null; });
   var pos = 1;
   for (var ri = 1; ri <= idx; ri++) {
     var sp = scoreboard[sortedPlayers[ri-1]], sc2 = scoreboard[sortedPlayers[ri]];
-    if (sp.pts !== sc2.pts || sp.res !== sc2.res || sp.ven !== sc2.ven || sp.emp !== sc2.emp) pos = ri + 1;
+    var diff = sp.pts !== sc2.pts || sp.res !== sc2.res || sp.ven !== sc2.ven || sp.emp !== sc2.emp;
+    if (!diff) {
+      for (var k = doneFinal.length - 1; k >= 0; k--) {
+        var id = doneFinal[k].id;
+        if ((sp.game_pts[id]||0) !== (sc2.game_pts[id]||0)) { diff = true; break; }
+      }
+    }
+    if (diff) pos = ri + 1;
   }
 
   // Hero
@@ -590,41 +649,57 @@ function renderProfile(nome) {
   var maxPossible = 0;
   done.forEach(function(j) {
     var hasbet = [].concat(j.apostadores_a, j.apostadores_empate, j.apostadores_b).some(function(a){ return a.nome === nome; });
-    if (hasbet) maxPossible += 5 * getMultiplier(j);
+    if (hasbet) {
+      // Draw: max 4pts (2 gols + 1 dif + 1 resultado, no winner bonus)
+      // Winner: max 5pts (2 gols + 1 dif + 2 resultado)
+      var maxGame = (j.gols_a === j.gols_b) ? 4 : 5;
+      maxPossible += maxGame * getMultiplier(j);
+    }
   });
-  var effPct = maxPossible ? Math.round(s.pts / maxPossible * 100) + '%' : '—';
+  var effPct = maxPossible ? Math.round(s.pts / maxPossible * 100) + '%' : '';
 
   document.getElementById('s-res').textContent     = s.res;
-  document.getElementById('s-res-sub').textContent = pct(s.res, playedForPlayer) + ' de ' + playedForPlayer + ' jogos';
+  document.getElementById('s-res-sub').textContent = playedForPlayer ? pct(s.res, playedForPlayer) + ' de aproveitamento' : '';
   document.getElementById('s-ven').textContent     = s.ven;
-  document.getElementById('s-ven-sub').textContent = pct(s.ven, playedForPlayer) + ' dos jogos apostados';
+  document.getElementById('s-ven-sub').textContent = '';
   document.getElementById('s-emp').textContent     = s.emp;
-  document.getElementById('s-emp-sub').textContent = pct(s.emp, playedForPlayer) + ' dos jogos apostados';
+  document.getElementById('s-emp-sub').textContent = '';
   document.getElementById('s-gol').textContent     = s.gol;
-  document.getElementById('s-gol-sub').textContent = s.gol + ' gols individuais exatos';
+  document.getElementById('s-gol-sub').textContent = playedForPlayer ? pct(s.gol, playedForPlayer * 2) + ' de aproveitamento' : '';
   document.getElementById('s-dif').textContent     = s.dif;
-  document.getElementById('s-dif-sub').textContent = pct(s.dif, playedForPlayer) + ' dos jogos apostados';
+  document.getElementById('s-dif-sub').textContent = playedForPlayer ? pct(s.dif, playedForPlayer) + ' de aproveitamento' : '';
   document.getElementById('s-avg').textContent     = avgPts;
-  document.getElementById('s-avg-sub').textContent = effPct + ' do máximo possível';
+  document.getElementById('s-avg-sub').textContent = effPct ? effPct + ' de aproveitamento' : '';
 
-  // Distribution
+  // Distribution (Vitória vs Empate)
   var bA = 0, bE = 0, bB = 0;
   JOGOS.forEach(function(j) {
     if (j.apostadores_a.some(function(a){ return a.nome===nome; })) bA++;
     else if (j.apostadores_empate.some(function(a){ return a.nome===nome; })) bE++;
     else if (j.apostadores_b.some(function(a){ return a.nome===nome; })) bB++;
   });
-  var bTotal = bA + bE + bB || 1;
-  var pA = Math.round(bA/bTotal*100), pE = Math.round(bE/bTotal*100), pB = 100 - pA - pE;
-  document.getElementById('dist-a').style.width = pA + '%';
-  document.getElementById('dist-e').style.width = pE + '%';
-  document.getElementById('dist-b').style.width = pB + '%';
-  document.getElementById('dist-a').textContent = pA >= 8 ? pA + '%' : '';
-  document.getElementById('dist-e').textContent = pE >= 8 ? pE + '%' : '';
-  document.getElementById('dist-b').textContent = pB >= 8 ? pB + '%' : '';
-  document.getElementById('dist-la').textContent = 'Time A: ' + bA + ' (' + pA + '%)';
-  document.getElementById('dist-le').textContent = 'Empate: ' + bE + ' (' + pE + '%)';
-  document.getElementById('dist-lb').textContent = 'Time B: ' + bB + ' (' + pB + '%)';
+  var bVen = bA + bB, bEmp = bE;
+  var bTotal = bVen + bEmp || 1;
+  var pVen = Math.round(bVen/bTotal*100), pEmp = 100 - pVen;
+  document.getElementById('dist-ven').style.width = pVen + '%';
+  document.getElementById('dist-e').style.width   = pEmp + '%';
+  document.getElementById('dist-ven').textContent = pVen >= 8 ? pVen + '%' : '';
+  document.getElementById('dist-e').textContent   = pEmp >= 8 ? pEmp + '%' : '';
+  document.getElementById('dist-lven').textContent = 'Vitória: ' + bVen + ' (' + pVen + '%)';
+  document.getElementById('dist-le').textContent   = 'Empate: '  + bEmp + ' (' + pEmp + '%)';
+
+  // Bet averages (all games where player has a bet)
+  var totalBetGols = 0, totalBetDif = 0, betCountAll = 0;
+  JOGOS.forEach(function(j) {
+    var bet = getBetFor(j, nome);
+    if (!bet) return;
+    var sp = bet.split('x'), ga = +sp[0]||0, gb = +sp[1]||0;
+    totalBetGols += ga + gb;
+    totalBetDif  += Math.abs(ga - gb);
+    betCountAll++;
+  });
+  document.getElementById('dist-avg-gols').textContent = betCountAll ? (totalBetGols / betCountAll).toFixed(1) : '—';
+  document.getElementById('dist-avg-dif').textContent  = betCountAll ? (totalBetDif  / betCountAll).toFixed(1) : '—';
 
   // Streaks (over played games in order)
   var streakCur = 0, streakMax = 0, tmpStreak = 0, lastStreak = 0, lastStreakGame = '';
@@ -729,10 +804,10 @@ function buildPastRow(j, nome) {
     var sp = bet.split('x');
     var bd = calcBreakdown(+sp[0]||0, +sp[1]||0, j.gols_a, j.gols_b);
     var mult = getMultiplier(j);
-    var pts = bd.pts * mult, maxPts = 5 * mult;
-    if (pts === maxPts)  { rowClass = 'hit';     ptsClass = 'full';    }
-    else if (pts > 0)    { rowClass = 'partial'; ptsClass = 'partial'; }
-    else                 { rowClass = 'miss'; }
+    var pts = bd.pts * mult;
+    if (bd.pts >= 4)       { rowClass = 'hit';     ptsClass = 'full';    }
+    else if (bd.pts >= 1)  { rowClass = 'partial'; ptsClass = 'partial'; }
+    else                   { rowClass = 'miss'; }
     ptsLabel = '+' + pts;
   } else { bet = '—'; ptsLabel = '—'; ptsClass = 'future'; }
   var meta = fmtDate(j.data), hora = fmtHora(j.data);
@@ -790,10 +865,6 @@ function renderPage(listId, pagerId, infoId, btnsId, rows, page) {
 // ── Render past bets ──────────────────────────────────────────────────────────
 function renderPastBets(nome) {
   var done = JOGOS.filter(function(j) { return j.gols_a !== null && j.gols_b !== null; });
-  var played = done.filter(function(j) {
-    return [].concat(j.apostadores_a, j.apostadores_empate, j.apostadores_b).some(function(a){ return a.nome===nome; });
-  }).length;
-  document.getElementById('past-sub').textContent = played + ' apostas · ' + done.length + ' jogos';
   if (!done.length) {
     document.getElementById('past-bets').innerHTML = '<div class="bets-empty">Nenhum jogo realizado ainda.</div>';
     document.getElementById('past-pager').style.display = 'none';

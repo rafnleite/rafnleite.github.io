@@ -237,7 +237,6 @@
 .bet-item {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   padding: 8px 13px;
   border-bottom: 1px solid var(--border);
   gap: 6px;
@@ -250,6 +249,7 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  flex: 1;
   min-width: 0;
 }
 .bi-score {
@@ -261,6 +261,17 @@
 .bi-score-a   { color: var(--col-a); }
 .bi-score-emp { color: var(--col-emp); }
 .bi-score-b   { color: var(--col-b); }
+
+/* ── PTS BADGE ────────────────────────────── */
+.bi-pts {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 22px; height: 20px; padding: 0 4px; border-radius: 4px;
+  font-family: 'Bebas Neue', cursive; font-size: 0.75rem;
+  flex-shrink: 0; margin-left: 2px;
+}
+.bi-pts.p-max  { background: #dcfce7; color: #166534; }
+.bi-pts.p-some { background: #fef9c3; color: #854d0e; }
+.bi-pts.p-zero { background: #fee2e2; color: #991b1b; }
 
 /* ── HIT HIGHLIGHTS ─────────────────────── */
 .bet-item.result-hit .bi-name { color: var(--accent); font-weight: 700; }
@@ -455,6 +466,25 @@
 let JOGOS = [];
 let currentIndex = 0;
 
+function calcBreakdown(betA, betB, realA, realB) {
+  var gol = (betA === realA ? 1 : 0) + (betB === realB ? 1 : 0);
+  var dif = (betA - betB) === (realA - realB) ? 1 : 0;
+  var pts = gol + dif;
+  var bR = betA > betB ? 'A' : betA < betB ? 'B' : 'E';
+  var rR = realA > realB ? 'A' : realA < realB ? 'B' : 'E';
+  var isRes = bR === rR ? 1 : 0;
+  if (isRes) pts += (rR === 'E' ? 1 : 2);
+  return { pts: pts };
+}
+
+function getMultiplier(j) {
+  var g = (j.grupo || '').toUpperCase().trim();
+  if (!g || /^[A-L]$/.test(g)) return 1;
+  if (/^3/.test(g) || g === 'TER') return 4;
+  if (g === 'FIN' || g === 'FINAL') return 10;
+  return 1;
+}
+
 async function buildJogos() {
   var results = await Promise.all([
     fetchAll('/jogo'), fetchAll('/aposta'), fetchAll('/grupo'),
@@ -516,11 +546,17 @@ function shortName(name) {
   return (f.length + l.length <= 17) ? (f + ' ' + l) : (f + ' ' + l[0] + '.');
 }
 
-function betItem(ap, type, hitResult, hitScore) {
+function betItem(ap, type, hitResult, hitScore, rawPts, mult) {
   var cls = 'bet-item' + (hitScore ? ' score-hit' : hitResult ? ' result-hit' : '');
   var icon = hitScore ? '<span class="bi-hit-icon">★</span>' : '';
+  var ptsBadge = '';
+  if (rawPts !== undefined && rawPts !== null) {
+    var dispPts = rawPts * (mult || 1);
+    var ptsCls = rawPts === 0 ? 'p-zero' : rawPts <= 3 ? 'p-some' : 'p-max';
+    ptsBadge = '<span class="bi-pts ' + ptsCls + '">' + (dispPts > 0 ? '+' + dispPts : '0') + '</span>';
+  }
   return '<li class="' + cls + '">' + icon + '<span class="bi-name">' + shortName(ap.nome) +
-    '</span><span class="bi-score bi-score-' + type + '">' + ap.placar + '</span></li>';
+    '</span><span class="bi-score bi-score-' + type + '">' + ap.placar + '</span>' + ptsBadge + '</li>';
 }
 
 function parsePlacar(placar) {
@@ -573,20 +609,27 @@ function renderGame(idx) {
     else resultType = 'b';
   }
   var actualPlacar = resultType !== null ? j.gols_a + 'x' + j.gols_b : null;
+  var mult = getMultiplier(j);
+
+  function betPts(ap) {
+    if (actualPlacar === null) return undefined;
+    var sp = ap.placar.split('x');
+    return calcBreakdown(+sp[0]||0, +sp[1]||0, j.gols_a, j.gols_b).pts;
+  }
 
   const listA = j.apostadores_a.length
     ? '<ul class="bet-list">' + sortBets(j.apostadores_a, 'a').map(function(a) {
-        return betItem(a, 'a', resultType === 'a', actualPlacar !== null && a.placar === actualPlacar);
+        return betItem(a, 'a', resultType === 'a', actualPlacar !== null && a.placar === actualPlacar, betPts(a), mult);
       }).join('') + '</ul>'
     : '<div class="empty-bet">—</div>';
   const listE = j.apostadores_empate.length
     ? '<ul class="bet-list">' + sortBets(j.apostadores_empate, 'emp').map(function(a) {
-        return betItem(a, 'emp', resultType === 'emp', actualPlacar !== null && a.placar === actualPlacar);
+        return betItem(a, 'emp', resultType === 'emp', actualPlacar !== null && a.placar === actualPlacar, betPts(a), mult);
       }).join('') + '</ul>'
     : '<div class="empty-bet">—</div>';
   const listB = j.apostadores_b.length
     ? '<ul class="bet-list">' + sortBets(j.apostadores_b, 'b').map(function(a) {
-        return betItem(a, 'b', resultType === 'b', actualPlacar !== null && a.placar === actualPlacar);
+        return betItem(a, 'b', resultType === 'b', actualPlacar !== null && a.placar === actualPlacar, betPts(a), mult);
       }).join('') + '</ul>'
     : '<div class="empty-bet">—</div>';
 
@@ -855,7 +898,57 @@ function exportImage() {
   buildSelect();
   renderGame(currentIndex);
   updateNav();
+
+  // ── Auto-refresh every 40 s ──────────────────────────────────────────────
+  setInterval(async function() {
+    var fresh;
+    try { fresh = await buildJogos(); } catch(e) { return; }
+
+    // Compare only the data that can change (scores, status, bets)
+    function snapshot(list) {
+      return JSON.stringify(list.map(function(j) {
+        return [
+          j.id, j.gols_a, j.gols_b, j.status, j.isLive, j.liveClock,
+          j.apostadores_a.length, j.apostadores_empate.length, j.apostadores_b.length,
+          j.apostadores_a.map(function(a){return a.nome+a.placar;}).join(','),
+          j.apostadores_empate.map(function(a){return a.nome+a.placar;}).join(','),
+          j.apostadores_b.map(function(a){return a.nome+a.placar;}).join(',')
+        ];
+      }));
+    }
+
+    if (snapshot(fresh) === snapshot(JOGOS)) return; // nothing changed
+
+    // Keep the same game visible by matching on jogo id
+    var currentId = JOGOS[currentIndex] ? JOGOS[currentIndex].id : null;
+    JOGOS = fresh;
+    var newIdx = currentId !== null ? JOGOS.findIndex(function(j){ return j.id === currentId; }) : -1;
+    if (newIdx < 0) newIdx = Math.min(currentIndex, JOGOS.length - 1);
+    currentIndex = newIdx;
+
+    renderGame(currentIndex);
+    updateNav();
+    showRefreshToast();
+  }, 40000);
 })();
+
+function showRefreshToast() {
+  var existing = document.getElementById('refresh-toast');
+  if (existing) existing.remove();
+  var t = document.createElement('div');
+  t.id = 'refresh-toast';
+  t.textContent = '↻ Dados atualizados';
+  t.style.cssText = [
+    'position:fixed', 'bottom:20px', 'left:50%', 'transform:translateX(-50%) translateY(0)',
+    'background:#111', 'color:#fff', 'font-family:Inter,sans-serif', 'font-size:0.72rem',
+    'font-weight:600', 'padding:7px 18px', 'border-radius:20px',
+    'box-shadow:0 4px 16px rgba(0,0,0,.25)', 'z-index:9999',
+    'pointer-events:none', 'opacity:1', 'transition:opacity .5s'
+  ].join(';');
+  document.body.appendChild(t);
+  setTimeout(function() { t.style.opacity = '0'; }, 2500);
+  setTimeout(function() { t.remove(); }, 3100);
+}
 </script>
 </body>
 </html>

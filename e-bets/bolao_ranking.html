@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ranking do Bolão – Copa 2026</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
 <script src="bolao_header.js"></script>
 <link rel="stylesheet" href="bolao_styles.css">
 <style>
@@ -83,6 +83,33 @@
   white-space: nowrap;
 }
 .sim-btn:hover { background: var(--accent); border-color: var(--accent); color: white; }
+
+.sim-toggle-row {
+  display: flex; align-items: center; gap: 8px;
+  padding: 6px 10px 5px;
+  border-bottom: 1px solid var(--border);
+  background: #fdfdfd;
+}
+.sim-toggle-label {
+  font-family: 'Inter', sans-serif; font-size: 0.62rem; font-weight: 600;
+  color: var(--sub); flex: 1;
+}
+.sim-toggle-switch {
+  position: relative; width: 32px; height: 18px; flex-shrink: 0; cursor: pointer;
+}
+.sim-toggle-switch input { opacity: 0; width: 0; height: 0; position: absolute; }
+.sim-toggle-track {
+  position: absolute; inset: 0; border-radius: 18px;
+  background: var(--border); transition: background .2s;
+}
+.sim-toggle-switch input:checked + .sim-toggle-track { background: var(--accent); }
+.sim-toggle-thumb {
+  position: absolute; top: 2px; left: 2px;
+  width: 14px; height: 14px; border-radius: 50%;
+  background: #fff; transition: transform .2s;
+  box-shadow: 0 1px 3px rgba(0,0,0,.2);
+}
+.sim-toggle-switch input:checked ~ .sim-toggle-thumb { transform: translateX(14px); }
 
 .sidebar-scroll {
   flex: 1;
@@ -189,6 +216,19 @@
 .bar-wrap  { height: 5px; background: var(--bg); border-radius: 3px; overflow: hidden; }
 .bar-fill  { height: 100%; background: var(--accent); border-radius: 3px; transition: width .35s; }
 
+/* Last 5 games mini-column */
+.last5-cell { text-align: right; white-space: nowrap; padding-right: 14px !important; }
+.last5-pip {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 20px; height: 20px; border-radius: 4px;
+  font-family: 'Bebas Neue', cursive; font-size: 0.75rem; font-weight: 700;
+  margin-left: 2px;
+}
+.last5-pip.max  { background: #dcfce7; color: #166534; }
+.last5-pip.some { background: #fef9c3; color: #854d0e; }
+.last5-pip.zero { background: #fee2e2; color: #991b1b; }
+.last5-pip.none { background: #f3f4f6; color: #9ca3af; }
+
 /* Position delta badge */
 .rank-delta { font-size: 0.58rem; font-weight: 700; padding: 1px 5px; border-radius: 4px; vertical-align: middle; white-space: nowrap; }
 .rank-delta.up { color: #166534; background: #dcfce7; }
@@ -207,7 +247,7 @@
 .rvt-btn:hover:not(.active) { background: var(--bg); }
 
 /* ── CHART ──────────────────────────────── */
-.chart-wrap { padding: 16px 16px 8px; position: relative; height: 420px; }
+.chart-wrap { padding: 0; position: relative; height: 460px; }
 .chart-legend {
   display: flex; flex-wrap: wrap; gap: 4px 16px;
   padding: 12px 16px 16px;
@@ -220,6 +260,49 @@
   user-select: none;
 }
 .chart-legend-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+
+/* ── CHART TYPE DROPDOWN ────────────────────── */
+.chart-type-bar { padding: 10px 16px 0; }
+.ct-dropdown { position: relative; display: inline-block; }
+.ct-btn {
+  display: flex; align-items: center; gap: 6px;
+  background: var(--bg); border: 1.5px solid var(--border); border-radius: 7px;
+  padding: 5px 12px; font-family: 'Inter', sans-serif; font-size: 0.78rem;
+  font-weight: 600; color: var(--text); cursor: pointer; transition: border-color .15s;
+}
+.ct-btn:hover { border-color: var(--accent); }
+.ct-menu {
+  position: absolute; top: calc(100% + 5px); left: 0;
+  background: var(--white); border: 1.5px solid var(--border); border-radius: 9px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.12); min-width: 270px; z-index: 200;
+  overflow: hidden; display: none;
+}
+.ct-menu.open { display: block; }
+.ct-opt {
+  padding: 10px 14px; font-family: 'Inter', sans-serif; font-size: 0.78rem;
+  cursor: pointer; border-bottom: 1px solid var(--border); color: var(--text);
+}
+.ct-opt:last-child { border-bottom: none; }
+.ct-opt:hover { background: var(--accent-light); }
+.ct-opt.active { font-weight: 700; color: var(--accent); }
+
+/* ── RACE CONTROLS ──────────────────────────── */
+.race-controls {
+  display: flex; align-items: center; gap: 10px;
+  padding: 4px 16px 12px;
+}
+.race-play-btn {
+  background: var(--accent); color: #fff; border: none; border-radius: 6px;
+  padding: 5px 0; font-size: 0.9rem; cursor: pointer; flex-shrink: 0; line-height: 1;
+  width: 42px; text-align: center;
+}
+.race-play-btn:hover { opacity: .85; }
+.race-scrubber { flex: 1; accent-color: var(--accent); cursor: pointer; }
+.race-game-label {
+  font-size: 0.7rem; color: var(--sub); white-space: nowrap;
+  min-width: 0; text-align: right; overflow: hidden; text-overflow: ellipsis;
+}
+
 
 /* ── RESPONSIVE ─────────────────────────── */
 @media (max-width: 800px) {
@@ -285,14 +368,31 @@
               <th class="right hide-sm" title="Jogos com diferença de gols exata">Dif. Gols</th>
               <th class="right" title="Total de pontos">Pontos</th>
               <th class="bar-cell"></th>
+              <th class="right hide-sm last5-cell" title="Pontos nas últimas 5 partidas">5 últ.</th>
             </tr>
           </thead>
           <tbody id="ranking-body"></tbody>
         </table>
       </div>
       <div id="view-chart" style="display:none">
-        <div class="chart-wrap">
-          <canvas id="ranking-chart"></canvas>
+        <div class="chart-type-bar">
+          <div class="ct-dropdown" id="ct-dropdown">
+            <button class="ct-btn" id="ct-btn" onclick="toggleChartMenu(event)">
+              <span id="ct-label">Histórico de posições</span>
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6,9 12,15 18,9"/></svg>
+            </button>
+            <div class="ct-menu" id="ct-menu">
+              <div class="ct-opt active" onclick="setChartType('positions')">Histórico de posições</div>
+              <div class="ct-opt" onclick="setChartType('points')">Histórico de pontuação – Gráfico de linha</div>
+              <div class="ct-opt" onclick="setChartType('race')">Histórico de pontuação – Gráfico de barras</div>
+            </div>
+          </div>
+        </div>
+        <div id="echart-container" class="chart-wrap"></div>
+        <div class="race-controls" id="race-controls" style="display:none">
+          <button class="race-play-btn" id="race-play-btn" onclick="toggleRace()">&#9654;</button>
+          <input class="race-scrubber" type="range" id="race-scrubber" min="0" value="0" step="1" oninput="scrubRace(+this.value)">
+          <span class="race-game-label" id="race-game-label">&#8212;</span>
         </div>
         <div class="chart-legend" id="chart-legend"></div>
       </div>
@@ -309,6 +409,14 @@
     <div class="sidebar-actions">
       <button class="sim-btn" onclick="useMostVoted()" title="Preencher com o palpite mais votado em cada jogo futuro">★ Mais votado</button>
       <button class="sim-btn" onclick="resetSim()">Limpar</button>
+    </div>
+    <div class="sim-toggle-row">
+      <span class="sim-toggle-label">Considerar simulações</span>
+      <label class="sim-toggle-switch">
+        <input type="checkbox" id="sim-toggle-chk" checked onchange="toggleShowSim(this.checked)">
+        <span class="sim-toggle-track"></span>
+        <span class="sim-toggle-thumb"></span>
+      </label>
     </div>
     <div class="sidebar-scroll" id="sidebar-games"></div>
   </aside>
@@ -445,22 +553,38 @@ function recomputeSim() {
   });
   renderRanking();
   updateSubtitle();
+  // Refresh chart if visible
+  if (document.getElementById('view-chart').style.display !== 'none') renderChart();
+}
+
+function toggleShowSim(checked) {
+  showSim = checked;
+  renderRanking();
+  updateSubtitle();
+  if (document.getElementById('view-chart').style.display !== 'none') renderChart();
 }
 
 // ── Render ranking ───────────────────────────────────────────────────────────
 function renderRanking() {
   var entries = Object.keys(scoreboard).map(function(nome) {
     var s = scoreboard[nome];
+    var simPts  = showSim ? s.sim_pts  : 0;
+    var simRes  = showSim ? s.sim_res  : 0;
+    var simVen  = showSim ? s.sim_ven  : 0;
+    var simEmp  = showSim ? s.sim_emp  : 0;
+    var simGol  = showSim ? s.sim_gol  : 0;
+    var simDif  = showSim ? s.sim_dif  : 0;
+    var simGP   = showSim ? s.sim_game_pts : {};
     var tgp = {};
-    JOGOS.forEach(function(j) { tgp[j.id] = (s.real_game_pts[j.id] || 0) + (s.sim_game_pts[j.id] || 0); });
+    JOGOS.forEach(function(j) { tgp[j.id] = (s.real_game_pts[j.id] || 0) + (simGP[j.id] || 0); });
     return {
       nome:      nome,
-      total:     s.real_pts + s.sim_pts,
-      total_res: s.real_res + s.sim_res,
-      total_ven: s.real_ven + s.sim_ven,
-      total_emp: s.real_emp + s.sim_emp,
-      total_gol: s.real_gol + s.sim_gol,
-      total_dif: s.real_dif + s.sim_dif,
+      total:     s.real_pts + simPts,
+      total_res: s.real_res + simRes,
+      total_ven: s.real_ven + simVen,
+      total_emp: s.real_emp + simEmp,
+      total_gol: s.real_gol + simGol,
+      total_dif: s.real_dif + simDif,
       real_pts:  s.real_pts, real_res: s.real_res, real_ven: s.real_ven, real_emp: s.real_emp,
       real_game_pts: s.real_game_pts,
       total_game_pts: tgp
@@ -538,6 +662,9 @@ function renderRanking() {
   var hasSim = entries.some(function(e) { return e.total > e.real_pts; });
   var maxPts = sorted.length ? Math.max(sorted[0].total, 1) : 1;
 
+  var done = JOGOS.filter(function(j){ return j.gols_a !== null && j.gols_b !== null; });
+  var last5 = done.slice(-5);
+
   document.getElementById('ranking-body').innerHTML = sorted.map(function(e, i) {
     var pos = totalRanks[i];
     var posClass = pos === 1 ? 'gold' : pos === 2 ? 'silver' : pos === 3 ? 'bronze' : '';
@@ -550,6 +677,21 @@ function renderRanking() {
       else if (delta < 0) deltaHtml = '<span class="rank-delta dn">▼' + Math.abs(delta) + '</span>';
       else                deltaHtml = '<span class="rank-delta eq">=</span>';
     }
+    var last5Html = last5.map(function(j) {
+      var mult = getMultiplier(j);
+      var allBettors = [].concat(j.apostadores_a, j.apostadores_empate, j.apostadores_b);
+      var betEntry = allBettors.find(function(a){ return a.nome === e.nome; });
+      if (!betEntry) return '<span class="last5-pip none" data-tip="' + (j.time_a.nome||'') + ' × ' + (j.time_b.nome||'') + '\nSem aposta">—</span>';
+      var gp = e.total_game_pts[j.id] || 0;
+      var rawPts = mult > 0 ? Math.round(gp / mult) : 0;
+      var cls = rawPts === 0 ? 'zero' : rawPts <= 3 ? 'some' : 'max';
+      var betDisp = betEntry.placar.replace('x',' × ');
+      var tipLines = (j.time_a.nome||'') + ' × ' + (j.time_b.nome||'') +
+        '\nResultado: ' + j.gols_a + ' × ' + j.gols_b +
+        '\nPalpite: ' + betDisp +
+        '\n' + (gp > 0 ? '+' + gp : '0') + ' pontos';
+      return '<span class="last5-pip ' + cls + '" data-tip="' + tipLines.replace(/"/g,'&quot;') + '">' + gp + '</span>';
+    }).join('');
     return '<tr>' +
       '<td class="rank-pos ' + posClass + '">' + pos + '</td>' +
       '<td class="rank-name"><a href="bolao_participante.html?nome=' + encodeURIComponent(e.nome) + '" style="color:inherit;text-decoration:none;" onmouseover="this.style.color=\'var(--accent)\'" onmouseout="this.style.color=\'inherit\'">' + e.nome + '</a>' + (deltaHtml ? '&nbsp;' + deltaHtml : '') + '</td>' +
@@ -560,6 +702,7 @@ function renderRanking() {
       '<td class="stat-cell hide-sm">' + e.total_dif + '</td>' +
       '<td class="pts-cell"><span class="pts-real">' + e.total + '</span></td>' +
       '<td class="bar-cell"><div class="bar-wrap"><div class="bar-fill" style="width:' + pct + '%"></div></div></td>' +
+      '<td class="last5-cell hide-sm">' + last5Html + '</td>' +
     '</tr>';
   }).join('');
 }
@@ -707,12 +850,14 @@ var PLAYER_COLORS = [
 ];
 var gameHistory = [];
 var colorMap    = {};
-var rankChart   = null;
-
-function hexAlpha(hex, a) {
-  var r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
-  return 'rgba('+r+','+g+','+b+','+a+')';
-}
+var eChart      = null;
+var raceTimer   = null;
+var raceFrameIdx     = 0;
+var raceRunning      = false;
+var raceSpeed        = 1300;
+var raceCurrentSorted = [];
+var currentChartType = 'positions';
+var showSim = true;
 
 function abbrevTeam(nome) {
   if (!nome) return '?';
@@ -723,40 +868,118 @@ function abbrevTeam(nome) {
 }
 
 function buildGameHistory() {
-  var done = JOGOS.filter(function(j){ return j.gols_a !== null && j.gols_b !== null; });
+  // Include simulated games when showSim is on
+  var done = JOGOS.filter(function(j) {
+    if (j.gols_a !== null && j.gols_b !== null) return true;
+    if (!showSim) return false;
+    var s = simScores[j.id];
+    return s && s.a !== null && s.b !== null;
+  });
+  // For each game resolve the effective score (real or sim)
+  function effectiveScore(j) {
+    if (j.gols_a !== null && j.gols_b !== null) return { a: j.gols_a, b: j.gols_b };
+    var s = simScores[j.id]; return { a: s.a, b: s.b };
+  }
   var players = Object.keys(scoreboard);
   var acc = {};
   players.forEach(function(n){ acc[n] = {pts:0,res:0,ven:0,emp:0}; });
 
   gameHistory = done.map(function(j) {
+    var eff = effectiveScore(j);
     var mult = getMultiplier(j);
     [].concat(j.apostadores_a, j.apostadores_empate, j.apostadores_b).forEach(function(a) {
       if (!acc[a.nome]) return;
       var sp = a.placar.split('x');
-      var bd = calcBreakdown(+sp[0]||0, +sp[1]||0, j.gols_a, j.gols_b);
+      var bd = calcBreakdown(+sp[0]||0, +sp[1]||0, eff.a, eff.b);
       var r = acc[a.nome];
       r.pts += bd.pts*mult; r.res += bd.res; r.ven += bd.ven; r.emp += bd.emp;
+      if (!r.gp) r.gp = {};
+      r.gp[j.id] = (r.gp[j.id]||0) + bd.pts*mult;
     });
-    var entries = players.map(function(n){ var r=acc[n]; return {nome:n,pts:r.pts,res:r.res,ven:r.ven,emp:r.emp}; });
+    // Build a synthetic jogo object using effective score for display
+    var jDisplay = eff.a !== j.gols_a ? Object.assign({}, j, { gols_a: eff.a, gols_b: eff.b }) : j;
+    var doneIds = done.slice(0, done.indexOf(j) + 1).map(function(x){ return x.id; });
+    var entries = players.map(function(n){ var r=acc[n]; return {nome:n,pts:r.pts,res:r.res,ven:r.ven,emp:r.emp,gp:r.gp||{}}; });
     entries.sort(function(a,b){
-      return b.pts!==a.pts?b.pts-a.pts : b.res!==a.res?b.res-a.res :
-             b.ven!==a.ven?b.ven-a.ven : b.emp!==a.emp?b.emp-a.emp :
-             a.nome.localeCompare(b.nome,'pt-BR',{sensitivity:'base'});
+      if (b.pts!==a.pts) return b.pts-a.pts;
+      if (b.res!==a.res) return b.res-a.res;
+      if (b.ven!==a.ven) return b.ven-a.ven;
+      if (b.emp!==a.emp) return b.emp-a.emp;
+      for (var k = doneIds.length-1; k >= 0; k--) {
+        var id = doneIds[k];
+        var pa = a.gp[id]||0, pb = b.gp[id]||0;
+        if (pb !== pa) return pb - pa;
+      }
+      return a.nome.localeCompare(b.nome,'pt-BR',{sensitivity:'base'});
     });
     var posMap = {};
     var rank = 1;
     entries.forEach(function(e, i) {
-      if (i > 0 && (e.pts !== entries[i-1].pts || e.res !== entries[i-1].res ||
-                    e.ven !== entries[i-1].ven || e.emp !== entries[i-1].emp)) rank = i + 1;
+      if (i > 0) {
+        var prev = entries[i-1];
+        var diff = e.pts!==prev.pts || e.res!==prev.res || e.ven!==prev.ven || e.emp!==prev.emp;
+        if (!diff) {
+          for (var k = doneIds.length-1; k >= 0; k--) {
+            var id = doneIds[k];
+            if ((e.gp[id]||0) !== (prev.gp[id]||0)) { diff = true; break; }
+          }
+        }
+        if (diff) rank = i + 1;
+      }
       posMap[e.nome] = rank;
     });
-    return { jogo: j, posMap: posMap };
+    var ptsMap = {};
+    players.forEach(function(n){ ptsMap[n] = acc[n].pts; });
+    return { jogo: jDisplay, posMap: posMap, ptsMap: ptsMap };
   });
 }
 
+// ── ECharts helpers ────────────────────────────────────────────────────────
+function initChart() {
+  destroyChart();
+  var el = document.getElementById('echart-container');
+  eChart = echarts.init(el, null, { renderer: 'canvas' });
+  return eChart;
+}
+
+function destroyChart() {
+  stopRace();
+  if (eChart) { eChart.dispose(); eChart = null; }
+}
+
+window.addEventListener('resize', function() { if (eChart) eChart.resize(); });
+
+// ── Chart type menu ────────────────────────────────────────────────────────
+function toggleChartMenu(e) {
+  e.stopPropagation();
+  document.getElementById('ct-menu').classList.toggle('open');
+}
+document.addEventListener('click', function() {
+  var m = document.getElementById('ct-menu');
+  if (m) m.classList.remove('open');
+});
+
+function setChartType(type) {
+  currentChartType = type;
+  stopRace();
+  var labels = {
+    positions: 'Hist\u00f3rico de posi\u00e7\u00f5es',
+    points:    'Hist\u00f3rico de pontua\u00e7\u00e3o \u2013 Gr\u00e1fico de linha',
+    race:      'Hist\u00f3rico de pontua\u00e7\u00e3o \u2013 Gr\u00e1fico de barras'
+  };
+  document.getElementById('ct-label').textContent = labels[type];
+  document.querySelectorAll('.ct-opt').forEach(function(el) {
+    el.classList.toggle('active', el.getAttribute('onclick').indexOf("'"+type+"'") !== -1);
+  });
+  document.getElementById('ct-menu').classList.remove('open');
+  document.getElementById('race-controls').style.display = type === 'race' ? '' : 'none';
+  document.getElementById('chart-legend').style.display  = type === 'race' ? 'none' : '';
+  renderChart();
+}
+
+// ── Master renderChart dispatcher ─────────────────────────────────────────
 function renderChart() {
   buildGameHistory();
-
   var players = Object.keys(scoreboard);
   var N = players.length;
   var sorted = players.slice().sort(function(a,b) {
@@ -764,120 +987,275 @@ function renderChart() {
     var last = gameHistory[gameHistory.length-1];
     return (last.posMap[a]||N+1) - (last.posMap[b]||N+1);
   });
-
   colorMap = {};
   sorted.forEach(function(nome,i){ colorMap[nome] = PLAYER_COLORS[i % PLAYER_COLORS.length]; });
 
   var legendEl = document.getElementById('chart-legend');
-  legendEl.innerHTML = sorted.map(function(nome,i){
-    var safe = nome.replace(/&/g,'&amp;').replace(/</g,'&lt;');
-    return '<div class="chart-legend-item" data-idx="'+i+'" data-nome="'+safe+'">' +
-      '<span class="chart-legend-dot" style="background:'+colorMap[nome]+'"></span>'+safe+'</div>';
-  }).join('');
-  legendEl.querySelectorAll('.chart-legend-item').forEach(function(el){
-    el.addEventListener('mouseenter', function(){ highlightDataset(+this.dataset.idx); });
-    el.addEventListener('mouseleave', resetHighlight);
-  });
-
-  if (rankChart) { rankChart.destroy(); rankChart = null; }
-
-  var canvas = document.getElementById('ranking-chart');
-  if (!gameHistory.length) {
-    canvas.style.display = 'none';
-    return;
+  if (currentChartType !== 'race') {
+    legendEl.innerHTML = sorted.map(function(nome,i){
+      var safe = nome.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+      return '<div class="chart-legend-item" data-idx="'+i+'" data-nome="'+safe+'">' +
+        '<span class="chart-legend-dot" style="background:'+colorMap[nome]+'"></span>'+safe+'</div>';
+    }).join('');
+    legendEl.querySelectorAll('.chart-legend-item').forEach(function(el){
+      el.addEventListener('mouseenter', function() {
+        var nome = this.dataset.nome;
+        if (eChart) eChart.dispatchAction({ type: 'highlight', seriesName: nome });
+        this.style.opacity = '1';
+        legendEl.querySelectorAll('.chart-legend-item').forEach(function(o) {
+          if (o.dataset.nome !== nome) o.style.opacity = '0.25';
+        });
+      });
+      el.addEventListener('mouseleave', function() {
+        if (eChart) {
+          var opt = eChart.getOption();
+          if (opt && opt.series) opt.series.forEach(function(s) {
+            eChart.dispatchAction({ type: 'downplay', seriesName: s.name });
+          });
+        }
+        legendEl.querySelectorAll('.chart-legend-item').forEach(function(o) { o.style.opacity = '1'; });
+      });
+    });
   }
-  canvas.style.display = '';
 
-  var labels = gameHistory.map(function(s){
-    return abbrevTeam(s.jogo.time_a.nome) + ' × ' + abbrevTeam(s.jogo.time_b.nome);
-  });
-  var datasets = sorted.map(function(nome){
-    var c = colorMap[nome];
-    return {
-      label: nome,
-      data: gameHistory.map(function(s){ return s.posMap[nome] || N; }),
-      borderColor: c, backgroundColor: c,
-      pointBackgroundColor: c, pointBorderColor: '#fff', pointBorderWidth: 1.5,
-      borderWidth: 2, pointRadius: 4, pointHoverRadius: 6, tension: 0.2,
-      clip: false
-    };
-  });
+  if      (currentChartType === 'positions') renderPositionsChart(sorted, N);
+  else if (currentChartType === 'points')    renderPointsChart(sorted);
+  else if (currentChartType === 'race')      renderRaceChart(sorted);
+}
 
-  rankChart = new Chart(canvas.getContext('2d'), {
-    type: 'line',
-    data: { labels: labels, datasets: datasets },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      interaction: { mode: 'nearest', intersect: false, axis: 'xy' },
-      onHover: function(e, elements) {
-        if (elements.length) highlightDataset(elements[0].datasetIndex);
-        else resetHighlight();
-      },
-      scales: {
-        y: {
-          reverse: true, min: 1, max: N,
-          ticks: {
-            stepSize: 1, precision: 0,
-            color: '#9ca3af',
-            font: { size: 10 }
-          },
-          grid: {
-            color: '#f3f4f6'
-          }
+// ── Bump chart – Histórico de posições ─────────────────────────────────────
+function renderPositionsChart(sorted, N) {
+  var ec = initChart();
+  if (!gameHistory.length) return;
+  var gameLabels = gameHistory.map(function(s, i){
+    return 'J'+(i+1);
+  });
+  var fullLabels = gameHistory.map(function(s, i){
+    return 'J'+(i+1)+' '+abbrevTeam(s.jogo.time_a.nome) + ' \u00d7 ' + abbrevTeam(s.jogo.time_b.nome);
+  });
+  ec.setOption({
+    tooltip: {
+      trigger: 'item',
+      appendToBody: true,
+      confine: true,
+      formatter: function(p) { return '<b>'+p.seriesName+'</b><br>'+fullLabels[p.dataIndex]+': '+p.value+'\u00ba'; }
+    },
+    grid: { left: 8, right: 150, top: 20, bottom: 32, containLabel: true },
+    xAxis: {
+      type: 'category', data: gameLabels, boundaryGap: false,
+      axisLabel: { fontSize: 10, color: '#9ca3af' },
+      axisLine:  { lineStyle: { color: '#e5e7eb' } },
+      splitLine: { show: true, lineStyle: { color: '#f3f4f6' } }
+    },
+    yAxis: {
+      type: 'value', inverse: true, min: 1, max: N, interval: 1,
+      axisLabel: { formatter: '{value}\u00ba', fontSize: 10, color: '#9ca3af' },
+      splitLine: { lineStyle: { color: '#f3f4f6' } }
+    },
+    series: sorted.map(function(nome) {
+      return {
+        name: nome, type: 'line', smooth: true, clip: false,
+        symbol: 'circle', symbolSize: 9,
+        lineStyle: { width: 2, color: colorMap[nome] },
+        itemStyle: { color: colorMap[nome], borderColor: '#fff', borderWidth: 2 },
+        emphasis: {
+          focus: 'series',
+          lineStyle: { width: 4, opacity: 1 },
+          itemStyle: { opacity: 1 }
         },
-        x: {
-          ticks: { maxRotation: 45, minRotation: 45, font: { size: 9 }, color: '#9ca3af' },
-          grid: { color: '#f3f4f6' }
-        }
-      },
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          callbacks: {
-            title: function(items){ return items[0].label; },
-            label: function(item){ return item.dataset.label + ': ' + item.raw + 'º'; }
-          }
-        }
+        blur: {
+          lineStyle: { opacity: 0.07 },
+          itemStyle: { opacity: 0.07 },
+          endLabel: { opacity: 0.07 }
+        },
+        endLabel: {
+          show: true, formatter: '{a}',
+          color: colorMap[nome], fontSize: 10, fontWeight: 700,
+          distance: 8
+        },
+        labelLayout: { moveOverlap: 'shiftY' },
+        data: gameHistory.map(function(s){ return s.posMap[nome] || N; })
+      };
+    })
+  });
+}
+
+// ── Line race – Histórico de pontuação (linha) ─────────────────────────────
+function renderPointsChart(sorted) {
+  var ec = initChart();
+  if (!gameHistory.length) return;
+  // Prepend J0 (start of cup, everyone at 0)
+  var gameLabels = ['J0'].concat(gameHistory.map(function(s, i){ return 'J'+(i+1); }));
+  var fullLabels  = ['Início da Copa'].concat(gameHistory.map(function(s, i){
+    return 'J'+(i+1)+' '+abbrevTeam(s.jogo.time_a.nome) + ' \u00d7 ' + abbrevTeam(s.jogo.time_b.nome);
+  }));
+  ec.setOption({
+    tooltip: {
+      trigger: 'axis',
+      appendToBody: true,
+      confine: true,
+      formatter: function(params) {
+        var lines = ['<b>'+fullLabels[params[0].dataIndex]+'</b>'];
+        params.slice().sort(function(a,b){return b.value-a.value;}).forEach(function(p){
+          lines.push('<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:'+p.color+';margin-right:4px"></span>'+p.seriesName+': <b>'+p.value+' pts</b>');
+        });
+        return lines.join('<br>');
       }
-    }
+    },
+    grid: { left: 8, right: 150, top: 20, bottom: 32, containLabel: true },
+    xAxis: {
+      type: 'category', data: gameLabels, boundaryGap: false,
+      axisLabel: { fontSize: 10, color: '#9ca3af' },
+      splitLine: { show: true, lineStyle: { color: '#f3f4f6' } }
+    },
+    yAxis: {
+      type: 'value', min: 0,
+      axisLabel: { fontSize: 10, color: '#9ca3af' },
+      splitLine: { lineStyle: { color: '#f3f4f6' } }
+    },
+    animationDuration: 300, animationEasing: 'linear',
+    series: sorted.map(function(nome) {
+      return {
+        name: nome, type: 'line', smooth: 0, clip: false,
+        symbol: 'circle', symbolSize: 7,
+        lineStyle: { width: 2, color: colorMap[nome] },
+        itemStyle: { color: colorMap[nome], borderColor: '#fff', borderWidth: 2 },
+        emphasis: {
+          focus: 'series',
+          lineStyle: { width: 4, opacity: 1 },
+          itemStyle: { opacity: 1 }
+        },
+        blur: {
+          lineStyle: { opacity: 0.07 },
+          itemStyle: { opacity: 0.07 },
+          endLabel: { opacity: 0.07 }
+        },
+        endLabel: {
+          show: true, formatter: '{a}',
+          color: colorMap[nome], fontSize: 10, fontWeight: 700, distance: 8
+        },
+        labelLayout: { moveOverlap: 'shiftY' },
+        data: [0].concat(gameHistory.map(function(s){ return s.ptsMap[nome] || 0; }))
+      };
+    })
   });
 }
 
-function highlightDataset(idx) {
-  if (!rankChart) return;
-  rankChart.data.datasets.forEach(function(ds, i) {
-    var c = colorMap[ds.label];
-    if (i === idx) {
-      ds.borderColor = c; ds.pointBackgroundColor = c;
-      ds.borderWidth = 3.5; ds.pointRadius = 5;
-    } else {
-      ds.borderColor = hexAlpha(c, 0.12); ds.pointBackgroundColor = hexAlpha(c, 0.12);
-      ds.borderWidth = 1.5; ds.pointRadius = 3;
-    }
-  });
-  rankChart.update('none');
-  document.getElementById('chart-legend').querySelectorAll('.chart-legend-item').forEach(function(el){
-    el.style.opacity = +el.dataset.idx === idx ? '1' : '0.28';
+// ── Bar race – Histórico de pontuação (barras) ─────────────────────────────
+function renderRaceChart(sorted) {
+  destroyChart();
+  if (!gameHistory.length) return;
+  raceCurrentSorted = sorted;
+  // Default: show last frame (current standings)
+  var lastIdx = gameHistory.length - 1;
+  raceFrameIdx = lastIdx;
+  var scrubber = document.getElementById('race-scrubber');
+  scrubber.max   = lastIdx;
+  scrubber.value = lastIdx;
+  updateRaceLabel(lastIdx);
+  document.getElementById('race-play-btn').innerHTML = '&#9654;';
+
+  var snapLast = gameHistory[lastIdx];
+  var namesLast = sorted.slice().sort(function(a,b){ return (snapLast.ptsMap[b]||0)-(snapLast.ptsMap[a]||0); });
+
+  var ec = initChart();
+  ec.setOption({
+    grid: { top: 10, bottom: 30, left: 10, right: 50, containLabel: true },
+    xAxis: {
+      max: 'dataMax',
+      axisLabel: { color: '#9ca3af', fontSize: 10, formatter: function(v){ return Math.round(v); } },
+      splitLine: { lineStyle: { color: '#f3f4f6' } }
+    },
+    yAxis: {
+      type: 'category', data: namesLast, inverse: true,
+      animationDuration: 200,
+      animationDurationUpdate: Math.round(raceSpeed * 0.85),
+      axisLabel: { fontSize: 12, color: '#374151', fontWeight: 600, width: 120, overflow: 'truncate' }
+    },
+    series: [{
+      realtimeSort: true,
+      type: 'bar', barMaxWidth: 30,
+      data: namesLast.map(function(n){ return { value: snapLast.ptsMap[n]||0, itemStyle: { color: colorMap[n] } }; }),
+      label: {
+        show: true, position: 'right', color: '#374151', fontSize: 12, fontWeight: 700,
+        valueAnimation: true, formatter: function(p){ return p.value; }
+      }
+    }],
+    animationDuration: 0,
+    animationDurationUpdate: Math.round(raceSpeed * 0.85),
+    animationEasing: 'linear',
+    animationEasingUpdate: 'linear'
   });
 }
 
-function resetHighlight() {
-  if (!rankChart) return;
-  rankChart.data.datasets.forEach(function(ds) {
-    var c = colorMap[ds.label];
-    ds.borderColor = c; ds.pointBackgroundColor = c;
-    ds.borderWidth = 2; ds.pointRadius = 4;
-  });
-  rankChart.update('none');
-  document.getElementById('chart-legend').querySelectorAll('.chart-legend-item').forEach(function(el){
-    el.style.opacity = '1';
+function updateRaceFrame(idx) {
+  if (!eChart) return;
+  var snap = gameHistory[idx];
+  var names = raceCurrentSorted.slice().sort(function(a,b){ return (snap.ptsMap[b]||0)-(snap.ptsMap[a]||0); });
+  eChart.setOption({
+    yAxis: { data: names },
+    series: [{ data: names.map(function(n){ return { value: snap.ptsMap[n]||0, itemStyle: { color: colorMap[n] } }; }) }]
   });
 }
+
+function updateRaceLabel(idx) {
+  var snap = gameHistory[Math.min(idx, gameHistory.length-1)];
+  document.getElementById('race-scrubber').value = idx;
+  if (snap) {
+    var j = snap.jogo;
+    document.getElementById('race-game-label').textContent =
+      (idx+1)+'/'+gameHistory.length+' \u2014 '+(j.time_a.nome||'')+' \u00d7 '+(j.time_b.nome||'');
+  }
+}
+
+function toggleRace() { if (raceRunning) stopRace(); else startRace(); }
+
+function startRace() {
+  if (!eChart || raceRunning) return;
+  if (raceFrameIdx >= gameHistory.length - 1) {
+    raceFrameIdx = 0;
+    updateRaceFrame(0);
+    updateRaceLabel(0);
+  }
+  raceRunning = true;
+  document.getElementById('race-play-btn').innerHTML = '&#9646;&#9646;';
+  raceTimer = setInterval(function() {
+    if (!raceRunning) return;
+    raceFrameIdx++;
+    if (raceFrameIdx >= gameHistory.length) {
+      raceFrameIdx = gameHistory.length - 1;
+      updateRaceFrame(raceFrameIdx);
+      updateRaceLabel(raceFrameIdx);
+      stopRace(); return;
+    }
+    updateRaceFrame(raceFrameIdx);
+    updateRaceLabel(raceFrameIdx);
+  }, raceSpeed);
+}
+
+function stopRace() {
+  if (raceTimer) { clearInterval(raceTimer); raceTimer = null; }
+  raceRunning = false;
+  var btn = document.getElementById('race-play-btn');
+  if (btn) btn.innerHTML = '&#9654;';
+}
+
+function scrubRace(idx) {
+  stopRace();
+  idx = Math.max(0, Math.min(idx, gameHistory.length - 1));
+  raceFrameIdx = idx;
+  updateRaceFrame(idx);
+  updateRaceLabel(idx);
+}
+
+// ── Legend highlight – no-ops, handled via legend mouseenter/leave now ───────
+function highlightDataset() {}
+function resetHighlight() {}
 
 // ── Toggle table / chart view ─────────────────────────────────────────────────
 function switchView(view) {
   var isTable = view === 'table';
+  if (isTable) stopRace();
   document.getElementById('view-table').style.display = isTable ? '' : 'none';
   document.getElementById('view-chart').style.display = isTable ? 'none' : '';
   document.getElementById('btn-view-table').classList.toggle('active', isTable);
@@ -919,6 +1297,46 @@ async function init() {
   updateSubtitle();
 }
 init();
+
+// ── JS Tooltip (body-level, never clipped) ────────────────────────────────────
+(function() {
+  var tip = document.createElement('div');
+  tip.style.cssText = [
+    'position:fixed', 'z-index:9999', 'pointer-events:none',
+    'background:#111', 'color:#fff',
+    'font-family:Inter,sans-serif', 'font-size:0.65rem', 'font-weight:400',
+    'line-height:1.55', 'padding:6px 10px', 'border-radius:6px',
+    'white-space:pre-wrap', 'box-shadow:0 4px 14px rgba(0,0,0,.3)',
+    'display:none', 'max-width:280px', 'word-break:break-word'
+  ].join(';');
+  document.body.appendChild(tip);
+  var GAP = 12;
+  document.addEventListener('mouseover', function(e) {
+    var el = e.target.closest('[data-tip]');
+    if (!el) { tip.style.display = 'none'; return; }
+    tip.textContent = el.getAttribute('data-tip');
+    tip.style.display = 'block';
+    position(e);
+  });
+  document.addEventListener('mousemove', function(e) {
+    if (tip.style.display === 'none') return;
+    position(e);
+  });
+  document.addEventListener('mouseout', function(e) {
+    var el = e.target.closest('[data-tip]');
+    if (el) tip.style.display = 'none';
+  });
+  function position(e) {
+    var tw = tip.offsetWidth, th = tip.offsetHeight;
+    var vw = window.innerWidth, vh = window.innerHeight;
+    var x = e.clientX + GAP;
+    var y = e.clientY - th - GAP;
+    if (x + tw > vw - 6) x = e.clientX - tw - GAP;
+    if (y < 6)           y = e.clientY + GAP;
+    tip.style.left = x + 'px';
+    tip.style.top  = y + 'px';
+  }
+})();
 </script>
 </body>
 </html>
