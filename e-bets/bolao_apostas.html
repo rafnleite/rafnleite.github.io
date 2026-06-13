@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bolão Copa 2026</title>
+<title>e-BÉTS - Apostas</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="bolao_header.js"></script>
 <link rel="stylesheet" href="bolao_styles.css">
@@ -26,9 +26,9 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  flex-wrap: wrap;
   flex: 1;
   min-width: 0;
+  width: 100%;
 }
 
 /* ── MAIN ─────────────────────────────────── */
@@ -175,6 +175,15 @@
   letter-spacing: 2px;
   line-height: 1;
   color: var(--text);
+}
+.score-live .s-num.goal-flash {
+  animation: goalPop .7s ease-out forwards;
+}
+@keyframes goalPop {
+  0%   { transform: scale(1);    color: var(--text); }
+  20%  { transform: scale(1.55); color: #16a34a; }
+  60%  { transform: scale(1.3);  color: #16a34a; }
+  100% { transform: scale(1);    color: var(--text); }
 }
 .score-live .s-x {
   font-family: 'Bebas Neue', cursive;
@@ -331,8 +340,8 @@
 /* ── SEARCH BOX ──────────────────────────── */
 .search-wrap {
   position: relative;
-  width: 280px;
-  flex-shrink: 0;
+  flex: 1;
+  min-width: 0;
 }
 .search-input {
   width: 100%;
@@ -592,15 +601,24 @@ function flagImg(team, cls) {
   return '<img class="team-flag ' + cls + '" src="' + team.logo + '" alt="' + team.nome + '">';
 }
 
+function updatePageTitle(j) {
+  if (j.gols_a !== null && j.gols_b !== null) {
+    document.title = 'e-BÉTS - ' + j.time_a.nome + ' ' + j.gols_a + ' x ' + j.gols_b + ' ' + j.time_b.nome;
+  } else {
+    document.title = 'e-BÉTS - Apostas';
+  }
+}
+
 function renderGame(idx) {
   const j = JOGOS[idx];
+  updatePageTitle(j);
   const total = j.apostadores_a.length + j.apostadores_empate.length + j.apostadores_b.length;
   const pA = pct(j.apostadores_a.length, total);
   const pE = pct(j.apostadores_empate.length, total);
   const pB = 100 - pA - pE;
 
   const vsContent = (j.gols_a !== null && j.gols_b !== null)
-    ? '<div class="score-live"><span class="s-num">' + j.gols_a + '</span><span class="s-x">×</span><span class="s-num">' + j.gols_b + '</span></div>'
+    ? '<div class="score-live"><span class="s-num" id="score-a">' + j.gols_a + '</span><span class="s-x">×</span><span class="s-num" id="score-b">' + j.gols_b + '</span></div>'
     : '<div class="vs-text">×</div>';
 
   // Determine who got the result / exact score right
@@ -891,16 +909,23 @@ function exportImage() {
     return;
   }
   // Navega para jogo ao vivo; se não houver, para o próximo jogo
+  // ?jogo=N param (from ranking sidebar link) overrides auto-navigation
   let startIdx = 0;
-  const liveIdx = JOGOS.findIndex(function(j) { return j.isLive || j.status === 'E'; });
-  if (liveIdx >= 0) {
-    startIdx = liveIdx;
+  const qjogo = new URLSearchParams(window.location.search).get('jogo');
+  const qjogoN = qjogo !== null ? parseInt(qjogo, 10) : -1;
+  if (qjogoN >= 0 && qjogoN < JOGOS.length) {
+    startIdx = qjogoN;
   } else {
-    const now = new Date();
-    const nextIdx = JOGOS.findIndex(function(j) {
-      return j.status === 'A' && j.data && new Date(j.data.replace(' ', 'T')) > now;
-    });
-    if (nextIdx >= 0) startIdx = nextIdx;
+    const liveIdx = JOGOS.findIndex(function(j) { return j.isLive || j.status === 'E'; });
+    if (liveIdx >= 0) {
+      startIdx = liveIdx;
+    } else {
+      const now = new Date();
+      const nextIdx = JOGOS.findIndex(function(j) {
+        return j.status === 'A' && j.data && new Date(j.data.replace(' ', 'T')) > now;
+      });
+      if (nextIdx >= 0) startIdx = nextIdx;
+    }
   }
   currentIndex = startIdx;
   document.getElementById('loading-overlay').style.display = 'none';
@@ -928,8 +953,13 @@ function exportImage() {
 
     if (snapshot(fresh) === snapshot(JOGOS)) return; // nothing changed
 
-    // Keep the same game visible by matching on jogo id
+    // Detect goals in the current game before swapping JOGOS
     var currentId = JOGOS[currentIndex] ? JOGOS[currentIndex].id : null;
+    var prevGame = currentId !== null ? JOGOS.find(function(j){ return j.id === currentId; }) : null;
+    var freshGame = currentId !== null ? fresh.find(function(j){ return j.id === currentId; }) : null;
+    var goalA = prevGame && freshGame && freshGame.gols_a !== null && prevGame.gols_a !== null && freshGame.gols_a > prevGame.gols_a;
+    var goalB = prevGame && freshGame && freshGame.gols_b !== null && prevGame.gols_b !== null && freshGame.gols_b > prevGame.gols_b;
+
     JOGOS = fresh;
     var newIdx = currentId !== null ? JOGOS.findIndex(function(j){ return j.id === currentId; }) : -1;
     if (newIdx < 0) newIdx = Math.min(currentIndex, JOGOS.length - 1);
@@ -937,27 +967,30 @@ function exportImage() {
 
     renderGame(currentIndex);
     updateNav();
-    showRefreshToast();
+
+    // Flash score digits if a goal was scored
+    if (goalA || goalB) {
+      var nums = document.querySelectorAll('.score-live .s-num');
+      if (nums.length === 2) {
+        if (goalA) { nums[0].classList.remove('goal-flash'); void nums[0].offsetWidth; nums[0].classList.add('goal-flash'); }
+        if (goalB) { nums[1].classList.remove('goal-flash'); void nums[1].offsetWidth; nums[1].classList.add('goal-flash'); }
+      }
+    }
   }, 40000);
 })();
 
-function showRefreshToast() {
-  var existing = document.getElementById('refresh-toast');
-  if (existing) existing.remove();
-  var t = document.createElement('div');
-  t.id = 'refresh-toast';
-  t.textContent = '↻ Dados atualizados';
-  t.style.cssText = [
-    'position:fixed', 'bottom:20px', 'left:50%', 'transform:translateX(-50%) translateY(0)',
-    'background:#111', 'color:#fff', 'font-family:Inter,sans-serif', 'font-size:0.72rem',
-    'font-weight:600', 'padding:7px 18px', 'border-radius:20px',
-    'box-shadow:0 4px 16px rgba(0,0,0,.25)', 'z-index:9999',
-    'pointer-events:none', 'opacity:1', 'transition:opacity .5s'
-  ].join(';');
-  document.body.appendChild(t);
-  setTimeout(function() { t.style.opacity = '0'; }, 2500);
-  setTimeout(function() { t.remove(); }, 3100);
+// ── Goal flash helper (exposed for testing) ──────────────────────────────────
+function testGoalFlash(side) {
+  var nums = document.querySelectorAll('.score-live .s-num');
+  if (nums.length < 2) return;
+  var targets = side === 'a' ? [nums[0]] : side === 'b' ? [nums[1]] : [nums[0], nums[1]];
+  targets.forEach(function(el) {
+    el.classList.remove('goal-flash');
+    void el.offsetWidth; // force reflow to restart animation
+    el.classList.add('goal-flash');
+  });
 }
+window.testGoalFlash = testGoalFlash;
 </script>
 </body>
 </html>

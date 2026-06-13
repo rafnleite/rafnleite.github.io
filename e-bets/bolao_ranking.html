@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ranking do Bolão – Copa 2026</title>
+<title>e-BÉTS - Ranking do Bolão</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
 <script src="bolao_header.js"></script>
@@ -141,6 +141,7 @@
 }
 .sim-game-card.filled { background: #f0fdf4; }
 .sim-game-card.done   { background: #fafafa; }
+.sim-game-card.live   { background: #fff5f5; border-left: 2px solid #dc2626; }
 
 .sim-meta { font-size: 0.57rem; color: var(--light); margin-bottom: 5px; line-height: 1; }
 
@@ -168,6 +169,44 @@
   display: flex; align-items: center; gap: 3px; flex-shrink: 0;
   font-family: 'Bebas Neue', cursive; font-size: 1.05rem; letter-spacing: 1px; color: var(--text);
 }
+/* Live score in sidebar */
+.score-live-sb {
+  display: flex; align-items: center; gap: 3px; flex-shrink: 0;
+  font-family: 'Bebas Neue', cursive; font-size: 1.05rem; letter-spacing: 1px;
+}
+.score-live-sb .sn {
+  color: var(--text); display: inline-block;
+  transition: color .1s;
+}
+.score-live-sb .sn.goal-flash {
+  animation: sbGoalPop .7s ease-out forwards;
+}
+@keyframes sbGoalPop {
+  0%   { transform: scale(1);    color: var(--text); }
+  20%  { transform: scale(1.7);  color: #16a34a; }
+  60%  { transform: scale(1.4);  color: #16a34a; }
+  100% { transform: scale(1);    color: var(--text); }
+}
+/* Live badge in sidebar */
+.sb-live-badge {
+  display: inline-flex; align-items: center; gap: 3px;
+  font-size: 0.52rem; font-weight: 700; letter-spacing: .8px; text-transform: uppercase;
+  color: #dc2626; line-height: 1;
+}
+.sb-live-dot {
+  width: 5px; height: 5px; border-radius: 50%; background: #dc2626;
+  animation: sbPulse 1.2s ease-in-out infinite;
+  flex-shrink: 0;
+}
+@keyframes sbPulse {
+  0%, 100% { opacity: 1; } 50% { opacity: .25; }
+}
+/* Ver apostas link */
+.sb-apostas-link {
+  font-size: 0.56rem; font-weight: 600; color: var(--accent); text-decoration: none;
+  letter-spacing: .5px; white-space: nowrap; flex-shrink: 0;
+}
+.sb-apostas-link:hover { text-decoration: underline; }
 
 /* ── SUMMARY CARDS ──────────────────────── */
 .summary-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
@@ -851,16 +890,40 @@ function renderSidebar() {
 function sidebarCardHtml(j, pfx) {
   pfx = pfx || '';
   var isDone = j.gols_a !== null && j.gols_b !== null;
+  var isLive = !!j.isLive;
   var fA = j.time_a.logo ? '<img src="' + j.time_a.logo + '" class="sim-flag" alt="">' : '';
   var fB = j.time_b.logo ? '<img src="' + j.time_b.logo + '" class="sim-flag" alt="">' : '';
   var hora = j.data
     ? (j.data.slice(11, 13) + 'h' + (j.data.slice(14, 16) !== '00' ? j.data.slice(14, 16) : ''))
     : '';
-  var meta = [hora, j.grupo || '', j.cidade].filter(Boolean).join(' · ');
+
+  // meta row: clock (if live) or time · group · city
+  var metaParts;
+  if (isLive) {
+    metaParts = [j.grupo || '', j.cidade].filter(Boolean).join(' · ');
+  } else {
+    metaParts = [hora, j.grupo || '', j.cidade].filter(Boolean).join(' · ');
+  }
+
+  var liveBadge = isLive
+    ? '<span class="sb-live-badge"><span class="sb-live-dot"></span>' + (j.liveClock || 'AO VIVO') + '</span>'
+    : '';
+
+  // apostas page link — find index of this game by id in global JOGOS
+  var apostasIdx = JOGOS.findIndex(function(g) { return g.id === j.id; });
+  var apostasLink = '<a class="sb-apostas-link" href="bolao_apostas.html' + (apostasIdx >= 0 ? '?jogo=' + apostasIdx : '') + '" target="_blank">Ver apostas ↗</a>';
 
   var midHtml;
   if (isDone) {
-    midHtml = '<div class="score-done">' + j.gols_a + '<span class="sim-vs">×</span>' + j.gols_b + '</div>';
+    if (isLive) {
+      midHtml = '<div class="score-live-sb">' +
+        '<span class="sn" id="sbn-a-' + pfx + j.id + '">' + j.gols_a + '</span>' +
+        '<span class="sim-vs">\xd7</span>' +
+        '<span class="sn" id="sbn-b-' + pfx + j.id + '">' + j.gols_b + '</span>' +
+      '</div>';
+    } else {
+      midHtml = '<div class="score-done">' + j.gols_a + '<span class="sim-vs">\xd7</span>' + j.gols_b + '</div>';
+    }
   } else {
     var sv  = simScores[j.id];
     var vA  = sv && sv.a !== null ? sv.a : '';
@@ -875,10 +938,13 @@ function sidebarCardHtml(j, pfx) {
 
   var sv2   = simScores[j.id];
   var filled = !isDone && sv2 && sv2.a !== null && sv2.b !== null;
-  var cls    = isDone ? ' done' : (filled ? ' filled' : '');
+  var cardCls = isLive ? ' live' : (isDone ? ' done' : (filled ? ' filled' : ''));
 
-  return '<div class="sim-game-card' + cls + '" id="sgc-' + pfx + j.id + '">' +
-    '<div class="sim-meta">' + meta + '</div>' +
+  return '<div class="sim-game-card' + cardCls + '" id="sgc-' + pfx + j.id + '">' +
+    '<div class="sim-meta" style="display:flex;align-items:center;justify-content:space-between;gap:4px">' +
+      '<span>' + metaParts + '</span>' +
+      '<span style="display:flex;align-items:center;gap:6px">' + liveBadge + apostasLink + '</span>' +
+    '</div>' +
     '<div class="sim-row">' +
       '<div class="sim-team-side">' + fA + '<span class="sim-team-lbl">' + j.time_a.nome + '</span></div>' +
       midHtml +
@@ -1414,6 +1480,45 @@ async function init() {
 
   document.getElementById('loading-overlay').style.display = 'none';
   updateSubtitle();
+
+  // ── Auto-refresh every 40 s (scores + live status) ───────────────────────
+  setInterval(async function() {
+    var fresh;
+    try { fresh = await buildJogos(); } catch(e) { return; }
+
+    function snapshot(list) {
+      return JSON.stringify(list.map(function(j) {
+        return [j.id, j.gols_a, j.gols_b, j.isLive, j.liveClock];
+      }));
+    }
+    if (snapshot(fresh) === snapshot(JOGOS)) return;
+
+    // Detect goals in live games before swapping
+    var goalFlashes = [];
+    fresh.forEach(function(fj) {
+      if (!fj.isLive) return;
+      var oj = JOGOS.find(function(g) { return g.id === fj.id; });
+      if (!oj) return;
+      if (fj.gols_a !== null && oj.gols_a !== null && fj.gols_a > oj.gols_a) goalFlashes.push({ id: fj.id, side: 'a' });
+      if (fj.gols_b !== null && oj.gols_b !== null && fj.gols_b > oj.gols_b) goalFlashes.push({ id: fj.id, side: 'b' });
+    });
+
+    JOGOS = fresh;
+    buildScoreboard();
+    renderRanking();
+    renderSidebar();
+
+    // Flash goal numbers in sidebar
+    goalFlashes.forEach(function(gf) {
+      ['', 'm'].forEach(function(pfx) {
+        var el = document.getElementById('sbn-' + gf.side + '-' + pfx + gf.id);
+        if (!el) return;
+        el.classList.remove('goal-flash');
+        void el.offsetWidth;
+        el.classList.add('goal-flash');
+      });
+    });
+  }, 40000);
 }
 init();
 

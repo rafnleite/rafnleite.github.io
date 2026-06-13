@@ -42,7 +42,17 @@ var PT_TO_ESPN = {
   'emirados arabes unidos': 'united arab emirates',
   'paises baixos': 'netherlands', 'holanda': 'netherlands',
   'trinidad e tobago': 'trinidad and tobago',
-  'costa do marfim': 'ivory coast', 'republica dominicana': 'dominican republic'
+  'costa do marfim': 'ivory coast', 'republica dominicana': 'dominican republic',
+  'catar': 'qatar', 'irã': 'iran', 'ira': 'iran',
+  'marrocos': 'morocco', 'senegal': 'senegal',
+  'costa rica': 'costa rica', 'equador': 'ecuador',
+  'uruguai': 'uruguay', 'colombia': 'colombia',
+  'peru': 'peru', 'chile': 'chile', 'bolivia': 'bolivia',
+  'venezuela': 'venezuela', 'mexico': 'mexico',
+  'australia': 'australia', 'georgia': 'georgia',
+  'escocia': 'scotland', 'gales': 'wales', 'irlanda': 'republic of ireland',
+  'irlanda do norte': 'northern ireland', 'austria': 'austria',
+  'suecia': 'sweden', 'finlandia': 'finland', 'islandia': 'iceland'
 };
 
 function espnNormTeam(name) { var n = espnNorm(name); return PT_TO_ESPN[n] || n; }
@@ -56,28 +66,51 @@ function espnTeamsMatch(t1, t2) {
 
 async function fetchESPNScores() {
   try {
-    var r = await fetch('https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard');
-    if (!r.ok) return {};
-    var data = await r.json();
+    // ESPN's default scoreboard uses US Eastern "active day" which can miss
+    // games starting on a different calendar day in UTC. Fetch both the default
+    // endpoint AND today/tomorrow by UTC date, then merge results.
+    var now = new Date();
+    function utcDateStr(d) {
+      var y = d.getUTCFullYear();
+      var m = String(d.getUTCMonth() + 1).padStart(2, '0');
+      var day = String(d.getUTCDate()).padStart(2, '0');
+      return y + m + day;
+    }
+    var tomorrow = new Date(now.getTime() + 86400000);
+    var ESPN_BASE = 'https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard';
+    var urls = [
+      ESPN_BASE,
+      ESPN_BASE + '?dates=' + utcDateStr(now),
+      ESPN_BASE + '?dates=' + utcDateStr(tomorrow)
+    ];
+
     var map = {};
-    (data.events || []).forEach(function(ev) {
-      var comp = (ev.competitions || [])[0];
-      if (!comp) return;
-      var home = null, away = null;
-      (comp.competitors || []).forEach(function(c) {
-        if (c.homeAway === 'home') home = c; else away = c;
+    for (var i = 0; i < urls.length; i++) {
+      var r = await fetch(urls[i]);
+      if (!r.ok) continue;
+      var data = await r.json();
+      (data.events || []).forEach(function(ev) {
+        var comp = (ev.competitions || [])[0];
+        if (!comp) return;
+        var home = null, away = null;
+        (comp.competitors || []).forEach(function(c) {
+          if (c.homeAway === 'home') home = c; else away = c;
+        });
+        if (!home || !away) return;
+        var st = (ev.status || {}).type || {};
+        var isLive = st.state === 'in';
+        var isFinal = st.completed === true;
+        if (!isLive && !isFinal) return;
+        var key = espnNorm(home.team.name) + '__' + espnNorm(away.team.name);
+        // Don't overwrite a live entry with a finished one from another fetch
+        if (map[key] && map[key].isLive && !isLive) return;
+        map[key] = {
+          scoreA: parseInt(home.score) || 0,
+          scoreB: parseInt(away.score) || 0,
+          isLive: isLive, isFinal: isFinal, clock: st.shortDetail || ''
+        };
       });
-      if (!home || !away) return;
-      var st = (ev.status || {}).type || {};
-      var isLive = st.state === 'in';
-      var isFinal = st.completed === true;
-      if (!isLive && !isFinal) return;
-      map[espnNorm(home.team.name) + '__' + espnNorm(away.team.name)] = {
-        scoreA: parseInt(home.score) || 0,
-        scoreB: parseInt(away.score) || 0,
-        isLive: isLive, isFinal: isFinal, clock: st.shortDetail || ''
-      };
-    });
+    }
     return map;
   } catch(e) { return {}; }
 }

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Participante – Bolão Copa 2026</title>
+<title>e-BÉTS - Participantes</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 <script src="bolao_header.js"></script>
 <link rel="stylesheet" href="bolao_styles.css">
@@ -896,6 +896,7 @@ window.next_pager_btns_go   = function(p){ nextPage = renderPage('next-bets','ne
 // ── Select player ─────────────────────────────────────────────────────────────
 function selectPlayer(nome) {
   currentNome = nome;
+  document.title = 'e-BÉTS - ' + nome;
   // Update URL without reload
   var url = new URL(window.location.href);
   url.searchParams.set('nome', nome);
