@@ -23,7 +23,8 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  min-width: 0;
 }
 .player-arrow {
   background: var(--white);
@@ -37,8 +38,10 @@
   transition: all .12s; flex-shrink: 0;
 }
 .player-arrow:hover { background: var(--accent); border-color: var(--accent); color: white; }
+.player-arrow:active { background: var(--accent); border-color: var(--accent); color: white; }
+@media (hover: none) { .player-arrow:hover { background: var(--white); border-color: var(--border); color: var(--text); } }
 .player-select {
-  flex: 1; min-width: 160px;
+  flex: 1; min-width: 0;
   font-family: 'Inter', sans-serif; font-size: 0.78rem; font-weight: 600;
   color: var(--text); background: var(--white);
   border: 1.5px solid var(--border); border-radius: 7px;

@@ -55,6 +55,8 @@ html, body {
   text-decoration: none;
 }
 .nav-btn:hover:not(:disabled) { background: var(--accent); border-color: var(--accent); color: white; }
+.nav-btn:active:not(:disabled) { background: var(--accent); border-color: var(--accent); color: white; }
+@media (hover: none) { .nav-btn:hover:not(:disabled) { background: var(--white); border-color: var(--border); color: var(--text); } }
 .nav-btn:disabled { opacity: .35; cursor: not-allowed; }
 .nav-counter { font-size: 0.72rem; color: var(--sub); font-weight: 500; white-space: nowrap; }
 
