@@ -125,16 +125,55 @@
     }
 
     @media (max-width: 520px) {
-      html, body { padding: 24px 14px; justify-content: flex-start; padding-top: 40px; }
-      .hero { margin-bottom: 32px; }
-      .hero h1 { font-size: 2.4rem; letter-spacing: 4px; }
-      .hero p { font-size: 0.68rem; }
-      .cards { grid-template-columns: 1fr; gap: 14px; }
-      .page-card { padding: 22px 20px; flex-direction: row; align-items: center; gap: 16px; }
-      .card-icon { font-size: 1.6rem; flex-shrink: 0; }
-      .card-title { font-size: 1.15rem; }
-      .card-desc { font-size: 0.72rem; }
-      .card-arrow { display: none; }
+
+      html,
+      body {
+        padding: 24px 14px;
+        justify-content: flex-start;
+        padding-top: 40px;
+      }
+
+      .hero {
+        margin-bottom: 32px;
+      }
+
+      .hero h1 {
+        font-size: 2.4rem;
+        letter-spacing: 4px;
+      }
+
+      .hero p {
+        font-size: 0.68rem;
+      }
+
+      .cards {
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+
+      .page-card {
+        padding: 22px 20px;
+        flex-direction: row;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .card-icon {
+        font-size: 1.6rem;
+        flex-shrink: 0;
+      }
+
+      .card-title {
+        font-size: 1.15rem;
+      }
+
+      .card-desc {
+        font-size: 0.72rem;
+      }
+
+      .card-arrow {
+        display: none;
+      }
     }
   </style>
 </head>
@@ -155,13 +194,6 @@
       <div class="card-arrow">Acessar →</div>
     </a>
 
-    <a class="page-card" href="bolao_participante.html">
-      <div class="card-icon">👤</div>
-      <div class="card-title">Participantes</div>
-      <div class="card-desc">Veja o histórico, palpites e estatísticas detalhadas de cada apostador.</div>
-      <div class="card-arrow">Acessar →</div>
-    </a>
-
     <a class="page-card" href="bolao_ranking.html">
       <div class="card-icon">🏅</div>
       <div class="card-title">Ranking do Bolão</div>
@@ -175,6 +207,13 @@
       <div class="card-title">Apostas por Jogo</div>
       <div class="card-desc">Veja os palpites de cada participante em todos os jogos da Copa, com placar e distribuição
         de apostas.</div>
+      <div class="card-arrow">Acessar →</div>
+    </a>
+
+    <a class="page-card" href="bolao_participante.html">
+      <div class="card-icon">👤</div>
+      <div class="card-title">Participantes</div>
+      <div class="card-desc">Veja o histórico, palpites e estatísticas detalhadas de cada apostador.</div>
       <div class="card-arrow">Acessar →</div>
     </a>
 
