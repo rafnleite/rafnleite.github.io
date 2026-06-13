@@ -5,8 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ranking de consenso – Bolão Copa 2026</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script src="bolao_header.js"></script>
-<link rel="stylesheet" href="bolao_styles.css">
+<script>
+var _cbv = '?v=' + Date.now();
+document.write('<link rel="stylesheet" href="bolao_styles.css'+_cbv+'">');
+document.write('<scr'+'ipt src="bolao_header.js'+_cbv+'"><\/scr'+'ipt>');
+</script>
 <style>
 :root {
   --maria: #166534;
@@ -516,7 +519,7 @@
   </div>
 </main>
 
-<script src="bolao_utils.js"></script>
+<script>document.write('<scr'+'ipt src="bolao_utils.js'+_cbv+'"><\/scr'+'ipt>');</script>
 <script>
 let JOGOS = [];
 
