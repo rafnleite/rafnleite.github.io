@@ -98,7 +98,23 @@ var PT_TO_ESPN = {
   'ilhas salomao': 'solomon islands', 'nova caledonia': 'new caledonia'
 };
 
+// ESPN uses official FIFA names that differ from English (e.g. Türkiye ≠ Turkey)
+var ESPN_ALIASES = {
+  'turkiye': 'turkey',
+  'usa': 'united states',
+  'ir iran': 'iran',
+  'korea republic': 'south korea',
+  'republic of korea': 'south korea',
+  'dpr korea': 'north korea',
+  'chinese taipei': 'taiwan',
+  'cape verde islands': 'cape verde',
+  'dr congo': 'democratic republic of congo',
+  'trinidad & tobago': 'trinidad and tobago',
+  'curacao': 'curacao'
+};
+
 function espnNormTeam(name) { var n = espnNorm(name); return PT_TO_ESPN[n] || n; }
+function normalizeESPNName(name) { var n = espnNorm(name); return ESPN_ALIASES[n] || n; }
 
 function espnTeamsMatch(t1, t2) {
   if (t1 === t2) return true;
@@ -156,6 +172,7 @@ async function fetchESPNScores() {
           isLive: isLive, isFinal: isFinal, clock: st.shortDetail || ''
         };
         // Store under multiple name variants for robust matching
+        // Use normalizeESPNName so ESPN variants (Türkiye→turkey) map to canonical English
         var ht = home.team, at = away.team;
         var nameCombos = [
           [ht.name, at.name],
@@ -165,7 +182,7 @@ async function fetchESPNScores() {
         ];
         nameCombos.forEach(function(pair) {
           if (pair[0] && pair[1]) {
-            storeEntry(espnNorm(pair[0]) + '__' + espnNorm(pair[1]), entry);
+            storeEntry(normalizeESPNName(pair[0]) + '__' + normalizeESPNName(pair[1]), entry);
           }
         });
       });
