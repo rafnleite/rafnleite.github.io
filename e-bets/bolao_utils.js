@@ -26,33 +26,76 @@ function espnNorm(name) {
 
 // Tradução nomes em português → inglês (padrão ESPN)
 var PT_TO_ESPN = {
+  // Américas
+  'brasil': 'brazil',
   'eua': 'united states', 'estados unidos': 'united states',
-  'paraguai': 'paraguay', 'alemanha': 'germany', 'franca': 'france',
-  'espanha': 'spain', 'belgica': 'belgium', 'suica': 'switzerland',
-  'suecia': 'sweden', 'dinamarca': 'denmark', 'noruega': 'norway',
-  'polonia': 'poland', 'hungria': 'hungary', 'turquia': 'turkey',
-  'grecia': 'greece', 'servia': 'serbia', 'croacia': 'croatia',
-  'eslovaquia': 'slovakia', 'eslovenia': 'slovenia',
-  'romenia': 'romania', 'ucrania': 'ukraine',
+  'paraguai': 'paraguay', 'uruguai': 'uruguay', 'colombia': 'colombia',
+  'peru': 'peru', 'chile': 'chile', 'bolivia': 'bolivia',
+  'venezuela': 'venezuela', 'mexico': 'mexico', 'canada': 'canada',
+  'costa rica': 'costa rica', 'equador': 'ecuador',
+  'trinidad e tobago': 'trinidad and tobago',
+  'republica dominicana': 'dominican republic',
+  'jamaica': 'jamaica', 'honduras': 'honduras', 'panama': 'panama',
+  'cuba': 'cuba', 'guatemala': 'guatemala', 'nicaragua': 'nicaragua',
+  // Europa
+  'alemanha': 'germany', 'franca': 'france', 'espanha': 'spain',
+  'belgica': 'belgium', 'suica': 'switzerland', 'suecia': 'sweden',
+  'dinamarca': 'denmark', 'noruega': 'norway', 'polonia': 'poland',
+  'hungria': 'hungary', 'turquia': 'turkey', 'grecia': 'greece',
+  'servia': 'serbia', 'croacia': 'croatia', 'eslovaquia': 'slovakia',
+  'eslovenia': 'slovenia', 'romenia': 'romania', 'ucrania': 'ukraine',
+  'paises baixos': 'netherlands', 'holanda': 'netherlands',
   'bosnia e herzegovina': 'bosnia and herzegovina',
   'republica tcheca': 'czech republic', 'tchecia': 'czech republic',
+  'austria': 'austria', 'finlandia': 'finland', 'islandia': 'iceland',
+  'escocia': 'scotland', 'gales': 'wales', 'inglaterra': 'england',
+  'irlanda': 'republic of ireland', 'irlanda do norte': 'northern ireland',
+  'albania': 'albania', 'armenia': 'armenia', 'azerbaijao': 'azerbaijan',
+  'bielorrussia': 'belarus', 'bulgaria': 'bulgaria',
+  'chipre': 'cyprus', 'estonia': 'estonia', 'latvia': 'latvia',
+  'lituania': 'lithuania', 'luxemburgo': 'luxembourg',
+  'macedoniado norte': 'north macedonia', 'macedonia do norte': 'north macedonia',
+  'moldova': 'moldova', 'montenegro': 'montenegro',
+  'portugal': 'portugal', 'georgia': 'georgia',
+  // África
+  'marrocos': 'morocco', 'senegal': 'senegal', 'nigeria': 'nigeria',
+  'camaroes': 'cameroon', 'gana': 'ghana', 'egito': 'egypt',
+  'argelia': 'algeria', 'tunisia': 'tunisia', 'africa do sul': 'south africa',
+  'costa do marfim': 'ivory coast', 'mali': 'mali',
+  'burkina faso': 'burkina faso', 'guine': 'guinea',
+  'guine equatorial': 'equatorial guinea', 'guine bissau': 'guinea-bissau',
+  'angola': 'angola', 'zimbabue': 'zimbabwe', 'mozambique': 'mozambique',
+  'tanzania': 'tanzania', 'uganda': 'uganda', 'zambia': 'zambia',
+  'serra leoa': 'sierra leone', 'liberia': 'liberia',
+  'cabo verde': 'cape verde', 'mauritania': 'mauritania',
+  'tanzania': 'tanzania', 'ruanda': 'rwanda', 'benin': 'benin',
+  'togo': 'togo', 'kenya': 'kenya', 'etiopia': 'ethiopia',
+  'libia': 'libya', 'sudao': 'sudan', 'somalia': 'somalia',
+  'gabao': 'gabon', 'congo': 'dr congo', 'republica do congo': 'republic of the congo',
+  // Ásia
   'coreia do sul': 'south korea', 'coreia do norte': 'north korea',
   'japao': 'japan', 'nova zelandia': 'new zealand',
-  'africa do sul': 'south africa', 'arabia saudita': 'saudi arabia',
-  'emirados arabes unidos': 'united arab emirates',
-  'paises baixos': 'netherlands', 'holanda': 'netherlands',
-  'trinidad e tobago': 'trinidad and tobago',
-  'costa do marfim': 'ivory coast', 'republica dominicana': 'dominican republic',
-  'catar': 'qatar', 'irã': 'iran', 'ira': 'iran',
-  'marrocos': 'morocco', 'senegal': 'senegal',
-  'costa rica': 'costa rica', 'equador': 'ecuador',
-  'uruguai': 'uruguay', 'colombia': 'colombia',
-  'peru': 'peru', 'chile': 'chile', 'bolivia': 'bolivia',
-  'venezuela': 'venezuela', 'mexico': 'mexico',
   'australia': 'australia', 'georgia': 'georgia',
-  'escocia': 'scotland', 'gales': 'wales', 'irlanda': 'republic of ireland',
-  'irlanda do norte': 'northern ireland', 'austria': 'austria',
-  'suecia': 'sweden', 'finlandia': 'finland', 'islandia': 'iceland'
+  'arabia saudita': 'saudi arabia',
+  'emirados arabes unidos': 'united arab emirates',
+  'catar': 'qatar', 'ira': 'iran', 'irao': 'iran',
+  'iraque': 'iraq', 'jordania': 'jordan', 'siria': 'syria',
+  'libano': 'lebanon', 'bahrein': 'bahrain', 'oma': 'oman',
+  'kuwait': 'kuwait', 'iemen': 'yemen', 'palestina': 'palestine',
+  'china': 'china', 'india': 'india', 'indonesia': 'indonesia',
+  'tailandia': 'thailand', 'filipinas': 'philippines',
+  'vietna': 'vietnam', 'vietname': 'vietnam',
+  'malasia': 'malaysia', 'cingapura': 'singapore',
+  'mianmar': 'myanmar', 'camboja': 'cambodia', 'laos': 'laos',
+  'bangladesh': 'bangladesh', 'paquistao': 'pakistan',
+  'afeganistao': 'afghanistan', 'casaquistao': 'kazakhstan',
+  'uzbequistao': 'uzbekistan', 'quirguistao': 'kyrgyzstan',
+  'tadjiquistao': 'tajikistan', 'turcomenistao': 'turkmenistan',
+  'mongolia': 'mongolia', 'nepal': 'nepal', 'butao': 'bhutan',
+  // Oceania
+  'papua nova guine': 'papua new guinea', 'taiti': 'tahiti',
+  'fiji': 'fiji', 'vanuatu': 'vanuatu', 'samoa': 'samoa',
+  'ilhas salomao': 'solomon islands', 'nova caledonia': 'new caledonia'
 };
 
 function espnNormTeam(name) { var n = espnNorm(name); return PT_TO_ESPN[n] || n; }
@@ -66,9 +109,6 @@ function espnTeamsMatch(t1, t2) {
 
 async function fetchESPNScores() {
   try {
-    // ESPN's default scoreboard uses US Eastern "active day" which can miss
-    // games starting on a different calendar day in UTC. Fetch both the default
-    // endpoint AND today/tomorrow by UTC date, then merge results.
     var now = new Date();
     function utcDateStr(d) {
       var y = d.getUTCFullYear();
@@ -76,15 +116,24 @@ async function fetchESPNScores() {
       var day = String(d.getUTCDate()).padStart(2, '0');
       return y + m + day;
     }
-    var tomorrow = new Date(now.getTime() + 86400000);
+    var yesterday = new Date(now.getTime() - 86400000);
+    var tomorrow  = new Date(now.getTime() + 86400000);
     var ESPN_BASE = 'https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard';
     var urls = [
       ESPN_BASE,
+      ESPN_BASE + '?dates=' + utcDateStr(yesterday),
       ESPN_BASE + '?dates=' + utcDateStr(now),
       ESPN_BASE + '?dates=' + utcDateStr(tomorrow)
     ];
 
     var map = {};
+    function storeEntry(key, entry) {
+      if (!key || key === '__') return;
+      // Don't overwrite a live entry with a finished one from another fetch
+      if (map[key] && map[key].isLive && !entry.isLive) return;
+      map[key] = entry;
+    }
+
     for (var i = 0; i < urls.length; i++) {
       var r = await fetch(urls[i]);
       if (!r.ok) continue;
@@ -101,14 +150,24 @@ async function fetchESPNScores() {
         var isLive = st.state === 'in';
         var isFinal = st.completed === true;
         if (!isLive && !isFinal) return;
-        var key = espnNorm(home.team.name) + '__' + espnNorm(away.team.name);
-        // Don't overwrite a live entry with a finished one from another fetch
-        if (map[key] && map[key].isLive && !isLive) return;
-        map[key] = {
+        var entry = {
           scoreA: parseInt(home.score) || 0,
           scoreB: parseInt(away.score) || 0,
           isLive: isLive, isFinal: isFinal, clock: st.shortDetail || ''
         };
+        // Store under multiple name variants for robust matching
+        var ht = home.team, at = away.team;
+        var nameCombos = [
+          [ht.name, at.name],
+          [ht.displayName, at.displayName],
+          [ht.shortDisplayName, at.shortDisplayName],
+          [ht.location, at.location]
+        ];
+        nameCombos.forEach(function(pair) {
+          if (pair[0] && pair[1]) {
+            storeEntry(espnNorm(pair[0]) + '__' + espnNorm(pair[1]), entry);
+          }
+        });
       });
     }
     return map;
