@@ -1423,6 +1423,31 @@
       document.getElementById('sidebar-games').innerHTML = buildHtml('');
       document.getElementById('sidebar-games-mob').innerHTML = buildHtml('m');
 
+      // Scroll sidebar to live game (or next upcoming), with offset showing prior content
+      function scrollSidebarToFocus(containerId, pfx) {
+        var container = document.getElementById(containerId);
+        if (!container) return;
+        var focusId = null;
+        var liveJ = JOGOS.find(function(j) { return j.isLive; });
+        if (liveJ) {
+          focusId = 'sgc-' + pfx + liveJ.id;
+        } else {
+          var now = new Date();
+          var nextJ = JOGOS.find(function(j) {
+            return j.gols_a === null && j.gols_b === null && j.data && new Date(j.data.replace(' ', 'T')) > now;
+          });
+          if (nextJ) focusId = 'sgc-' + pfx + nextJ.id;
+        }
+        if (!focusId) return;
+        var el = document.getElementById(focusId);
+        if (!el) return;
+        // Scroll so the card appears with ~60px of content visible above it
+        var offset = el.offsetTop - 200;
+        container.scrollTop = offset < 0 ? 0 : offset;
+      }
+      scrollSidebarToFocus('sidebar-games', '');
+      scrollSidebarToFocus('sidebar-games-mob', 'm');
+
       var future = JOGOS.filter(function (j) { return j.gols_a === null && j.gols_b === null; }).length;
       var badge = future + ' pendente' + (future !== 1 ? 's' : '');
       document.getElementById('sb-count').textContent = badge;
@@ -2030,7 +2055,7 @@
       document.getElementById('loading-overlay').style.display = 'none';
       updateSubtitle();
 
-      // ── Auto-refresh every 40 s (scores + live status) ───────────────────────
+      // ── Auto-refresh every 15 s (scores + live status) ───────────────────────
       setInterval(async function () {
         var fresh;
         try { fresh = await buildJogos(); } catch (e) { return; }
