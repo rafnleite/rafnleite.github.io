@@ -201,6 +201,7 @@ function findESPNMatch(espnMap, nameA, nameB) {
 }
 
 // Aplica placares ao vivo/recentes da ESPN sobre a lista de jogos (modifica in-place)
+// Preferência ESPN quando: jogo ao vivo, ou placar ESPN > placar APEX (total de gols)
 async function applyESPNOverrides(list) {
   var espnMap = await fetchESPNScores();
   list.forEach(function(j) {
@@ -209,8 +210,12 @@ async function applyESPNOverrides(list) {
     if (espn.isLive) {
       j.gols_a = espn.scoreA; j.gols_b = espn.scoreB;
       j.isLive = true; j.liveClock = espn.clock;
-    } else if (espn.isFinal && (j.gols_a === null || j.gols_b === null)) {
-      j.gols_a = espn.scoreA; j.gols_b = espn.scoreB;
+    } else if (espn.isFinal) {
+      var apexTotal = (j.gols_a !== null && j.gols_b !== null) ? (j.gols_a + j.gols_b) : -1;
+      var espnTotal = espn.scoreA + espn.scoreB;
+      if (apexTotal === -1 || espnTotal > apexTotal) {
+        j.gols_a = espn.scoreA; j.gols_b = espn.scoreB;
+      }
     }
   });
 }
