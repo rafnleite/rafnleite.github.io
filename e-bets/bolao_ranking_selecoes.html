@@ -484,48 +484,6 @@
 <script>
 let JOGOS = [];
 
-async function buildJogos() {
-  var results = await Promise.all([
-    fetchAll('/jogo'), fetchAll('/aposta'), fetchAll('/grupo'),
-    fetchAll('/time'), fetchAll('/chutador')
-  ]);
-  var jogos = results[0], apostas = results[1], grupos = results[2],
-      times = results[3], chutadores = results[4];
-  var grupoMap = {}, timeMap = {}, chutadorMap = {}, apostaPorJogo = {};
-  grupos.forEach(function(g) { grupoMap[g.id_grupo] = g; });
-  times.forEach(function(t) { timeMap[t.id_time] = t; });
-  chutadores.forEach(function(c) { chutadorMap[c.id_chutador] = c; });
-  apostas.forEach(function(a) {
-    if (!apostaPorJogo[a.id_jogo]) apostaPorJogo[a.id_jogo] = [];
-    apostaPorJogo[a.id_jogo].push(a);
-  });
-  var list = jogos.map(function(j) {
-    var grupo = grupoMap[j.id_grupo] || {}, timeA = timeMap[j.id_time_a] || {},
-        timeB = timeMap[j.id_time_b] || {};
-    var apostadores_a = [], apostadores_empate = [], apostadores_b = [];
-    (apostaPorJogo[j.id_jogo] || []).forEach(function(a) {
-      var ch = chutadorMap[a.id_chutador] || {};
-      var entry = { nome: ch.nome || '?', placar: a.gols_a + 'x' + a.gols_b };
-      if (a.gols_a > a.gols_b) apostadores_a.push(entry);
-      else if (a.gols_a < a.gols_b) apostadores_b.push(entry);
-      else apostadores_empate.push(entry);
-    });
-    var dataLocal = j.data ? j.data.slice(0, 16).replace('T', ' ') : null;
-    return {
-      id: j.id_jogo, data: dataLocal, estadio: j.estadio, cidade: j.cidade,
-      grupo: grupo.sigla || '', sede: grupo.sede || '',
-      time_a: { nome: timeA.nome || '', logo: timeA.logo || '', id: j.id_time_a },
-      time_b: { nome: timeB.nome || '', logo: timeB.logo || '', id: j.id_time_b },
-      gols_a: j.gols_a, gols_b: j.gols_b, status: j.status_jogo,
-      apostadores_a: apostadores_a, apostadores_empate: apostadores_empate,
-      apostadores_b: apostadores_b
-    };
-  });
-  list.sort(function(a, b) { return (!a.data ? 1 : !b.data ? -1 : a.data < b.data ? -1 : a.data > b.data ? 1 : 0); });
-  await applyESPNOverrides(list);
-  return list;
-}
-
 // ── Helpers ───────────────────────────────────────────────────────────────────
 function fmt1(v) { return v.toFixed(1); }
 function fmt2(v) { return v.toFixed(2); }
