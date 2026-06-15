@@ -314,12 +314,12 @@ async function applyESPNOverrides(list) {
     if (!espn) return;
 
     // Jogo finalizado no APEX → mantém APEX
-    if (j.status_jogo === 'F') {
+    if (j.status === 'F') {
       return;
     }
 
     // Jogo em andamento no APEX → usa ESPN
-    if (j.status_jogo === 'A' && (espn.isLive || espn.isFinal)) {
+    if (j.status === 'A' && (espn.isLive || espn.isFinal)) {
       j.gols_a = espn.scoreA;
       j.gols_b = espn.scoreB;
       j.isLive = espn.isLive;
