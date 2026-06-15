@@ -24,6 +24,13 @@ function espnNorm(name) {
     .replace(/[^a-z0-9 ]/g, '').trim();
 }
 
+function espnTeamKey(name) {
+  var n = espnNorm(name);
+  n = n.replace(/^(selecao\s+(de|da|do)?\s*)/, '');
+  n = n.replace(/\s+selecao$/, '');
+  return n.trim();
+}
+
 // Tradução nomes em português → inglês (padrão ESPN)
 var PT_TO_ESPN = {
   // Américas
@@ -207,8 +214,8 @@ var ESPN_ALIASES = {
   'curacao': 'curacao'
 };
 
-function espnNormTeam(name) { var n = espnNorm(name); return PT_TO_ESPN[n] || n; }
-function normalizeESPNName(name) { var n = espnNorm(name); return ESPN_ALIASES[n] || n; }
+function espnNormTeam(name) { var n = espnTeamKey(name); return PT_TO_ESPN[n] || n; }
+function normalizeESPNName(name) { var n = espnTeamKey(name); return ESPN_ALIASES[n] || n; }
 
 function espnTeamsMatch(t1, t2) {
   if (t1 === t2) return true;
