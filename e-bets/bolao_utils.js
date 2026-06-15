@@ -204,18 +204,25 @@ function findESPNMatch(espnMap, nameA, nameB) {
 // Preferência ESPN quando: jogo ao vivo, ou placar ESPN > placar APEX (total de gols)
 async function applyESPNOverrides(list) {
   var espnMap = await fetchESPNScores();
+
   list.forEach(function(j) {
     var espn = findESPNMatch(espnMap, j.time_a.nome, j.time_b.nome);
+
+    // Sem correspondência na ESPN
     if (!espn) return;
-    if (espn.isLive) {
-      j.gols_a = espn.scoreA; j.gols_b = espn.scoreB;
-      j.isLive = true; j.liveClock = espn.clock;
-    } else if (espn.isFinal) {
-      var apexTotal = (j.gols_a !== null && j.gols_b !== null) ? (j.gols_a + j.gols_b) : -1;
-      var espnTotal = espn.scoreA + espn.scoreB;
-      if (apexTotal === -1 || espnTotal > apexTotal) {
-        j.gols_a = espn.scoreA; j.gols_b = espn.scoreB;
-      }
+
+    // Jogo finalizado no APEX → mantém APEX
+    if (j.status_jogo === 'F') {
+      return;
+    }
+
+    // Jogo em andamento no APEX → usa ESPN
+    if (j.status_jogo === 'A'  && (espn.isLive || espn.isFinal)) {
+      j.gols_a = espn.scoreA;
+      j.gols_b = espn.scoreB;
+      j.isLive = espn.isLive;
+      j.liveClock = espn.clock || '';
+      return;
     }
   });
 }
