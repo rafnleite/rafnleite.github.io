@@ -1428,12 +1428,12 @@
         var container = document.getElementById(containerId);
         if (!container) return;
         var focusId = null;
-        var liveJ = JOGOS.find(function(j) { return j.isLive; });
+        var liveJ = JOGOS.find(function (j) { return j.isLive; });
         if (liveJ) {
           focusId = 'sgc-' + pfx + liveJ.id;
         } else {
           var now = new Date();
-          var nextJ = JOGOS.find(function(j) {
+          var nextJ = JOGOS.find(function (j) {
             return j.gols_a === null && j.gols_b === null && j.data && new Date(j.data.replace(' ', 'T')) > now;
           });
           if (nextJ) focusId = 'sgc-' + pfx + nextJ.id;
@@ -1606,7 +1606,7 @@
     var raceTimer = null;
     var raceFrameIdx = 0;
     var raceRunning = false;
-    var raceSpeed = 1500;
+    var raceSpeed = 750;
     var raceCurrentSorted = [];
     var currentChartType = 'positions';
     var showSim = true;
@@ -1836,63 +1836,146 @@
     function renderPointsChart(sorted) {
       var ec = initChart();
       if (!gameHistory.length) return;
-      // Prepend J0 (start of cup, everyone at 0)
-      var gameLabels = ['J0'].concat(gameHistory.map(function (s, i) { return 'J' + (i + 1); }));
-      var fullLabels = ['Início da Copa'].concat(gameHistory.map(function (s, i) {
-        return 'J' + (i + 1) + ' ' + abbrevTeam(s.jogo.time_a.nome) + ' \u00d7 ' + abbrevTeam(s.jogo.time_b.nome);
-      }));
+
+      var gameLabels = ['J0'].concat(
+        gameHistory.map(function (s, i) {
+          return 'J' + (i + 1);
+        })
+      );
+
+      var fullLabels = ['Início da Copa'].concat(
+        gameHistory.map(function (s, i) {
+          return 'J' + (i + 1) + ' ' +
+            abbrevTeam(s.jogo.time_a.nome) +
+            ' × ' +
+            abbrevTeam(s.jogo.time_b.nome);
+        })
+      );
+
       ec.setOption({
+        animationDuration: 1000,
+
         tooltip: {
           trigger: 'axis',
+          order: 'valueDesc',
           appendToBody: true,
           confine: true,
+          backgroundColor: 'rgba(17,17,17,0.75)',
+          borderWidth: 0,
+          textStyle: {
+            color: '#fff'
+          },
           formatter: function (params) {
-            var lines = ['<b>' + fullLabels[params[0].dataIndex] + '</b>'];
-            params.slice().sort(function (a, b) { return b.value - a.value; }).forEach(function (p) {
-              lines.push('<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:' + p.color + ';margin-right:4px"></span>' + p.seriesName + ': <b>' + p.value + ' pts</b>');
-            });
+            var lines = [
+              '<b>' + fullLabels[params[0].dataIndex] + '</b>'
+            ];
+
+            params
+              .slice()
+              .sort(function (a, b) {
+                return b.value - a.value;
+              })
+              .forEach(function (p) {
+                lines.push(
+                  '<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:' +
+                  p.color +
+                  ';margin-right:4px"></span>' +
+                  p.seriesName +
+                  ': <b>' +
+                  p.value +
+                  ' pts</b>'
+                );
+              });
+
             return lines.join('<br>');
           }
         },
-        grid: { left: 8, right: 150, top: 20, bottom: 32, containLabel: true },
+
+        grid: {
+          left: 50,
+          right: 150,
+          top: 20,
+          bottom: 32,
+          containLabel: true
+        },
+
         xAxis: {
-          type: 'category', data: gameLabels, boundaryGap: false,
-          axisLabel: { fontSize: 10, color: '#9ca3af' },
-          splitLine: { show: true, lineStyle: { color: '#f3f4f6' } }
+          type: 'category',
+          boundaryGap: false,
+          data: gameLabels,
+          axisLabel: {
+            fontSize: 10,
+            color: '#9ca3af'
+          },
+          splitLine: {
+            show: true,
+            lineStyle: {
+              color: '#f3f4f6'
+            }
+          }
         },
+
         yAxis: {
-          type: 'value', min: 0,
-          axisLabel: { fontSize: 10, color: '#9ca3af' },
-          splitLine: { lineStyle: { color: '#f3f4f6' } }
+          type: 'value',
+          min: 0,
+          name: 'Pontuação',
+          nameLocation: 'middle',
+          nameGap: 45,
+          axisLabel: {
+            fontSize: 10,
+            color: '#9ca3af'
+          },
+          splitLine: {
+            lineStyle: {
+              color: '#f3f4f6'
+            }
+          }
         },
-        animationDuration: 300, animationEasing: 'linear',
+
         series: sorted.map(function (nome) {
           return {
-            name: nome, type: 'line', smooth: 0, clip: false,
-            symbol: 'circle', symbolSize: 7,
-            lineStyle: { width: 2, color: colorMap[nome] },
-            itemStyle: { color: colorMap[nome], borderColor: '#fff', borderWidth: 2 },
-            emphasis: {
-              focus: 'series',
-              lineStyle: { width: 4, opacity: 1 },
-              itemStyle: { opacity: 1 }
+            name: nome,
+            type: 'line',
+
+            showSymbol: false,
+            smooth: false,
+            clip: false,
+
+            lineStyle: {
+              width: 2,
+              color: colorMap[nome]
             },
-            blur: {
-              lineStyle: { opacity: 0.07 },
-              itemStyle: { opacity: 0.07 },
-              endLabel: { opacity: 0.07 }
-            },
+
             endLabel: {
-              show: true, formatter: '{a}',
-              color: colorMap[nome], fontSize: 10, fontWeight: 700, distance: 8
+              show: true,
+              formatter: '{a}',
+              color: colorMap[nome],
+              fontSize: 10,
+              fontWeight: 700
             },
-            labelLayout: { moveOverlap: 'shiftY' },
-            data: [0].concat(gameHistory.map(function (s) { return s.ptsMap[nome] || 0; }))
+
+            labelLayout: {
+              moveOverlap: 'shiftY'
+            },
+
+            emphasis: {
+              focus: 'series'
+            },
+
+            encode: {
+              x: 0,
+              y: 1
+            },
+
+            data: [0].concat(
+              gameHistory.map(function (s) {
+                return s.ptsMap[nome] || 0;
+              })
+            )
           };
         })
       });
     }
-
     // ── Bar race – Histórico de pontuação (barras) ─────────────────────────────
     function renderRaceChart(sorted) {
       destroyChart();
@@ -1934,7 +2017,7 @@
           }
         }],
         animationDuration: 0,
-        animationDurationUpdate: Math.round(raceSpeed * 0.85),
+        animationDurationUpdate: raceSpeed + 50,
         animationEasing: 'linear',
         animationEasingUpdate: 'linear'
       });
@@ -1973,8 +2056,17 @@
       if (!eChart || raceRunning) return;
       if (raceFrameIdx >= gameHistory.length - 1) {
         raceFrameIdx = 0;
+
+        eChart.setOption({
+          animationDurationUpdate: 0
+        });
+
         updateRaceFrame(0);
         updateRaceLabel(0);
+
+        eChart.setOption({
+          animationDurationUpdate: Math.round(raceSpeed * 0.65)
+        });
       }
       raceRunning = true;
       document.getElementById('race-play-btn').innerHTML = '&#9646;&#9646;';
