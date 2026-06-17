@@ -874,7 +874,7 @@ function exportImage() {
   if (qjogoN >= 0 && qjogoN < JOGOS.length) {
     startIdx = qjogoN;
   } else {
-    const liveIdx = JOGOS.findIndex(function(j) { return j.isLive || j.status === 'E'; });
+    const liveIdx = JOGOS.findIndex(function(j) { return j.isLive; });
     if (liveIdx >= 0) {
       startIdx = liveIdx;
     } else {
