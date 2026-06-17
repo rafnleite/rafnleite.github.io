@@ -183,7 +183,7 @@ var PT_TO_ESPN = {
   'burkina faso': 'burkina faso',
   'cabo verde': 'cape verde',
   'camaroes': 'cameroon',
-  'congo': 'congo dr',
+  'rd congo': 'congo dr',
   'costa do marfim': 'ivory coast',
   'egito': 'egypt',
   'etiopia': 'ethiopia',
