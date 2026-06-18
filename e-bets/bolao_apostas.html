@@ -192,6 +192,54 @@
   color: var(--border);
   line-height: 1;
 }
+.goal-events {
+  width: min(220px, 42vw);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 2px;
+}
+.goal-event {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: 0;
+  font-size: 0.67rem;
+  line-height: 1.15;
+  font-weight: 600;
+}
+.goal-event-a { color: var(--col-a); }
+.goal-event-b { color: var(--col-b); }
+.goal-minute {
+  flex-shrink: 0;
+  font-weight: 800;
+}
+.goal-player {
+  max-width: 132px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.goal-tags {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  flex-wrap: wrap;
+}
+.goal-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  padding: 1px 5px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.08);
+  color: var(--text);
+  font-size: 0.55rem;
+  font-weight: 800;
+  letter-spacing: .4px;
+}
 .emp-count {
   font-size: 0.63rem;
   color: var(--light);
@@ -431,6 +479,9 @@
 @media (max-width: 520px) {
   .team-flag { width: 54px; height: 54px; }
   .team-name { font-size: .82rem; }
+  .goal-events { width: min(180px, 46vw); }
+  .goal-event { font-size: 0.61rem; }
+  .goal-player { max-width: 108px; }
   .bet-item  { padding: 7px 9px; }
   .bi-name   { font-size: .7rem; }
   .bets-grid { grid-template-columns: 1fr; }
@@ -515,6 +566,38 @@ function shortName(name) {
   return (f.length + l.length <= 17) ? (f + ' ' + l) : (f + ' ' + l[0] + '.');
 }
 
+function renderGoalEvents(j) {
+  const events = [];
+
+  (j.golsDetalhesA || []).forEach(function(goal, idx) {
+    events.push({ side: 'a', goal: goal, idx: idx });
+  });
+  (j.golsDetalhesB || []).forEach(function(goal, idx) {
+    events.push({ side: 'b', goal: goal, idx: idx });
+  });
+
+  events.sort(function(x, y) {
+    const diff = (x.goal.minutoValor || 0) - (y.goal.minutoValor || 0);
+    if (diff !== 0) return diff;
+    if (x.side !== y.side) return x.side.localeCompare(y.side);
+    return x.idx - y.idx;
+  });
+
+  if (!events.length) return '';
+
+  return '<div class="goal-events">' + events.map(function(entry) {
+    const goal = entry.goal || {};
+    const tags = [];
+    if (goal.penalti) tags.push('<span class="goal-tag">P</span>');
+    if (goal.contra) tags.push('<span class="goal-tag">GC</span>');
+    return '<div class="goal-event goal-event-' + entry.side + '">' +
+      '<span class="goal-minute">' + (goal.minuto || 'Gol') + '</span>' +
+      '<span class="goal-player">' + shortName(goal.jogador || 'Gol') + '</span>' +
+      (tags.length ? '<span class="goal-tags">' + tags.join('') + '</span>' : '') +
+      '</div>';
+  }).join('') + '</div>';
+}
+
 function betItem(ap, type, hitResult, hitScore, rawPts, mult) {
   var cls = 'bet-item' + (hitScore ? ' score-hit' : hitResult ? ' result-hit' : '');
   var icon = hitScore ? '<span class="bi-hit-icon">★</span>' : '';
@@ -574,9 +657,10 @@ function renderGame(idx) {
   const pA = pct(j.apostadores_a.length, total);
   const pE = pct(j.apostadores_empate.length, total);
   const pB = 100 - pA - pE;
+  const goalEvents = renderGoalEvents(j);
 
   const vsContent = (j.gols_a !== null && j.gols_b !== null)
-    ? '<div class="score-live"><span class="s-num" id="score-a">' + j.gols_a + '</span><span class="s-x">×</span><span class="s-num" id="score-b">' + j.gols_b + '</span></div>'
+    ? '<div class="score-live"><span class="s-num" id="score-a">' + j.gols_a + '</span><span class="s-x">×</span><span class="s-num" id="score-b">' + j.gols_b + '</span></div>' + goalEvents
     : '<div class="vs-text">×</div>';
 
   // Determine who got the result / exact score right
@@ -901,6 +985,8 @@ function exportImage() {
       return JSON.stringify(list.map(function(j) {
         return [
           j.id, j.gols_a, j.gols_b, j.status, j.isLive, j.liveClock,
+          JSON.stringify(j.golsDetalhesA || []),
+          JSON.stringify(j.golsDetalhesB || []),
           j.apostadores_a.length, j.apostadores_empate.length, j.apostadores_b.length,
           j.apostadores_a.map(function(a){return a.nome+a.placar;}).join(','),
           j.apostadores_empate.map(function(a){return a.nome+a.placar;}).join(','),

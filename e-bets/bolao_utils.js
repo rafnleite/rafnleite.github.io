@@ -293,6 +293,50 @@ function espnTeamsMatch(t1, t2) {
   return w1.length > 3 && w1 === w2;
 }
 
+function getESPNGoalScorer(detail) {
+  var athlete = ((detail || {}).athletesInvolved || [])[0] || {};
+  return athlete.shortName || athlete.displayName || athlete.fullName || 'Gol';
+}
+
+function parseESPNGoalDetails(details, homeId, awayId) {
+  var goals = { home: [], away: [] };
+
+  (details || []).forEach(function (detail) {
+    if (!detail || !detail.scoringPlay || detail.shootout) return;
+
+    var typeText = (((detail.type || {}).text) || '').toLowerCase();
+    if (typeText !== 'goal' && detail.scoreValue !== 1 && !detail.ownGoal && !detail.penaltyKick) return;
+
+    var teamId = String((detail.team || {}).id || '');
+    var goal = {
+      jogador: getESPNGoalScorer(detail),
+      minuto: ((detail.clock || {}).displayValue || '').trim(),
+      minutoValor: Number((detail.clock || {}).value) || 0,
+      contra: detail.ownGoal === true,
+      penalti: detail.penaltyKick === true
+    };
+
+    if (teamId === String(homeId)) goals.home.push(goal);
+    else if (teamId === String(awayId)) goals.away.push(goal);
+  });
+
+  goals.home.sort(function (a, b) { return a.minutoValor - b.minutoValor; });
+  goals.away.sort(function (a, b) { return a.minutoValor - b.minutoValor; });
+  return goals;
+}
+
+function orientESPNEntry(entry, reversed) {
+  return {
+    scoreA: reversed ? entry.awayScore : entry.homeScore,
+    scoreB: reversed ? entry.homeScore : entry.awayScore,
+    goalsA: (reversed ? entry.awayGoals : entry.homeGoals).slice(),
+    goalsB: (reversed ? entry.homeGoals : entry.awayGoals).slice(),
+    isLive: entry.isLive,
+    isFinal: entry.isFinal,
+    clock: entry.clock || ''
+  };
+}
+
 async function fetchESPNScores() {
   try {
     var now = new Date();
@@ -336,9 +380,12 @@ async function fetchESPNScores() {
         var isLive = st.state === 'in';
         var isFinal = st.completed === true;
         if (!isLive && !isFinal) return;
+        var goalDetails = parseESPNGoalDetails(comp.details, home.id, away.id);
         var entry = {
-          scoreA: parseInt(home.score) || 0,
-          scoreB: parseInt(away.score) || 0,
+          homeScore: parseInt(home.score) || 0,
+          awayScore: parseInt(away.score) || 0,
+          homeGoals: goalDetails.home,
+          awayGoals: goalDetails.away,
           isLive: isLive, isFinal: isFinal, clock: st.shortDetail || ''
         };
         // Store under multiple name variants for robust matching
@@ -365,8 +412,8 @@ function findESPNMatch(espnMap, nameA, nameB) {
   var nA = espnNormTeam(nameA), nB = espnNormTeam(nameB);
   for (var key in espnMap) {
     var p = key.split('__');
-    if ((espnTeamsMatch(nA, p[0]) && espnTeamsMatch(nB, p[1])) ||
-        (espnTeamsMatch(nA, p[1]) && espnTeamsMatch(nB, p[0]))) return espnMap[key];
+    if (espnTeamsMatch(nA, p[0]) && espnTeamsMatch(nB, p[1])) return orientESPNEntry(espnMap[key], false);
+    if (espnTeamsMatch(nA, p[1]) && espnTeamsMatch(nB, p[0])) return orientESPNEntry(espnMap[key], true);
   }
   return null;
 }
@@ -381,6 +428,9 @@ async function applyESPNOverrides(list) {
 
     // Sem correspondência na ESPN
     if (!espn) return;
+
+    j.golsDetalhesA = espn.goalsA;
+    j.golsDetalhesB = espn.goalsB;
 
     // Jogo finalizado no APEX → mantém APEX
     if (j.status === 'F') {
