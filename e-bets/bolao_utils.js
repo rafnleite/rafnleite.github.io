@@ -186,7 +186,7 @@ var PT_TO_ESPN = {
   'azerbaijao': 'azerbaijan',
   'belgica': 'belgium',
   'bielorrussia': 'belarus',
-  'bosnia e herzegovina': 'bosnia-herzegovina',
+  'bosnia e herzegovina': 'bosniaherzegovina',
   'bulgaria': 'bulgaria',
   'chipre': 'cyprus',
   'croacia': 'croatia',
@@ -218,7 +218,7 @@ var PT_TO_ESPN = {
   'paises baixos': 'netherlands',
   'polonia': 'poland',
   'portugal': 'portugal',
-  'tchequia': 'czechia',
+  'tchequia': 'czech republic',
   'romenia': 'romania',
   'servia': 'serbia',
   'suica': 'switzerland',
@@ -451,6 +451,7 @@ function storeESPNEntry(map, key, entry) {
 }
 
 function parseESPNEventsIntoMap(map, events) {
+  
   (events || []).forEach(function (ev) {
     var comp = (ev.competitions || [])[0];
     if (!comp) return;
@@ -486,18 +487,11 @@ function parseESPNEventsIntoMap(map, events) {
     };
 
     // Usa normalizeESPNName para variantes ESPN (ex.: Türkiye -> turkey)
+    // Regra de negocio: chavear apenas por team.name.
     var ht = home.team, at = away.team;
-    var nameCombos = [
-      [ht.name, at.name],
-      [ht.displayName, at.displayName],
-      [ht.shortDisplayName, at.shortDisplayName],
-      [ht.location, at.location]
-    ];
-    nameCombos.forEach(function (pair) {
-      if (pair[0] && pair[1]) {
-        storeESPNEntry(map, normalizeESPNName(pair[0]) + '__' + normalizeESPNName(pair[1]), entry);
-      }
-    });
+    if (ht && at && ht.name && at.name) {
+      storeESPNEntry(map, normalizeESPNName(ht.name) + '__' + normalizeESPNName(at.name), entry);
+    }
   });
 }
 
