@@ -255,7 +255,7 @@
   letter-spacing: .4px;
 }
 .game-avg-wrap {
-  margin-top: 4px;
+  margin-top: 8px;
   display: flex;
   justify-content: center;
 }
@@ -713,7 +713,7 @@ function renderGame(idx) {
   const avgBadge = renderGameAverage(j);
 
   const vsContent = (j.gols_a !== null && j.gols_b !== null)
-    ? '<div class="score-live"><span class="s-num" id="score-a">' + j.gols_a + '</span><span class="s-x">×</span><span class="s-num" id="score-b">' + j.gols_b + '</span></div>' + avgBadge + goalEvents
+    ? '<div class="score-live"><span class="s-num" id="score-a">' + j.gols_a + '</span><span class="s-x">×</span><span class="s-num" id="score-b">' + j.gols_b + '</span></div>' + goalEvents + avgBadge
     : '<div class="vs-text">×</div>';
 
   // Determine who got the result / exact score right

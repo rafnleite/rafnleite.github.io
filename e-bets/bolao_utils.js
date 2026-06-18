@@ -340,9 +340,34 @@ function normalizeESPNName(name) { var n = espnTeamKey(name); return ESPN_ALIASE
 
 function espnTeamsMatch(t1, t2) {
   if (t1 === t2) return true;
-  if (t1.length > 3 && (t1.includes(t2) || t2.includes(t1))) return true;
-  var w1 = t1.split(' ')[0], w2 = t2.split(' ')[0];
-  return w1.length > 3 && w1 === w2;
+  if (!t1 || !t2) return false;
+
+  var a = t1.split(' ').filter(Boolean);
+  var b = t2.split(' ').filter(Boolean);
+
+  function sig(words) {
+    return words.filter(function (w) {
+      return w.length > 2 && w !== 'of' && w !== 'the' && w !== 'and';
+    });
+  }
+
+  var sa = sig(a), sb = sig(b);
+  if (!sa.length || !sb.length) return false;
+
+  // Igualdade de conjunto de palavras significativas (ordem irrelevante)
+  if (sa.length === sb.length) {
+    var allIn = sa.every(function (w) { return sb.indexOf(w) >= 0; });
+    if (allIn) return true;
+  }
+
+  // Fallback controlado de inclusão textual, evitando match por palavra genérica
+  var short = sa.length <= sb.length ? sa : sb;
+  var long = sa.length <= sb.length ? sb : sa;
+  if (short.length >= 2 && short.every(function (w) { return long.indexOf(w) >= 0; })) {
+    return true;
+  }
+
+  return false;
 }
 
 function getESPNGoalScorer(detail) {
@@ -415,9 +440,25 @@ function buildDateRangeUTC(startDate, endDate) {
 
 function storeESPNEntry(map, key, entry) {
   if (!key || key === '__') return;
-  // Evita sobrescrever entrada ao vivo por entrada final de outro fetch
-  if (map[key] && map[key].isLive && !entry.isLive) return;
-  map[key] = entry;
+  if (!map[key]) map[key] = [];
+
+  var list = map[key];
+  var idx = -1;
+  for (var i = 0; i < list.length; i++) {
+    if (list[i].eventId && entry.eventId && list[i].eventId === entry.eventId) {
+      idx = i;
+      break;
+    }
+  }
+
+  if (idx >= 0) {
+    // Evita substituir registro ao vivo por registro final para o mesmo evento
+    if (list[idx].isLive && !entry.isLive) return;
+    list[idx] = entry;
+    return;
+  }
+
+  list.push(entry);
 }
 
 function parseESPNEventsIntoMap(map, events) {
@@ -436,6 +477,8 @@ function parseESPNEventsIntoMap(map, events) {
 
     var goalDetails = parseESPNGoalDetails(comp.details, home.id, away.id);
     var entry = {
+      eventId: String(ev.id || ''),
+      eventDate: (ev.date || comp.date || ''),
       homeScore: parseInt(home.score) || 0,
       awayScore: parseInt(away.score) || 0,
       homeGoals: goalDetails.home,
@@ -496,21 +539,71 @@ async function fetchESPNScores() {
     var recentMap = await fetchESPNMapByDates(recentDates);
     var map = Object.assign({}, historicMap);
     Object.keys(recentMap).forEach(function (key) {
-      storeESPNEntry(map, key, recentMap[key]);
+      var list = recentMap[key] || [];
+      list.forEach(function (entry) {
+        storeESPNEntry(map, key, entry);
+      });
     });
 
     return map;
   } catch (e) { return {}; }
 }
 
-function findESPNMatch(espnMap, nameA, nameB) {
+function parseApexDateToMillis(apexDateStr) {
+  if (!apexDateStr) return NaN;
+  // APEX chega como "YYYY-MM-DD HH:mm"; trata em UTC para comparar com ESPN (ISO UTC)
+  var iso = apexDateStr.replace(' ', 'T');
+  if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(iso)) iso += ':00Z';
+  var ts = Date.parse(iso);
+  return isNaN(ts) ? NaN : ts;
+}
+
+function parseESPNDateToMillis(espnDateStr) {
+  if (!espnDateStr) return NaN;
+  var ts = Date.parse(espnDateStr);
+  return isNaN(ts) ? NaN : ts;
+}
+
+function findESPNMatch(espnMap, nameA, nameB, apexDateStr) {
   var nA = espnNormTeam(nameA), nB = espnNormTeam(nameB);
+  var apexTs = parseApexDateToMillis(apexDateStr);
+  var best = null;
+  var bestDiff = Number.POSITIVE_INFINITY;
+
   for (var key in espnMap) {
+    if (!Object.prototype.hasOwnProperty.call(espnMap, key)) continue;
     var p = key.split('__');
-    if (espnTeamsMatch(nA, p[0]) && espnTeamsMatch(nB, p[1])) return orientESPNEntry(espnMap[key], false);
-    if (espnTeamsMatch(nA, p[1]) && espnTeamsMatch(nB, p[0])) return orientESPNEntry(espnMap[key], true);
+    var reversed = false;
+
+    if (espnTeamsMatch(nA, p[0]) && espnTeamsMatch(nB, p[1])) reversed = false;
+    else if (espnTeamsMatch(nA, p[1]) && espnTeamsMatch(nB, p[0])) reversed = true;
+    else continue;
+
+    var entries = espnMap[key] || [];
+    if (!Array.isArray(entries)) entries = [entries];
+
+    for (var i = 0; i < entries.length; i++) {
+      var entry = entries[i];
+      if (!entry) continue;
+
+      var espnTs = parseESPNDateToMillis(entry.eventDate);
+      var diff = 0;
+      if (!isNaN(apexTs) && !isNaN(espnTs)) {
+        diff = Math.abs(espnTs - apexTs);
+        // Tolerância ampla para diferenças de fuso/ajustes das APIs
+        if (diff > 36 * 60 * 60 * 1000) continue;
+      } else if (!isNaN(apexTs) || !isNaN(espnTs)) {
+        diff = 12 * 60 * 60 * 1000;
+      }
+
+      if (diff < bestDiff) {
+        bestDiff = diff;
+        best = orientESPNEntry(entry, reversed);
+      }
+    }
   }
-  return null;
+
+  return best;
 }
 
 // Aplica placares ao vivo/recentes da ESPN sobre a lista de jogos (modifica in-place)
@@ -519,7 +612,7 @@ async function applyESPNOverrides(list) {
   var espnMap = await fetchESPNScores();
 
   list.forEach(function (j) {
-    var espn = findESPNMatch(espnMap, j.time_a.nome, j.time_b.nome);
+    var espn = findESPNMatch(espnMap, j.time_a.nome, j.time_b.nome, j.data);
 
     // Sem correspondência na ESPN
     if (!espn) return;
