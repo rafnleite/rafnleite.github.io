@@ -254,6 +254,23 @@
   font-weight: 800;
   letter-spacing: .4px;
 }
+.goal-events-compact {
+  display: none;
+  width: min(340px, 88vw);
+  margin-top: 4px;
+}
+.goal-events-compact .goal-event {
+  justify-content: center;
+  text-align: center;
+  font-size: 0.65rem;
+}
+.goal-team {
+  font-weight: 800;
+  letter-spacing: .4px;
+  text-transform: uppercase;
+}
+.goal-team-a { color: var(--col-a); }
+.goal-team-b { color: var(--col-b); }
 .game-avg-wrap {
   margin-top: 8px;
   display: flex;
@@ -544,6 +561,31 @@
   .stats-labels { font-size: 0.6rem; gap: 4px; }
 }
 
+@media (max-width: 390px) {
+  .teams-section {
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 10px 4px;
+  }
+  .team-block {
+    flex: 0 1 calc(50% - 6px);
+  }
+  .vs-center {
+    order: 3;
+    width: 100%;
+    padding: 0;
+  }
+  .goal-events {
+    display: none;
+  }
+  .goal-events-compact {
+    display: block;
+  }
+  .goal-events-compact .goal-player {
+    max-width: 120px;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -637,10 +679,32 @@ function renderGoalEvents(j) {
       '</div>';
   }
 
+  const compactEvents = goalsA.map(function(goal) {
+    return { goal: goal, side: 'a', minute: goal.minutoValor || 0 };
+  }).concat(goalsB.map(function(goal) {
+    return { goal: goal, side: 'b', minute: goal.minutoValor || 0 };
+  })).sort(function(x, y) {
+    return x.minute - y.minute;
+  });
+
+  const compactHtml = compactEvents.map(function(item) {
+    const goal = item.goal || {};
+    const tags = [];
+    if (goal.penalti) tags.push('<span class="goal-tag">P</span>');
+    if (goal.contra) tags.push('<span class="goal-tag">GC</span>');
+    return '<div class="goal-event goal-event-' + item.side + '">' +
+      '<span class="goal-minute">' + (goal.minuto || 'Gol') + '</span>' +
+      '<span class="goal-team goal-team-' + item.side + '">' + (item.side === 'a' ? j.time_a.nome : j.time_b.nome) + '</span>' +
+      '<span class="goal-player">' + shortName(goal.jogador || 'Gol') + '</span>' +
+      (tags.length ? '<span class="goal-tags">' + tags.join('') + '</span>' : '') +
+      '</div>';
+  }).join('');
+
   return '<div class="goal-events">' +
     '<div class="goal-col goal-col-a">' + goalsA.map(function(goal) { return renderGoal(goal, 'a'); }).join('') + '</div>' +
     '<div class="goal-col goal-col-b">' + goalsB.map(function(goal) { return renderGoal(goal, 'b'); }).join('') + '</div>' +
-    '</div>';
+    '</div>' +
+    '<div class="goal-events-compact">' + compactHtml + '</div>';
 }
 
 function renderGameAverage(j) {
