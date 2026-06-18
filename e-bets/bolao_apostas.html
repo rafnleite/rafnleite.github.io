@@ -520,7 +520,15 @@
 
 /* ── RESPONSIVE ───────────────────────────── */
 @media (max-width: 520px) {
-  .team-flag { width: 54px; height: 54px; }
+  .team-flag {
+    width: 54px;
+    height: 54px;
+    object-fit: contain;
+    object-position: center;
+    background: #fff;
+    padding: 3px;
+    box-sizing: border-box;
+  }
   .team-name { font-size: .82rem; }
   .goal-events { width: min(300px, 86vw); gap: 6px 10px; }
   .goal-event { font-size: 0.61rem; }
