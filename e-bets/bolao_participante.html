@@ -18,6 +18,12 @@
   gap: 20px;
 }
 
+#selector-card {
+  position: sticky;
+  top: calc(var(--header-offset, 56px) + 8px);
+  z-index: 120;
+}
+
 /* ── PLAYER SELECTOR ─────────────────────── */
 .player-selector-bar {
   display: flex;
@@ -270,6 +276,8 @@
     </div>
   </div>
 
+  <div id="swipe-content" style="display:flex;flex-direction:column;gap:20px">
+
   <!-- ── HERO ────────────────────────────── -->
   <div class="hero-card" id="hero-card">
     <div class="hero-pos" id="hero-pos">—</div>
@@ -398,6 +406,8 @@
     <div class="chart-area">
       <canvas id="pos-chart"></canvas>
     </div>
+  </div>
+
   </div>
 
 </div>
@@ -574,7 +584,7 @@ function stepPlayer(dir) {
 }
 
 function swipeContainer() {
-  return document.getElementById('main-content');
+  return document.getElementById('swipe-content');
 }
 
 function resetSwipeContainer(container, animated) {
@@ -608,7 +618,7 @@ function stepPlayerWithSwipe(dir) {
   setTimeout(function() {
     var next = sortedPlayers[nextIdx];
     document.getElementById('player-select').value = next;
-    selectPlayer(next);
+    selectPlayer(next, true);
 
     container.style.transition = 'none';
     container.style.transform = 'translate3d(' + inX + 'px,0,0)';
@@ -717,6 +727,12 @@ function bindSwipeNavigation() {
   }, { passive: true });
 
   document.body.dataset.swipeBoundParticipante = '1';
+}
+
+function syncStickySelectorOffset() {
+  var header = document.getElementById('_bolao_header');
+  var h = header ? header.offsetHeight : 56;
+  document.documentElement.style.setProperty('--header-offset', h + 'px');
 }
 
 // ── Render profile ────────────────────────────────────────────────────────────
@@ -1002,8 +1018,8 @@ window.next_pager_btns_next = function(){ nextPage = renderPage('next-bets','nex
 window.next_pager_btns_go   = function(p){ nextPage = renderPage('next-bets','next-pager','next-pager-info','next-pager-btns', nextRows, p); };
 
 // ── Select player ─────────────────────────────────────────────────────────────
-function selectPlayer(nome) {
-  if (isSwipeAnimating) return;
+function selectPlayer(nome, forceFromSwipe) {
+  if (isSwipeAnimating && !forceFromSwipe) return;
   currentNome = nome;
   document.title = 'e-BÉTS - ' + nome;
   // Update URL without reload
@@ -1046,6 +1062,8 @@ async function init() {
   document.getElementById('loading-overlay').style.display = 'none';
   document.getElementById('main-content').style.display = '';
 
+  syncStickySelectorOffset();
+  window.addEventListener('resize', syncStickySelectorOffset);
   bindSwipeNavigation();
   selectPlayer(startNome);
 }
