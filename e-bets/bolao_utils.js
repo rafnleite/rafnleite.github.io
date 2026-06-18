@@ -325,6 +325,8 @@ var ESPN_ALIASES = {
   'turkiye': 'turkey',
   'usa': 'united states',
   'ir iran': 'iran',
+  'czechia': 'czech republic',
+  'czech rep': 'czech republic',
   'korea republic': 'south korea',
   'republic of korea': 'south korea',
   'dpr korea': 'north korea',
@@ -620,17 +622,28 @@ async function applyESPNOverrides(list) {
     j.golsDetalhesA = espn.goalsA;
     j.golsDetalhesB = espn.goalsB;
 
-    // Jogo finalizado no APEX → mantém APEX
-    if (j.status === 'F') {
+    // Se ESPN indicar ao vivo, prioriza ESPN mesmo quando status do APEX atrasar.
+    if (espn.isLive) {
+      j.gols_a = espn.scoreA;
+      j.gols_b = espn.scoreB;
+      j.isLive = true;
+      j.liveClock = espn.clock || '';
       return;
     }
 
-    // Jogo em andamento no APEX → usa ESPN
-    if (j.status === 'A' && (espn.isLive || espn.isFinal)) {
+    // Jogo finalizado no APEX → mantém placar APEX.
+    if (j.status === 'F') {
+      j.isLive = false;
+      j.liveClock = '';
+      return;
+    }
+
+    // Se APEX disser em andamento e ESPN já tiver final, sincroniza placar final.
+    if (j.status === 'A' && espn.isFinal) {
       j.gols_a = espn.scoreA;
       j.gols_b = espn.scoreB;
-      j.isLive = espn.isLive;
-      j.liveClock = espn.clock || '';
+      j.isLive = false;
+      j.liveClock = '';
       return;
     }
   });
