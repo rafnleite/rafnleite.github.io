@@ -218,6 +218,8 @@ var PT_TO_ESPN = {
   'paises baixos': 'netherlands',
   'polonia': 'poland',
   'portugal': 'portugal',
+  'tchequia': 'czech republic',
+  'chequia': 'czech republic',
   'republica tcheca': 'czech republic',
   'romenia': 'romania',
   'servia': 'serbia',
