@@ -19,64 +19,27 @@
 }
 
 #selector-card {
-  position: sticky;
-  top: calc(var(--header-offset, 56px) + 8px);
-  z-index: 120;
+  /* stays in normal document flow — does not slide with swipe content */
 }
 
 #swipe-stage {
   position: relative;
   overflow: hidden;
   border-radius: var(--radius);
+  touch-action: pan-y;
 }
-
-.swipe-peek {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 100%;
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  box-shadow: 0 2px 12px rgba(0,0,0,.08);
+#player-track {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 14px;
-  opacity: 0;
-  pointer-events: none;
-  z-index: 1;
+  align-items: flex-start;
+  gap: var(--card-gap, 32px);
+  will-change: transform;
 }
-.swipe-peek.prev { left: 0; }
-.swipe-peek.next { left: 0; }
-
-.swipe-peek-inner {
-  width: 100%;
+.player-slot {
+  flex: 0 0 100%;
+  min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 4px;
-}
-
-.swipe-peek-label {
-  font-size: 0.58rem;
-  font-weight: 700;
-  letter-spacing: 1.1px;
-  text-transform: uppercase;
-  color: var(--sub);
-}
-
-.swipe-peek-title {
-  font-family: 'Bebas Neue', cursive;
-  font-size: 1.5rem;
-  letter-spacing: 1.3px;
-  line-height: 1;
-  color: var(--text);
-}
-
-.swipe-peek-sub {
-  font-size: 0.68rem;
-  color: var(--sub);
-  font-weight: 500;
+  gap: 20px;
 }
 
 /* ── PLAYER SELECTOR ─────────────────────── */
@@ -332,9 +295,9 @@
   </div>
 
   <div id="swipe-stage">
-  <div class="swipe-peek prev" id="player-peek-prev"></div>
-  <div class="swipe-peek next" id="player-peek-next"></div>
-  <div id="swipe-content" style="display:flex;flex-direction:column;gap:20px;position:relative;z-index:2">
+  <div id="player-track">
+    <div class="player-slot" id="player-slot-prev"></div>
+    <div class="player-slot" id="player-slot-curr">
 
   <!-- ── HERO ────────────────────────────── -->
   <div class="hero-card" id="hero-card">
@@ -466,6 +429,8 @@
     </div>
   </div>
 
+    </div>
+    <div class="player-slot" id="player-slot-next"></div>
   </div>
   </div>
 
@@ -490,10 +455,12 @@ var sortedPlayers = []; // sorted by final rank
 var colorMap    = {};
 var currentNome = null;
 var posChart    = null;
+var CARD_GAP = 32;
 var isSwipeAnimating = false;
-var playerSwipeStage = null;
-var playerPeekPrev = null;
-var playerPeekNext = null;
+var playerStage = null;
+var playerTrack = null;
+var playerSlotPrev = null;
+var playerSlotNext = null;
 
 // ── Scoring helpers ───────────────────────────────────────────────────────────
 function calcBreakdown(betA, betB, realA, realB) {
@@ -642,124 +609,163 @@ function stepPlayer(dir) {
   var idx = sortedPlayers.indexOf(currentNome);
   var next = sortedPlayers[(idx + dir + sortedPlayers.length) % sortedPlayers.length];
   document.getElementById('player-select').value = next;
-  selectPlayer(next);
+  if (window.innerWidth > 768) {
+    selectPlayer(next);
+  } else {
+    stepPlayerWithSwipe(dir);
+  }
 }
 
-function swipeContainer() {
-  return document.getElementById('swipe-content');
-}
+function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
-function resetSwipeContainer(container, animated) {
-  if (!container) return;
-  container.style.transition = animated ? 'transform .18s ease, opacity .18s ease' : 'none';
-  container.style.transform = 'translate3d(0,0,0)';
-  container.style.opacity = '1';
-  clearPlayerPeeks();
-}
-
-function buildPlayerPeekHtml(nome, label) {
-  if (!nome) return '';
-  var s = scoreboard[nome] || { pts: 0 };
+function getPlayerRank(nome) {
   var idx = sortedPlayers.indexOf(nome);
-  var pos = idx >= 0 ? idx + 1 : '—';
-  return '<div class="card" style="width:100%;overflow:hidden">' +
-    '<div class="card-head"><span class="card-head-title">' + label + '</span></div>' +
-    '<div class="swipe-peek-inner" style="padding:16px 18px 18px">' +
-      '<div class="swipe-peek-label">Participante</div>' +
-      '<div class="swipe-peek-title">' + nome + '</div>' +
-      '<div class="swipe-peek-sub">' + s.pts + ' pontos · ' + pos + 'º lugar</div>' +
-    '</div>' +
-  '</div>' +
-  '<div style="height:12px"></div>' +
-  '<div class="card" style="width:100%;overflow:hidden">' +
-    '<div class="card-head"><span class="card-head-title">Resumo</span></div>' +
-    '<div class="swipe-peek-inner" style="padding:14px 18px 16px">' +
-      '<div class="swipe-peek-sub">Resultados: ' + (s.res || 0) + ' · Vencedores: ' + (s.ven || 0) + ' · Empates: ' + (s.emp || 0) + '</div>' +
-      '<div class="swipe-peek-sub">Gols exatos: ' + (s.gol || 0) + ' · Dif. exata: ' + (s.dif || 0) + '</div>' +
-    '</div>' +
-  '</div>';
+  if (idx < 0) return '—';
+  var doneFinal = JOGOS.filter(function(j){ return j.gols_a !== null && j.gols_b !== null; });
+  var pos = 1;
+  for (var ri = 1; ri <= idx; ri++) {
+    var sp = scoreboard[sortedPlayers[ri-1]], sc2 = scoreboard[sortedPlayers[ri]];
+    var diff = sp.pts !== sc2.pts || sp.res !== sc2.res || sp.ven !== sc2.ven || sp.emp !== sc2.emp;
+    if (!diff) {
+      for (var k = doneFinal.length - 1; k >= 0; k--) {
+        var id = doneFinal[k].id;
+        if ((sp.game_pts[id]||0) !== (sc2.game_pts[id]||0)) { diff = true; break; }
+      }
+    }
+    if (diff) pos = ri + 1;
+  }
+  return pos;
 }
 
-function renderPlayerPeeks() {
-  if (!playerPeekPrev || !playerPeekNext || !sortedPlayers.length) return;
+function buildProfileSlotHtml(nome) {
+  var s = scoreboard[nome] || { pts:0, res:0, ven:0, emp:0, gol:0, dif:0, game_pts:{} };
+  var pos = getPlayerRank(nome);
+  var posCls = pos === 1 ? ' gold' : pos === 2 ? ' silver' : pos === 3 ? ' bronze' : '';
+  var done = JOGOS.filter(function(j){ return j.gols_a !== null && j.gols_b !== null; });
+  var playedForPlayer = done.filter(function(j) {
+    return [].concat(j.apostadores_a, j.apostadores_empate, j.apostadores_b).some(function(a){ return a.nome === nome; });
+  }).length;
+  var avgPts = playedForPlayer ? (s.pts / playedForPlayer).toFixed(1) : '\u2014';
+  function pctStr(n, t) { return t ? Math.round(n / t * 100) + '%' : ''; }
+  function sc(label, value, sub) {
+    return '<div class="stat-card"><div class="stat-card-label">' + label + '</div>' +
+      '<div class="stat-card-value">' + value + '</div>' +
+      (sub ? '<div class="stat-card-sub">' + sub + '</div>' : '') + '</div>';
+  }
+
+  var heroHtml = '<div class="hero-card">' +
+    '<div class="hero-pos' + posCls + '">' + pos + '</div>' +
+    '<div class="hero-info"><div class="hero-name">' + esc(nome) + '</div></div>' +
+    '<div class="hero-pts-wrap"><div class="hero-pts-num">' + s.pts + '</div>' +
+    '<div class="hero-pts-label">pontos</div></div></div>';
+
+  var statsHtml = '<div class="stats-grid">' +
+    sc('Resultados', s.res, pctStr(s.res, playedForPlayer) + (playedForPlayer ? ' de aproveitamento' : '')) +
+    sc('Vencedores', s.ven, '') + sc('Empates', s.emp, '') +
+    sc('Gols exatos', s.gol, pctStr(s.gol, playedForPlayer * 2) + (playedForPlayer ? ' de aproveitamento' : '')) +
+    sc('Dif. de gols exata', s.dif, pctStr(s.dif, playedForPlayer) + (playedForPlayer ? ' de aproveitamento' : '')) +
+    sc('Pontos / jogo', avgPts, '') + '</div>';
+
+  var pastDone = done.slice().reverse().slice(0, 5);
+  var future = JOGOS.filter(function(j){ return j.gols_a === null && j.gols_b === null; }).slice(0, 5);
+  var pastHtml = pastDone.length
+    ? pastDone.map(function(j){ return buildPastRow(j, nome); }).join('')
+    : '<div class="bets-empty">Nenhum jogo realizado ainda.</div>';
+  var nextHtml = future.length
+    ? future.map(function(j){ return buildNextRow(j, nome); }).join('')
+    : '<div class="bets-empty">Nenhum jogo pendente.</div>';
+  var betsRowHtml = '<div class="bets-row">' +
+    '<div class="card"><div class="card-head"><span class="card-head-title">&#218;ltimas apostas</span></div>' +
+    '<div class="bets-list">' + pastHtml + '</div></div>' +
+    '<div class="card"><div class="card-head"><span class="card-head-title">Pr&#243;ximas apostas</span></div>' +
+    '<div class="bets-list">' + nextHtml + '</div></div></div>';
+
+  var bA = 0, bE = 0, bB = 0;
+  JOGOS.forEach(function(j) {
+    if (j.apostadores_a.some(function(a){ return a.nome===nome; })) bA++;
+    else if (j.apostadores_empate.some(function(a){ return a.nome===nome; })) bE++;
+    else if (j.apostadores_b.some(function(a){ return a.nome===nome; })) bB++;
+  });
+  var bVen = bA + bB, bEmp = bE, bTotal = bVen + bEmp || 1;
+  var pVen = Math.round(bVen / bTotal * 100), pEmp = 100 - pVen;
+
+  var streakCur = 0, streakMax = 0, tmpStreak = 0, lastStreakGame = '';
+  done.forEach(function(j) {
+    var bet = getBetFor(j, nome);
+    if (!bet) return;
+    var sp = bet.split('x');
+    var bd = calcBreakdown(+sp[0]||0, +sp[1]||0, j.gols_a, j.gols_b);
+    if (bd.res) {
+      tmpStreak++; streakCur = tmpStreak;
+      if (tmpStreak > streakMax) { streakMax = tmpStreak; lastStreakGame = j.time_a.nome + ' \u00d7 ' + j.time_b.nome; }
+    } else { streakCur = 0; tmpStreak = 0; }
+  });
+
+  var extraHtml = '<div class="extra-grid">' +
+    '<div class="card"><div class="card-head"><span class="card-head-title">Palpites</span></div>' +
+    '<div style="padding:12px 16px 16px"><div class="dist-bar-wrap">' +
+    '<div class="dist-seg ven" style="width:' + pVen + '%">' + (pVen >= 8 ? pVen + '%' : '') + '</div>' +
+    '<div class="dist-seg emp" style="width:' + pEmp + '%">' + (pEmp >= 8 ? pEmp + '%' : '') + '</div>' +
+    '</div><div class="dist-legend">' +
+    '<span><span class="dist-dot" style="background:#2563eb"></span>Vit\u00f3ria: ' + bVen + ' (' + pVen + '%)</span>' +
+    '<span><span class="dist-dot" style="background:#9ca3af"></span>Empate: ' + bEmp + ' (' + pEmp + '%)</span>' +
+    '</div></div></div>' +
+    '<div class="card"><div class="card-head"><span class="card-head-title">Sequ\u00eancias</span></div>' +
+    '<div style="padding:14px 16px 16px;display:flex;flex-direction:column;gap:12px;">' +
+    '<div class="stat-card" style="border:none;padding:0;gap:2px;"><div class="stat-card-label">Sequ\u00eancia atual de acertos</div>' +
+    '<div class="stat-card-value">' + streakCur + '</div>' +
+    '<div class="stat-card-sub">' + (streakCur === 0 ? 'sem sequ\u00eancia ativa' : 'resultados corretos seguidos') + '</div></div>' +
+    '<div style="height:1px;background:var(--border)"></div>' +
+    '<div class="stat-card" style="border:none;padding:0;gap:2px;"><div class="stat-card-label">Maior sequ\u00eancia do bol\u00e3o</div>' +
+    '<div class="stat-card-value">' + streakMax + '</div>' +
+    '<div class="stat-card-sub">' + (streakMax > 0 ? 'atingido em ' + esc(lastStreakGame) : '\u2014') + '</div>' +
+    '</div></div></div></div>';
+
+  var chartHtml = '<div class="card"><div class="card-head"><span class="card-head-title">Evolu\u00e7\u00e3o da classifica\u00e7\u00e3o</span></div>' +
+    '<div style="height:60px;display:flex;align-items:center;justify-content:center;color:var(--light);font-size:0.72rem">\u2014</div></div>';
+
+  return heroHtml + statsHtml + betsRowHtml + extraHtml + chartHtml;
+}
+
+function renderAdjacentPlayerSlots() {
+  if (!playerSlotPrev || !playerSlotNext || !sortedPlayers.length) return;
   var idx = sortedPlayers.indexOf(currentNome);
   if (idx < 0) return;
-  var prev = sortedPlayers[(idx - 1 + sortedPlayers.length) % sortedPlayers.length];
-  var next = sortedPlayers[(idx + 1) % sortedPlayers.length];
-  playerPeekPrev.innerHTML = buildPlayerPeekHtml(prev, 'Anterior');
-  playerPeekNext.innerHTML = buildPlayerPeekHtml(next, 'Próximo');
+  var prevNome = sortedPlayers[(idx - 1 + sortedPlayers.length) % sortedPlayers.length];
+  var nextNome = sortedPlayers[(idx + 1) % sortedPlayers.length];
+  playerSlotPrev.innerHTML = sortedPlayers.length > 1 ? buildProfileSlotHtml(prevNome) : '';
+  playerSlotNext.innerHTML = sortedPlayers.length > 1 ? buildProfileSlotHtml(nextNome) : '';
 }
 
-function clearPlayerPeeks() {
-  if (!playerPeekPrev || !playerPeekNext) return;
-  var w = playerSwipeStage ? playerSwipeStage.offsetWidth : window.innerWidth;
-  playerPeekPrev.style.opacity = '0';
-  playerPeekNext.style.opacity = '0';
-  playerPeekPrev.style.transform = 'translate3d(' + (-w) + 'px,0,0)';
-  playerPeekNext.style.transform = 'translate3d(' + w + 'px,0,0)';
+function setPlayerTrackX(extraDx, animated) {
+  if (!playerTrack || !playerStage) return;
+  var stageW = playerStage.offsetWidth;
+  var x = -(stageW + CARD_GAP) + extraDx;
+  playerTrack.style.transition = animated ? 'transform .22s ease' : 'none';
+  playerTrack.style.transform = 'translate3d(' + x + 'px,0,0)';
 }
 
-function setPlayerPeekDrag(dx) {
-  if (!playerPeekPrev || !playerPeekNext) return;
-  var w = playerSwipeStage ? playerSwipeStage.offsetWidth : window.innerWidth;
-  var absX = Math.min(Math.abs(dx), w);
-  var p = absX / Math.max(1, w);
-  if (dx > 0) {
-    playerPeekPrev.style.opacity = String(0.22 + p * 0.78);
-    playerPeekPrev.style.transform = 'translate3d(' + (-w + absX) + 'px,0,0)';
-    playerPeekNext.style.opacity = '0';
-    playerPeekNext.style.transform = 'translate3d(' + w + 'px,0,0)';
-  } else if (dx < 0) {
-    playerPeekNext.style.opacity = String(0.22 + p * 0.78);
-    playerPeekNext.style.transform = 'translate3d(' + (w - absX) + 'px,0,0)';
-    playerPeekPrev.style.opacity = '0';
-    playerPeekPrev.style.transform = 'translate3d(' + (-w) + 'px,0,0)';
-  } else {
-    clearPlayerPeeks();
-  }
+function resetPlayerTrack(animated) {
+  setPlayerTrackX(0, animated);
 }
 
 function stepPlayerWithSwipe(dir) {
-  var container = swipeContainer();
-  if (!container || isSwipeAnimating || !sortedPlayers.length) return false;
-
+  if (isSwipeAnimating || !sortedPlayers.length) return false;
   var idx = sortedPlayers.indexOf(currentNome);
   if (idx < 0) return false;
-  var nextIdx = (idx + dir + sortedPlayers.length) % sortedPlayers.length;
-  if (nextIdx === idx) {
-    resetSwipeContainer(container, true);
-    return false;
-  }
-
   isSwipeAnimating = true;
-  var width = Math.max(container.offsetWidth || 0, window.innerWidth || 0, 320);
-  var outX = dir > 0 ? -width : width;
-  var inX = -outX;
-
-  container.style.transition = 'transform .18s ease, opacity .18s ease';
-  container.style.transform = 'translate3d(' + outX + 'px,0,0)';
-  container.style.opacity = '.2';
-
+  var stageW = playerStage ? playerStage.offsetWidth : window.innerWidth;
+  // dir > 0 → next → track slides to -2*(stageW+CARD_GAP); dir < 0 → prev → track to 0
+  var targetX = dir > 0 ? -2 * (stageW + CARD_GAP) : 0;
+  playerTrack.style.transition = 'transform .22s ease';
+  playerTrack.style.transform = 'translate3d(' + targetX + 'px,0,0)';
+  var nextIdx = (idx + dir + sortedPlayers.length) % sortedPlayers.length;
+  var nextNome = sortedPlayers[nextIdx];
   setTimeout(function() {
-    var next = sortedPlayers[nextIdx];
-    document.getElementById('player-select').value = next;
-    selectPlayer(next, true);
-
-    container.style.transition = 'none';
-    container.style.transform = 'translate3d(' + inX + 'px,0,0)';
-    container.style.opacity = '.2';
-    void container.offsetWidth;
-
-    container.style.transition = 'transform .22s ease, opacity .22s ease';
-    container.style.transform = 'translate3d(0,0,0)';
-    container.style.opacity = '1';
-
-    setTimeout(function() {
-      container.style.transition = '';
-      isSwipeAnimating = false;
-    }, 240);
-  }, 180);
-
+    document.getElementById('player-select').value = nextNome;
+    selectPlayer(nextNome, true);
+    setTimeout(function() { isSwipeAnimating = false; }, 50);
+  }, 230);
   return true;
 }
 
@@ -781,8 +787,7 @@ function bindSwipeNavigation() {
     var target = e.target;
     if ((target && target.closest('#site-header')) || isInteractiveTarget(target)) return;
 
-    var container = swipeContainer();
-    if (!container || container.style.display === 'none') return;
+    if (!playerTrack) return;
 
     var t = e.touches[0];
     tracking = true;
@@ -794,8 +799,7 @@ function bindSwipeNavigation() {
 
   document.addEventListener('touchmove', function(e) {
     if (!tracking || !e.touches || e.touches.length !== 1 || isSwipeAnimating) return;
-    var container = swipeContainer();
-    if (!container) return;
+    if (!playerTrack || !playerStage) return;
 
     var t = e.touches[0];
     var dx = t.clientX - startX;
@@ -807,7 +811,7 @@ function bindSwipeNavigation() {
       if (absX < 10 && absY < 10) return;
       if (absY > absX * 1.12) {
         tracking = false;
-        resetSwipeContainer(container, false);
+        resetPlayerTrack(false);
         return;
       }
       dragging = true;
@@ -816,49 +820,45 @@ function bindSwipeNavigation() {
     if (e.cancelable) e.preventDefault();
 
     dragX = dx;
-    container.style.transition = 'none';
-    container.style.transform = 'translate3d(' + dragX + 'px,0,0)';
-    container.style.opacity = String(Math.max(0.6, 1 - Math.abs(dragX) / 520));
-    setPlayerPeekDrag(dragX);
+    var stageW = playerStage.offsetWidth;
+    playerTrack.style.transition = 'none';
+    playerTrack.style.transform = 'translate3d(' + (-(stageW + CARD_GAP) + dragX) + 'px,0,0)';
   }, { passive: false });
 
   document.addEventListener('touchend', function() {
     if (!tracking || isSwipeAnimating) return;
-    var container = swipeContainer();
     tracking = false;
-    if (!container) return;
+    if (!playerTrack) return;
 
     if (!dragging) {
-      resetSwipeContainer(container, false);
+      resetPlayerTrack(false);
       return;
     }
 
     dragging = false;
-    var threshold = Math.max(70, Math.min(120, Math.round((container.offsetWidth || window.innerWidth || 360) * 0.18)));
+    var stageW = playerStage ? playerStage.offsetWidth : window.innerWidth;
+    var threshold = Math.max(70, Math.min(120, Math.round(stageW * 0.22)));
     if (Math.abs(dragX) >= threshold) {
       var dir = dragX < 0 ? 1 : -1;
-      if (!stepPlayerWithSwipe(dir)) resetSwipeContainer(container, true);
+      if (!stepPlayerWithSwipe(dir)) resetPlayerTrack(true);
     } else {
-      resetSwipeContainer(container, true);
+      resetPlayerTrack(true);
     }
     dragX = 0;
   }, { passive: true });
 
   document.addEventListener('touchcancel', function() {
-    var container = swipeContainer();
     tracking = false;
     dragging = false;
     dragX = 0;
-    resetSwipeContainer(container, true);
+    resetPlayerTrack(true);
   }, { passive: true });
 
   document.body.dataset.swipeBoundParticipante = '1';
 }
 
 function syncStickySelectorOffset() {
-  var header = document.getElementById('_bolao_header');
-  var h = header ? header.offsetHeight : 56;
-  document.documentElement.style.setProperty('--header-offset', h + 'px');
+  // no-op — selector is no longer sticky
 }
 
 // ── Render profile ────────────────────────────────────────────────────────────
@@ -867,21 +867,8 @@ function renderProfile(nome) {
   var N = sortedPlayers.length;
   var done = JOGOS.filter(function(j){ return j.gols_a!==null&&j.gols_b!==null; });
   var total = JOGOS.length;
-  // Compute tied rank for this player (standard competition ranking: 1,2,2,4)
-  var idx = sortedPlayers.indexOf(nome);
-  var doneFinal = JOGOS.filter(function(j){ return j.gols_a!==null && j.gols_b!==null; });
-  var pos = 1;
-  for (var ri = 1; ri <= idx; ri++) {
-    var sp = scoreboard[sortedPlayers[ri-1]], sc2 = scoreboard[sortedPlayers[ri]];
-    var diff = sp.pts !== sc2.pts || sp.res !== sc2.res || sp.ven !== sc2.ven || sp.emp !== sc2.emp;
-    if (!diff) {
-      for (var k = doneFinal.length - 1; k >= 0; k--) {
-        var id = doneFinal[k].id;
-        if ((sp.game_pts[id]||0) !== (sc2.game_pts[id]||0)) { diff = true; break; }
-      }
-    }
-    if (diff) pos = ri + 1;
-  }
+  // Compute tied rank for this player
+  var pos = getPlayerRank(nome);
 
   // Hero
   var posEl = document.getElementById('hero-pos');
@@ -1144,11 +1131,10 @@ window.next_pager_btns_next = function(){ nextPage = renderPage('next-bets','nex
 window.next_pager_btns_go   = function(p){ nextPage = renderPage('next-bets','next-pager','next-pager-info','next-pager-btns', nextRows, p); };
 
 // ── Select player ─────────────────────────────────────────────────────────────
-function selectPlayer(nome, forceFromSwipe) {
-  if (isSwipeAnimating && !forceFromSwipe) return;
+function selectPlayer(nome, fromSwipe) {
+  if (isSwipeAnimating && !fromSwipe) return;
   currentNome = nome;
   document.title = 'e-BÉTS - ' + nome;
-  // Update URL without reload
   var url = new URL(window.location.href);
   url.searchParams.set('nome', nome);
   window.history.replaceState({}, '', url.toString());
@@ -1157,7 +1143,8 @@ function selectPlayer(nome, forceFromSwipe) {
   renderChart(nome);
   renderPastBets(nome);
   renderNextBets(nome);
-  renderPlayerPeeks();
+  renderAdjacentPlayerSlots();
+  setPlayerTrackX(0, false);
 }
 
 // ── Init ──────────────────────────────────────────────────────────────────────
@@ -1180,9 +1167,10 @@ async function init() {
   });
 
   populateSelector(sortedPlayers);
-  playerSwipeStage = document.getElementById('swipe-stage');
-  playerPeekPrev = document.getElementById('player-peek-prev');
-  playerPeekNext = document.getElementById('player-peek-next');
+  playerStage = document.getElementById('swipe-stage');
+  playerTrack = document.getElementById('player-track');
+  playerSlotPrev = document.getElementById('player-slot-prev');
+  playerSlotNext = document.getElementById('player-slot-next');
 
   // Pick player from URL or first
   var urlNome = new URLSearchParams(window.location.search).get('nome');
@@ -1192,9 +1180,8 @@ async function init() {
   document.getElementById('loading-overlay').style.display = 'none';
   document.getElementById('main-content').style.display = '';
 
-  syncStickySelectorOffset();
-  window.addEventListener('resize', syncStickySelectorOffset);
   bindSwipeNavigation();
+  window.addEventListener('resize', function() { setPlayerTrackX(0, false); });
   selectPlayer(startNome);
 }
 init();

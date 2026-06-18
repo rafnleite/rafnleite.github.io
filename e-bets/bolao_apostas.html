@@ -12,6 +12,7 @@
   --col-a: #1d4ed8;
   --col-emp: #92400e;
   --col-b: #b91c1c;
+  --card-gap: 32px;
 }
 /* ── GAME NAV BAR ─────────────────────────── */
 .game-nav-bar {
@@ -39,64 +40,29 @@
 }
 
 /* ── GAME CARD ─────────────────────────────── */
-#game-card {
+#game-card-stage {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius);
+  touch-action: pan-y;
+}
+#card-track {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--card-gap);
+  will-change: transform;
+}
+.card-slot {
+  flex: 0 0 100%;
+  min-width: 0;
   background: var(--white);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   overflow: hidden;
   box-shadow: 0 2px 12px rgba(0,0,0,.06);
-  touch-action: pan-y;
-  position: relative;
-  z-index: 2;
 }
-#game-card-stage {
-  position: relative;
-  overflow: hidden;
-  border-radius: var(--radius);
-}
-.swipe-peek {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 100%;
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  box-shadow: 0 2px 12px rgba(0,0,0,.08);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 14px;
-  opacity: 0;
-  pointer-events: none;
-  z-index: 1;
-}
-.swipe-peek.prev { left: 0; }
-.swipe-peek.next { left: 0; }
-.swipe-peek-inner {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-.swipe-peek-label {
-  font-size: 0.58rem;
-  font-weight: 700;
-  letter-spacing: 1.1px;
-  text-transform: uppercase;
-  color: var(--sub);
-}
-.swipe-peek-title {
-  font-family: 'Bebas Neue', cursive;
-  font-size: 1.2rem;
-  letter-spacing: 1.4px;
-  line-height: 1;
-  color: var(--text);
-}
-.swipe-peek-sub {
-  font-size: 0.67rem;
-  color: var(--sub);
-  font-weight: 500;
+#game-card {
+  /* alias for .card-slot — kept for exportImage() compatibility */
 }
 
 /* ── GAME HEADER ──────────────────────────── */
@@ -410,9 +376,16 @@
   align-items: center;
   padding: 8px 13px;
   border-bottom: 1px solid var(--border);
-  gap: 6px;
+  gap: 5px;
 }
 .bet-item:last-child { border-bottom: none; }
+.bi-name-wrap {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
 .bi-name {
   font-size: 0.77rem;
   font-weight: 500;
@@ -420,14 +393,19 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  flex: 1;
+  flex-shrink: 1;
   min-width: 0;
+}
+.bi-score-pts {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
 }
 .bi-score {
   font-family: 'Bebas Neue', cursive;
   font-size: 0.92rem;
   letter-spacing: 1.5px;
-  flex-shrink: 0;
 }
 .bi-score-a   { color: var(--col-a); }
 .bi-score-emp { color: var(--col-emp); }
@@ -443,6 +421,24 @@
 .bi-pts.p-max  { background: #dcfce7; color: #166534; }
 .bi-pts.p-some { background: #fef9c3; color: #854d0e; }
 .bi-pts.p-zero { background: #fee2e2; color: #991b1b; }
+
+/* ── POSITION BADGE ───────────────────────── */
+.bi-pos-wrap {
+  width: 44px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 2px;
+}
+.bi-pos-rank {
+  font-size: 0.65rem; font-weight: 600; color: #374151;
+}
+.bi-pos-delta {
+  font-size: 0.60rem; font-weight: 700;
+}
+.bi-pos-up { color: #16a34a; }
+.bi-pos-dn { color: #dc2626; }
 
 /* ── HIT HIGHLIGHTS ─────────────────────── */
 .bet-item.result-hit .bi-name { color: var(--accent); font-weight: 700; }
@@ -696,20 +692,25 @@
     </div>
   </div>
   <div id="game-card-stage">
-    <div class="swipe-peek prev" id="game-peek-prev"></div>
-    <div class="swipe-peek next" id="game-peek-next"></div>
-    <div id="game-card"></div>
+    <div id="card-track">
+      <div class="card-slot" id="card-slot-prev"></div>
+      <div class="card-slot" id="game-card"></div>
+      <div class="card-slot" id="card-slot-next"></div>
+    </div>
   </div>
 </main>
 
 <script src="bolao_utils.js"></script>
 <script>
 let JOGOS = [];
+let gameRankHistory = [];
 let currentIndex = 0;
 let isSwipeAnimating = false;
+const CARD_GAP = 32; // px — matches --card-gap in CSS (2× .content side padding)
 const gameCardStage = document.getElementById('game-card-stage');
-const gamePeekPrev = document.getElementById('game-peek-prev');
-const gamePeekNext = document.getElementById('game-peek-next');
+const cardTrack = document.getElementById('card-track');
+const cardSlotPrev = document.getElementById('card-slot-prev');
+const cardSlotNext = document.getElementById('card-slot-next');
 
 function calcBreakdown(betA, betB, realA, realB) {
   var gol = (betA === realA ? 1 : 0) + (betB === realB ? 1 : 0);
@@ -811,17 +812,103 @@ function renderGameAverage(j) {
   '</div>';
 }
 
-function betItem(ap, type, hitResult, hitScore, rawPts, mult) {
+function buildGameRankHistory() {
+  gameRankHistory = [];
+  var doneGames = JOGOS.filter(function(j) { return j.gols_a !== null && j.gols_b !== null; });
+  if (!doneGames.length) return;
+  var namesSet = {};
+  JOGOS.forEach(function(j) {
+    [].concat(j.apostadores_a, j.apostadores_empate, j.apostadores_b)
+      .forEach(function(a) { namesSet[a.nome] = 1; });
+  });
+  var names = Object.keys(namesSet);
+  var acc = {};
+  names.forEach(function(n) { acc[n] = { pts:0, res:0, ven:0, emp:0, gp:{} }; });
+  doneGames.forEach(function(j, ji) {
+    var mult = getMultiplier(j);
+    [].concat(j.apostadores_a, j.apostadores_empate, j.apostadores_b).forEach(function(a) {
+      if (!acc[a.nome]) acc[a.nome] = { pts:0, res:0, ven:0, emp:0, gp:{} };
+      var sp = a.placar.split('x'), bA = +sp[0]||0, bB = +sp[1]||0;
+      var rR = j.gols_a > j.gols_b ? 'A' : j.gols_a < j.gols_b ? 'B' : 'E';
+      var bR = bA > bB ? 'A' : bA < bB ? 'B' : 'E';
+      var isRes = bR === rR ? 1 : 0;
+      var gol = (bA === j.gols_a ? 1 : 0) + (bB === j.gols_b ? 1 : 0);
+      var dif = (bA - bB) === (j.gols_a - j.gols_b) ? 1 : 0;
+      var pts = (gol + dif + (isRes ? (rR === 'E' ? 1 : 2) : 0)) * mult;
+      var r = acc[a.nome];
+      r.pts += pts; r.res += isRes;
+      r.ven += (isRes && rR !== 'E') ? 1 : 0;
+      r.emp += (isRes && rR === 'E') ? 1 : 0;
+      r.gp[j.id] = (r.gp[j.id] || 0) + pts;
+    });
+    var doneIds = doneGames.slice(0, ji + 1).map(function(x) { return x.id; });
+    var entries = names.map(function(n) {
+      var r = acc[n]; return { nome:n, pts:r.pts, res:r.res, ven:r.ven, emp:r.emp, gp:r.gp };
+    });
+    entries.sort(function(a, b) {
+      if (b.pts !== a.pts) return b.pts - a.pts;
+      if (b.res !== a.res) return b.res - a.res;
+      if (b.ven !== a.ven) return b.ven - a.ven;
+      if (b.emp !== a.emp) return b.emp - a.emp;
+      for (var k = doneIds.length - 1; k >= 0; k--) {
+        var id = doneIds[k]; var pa = a.gp[id]||0, pb = b.gp[id]||0;
+        if (pb !== pa) return pb - pa;
+      }
+      return a.nome.localeCompare(b.nome, 'pt-BR', { sensitivity: 'base' });
+    });
+    var posMap = {}, rank = 1;
+    entries.forEach(function(e, i) {
+      if (i > 0) {
+        var prev = entries[i-1];
+        var tied = e.pts===prev.pts && e.res===prev.res && e.ven===prev.ven && e.emp===prev.emp;
+        if (tied) {
+          for (var k = doneIds.length-1; k >= 0; k--) {
+            var id = doneIds[k];
+            if ((e.gp[id]||0) !== (prev.gp[id]||0)) { tied = false; break; }
+          }
+        }
+        if (!tied) rank = i + 1;
+      }
+      posMap[e.nome] = rank;
+    });
+    gameRankHistory.push({ id: j.id, posMap: posMap });
+  });
+}
+
+function getGameRankInfo(j) {
+  var idx = gameRankHistory.findIndex(function(h) { return h.id === j.id; });
+  if (idx < 0) return null;
+  return {
+    posMap: gameRankHistory[idx].posMap,
+    prevPosMap: idx > 0 ? gameRankHistory[idx - 1].posMap : null
+  };
+}
+
+function betItem(ap, type, hitResult, hitScore, rawPts, mult, posInfo) {
   var cls = 'bet-item' + (hitScore ? ' score-hit' : hitResult ? ' result-hit' : '');
-  var icon = hitScore ? '<span class="bi-hit-icon">★</span>' : '';
+  var icon = hitScore ? '<span class="bi-hit-icon">\u2605</span>' : '';
   var ptsBadge = '';
   if (rawPts !== undefined && rawPts !== null) {
     var dispPts = rawPts * (mult || 1);
     var ptsCls = rawPts === 0 ? 'p-zero' : rawPts <= 3 ? 'p-some' : 'p-max';
     ptsBadge = '<span class="bi-pts ' + ptsCls + '">' + (dispPts > 0 ? '+' + dispPts : '0') + '</span>';
   }
-  return '<li class="' + cls + '">' + icon + '<span class="bi-name">' + shortName(ap.nome) +
-    '</span><span class="bi-score bi-score-' + type + '">' + ap.placar + '</span>' + ptsBadge + '</li>';
+  var posCell = '<span class="bi-pos-wrap"></span>';
+  if (posInfo && posInfo.pos) {
+    var rk = '<span class="bi-pos-rank">' + posInfo.pos + '\u00ba</span>';
+    var d = posInfo.delta;
+    if (d > 0)
+      posCell = '<span class="bi-pos-wrap">' + rk + '<span class="bi-pos-delta bi-pos-up">\u25b2' + d + '</span></span>';
+    else if (d < 0)
+      posCell = '<span class="bi-pos-wrap">' + rk + '<span class="bi-pos-delta bi-pos-dn">\u25bc' + Math.abs(d) + '</span></span>';
+    else
+      posCell = '<span class="bi-pos-wrap">' + rk + '</span>';
+  }
+  return '<li class="' + cls + '">' +
+    posCell +
+    '<span class="bi-name-wrap"><span class="bi-name">' + shortName(ap.nome) + '</span>' + icon + '</span>' +
+    '<span class="bi-score-pts"><span class="bi-score bi-score-' + type + '">' + ap.placar + '</span>' + ptsBadge + '</span>' +
+    '</li>';
 }
 
 function parsePlacar(placar) {
@@ -885,6 +972,15 @@ function buildGameCardHtml(j) {
   var actualPlacar = resultType !== null ? j.gols_a + 'x' + j.gols_b : null;
   var mult = getMultiplier(j);
 
+  var rankInfo = (j.gols_a !== null && j.gols_b !== null) ? getGameRankInfo(j) : null;
+  function betPosInfo(nome) {
+    if (!rankInfo) return null;
+    var pos = rankInfo.posMap[nome];
+    if (!pos) return null;
+    var prevPos = rankInfo.prevPosMap ? rankInfo.prevPosMap[nome] : null;
+    return { pos: pos, delta: prevPos != null ? prevPos - pos : null };
+  }
+
   function betPts(ap) {
     if (actualPlacar === null) return undefined;
     var sp = ap.placar.split('x');
@@ -893,17 +989,17 @@ function buildGameCardHtml(j) {
 
   const listA = j.apostadores_a.length
     ? '<ul class="bet-list">' + sortBets(j.apostadores_a, 'a').map(function(a) {
-        return betItem(a, 'a', resultType === 'a', actualPlacar !== null && a.placar === actualPlacar, betPts(a), mult);
+        return betItem(a, 'a', resultType === 'a', actualPlacar !== null && a.placar === actualPlacar, betPts(a), mult, betPosInfo(a.nome));
       }).join('') + '</ul>'
     : '<div class="empty-bet">—</div>';
   const listE = j.apostadores_empate.length
     ? '<ul class="bet-list">' + sortBets(j.apostadores_empate, 'emp').map(function(a) {
-        return betItem(a, 'emp', resultType === 'emp', actualPlacar !== null && a.placar === actualPlacar, betPts(a), mult);
+        return betItem(a, 'emp', resultType === 'emp', actualPlacar !== null && a.placar === actualPlacar, betPts(a), mult, betPosInfo(a.nome));
       }).join('') + '</ul>'
     : '<div class="empty-bet">—</div>';
   const listB = j.apostadores_b.length
     ? '<ul class="bet-list">' + sortBets(j.apostadores_b, 'b').map(function(a) {
-        return betItem(a, 'b', resultType === 'b', actualPlacar !== null && a.placar === actualPlacar, betPts(a), mult);
+        return betItem(a, 'b', resultType === 'b', actualPlacar !== null && a.placar === actualPlacar, betPts(a), mult, betPosInfo(a.nome));
       }).join('') + '</ul>'
     : '<div class="empty-bet">—</div>';
 
@@ -951,46 +1047,29 @@ function renderGame(idx) {
   const j = JOGOS[idx];
   updatePageTitle(j);
   document.getElementById('game-card').innerHTML = buildGameCardHtml(j);
-
-  renderGamePeeks();
+  renderAdjacentCards();
+  setTrackX(0, false);
 }
 
-function renderGamePeeks() {
-  if (!gamePeekPrev || !gamePeekNext || !JOGOS.length) return;
-  var prev = currentIndex > 0 ? JOGOS[currentIndex - 1] : null;
-  var next = currentIndex < JOGOS.length - 1 ? JOGOS[currentIndex + 1] : null;
-  gamePeekPrev.innerHTML = prev ? buildGameCardHtml(prev) : '';
-  gamePeekNext.innerHTML = next ? buildGameCardHtml(next) : '';
-  clearGamePeeks();
+function renderAdjacentCards() {
+  if (!cardSlotPrev || !cardSlotNext || !JOGOS.length) return;
+  cardSlotPrev.innerHTML = currentIndex > 0 ? buildGameCardHtml(JOGOS[currentIndex - 1]) : '';
+  cardSlotNext.innerHTML = currentIndex < JOGOS.length - 1 ? buildGameCardHtml(JOGOS[currentIndex + 1]) : '';
 }
 
-function clearGamePeeks() {
-  if (!gamePeekPrev || !gamePeekNext) return;
-  var w = gameCardStage ? gameCardStage.offsetWidth : window.innerWidth;
-  gamePeekPrev.style.opacity = '0';
-  gamePeekNext.style.opacity = '0';
-  gamePeekPrev.style.transform = 'translate3d(' + (-w) + 'px,0,0)';
-  gamePeekNext.style.transform = 'translate3d(' + w + 'px,0,0)';
+/* Move the track so the center card is offset by extraDx pixels.
+   At rest (extraDx = 0): translateX(-(stageWidth + CARD_GAP)) → center slot visible.
+   CARD_GAP is the flex gap between slots — prev/next cards peek in from the sides. */
+function setTrackX(extraDx, animated) {
+  if (!cardTrack || !gameCardStage) return;
+  var stageW = gameCardStage.offsetWidth;
+  var x = -(stageW + CARD_GAP) + extraDx;
+  cardTrack.style.transition = animated ? 'transform .22s ease' : 'none';
+  cardTrack.style.transform = 'translate3d(' + x + 'px,0,0)';
 }
 
-function setGamePeekDrag(dx) {
-  if (!gamePeekPrev || !gamePeekNext) return;
-  var w = gameCardStage ? gameCardStage.offsetWidth : window.innerWidth;
-  var absX = Math.min(Math.abs(dx), w);
-  var p = absX / Math.max(1, w);
-  if (dx > 0 && currentIndex > 0) {
-    gamePeekPrev.style.opacity = String(0.22 + p * 0.78);
-    gamePeekPrev.style.transform = 'translate3d(' + (-w + absX) + 'px,0,0)';
-    gamePeekNext.style.opacity = '0';
-    gamePeekNext.style.transform = 'translate3d(' + w + 'px,0,0)';
-  } else if (dx < 0 && currentIndex < JOGOS.length - 1) {
-    gamePeekNext.style.opacity = String(0.22 + p * 0.78);
-    gamePeekNext.style.transform = 'translate3d(' + (w - absX) + 'px,0,0)';
-    gamePeekPrev.style.opacity = '0';
-    gamePeekPrev.style.transform = 'translate3d(' + (-w) + 'px,0,0)';
-  } else {
-    clearGamePeeks();
-  }
+function resetTrack(animated) {
+  setTrackX(0, animated);
 }
 
 // ── Search helpers ────────────────────────
@@ -1120,13 +1199,17 @@ function selectFromDropdown(idx, labelText) {
 
 function navigate(dir) {
   if (isSwipeAnimating) return;
-  const n = currentIndex + dir;
+  var n = currentIndex + dir;
   if (n < 0 || n >= JOGOS.length) return;
-  currentIndex = n;
-  renderGame(currentIndex);
-  updateNav();
-  clearGamePeeks();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  // Large screens: instant switch; small screens: slide animation
+  if (window.innerWidth > 768) {
+    currentIndex = n;
+    renderGame(currentIndex);
+    updateNav();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  } else {
+    navigateWithSwipe(dir);
+  }
 }
 
 function updateNav() {
@@ -1139,53 +1222,35 @@ function updateNav() {
 }
 
 function resetSwipeCard(card, animated) {
-  if (!card) return;
-  card.style.transition = animated ? 'transform .18s ease, opacity .18s ease' : 'none';
-  card.style.transform = 'translate3d(0,0,0)';
-  card.style.opacity = '1';
-  clearGamePeeks();
+  // kept for compatibility — delegates to track reset
+  resetTrack(animated);
 }
 
 function navigateWithSwipe(dir) {
-  var card = document.getElementById('game-card');
-  if (!card || isSwipeAnimating) return false;
+  if (isSwipeAnimating) return false;
 
   var n = currentIndex + dir;
   if (n < 0 || n >= JOGOS.length) {
-    resetSwipeCard(card, true);
+    resetTrack(true);
     return false;
   }
 
   isSwipeAnimating = true;
-  var width = Math.max(card.offsetWidth || 0, window.innerWidth || 0, 320);
-  var outX = dir > 0 ? -width : width;
-  var inX = -outX;
+  var stageW = gameCardStage ? gameCardStage.offsetWidth : window.innerWidth;
+  // dir > 0 → next → track slides to -2*(stageW + CARD_GAP); dir < 0 → prev → track slides to 0
+  var targetX = dir > 0 ? -2 * (stageW + CARD_GAP) : 0;
 
-  card.style.transition = 'transform .18s ease, opacity .18s ease';
-  card.style.transform = 'translate3d(' + outX + 'px,0,0)';
-  card.style.opacity = '.22';
+  cardTrack.style.transition = 'transform .22s ease';
+  cardTrack.style.transform = 'translate3d(' + targetX + 'px,0,0)';
 
   setTimeout(function() {
     currentIndex = n;
+    // renderGame resets track to center with no transition
     renderGame(currentIndex);
     updateNav();
     window.scrollTo({ top: 0, behavior: 'smooth' });
-
-    card.style.transition = 'none';
-    card.style.transform = 'translate3d(' + inX + 'px,0,0)';
-    card.style.opacity = '.22';
-    void card.offsetWidth;
-
-    card.style.transition = 'transform .22s ease, opacity .22s ease';
-    card.style.transform = 'translate3d(0,0,0)';
-    card.style.opacity = '1';
-
-    setTimeout(function() {
-      card.style.transition = '';
-      isSwipeAnimating = false;
-      clearGamePeeks();
-    }, 240);
-  }, 180);
+    setTimeout(function() { isSwipeAnimating = false; }, 50);
+  }, 230);
 
   return true;
 }
@@ -1218,8 +1283,7 @@ function bindSwipeNavigation() {
 
   document.addEventListener('touchmove', function(e) {
     if (!tracking || !e.touches || e.touches.length !== 1 || isSwipeAnimating) return;
-    var card = document.getElementById('game-card');
-    if (!card) return;
+    if (!cardTrack || !gameCardStage) return;
 
     var t = e.touches[0];
     var dx = t.clientX - startX;
@@ -1231,7 +1295,7 @@ function bindSwipeNavigation() {
       if (absX < 10 && absY < 10) return;
       if (absY > absX * 1.12) {
         tracking = false;
-        resetSwipeCard(card, false);
+        resetTrack(false);
         return;
       }
       dragging = true;
@@ -1242,40 +1306,38 @@ function bindSwipeNavigation() {
     var blockedEdge = (currentIndex === 0 && dx > 0) || (currentIndex === JOGOS.length - 1 && dx < 0);
     dragX = blockedEdge ? dx * 0.35 : dx;
 
-    card.style.transition = 'none';
-    card.style.transform = 'translate3d(' + dragX + 'px,0,0)';
-    card.style.opacity = String(Math.max(0.6, 1 - Math.abs(dragX) / 520));
-    setGamePeekDrag(dragX);
+    var stageW = gameCardStage.offsetWidth;
+    cardTrack.style.transition = 'none';
+    cardTrack.style.transform = 'translate3d(' + (-(stageW + CARD_GAP) + dragX) + 'px,0,0)';
   }, { passive: false });
 
   document.addEventListener('touchend', function() {
     if (!tracking || isSwipeAnimating) return;
-    var card = document.getElementById('game-card');
     tracking = false;
-    if (!card) return;
+    if (!cardTrack) return;
 
     if (!dragging) {
-      resetSwipeCard(card, false);
+      resetTrack(false);
       return;
     }
 
     dragging = false;
-    var threshold = Math.max(70, Math.min(120, Math.round((card.offsetWidth || window.innerWidth || 360) * 0.18)));
+    var stageW = gameCardStage ? gameCardStage.offsetWidth : window.innerWidth;
+    var threshold = Math.max(70, Math.min(120, Math.round(stageW * 0.22)));
     if (Math.abs(dragX) >= threshold) {
       var dir = dragX < 0 ? 1 : -1;
-      if (!navigateWithSwipe(dir)) resetSwipeCard(card, true);
+      if (!navigateWithSwipe(dir)) resetTrack(true);
     } else {
-      resetSwipeCard(card, true);
+      resetTrack(true);
     }
     dragX = 0;
   }, { passive: true });
 
   document.addEventListener('touchcancel', function() {
-    var card = document.getElementById('game-card');
     tracking = false;
     dragging = false;
     dragX = 0;
-    resetSwipeCard(card, true);
+    resetTrack(true);
   }, { passive: true });
 
   document.body.dataset.swipeBoundApostas = '1';
@@ -1352,6 +1414,7 @@ function exportImage() {
     document.getElementById('loading-overlay').innerHTML = '<div class="loading-text">Erro ao carregar dados. Tente recarregar a página.</div>';
     return;
   }
+  buildGameRankHistory();
   // Navega para jogo ao vivo; se não houver, para o próximo jogo
   // ?jogo=N param (from ranking sidebar link) overrides auto-navigation
   let startIdx = 0;
@@ -1377,6 +1440,11 @@ function exportImage() {
   renderGame(currentIndex);
   updateNav();
   bindSwipeNavigation();
+
+  // ── Reposition track on window resize ───────────────────────────────────
+  window.addEventListener('resize', function() {
+    setTrackX(0, false);
+  });
 
   // ── Auto-refresh every 40 s ──────────────────────────────────────────────
   setInterval(async function() {
@@ -1408,6 +1476,7 @@ function exportImage() {
     var goalB = prevGame && freshGame && freshGame.gols_b !== null && prevGame.gols_b !== null && freshGame.gols_b > prevGame.gols_b;
 
     JOGOS = fresh;
+    buildGameRankHistory();
     var newIdx = currentId !== null ? JOGOS.findIndex(function(j){ return j.id === currentId; }) : -1;
     if (newIdx < 0) newIdx = Math.min(currentIndex, JOGOS.length - 1);
     currentIndex = newIdx;
