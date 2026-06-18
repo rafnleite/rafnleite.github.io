@@ -24,6 +24,61 @@
   z-index: 120;
 }
 
+#swipe-stage {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius);
+}
+
+.swipe-peek {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 72%;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 2px 12px rgba(0,0,0,.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+.swipe-peek.prev { left: 0; transform: translate3d(-35%,0,0); }
+.swipe-peek.next { right: 0; transform: translate3d(35%,0,0); }
+
+.swipe-peek-inner {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.swipe-peek-label {
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 1.1px;
+  text-transform: uppercase;
+  color: var(--sub);
+}
+
+.swipe-peek-title {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 1.25rem;
+  letter-spacing: 1.3px;
+  line-height: 1;
+  color: var(--text);
+}
+
+.swipe-peek-sub {
+  font-size: 0.68rem;
+  color: var(--sub);
+  font-weight: 500;
+}
+
 /* ── PLAYER SELECTOR ─────────────────────── */
 .player-selector-bar {
   display: flex;
@@ -276,7 +331,10 @@
     </div>
   </div>
 
-  <div id="swipe-content" style="display:flex;flex-direction:column;gap:20px">
+  <div id="swipe-stage">
+  <div class="swipe-peek prev" id="player-peek-prev"></div>
+  <div class="swipe-peek next" id="player-peek-next"></div>
+  <div id="swipe-content" style="display:flex;flex-direction:column;gap:20px;position:relative;z-index:2">
 
   <!-- ── HERO ────────────────────────────── -->
   <div class="hero-card" id="hero-card">
@@ -409,6 +467,7 @@
   </div>
 
   </div>
+  </div>
 
 </div>
 
@@ -432,6 +491,8 @@ var colorMap    = {};
 var currentNome = null;
 var posChart    = null;
 var isSwipeAnimating = false;
+var playerPeekPrev = null;
+var playerPeekNext = null;
 
 // ── Scoring helpers ───────────────────────────────────────────────────────────
 function calcBreakdown(betA, betB, realA, realB) {
@@ -592,6 +653,54 @@ function resetSwipeContainer(container, animated) {
   container.style.transition = animated ? 'transform .18s ease, opacity .18s ease' : 'none';
   container.style.transform = 'translate3d(0,0,0)';
   container.style.opacity = '1';
+  clearPlayerPeeks();
+}
+
+function buildPlayerPeekHtml(nome, label) {
+  if (!nome) return '';
+  var s = scoreboard[nome] || { pts: 0 };
+  return '<div class="swipe-peek-inner">' +
+    '<div class="swipe-peek-label">' + label + '</div>' +
+    '<div class="swipe-peek-title">' + nome + '</div>' +
+    '<div class="swipe-peek-sub">' + s.pts + ' pontos</div>' +
+  '</div>';
+}
+
+function renderPlayerPeeks() {
+  if (!playerPeekPrev || !playerPeekNext || !sortedPlayers.length) return;
+  var idx = sortedPlayers.indexOf(currentNome);
+  if (idx < 0) return;
+  var prev = sortedPlayers[(idx - 1 + sortedPlayers.length) % sortedPlayers.length];
+  var next = sortedPlayers[(idx + 1) % sortedPlayers.length];
+  playerPeekPrev.innerHTML = buildPlayerPeekHtml(prev, 'Anterior');
+  playerPeekNext.innerHTML = buildPlayerPeekHtml(next, 'Próximo');
+}
+
+function clearPlayerPeeks() {
+  if (!playerPeekPrev || !playerPeekNext) return;
+  playerPeekPrev.style.opacity = '0';
+  playerPeekNext.style.opacity = '0';
+  playerPeekPrev.style.transform = 'translate3d(-35%,0,0)';
+  playerPeekNext.style.transform = 'translate3d(35%,0,0)';
+}
+
+function setPlayerPeekDrag(dx) {
+  if (!playerPeekPrev || !playerPeekNext) return;
+  var absX = Math.min(Math.abs(dx), 220);
+  var p = absX / 220;
+  if (dx > 0) {
+    playerPeekPrev.style.opacity = String(0.12 + p * 0.88);
+    playerPeekPrev.style.transform = 'translate3d(' + (-35 + p * 35) + '%,0,0)';
+    playerPeekNext.style.opacity = '0';
+    playerPeekNext.style.transform = 'translate3d(35%,0,0)';
+  } else if (dx < 0) {
+    playerPeekNext.style.opacity = String(0.12 + p * 0.88);
+    playerPeekNext.style.transform = 'translate3d(' + (35 - p * 35) + '%,0,0)';
+    playerPeekPrev.style.opacity = '0';
+    playerPeekPrev.style.transform = 'translate3d(-35%,0,0)';
+  } else {
+    clearPlayerPeeks();
+  }
 }
 
 function stepPlayerWithSwipe(dir) {
@@ -694,6 +803,7 @@ function bindSwipeNavigation() {
     container.style.transition = 'none';
     container.style.transform = 'translate3d(' + dragX + 'px,0,0)';
     container.style.opacity = String(Math.max(0.6, 1 - Math.abs(dragX) / 520));
+    setPlayerPeekDrag(dragX);
   }, { passive: false });
 
   document.addEventListener('touchend', function() {
@@ -1031,6 +1141,7 @@ function selectPlayer(nome, forceFromSwipe) {
   renderChart(nome);
   renderPastBets(nome);
   renderNextBets(nome);
+  renderPlayerPeeks();
 }
 
 // ── Init ──────────────────────────────────────────────────────────────────────
@@ -1053,6 +1164,8 @@ async function init() {
   });
 
   populateSelector(sortedPlayers);
+  playerPeekPrev = document.getElementById('player-peek-prev');
+  playerPeekNext = document.getElementById('player-peek-next');
 
   // Pick player from URL or first
   var urlNome = new URLSearchParams(window.location.search).get('nome');

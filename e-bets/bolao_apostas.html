@@ -46,6 +46,57 @@
   overflow: hidden;
   box-shadow: 0 2px 12px rgba(0,0,0,.06);
   touch-action: pan-y;
+  position: relative;
+  z-index: 2;
+}
+#game-card-stage {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius);
+}
+.swipe-peek {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 72%;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 2px 12px rgba(0,0,0,.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+.swipe-peek.prev { left: 0; transform: translate3d(-35%,0,0); }
+.swipe-peek.next { right: 0; transform: translate3d(35%,0,0); }
+.swipe-peek-inner {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.swipe-peek-label {
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 1.1px;
+  text-transform: uppercase;
+  color: var(--sub);
+}
+.swipe-peek-title {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 1.2rem;
+  letter-spacing: 1.4px;
+  line-height: 1;
+  color: var(--text);
+}
+.swipe-peek-sub {
+  font-size: 0.67rem;
+  color: var(--sub);
+  font-weight: 500;
 }
 
 /* ── GAME HEADER ──────────────────────────── */
@@ -644,7 +695,11 @@
       <button class="nav-btn" id="btn-next" onclick="navigate(1)">Próximo &#9654;</button>
     </div>
   </div>
-  <div id="game-card"></div>
+  <div id="game-card-stage">
+    <div class="swipe-peek prev" id="game-peek-prev"></div>
+    <div class="swipe-peek next" id="game-peek-next"></div>
+    <div id="game-card"></div>
+  </div>
 </main>
 
 <script src="bolao_utils.js"></script>
@@ -652,6 +707,8 @@
 let JOGOS = [];
 let currentIndex = 0;
 let isSwipeAnimating = false;
+const gamePeekPrev = document.getElementById('game-peek-prev');
+const gamePeekNext = document.getElementById('game-peek-next');
 
 function calcBreakdown(betA, betB, realA, realB) {
   var gol = (betA === realA ? 1 : 0) + (betB === realB ? 1 : 0);
@@ -890,6 +947,52 @@ function renderGame(idx) {
       '<div class="stats-track"><div class="seg-a" style="width:' + pA + '%"></div><div class="seg-emp" style="width:' + pE + '%"></div><div class="seg-b" style="width:' + pB + '%"></div></div>' +
       '<div class="stats-labels"><span class="sl-a">' + j.time_a.nome + ' ' + pA + '%</span><span class="sl-emp">Empate ' + pE + '%</span><span class="sl-b">' + pB + '% ' + j.time_b.nome + '</span></div>' +
     '</div>';
+
+  renderGamePeeks();
+}
+
+function buildPeekHtml(j, label) {
+  if (!j) return '';
+  return '<div class="swipe-peek-inner">' +
+    '<div class="swipe-peek-label">' + label + '</div>' +
+    '<div class="swipe-peek-title">' + j.time_a.nome + ' × ' + j.time_b.nome + '</div>' +
+    '<div class="swipe-peek-sub">' + formatDate(j.data) + '</div>' +
+  '</div>';
+}
+
+function renderGamePeeks() {
+  if (!gamePeekPrev || !gamePeekNext || !JOGOS.length) return;
+  var prev = currentIndex > 0 ? JOGOS[currentIndex - 1] : null;
+  var next = currentIndex < JOGOS.length - 1 ? JOGOS[currentIndex + 1] : null;
+  gamePeekPrev.innerHTML = buildPeekHtml(prev, 'Anterior');
+  gamePeekNext.innerHTML = buildPeekHtml(next, 'Próximo');
+}
+
+function clearGamePeeks() {
+  if (!gamePeekPrev || !gamePeekNext) return;
+  gamePeekPrev.style.opacity = '0';
+  gamePeekNext.style.opacity = '0';
+  gamePeekPrev.style.transform = 'translate3d(-35%,0,0)';
+  gamePeekNext.style.transform = 'translate3d(35%,0,0)';
+}
+
+function setGamePeekDrag(dx) {
+  if (!gamePeekPrev || !gamePeekNext) return;
+  var absX = Math.min(Math.abs(dx), 220);
+  var p = absX / 220;
+  if (dx > 0 && currentIndex > 0) {
+    gamePeekPrev.style.opacity = String(0.12 + p * 0.88);
+    gamePeekPrev.style.transform = 'translate3d(' + (-35 + p * 35) + '%,0,0)';
+    gamePeekNext.style.opacity = '0';
+    gamePeekNext.style.transform = 'translate3d(35%,0,0)';
+  } else if (dx < 0 && currentIndex < JOGOS.length - 1) {
+    gamePeekNext.style.opacity = String(0.12 + p * 0.88);
+    gamePeekNext.style.transform = 'translate3d(' + (35 - p * 35) + '%,0,0)';
+    gamePeekPrev.style.opacity = '0';
+    gamePeekPrev.style.transform = 'translate3d(-35%,0,0)';
+  } else {
+    clearGamePeeks();
+  }
 }
 
 // ── Search helpers ────────────────────────
@@ -1024,6 +1127,7 @@ function navigate(dir) {
   currentIndex = n;
   renderGame(currentIndex);
   updateNav();
+  clearGamePeeks();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -1041,6 +1145,7 @@ function resetSwipeCard(card, animated) {
   card.style.transition = animated ? 'transform .18s ease, opacity .18s ease' : 'none';
   card.style.transform = 'translate3d(0,0,0)';
   card.style.opacity = '1';
+  clearGamePeeks();
 }
 
 function navigateWithSwipe(dir) {
@@ -1080,6 +1185,7 @@ function navigateWithSwipe(dir) {
     setTimeout(function() {
       card.style.transition = '';
       isSwipeAnimating = false;
+      clearGamePeeks();
     }, 240);
   }, 180);
 
@@ -1141,6 +1247,7 @@ function bindSwipeNavigation() {
     card.style.transition = 'none';
     card.style.transform = 'translate3d(' + dragX + 'px,0,0)';
     card.style.opacity = String(Math.max(0.6, 1 - Math.abs(dragX) / 520));
+    setGamePeekDrag(dragX);
   }, { passive: false });
 
   document.addEventListener('touchend', function() {
