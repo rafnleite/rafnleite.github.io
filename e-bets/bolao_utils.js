@@ -389,73 +389,116 @@ function orientESPNEntry(entry, reversed) {
   };
 }
 
+var espnHistoricMapPromise = null;
+
+function utcDateStr(d) {
+  var y = d.getUTCFullYear();
+  var m = String(d.getUTCMonth() + 1).padStart(2, '0');
+  var day = String(d.getUTCDate()).padStart(2, '0');
+  return y + m + day;
+}
+
+function addDaysUTC(base, days) {
+  return new Date(base.getTime() + days * 86400000);
+}
+
+function buildDateRangeUTC(startDate, endDate) {
+  var out = [];
+  var day = new Date(Date.UTC(startDate.getUTCFullYear(), startDate.getUTCMonth(), startDate.getUTCDate()));
+  var end = new Date(Date.UTC(endDate.getUTCFullYear(), endDate.getUTCMonth(), endDate.getUTCDate()));
+  while (day <= end) {
+    out.push(utcDateStr(day));
+    day = addDaysUTC(day, 1);
+  }
+  return out;
+}
+
+function storeESPNEntry(map, key, entry) {
+  if (!key || key === '__') return;
+  // Evita sobrescrever entrada ao vivo por entrada final de outro fetch
+  if (map[key] && map[key].isLive && !entry.isLive) return;
+  map[key] = entry;
+}
+
+function parseESPNEventsIntoMap(map, events) {
+  (events || []).forEach(function (ev) {
+    var comp = (ev.competitions || [])[0];
+    if (!comp) return;
+    var home = null, away = null;
+    (comp.competitors || []).forEach(function (c) {
+      if (c.homeAway === 'home') home = c; else away = c;
+    });
+    if (!home || !away) return;
+    var st = (ev.status || {}).type || {};
+    var isLive = st.state === 'in';
+    var isFinal = st.completed === true;
+    if (!isLive && !isFinal) return;
+
+    var goalDetails = parseESPNGoalDetails(comp.details, home.id, away.id);
+    var entry = {
+      homeScore: parseInt(home.score) || 0,
+      awayScore: parseInt(away.score) || 0,
+      homeGoals: goalDetails.home,
+      awayGoals: goalDetails.away,
+      isLive: isLive,
+      isFinal: isFinal,
+      clock: st.shortDetail || ''
+    };
+
+    // Usa normalizeESPNName para variantes ESPN (ex.: Türkiye -> turkey)
+    var ht = home.team, at = away.team;
+    var nameCombos = [
+      [ht.name, at.name],
+      [ht.displayName, at.displayName],
+      [ht.shortDisplayName, at.shortDisplayName],
+      [ht.location, at.location]
+    ];
+    nameCombos.forEach(function (pair) {
+      if (pair[0] && pair[1]) {
+        storeESPNEntry(map, normalizeESPNName(pair[0]) + '__' + normalizeESPNName(pair[1]), entry);
+      }
+    });
+  });
+}
+
+async function fetchESPNMapByDates(dateStrings) {
+  var map = {};
+  var ESPN_BASE = 'https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard';
+  for (var i = 0; i < dateStrings.length; i++) {
+    var r = await fetch(ESPN_BASE + '?dates=' + dateStrings[i]);
+    if (!r.ok) continue;
+    var data = await r.json();
+    parseESPNEventsIntoMap(map, data.events || []);
+  }
+  return map;
+}
+
+async function fetchESPNHistoricMap(now) {
+  // Carrega histórico recente uma vez por sessão (inclui jogos já finalizados)
+  // Janela cobre 45 dias para abranger jogos anteriores a ontem.
+  var start = addDaysUTC(now, -45);
+  var end = addDaysUTC(now, -2);
+  var dates = buildDateRangeUTC(start, end);
+  return fetchESPNMapByDates(dates);
+}
+
 async function fetchESPNScores() {
   try {
     var now = new Date();
-    function utcDateStr(d) {
-      var y = d.getUTCFullYear();
-      var m = String(d.getUTCMonth() + 1).padStart(2, '0');
-      var day = String(d.getUTCDate()).padStart(2, '0');
-      return y + m + day;
-    }
-    var yesterday = new Date(now.getTime() - 86400000);
-    var tomorrow = new Date(now.getTime() + 86400000);
-    var ESPN_BASE = 'https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard';
-    var urls = [
-      ESPN_BASE,
-      ESPN_BASE + '?dates=' + utcDateStr(yesterday),
-      ESPN_BASE + '?dates=' + utcDateStr(now),
-      ESPN_BASE + '?dates=' + utcDateStr(tomorrow)
-    ];
-
-    var map = {};
-    function storeEntry(key, entry) {
-      if (!key || key === '__') return;
-      // Don't overwrite a live entry with a finished one from another fetch
-      if (map[key] && map[key].isLive && !entry.isLive) return;
-      map[key] = entry;
-    }
-
-    for (var i = 0; i < urls.length; i++) {
-      var r = await fetch(urls[i]);
-      if (!r.ok) continue;
-      var data = await r.json();
-      (data.events || []).forEach(function (ev) {
-        var comp = (ev.competitions || [])[0];
-        if (!comp) return;
-        var home = null, away = null;
-        (comp.competitors || []).forEach(function (c) {
-          if (c.homeAway === 'home') home = c; else away = c;
-        });
-        if (!home || !away) return;
-        var st = (ev.status || {}).type || {};
-        var isLive = st.state === 'in';
-        var isFinal = st.completed === true;
-        if (!isLive && !isFinal) return;
-        var goalDetails = parseESPNGoalDetails(comp.details, home.id, away.id);
-        var entry = {
-          homeScore: parseInt(home.score) || 0,
-          awayScore: parseInt(away.score) || 0,
-          homeGoals: goalDetails.home,
-          awayGoals: goalDetails.away,
-          isLive: isLive, isFinal: isFinal, clock: st.shortDetail || ''
-        };
-        // Store under multiple name variants for robust matching
-        // Use normalizeESPNName so ESPN variants (Türkiye→turkey) map to canonical English
-        var ht = home.team, at = away.team;
-        var nameCombos = [
-          [ht.name, at.name],
-          [ht.displayName, at.displayName],
-          [ht.shortDisplayName, at.shortDisplayName],
-          [ht.location, at.location]
-        ];
-        nameCombos.forEach(function (pair) {
-          if (pair[0] && pair[1]) {
-            storeEntry(normalizeESPNName(pair[0]) + '__' + normalizeESPNName(pair[1]), entry);
-          }
-        });
+    if (!espnHistoricMapPromise) {
+      espnHistoricMapPromise = fetchESPNHistoricMap(now).catch(function () {
+        return {};
       });
     }
+
+    var historicMap = await espnHistoricMapPromise;
+    var recentDates = buildDateRangeUTC(addDaysUTC(now, -1), addDaysUTC(now, 1));
+    var recentMap = await fetchESPNMapByDates(recentDates);
+    var map = Object.assign({}, historicMap);
+    Object.keys(recentMap).forEach(function (key) {
+      storeESPNEntry(map, key, recentMap[key]);
+    });
+
     return map;
   } catch (e) { return {}; }
 }

@@ -193,21 +193,35 @@
   line-height: 1;
 }
 .goal-events {
-  width: min(220px, 42vw);
+  width: min(420px, 72vw);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 14px;
+  margin-top: 2px;
+}
+.goal-col {
   display: flex;
   flex-direction: column;
   gap: 4px;
-  margin-top: 2px;
+  min-height: 18px;
 }
 .goal-event {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 6px;
   min-width: 0;
   font-size: 0.67rem;
   line-height: 1.15;
   font-weight: 600;
+}
+.goal-col-a .goal-event {
+  justify-content: flex-end;
+  text-align: right;
+}
+.goal-col-b .goal-event {
+  justify-content: flex-start;
+  text-align: left;
 }
 .goal-event-a { color: var(--col-a); }
 .goal-event-b { color: var(--col-b); }
@@ -216,7 +230,7 @@
   font-weight: 800;
 }
 .goal-player {
-  max-width: 132px;
+  max-width: 120px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -508,9 +522,9 @@
 @media (max-width: 520px) {
   .team-flag { width: 54px; height: 54px; }
   .team-name { font-size: .82rem; }
-  .goal-events { width: min(180px, 46vw); }
+  .goal-events { width: min(300px, 86vw); gap: 6px 10px; }
   .goal-event { font-size: 0.61rem; }
-  .goal-player { max-width: 108px; }
+  .goal-player { max-width: 82px; }
   .game-avg-badge { min-width: 48px; min-height: 40px; }
   .bet-item  { padding: 7px 9px; }
   .bi-name   { font-size: .7rem; }
@@ -597,35 +611,31 @@ function shortName(name) {
 }
 
 function renderGoalEvents(j) {
-  const events = [];
-
-  (j.golsDetalhesA || []).forEach(function(goal, idx) {
-    events.push({ side: 'a', goal: goal, idx: idx });
+  const goalsA = (j.golsDetalhesA || []).slice().sort(function(x, y) {
+    return (x.minutoValor || 0) - (y.minutoValor || 0);
   });
-  (j.golsDetalhesB || []).forEach(function(goal, idx) {
-    events.push({ side: 'b', goal: goal, idx: idx });
+  const goalsB = (j.golsDetalhesB || []).slice().sort(function(x, y) {
+    return (x.minutoValor || 0) - (y.minutoValor || 0);
   });
 
-  events.sort(function(x, y) {
-    const diff = (x.goal.minutoValor || 0) - (y.goal.minutoValor || 0);
-    if (diff !== 0) return diff;
-    if (x.side !== y.side) return x.side.localeCompare(y.side);
-    return x.idx - y.idx;
-  });
+  if (!goalsA.length && !goalsB.length) return '';
 
-  if (!events.length) return '';
-
-  return '<div class="goal-events">' + events.map(function(entry) {
-    const goal = entry.goal || {};
+  function renderGoal(goal, side) {
+    goal = goal || {};
     const tags = [];
     if (goal.penalti) tags.push('<span class="goal-tag">P</span>');
     if (goal.contra) tags.push('<span class="goal-tag">GC</span>');
-    return '<div class="goal-event goal-event-' + entry.side + '">' +
+    return '<div class="goal-event goal-event-' + side + '">' +
       '<span class="goal-minute">' + (goal.minuto || 'Gol') + '</span>' +
       '<span class="goal-player">' + shortName(goal.jogador || 'Gol') + '</span>' +
       (tags.length ? '<span class="goal-tags">' + tags.join('') + '</span>' : '') +
       '</div>';
-  }).join('') + '</div>';
+  }
+
+  return '<div class="goal-events">' +
+    '<div class="goal-col goal-col-a">' + goalsA.map(function(goal) { return renderGoal(goal, 'a'); }).join('') + '</div>' +
+    '<div class="goal-col goal-col-b">' + goalsB.map(function(goal) { return renderGoal(goal, 'b'); }).join('') + '</div>' +
+    '</div>';
 }
 
 function renderGameAverage(j) {
