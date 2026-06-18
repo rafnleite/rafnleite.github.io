@@ -45,6 +45,7 @@
   border-radius: var(--radius);
   overflow: hidden;
   box-shadow: 0 2px 12px rgba(0,0,0,.06);
+  touch-action: pan-y;
 }
 
 /* ── GAME HEADER ──────────────────────────── */
@@ -133,6 +134,7 @@
   border: 2px solid var(--border);
   display: block;
   background: var(--bg);
+  flex-shrink: 0;
 }
 .team-name {
   font-size: 0.95rem;
@@ -536,17 +538,57 @@
 }
 
 /* ── RESPONSIVE ───────────────────────────── */
+@media (max-width: 720px) {
+  .teams-section {
+    padding: 22px 14px 18px;
+    display: grid;
+    grid-template-columns: minmax(94px, 1fr) minmax(148px, 1.2fr) minmax(94px, 1fr);
+    align-items: start;
+    gap: 8px;
+  }
+  .team-block { min-width: 94px; }
+  .team-flag { width: 58px; height: 58px; }
+  .team-name { font-size: .84rem; }
+  .vs-center {
+    min-width: 0;
+    padding: 0 4px;
+  }
+  .score-live .s-num { font-size: 1.9rem; }
+  .score-live .s-x { font-size: 1.2rem; letter-spacing: 2px; }
+  .goal-events { display: none; }
+  .goal-events-compact {
+    display: block;
+    width: min(300px, 62vw);
+  }
+}
+
 @media (max-width: 520px) {
-  .teams-section { padding: 18px 10px 16px; gap: 6px; }
-  .team-block { min-width: 0; }
-  .team-flag { width: 54px; height: 54px; }
+  .teams-section {
+    padding: 18px 10px 16px;
+    gap: 6px;
+    display: grid;
+    grid-template-columns: minmax(72px, 1fr) minmax(112px, 1.2fr) minmax(72px, 1fr);
+    align-items: start;
+  }
+  .team-block {
+    min-width: 72px;
+  }
+  .team-flag { width: 50px; height: 50px; }
   .team-name { font-size: .78rem; letter-spacing: .2px; }
-  .vs-center { padding: 0 6px; }
-  .score-live .s-num { font-size: 1.85rem; }
-  .score-live .s-x { font-size: 1.15rem; letter-spacing: 2px; }
-  .goal-events { width: min(300px, 86vw); gap: 6px 10px; }
+  .vs-center {
+    padding: 0 2px;
+    min-width: 0;
+  }
+  .score-live { gap: 5px; }
+  .score-live .s-num { font-size: 1.65rem; }
+  .score-live .s-x { font-size: 1.05rem; letter-spacing: 1.6px; }
+  .goal-events { display: none; }
+  .goal-events-compact {
+    display: block;
+    width: min(240px, 58vw);
+  }
+  .goal-events-compact .goal-player { max-width: 92px; }
   .goal-event { font-size: 0.61rem; }
-  .goal-player { max-width: 82px; }
   .game-avg-badge { min-width: 48px; min-height: 40px; }
   .bet-item  { padding: 7px 9px; }
   .bi-name   { font-size: .7rem; }
@@ -563,27 +605,18 @@
 
 @media (max-width: 390px) {
   .teams-section {
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 10px 4px;
+    grid-template-columns: minmax(64px, 1fr) minmax(104px, 1.1fr) minmax(64px, 1fr);
+    gap: 8px 2px;
   }
-  .team-block {
-    flex: 0 1 calc(50% - 6px);
-  }
-  .vs-center {
-    order: 3;
-    width: 100%;
-    padding: 0;
-  }
-  .goal-events {
-    display: none;
-  }
+  .team-block { min-width: 64px; }
+  .team-flag { width: 44px; height: 44px; }
+  .team-name { font-size: .7rem; }
+  .score-live .s-num { font-size: 1.45rem; }
+  .score-live .s-x { font-size: .95rem; }
   .goal-events-compact {
-    display: block;
+    width: min(208px, 56vw);
   }
-  .goal-events-compact .goal-player {
-    max-width: 120px;
-  }
+  .goal-events-compact .goal-player { max-width: 74px; }
 }
 
 </style>
@@ -1001,6 +1034,43 @@ function updateNav() {
   searchClear.style.display = 'block';
 }
 
+function bindSwipeNavigation() {
+  var card = document.getElementById('game-card');
+  if (!card || card.dataset.swipeBound === '1') return;
+
+  var startX = 0;
+  var startY = 0;
+  var startTime = 0;
+
+  card.addEventListener('touchstart', function(e) {
+    if (!e.touches || e.touches.length !== 1) return;
+    var t = e.touches[0];
+    startX = t.clientX;
+    startY = t.clientY;
+    startTime = Date.now();
+  }, { passive: true });
+
+  card.addEventListener('touchend', function(e) {
+    if (!e.changedTouches || e.changedTouches.length !== 1) return;
+
+    var t = e.changedTouches[0];
+    var dx = t.clientX - startX;
+    var dy = t.clientY - startY;
+    var dt = Date.now() - startTime;
+
+    var absX = Math.abs(dx);
+    var absY = Math.abs(dy);
+
+    // Exige gesto predominantemente horizontal e relativamente rapido.
+    if (dt > 700 || absX < 60 || absY > 50 || absX < absY * 1.2) return;
+
+    if (dx < 0) navigate(1);
+    else navigate(-1);
+  }, { passive: true });
+
+  card.dataset.swipeBound = '1';
+}
+
 function imgToDataURL(img) {
   return new Promise(function(resolve) {
     if (!img.src || img.src.startsWith('data:')) { resolve(); return; }
@@ -1096,6 +1166,7 @@ function exportImage() {
   buildSelect();
   renderGame(currentIndex);
   updateNav();
+  bindSwipeNavigation();
 
   // ── Auto-refresh every 40 s ──────────────────────────────────────────────
   setInterval(async function() {
