@@ -186,7 +186,7 @@ var PT_TO_ESPN = {
   'azerbaijao': 'azerbaijan',
   'belgica': 'belgium',
   'bielorrussia': 'belarus',
-  'bosnia e herzegovina': 'bosnia and herzegovina',
+  'bosnia e herzegovina': 'bosnia-herzegovina',
   'bulgaria': 'bulgaria',
   'chipre': 'cyprus',
   'croacia': 'croatia',
