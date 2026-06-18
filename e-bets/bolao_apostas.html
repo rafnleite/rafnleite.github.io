@@ -651,6 +651,7 @@
 <script>
 let JOGOS = [];
 let currentIndex = 0;
+let isSwipeAnimating = false;
 
 function calcBreakdown(betA, betB, realA, realB) {
   var gol = (betA === realA ? 1 : 0) + (betB === realB ? 1 : 0);
@@ -1017,6 +1018,7 @@ function selectFromDropdown(idx, labelText) {
 }
 
 function navigate(dir) {
+  if (isSwipeAnimating) return;
   const n = currentIndex + dir;
   if (n < 0 || n >= JOGOS.length) return;
   currentIndex = n;
@@ -1034,41 +1036,144 @@ function updateNav() {
   searchClear.style.display = 'block';
 }
 
-function bindSwipeNavigation() {
+function resetSwipeCard(card, animated) {
+  if (!card) return;
+  card.style.transition = animated ? 'transform .18s ease, opacity .18s ease' : 'none';
+  card.style.transform = 'translate3d(0,0,0)';
+  card.style.opacity = '1';
+}
+
+function navigateWithSwipe(dir) {
   var card = document.getElementById('game-card');
-  if (!card || card.dataset.swipeBound === '1') return;
+  if (!card || isSwipeAnimating) return false;
+
+  var n = currentIndex + dir;
+  if (n < 0 || n >= JOGOS.length) {
+    resetSwipeCard(card, true);
+    return false;
+  }
+
+  isSwipeAnimating = true;
+  var width = Math.max(card.offsetWidth || 0, window.innerWidth || 0, 320);
+  var outX = dir > 0 ? -width : width;
+  var inX = -outX;
+
+  card.style.transition = 'transform .18s ease, opacity .18s ease';
+  card.style.transform = 'translate3d(' + outX + 'px,0,0)';
+  card.style.opacity = '.22';
+
+  setTimeout(function() {
+    currentIndex = n;
+    renderGame(currentIndex);
+    updateNav();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    card.style.transition = 'none';
+    card.style.transform = 'translate3d(' + inX + 'px,0,0)';
+    card.style.opacity = '.22';
+    void card.offsetWidth;
+
+    card.style.transition = 'transform .22s ease, opacity .22s ease';
+    card.style.transform = 'translate3d(0,0,0)';
+    card.style.opacity = '1';
+
+    setTimeout(function() {
+      card.style.transition = '';
+      isSwipeAnimating = false;
+    }, 240);
+  }, 180);
+
+  return true;
+}
+
+function bindSwipeNavigation() {
+  if (document.body.dataset.swipeBoundApostas === '1') return;
 
   var startX = 0;
   var startY = 0;
-  var startTime = 0;
+  var dragX = 0;
+  var tracking = false;
+  var dragging = false;
 
-  card.addEventListener('touchstart', function(e) {
-    if (!e.touches || e.touches.length !== 1) return;
+  function isInteractiveTarget(target) {
+    return !!(target && target.closest('input, textarea, select, button, a, [contenteditable="true"], .search-dropdown'));
+  }
+
+  document.addEventListener('touchstart', function(e) {
+    if (isSwipeAnimating || !e.touches || e.touches.length !== 1) return;
+    var target = e.target;
+    if ((target && target.closest('#site-header')) || isInteractiveTarget(target)) return;
+
     var t = e.touches[0];
+    tracking = true;
+    dragging = false;
+    dragX = 0;
     startX = t.clientX;
     startY = t.clientY;
-    startTime = Date.now();
   }, { passive: true });
 
-  card.addEventListener('touchend', function(e) {
-    if (!e.changedTouches || e.changedTouches.length !== 1) return;
+  document.addEventListener('touchmove', function(e) {
+    if (!tracking || !e.touches || e.touches.length !== 1 || isSwipeAnimating) return;
+    var card = document.getElementById('game-card');
+    if (!card) return;
 
-    var t = e.changedTouches[0];
+    var t = e.touches[0];
     var dx = t.clientX - startX;
     var dy = t.clientY - startY;
-    var dt = Date.now() - startTime;
-
     var absX = Math.abs(dx);
     var absY = Math.abs(dy);
 
-    // Exige gesto predominantemente horizontal e relativamente rapido.
-    if (dt > 700 || absX < 60 || absY > 50 || absX < absY * 1.2) return;
+    if (!dragging) {
+      if (absX < 10 && absY < 10) return;
+      if (absY > absX * 1.12) {
+        tracking = false;
+        resetSwipeCard(card, false);
+        return;
+      }
+      dragging = true;
+    }
 
-    if (dx < 0) navigate(1);
-    else navigate(-1);
+    if (e.cancelable) e.preventDefault();
+
+    var blockedEdge = (currentIndex === 0 && dx > 0) || (currentIndex === JOGOS.length - 1 && dx < 0);
+    dragX = blockedEdge ? dx * 0.35 : dx;
+
+    card.style.transition = 'none';
+    card.style.transform = 'translate3d(' + dragX + 'px,0,0)';
+    card.style.opacity = String(Math.max(0.6, 1 - Math.abs(dragX) / 520));
+  }, { passive: false });
+
+  document.addEventListener('touchend', function() {
+    if (!tracking || isSwipeAnimating) return;
+    var card = document.getElementById('game-card');
+    tracking = false;
+    if (!card) return;
+
+    if (!dragging) {
+      resetSwipeCard(card, false);
+      return;
+    }
+
+    dragging = false;
+    var threshold = Math.max(70, Math.min(120, Math.round((card.offsetWidth || window.innerWidth || 360) * 0.18)));
+    if (Math.abs(dragX) >= threshold) {
+      var dir = dragX < 0 ? 1 : -1;
+      if (!navigateWithSwipe(dir)) resetSwipeCard(card, true);
+    } else {
+      resetSwipeCard(card, true);
+    }
+    dragX = 0;
   }, { passive: true });
 
-  card.dataset.swipeBound = '1';
+  document.addEventListener('touchcancel', function() {
+    var card = document.getElementById('game-card');
+    tracking = false;
+    dragging = false;
+    dragX = 0;
+    resetSwipeCard(card, true);
+  }, { passive: true });
+
+  document.body.dataset.swipeBoundApostas = '1';
 }
 
 function imgToDataURL(img) {

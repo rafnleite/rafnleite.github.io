@@ -193,7 +193,7 @@
 }
 .pg-input:focus { border-color: var(--accent); }
 .pg-input::-webkit-outer-spin-button, .pg-input::-webkit-inner-spin-button { -webkit-appearance: none; }
-.pg-input[type=number] { -moz-appearance: textfield; }
+.pg-input[type=number] { appearance: textfield; -moz-appearance: textfield; }
 
 /* ── BETS LIST ───────────────────────────── */
 .bets-list { display: flex; flex-direction: column; }
@@ -421,6 +421,7 @@ var sortedPlayers = []; // sorted by final rank
 var colorMap    = {};
 var currentNome = null;
 var posChart    = null;
+var isSwipeAnimating = false;
 
 // ── Scoring helpers ───────────────────────────────────────────────────────────
 function calcBreakdown(betA, betB, realA, realB) {
@@ -565,10 +566,157 @@ function populateSelector(players) {
 }
 
 function stepPlayer(dir) {
+  if (isSwipeAnimating || !sortedPlayers.length) return;
   var idx = sortedPlayers.indexOf(currentNome);
   var next = sortedPlayers[(idx + dir + sortedPlayers.length) % sortedPlayers.length];
   document.getElementById('player-select').value = next;
   selectPlayer(next);
+}
+
+function swipeContainer() {
+  return document.getElementById('main-content');
+}
+
+function resetSwipeContainer(container, animated) {
+  if (!container) return;
+  container.style.transition = animated ? 'transform .18s ease, opacity .18s ease' : 'none';
+  container.style.transform = 'translate3d(0,0,0)';
+  container.style.opacity = '1';
+}
+
+function stepPlayerWithSwipe(dir) {
+  var container = swipeContainer();
+  if (!container || isSwipeAnimating || !sortedPlayers.length) return false;
+
+  var idx = sortedPlayers.indexOf(currentNome);
+  if (idx < 0) return false;
+  var nextIdx = (idx + dir + sortedPlayers.length) % sortedPlayers.length;
+  if (nextIdx === idx) {
+    resetSwipeContainer(container, true);
+    return false;
+  }
+
+  isSwipeAnimating = true;
+  var width = Math.max(container.offsetWidth || 0, window.innerWidth || 0, 320);
+  var outX = dir > 0 ? -width : width;
+  var inX = -outX;
+
+  container.style.transition = 'transform .18s ease, opacity .18s ease';
+  container.style.transform = 'translate3d(' + outX + 'px,0,0)';
+  container.style.opacity = '.2';
+
+  setTimeout(function() {
+    var next = sortedPlayers[nextIdx];
+    document.getElementById('player-select').value = next;
+    selectPlayer(next);
+
+    container.style.transition = 'none';
+    container.style.transform = 'translate3d(' + inX + 'px,0,0)';
+    container.style.opacity = '.2';
+    void container.offsetWidth;
+
+    container.style.transition = 'transform .22s ease, opacity .22s ease';
+    container.style.transform = 'translate3d(0,0,0)';
+    container.style.opacity = '1';
+
+    setTimeout(function() {
+      container.style.transition = '';
+      isSwipeAnimating = false;
+    }, 240);
+  }, 180);
+
+  return true;
+}
+
+function bindSwipeNavigation() {
+  if (document.body.dataset.swipeBoundParticipante === '1') return;
+
+  var startX = 0;
+  var startY = 0;
+  var dragX = 0;
+  var tracking = false;
+  var dragging = false;
+
+  function isInteractiveTarget(target) {
+    return !!(target && target.closest('input, textarea, select, button, a, [contenteditable="true"]'));
+  }
+
+  document.addEventListener('touchstart', function(e) {
+    if (isSwipeAnimating || !e.touches || e.touches.length !== 1) return;
+    var target = e.target;
+    if ((target && target.closest('#site-header')) || isInteractiveTarget(target)) return;
+
+    var container = swipeContainer();
+    if (!container || container.style.display === 'none') return;
+
+    var t = e.touches[0];
+    tracking = true;
+    dragging = false;
+    dragX = 0;
+    startX = t.clientX;
+    startY = t.clientY;
+  }, { passive: true });
+
+  document.addEventListener('touchmove', function(e) {
+    if (!tracking || !e.touches || e.touches.length !== 1 || isSwipeAnimating) return;
+    var container = swipeContainer();
+    if (!container) return;
+
+    var t = e.touches[0];
+    var dx = t.clientX - startX;
+    var dy = t.clientY - startY;
+    var absX = Math.abs(dx);
+    var absY = Math.abs(dy);
+
+    if (!dragging) {
+      if (absX < 10 && absY < 10) return;
+      if (absY > absX * 1.12) {
+        tracking = false;
+        resetSwipeContainer(container, false);
+        return;
+      }
+      dragging = true;
+    }
+
+    if (e.cancelable) e.preventDefault();
+
+    dragX = dx;
+    container.style.transition = 'none';
+    container.style.transform = 'translate3d(' + dragX + 'px,0,0)';
+    container.style.opacity = String(Math.max(0.6, 1 - Math.abs(dragX) / 520));
+  }, { passive: false });
+
+  document.addEventListener('touchend', function() {
+    if (!tracking || isSwipeAnimating) return;
+    var container = swipeContainer();
+    tracking = false;
+    if (!container) return;
+
+    if (!dragging) {
+      resetSwipeContainer(container, false);
+      return;
+    }
+
+    dragging = false;
+    var threshold = Math.max(70, Math.min(120, Math.round((container.offsetWidth || window.innerWidth || 360) * 0.18)));
+    if (Math.abs(dragX) >= threshold) {
+      var dir = dragX < 0 ? 1 : -1;
+      if (!stepPlayerWithSwipe(dir)) resetSwipeContainer(container, true);
+    } else {
+      resetSwipeContainer(container, true);
+    }
+    dragX = 0;
+  }, { passive: true });
+
+  document.addEventListener('touchcancel', function() {
+    var container = swipeContainer();
+    tracking = false;
+    dragging = false;
+    dragX = 0;
+    resetSwipeContainer(container, true);
+  }, { passive: true });
+
+  document.body.dataset.swipeBoundParticipante = '1';
 }
 
 // ── Render profile ────────────────────────────────────────────────────────────
@@ -855,6 +1003,7 @@ window.next_pager_btns_go   = function(p){ nextPage = renderPage('next-bets','ne
 
 // ── Select player ─────────────────────────────────────────────────────────────
 function selectPlayer(nome) {
+  if (isSwipeAnimating) return;
   currentNome = nome;
   document.title = 'e-BÉTS - ' + nome;
   // Update URL without reload
@@ -897,6 +1046,7 @@ async function init() {
   document.getElementById('loading-overlay').style.display = 'none';
   document.getElementById('main-content').style.display = '';
 
+  bindSwipeNavigation();
   selectPlayer(startNome);
 }
 init();
