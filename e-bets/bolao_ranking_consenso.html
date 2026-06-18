@@ -209,6 +209,16 @@
   gap: 6px;
   flex-wrap: wrap;
 }
+.gr-date-inline {
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--sub);
+}
+.gr-bullet {
+  color: var(--light);
+  font-size: 0.7rem;
+  font-weight: 700;
+}
 .gr-teams .flag-sm {
   width: 18px;
   height: 18px;
@@ -224,14 +234,21 @@
   font-weight: 600;
 }
 .gr-meta {
-  font-size: 0.62rem;
+  font-size: 0.76rem;
+  font-weight: 600;
   color: var(--sub);
   white-space: nowrap;
 }
 .gr-meta-wrap {
   display: flex;
-  align-items: center;
-  gap: 6px;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 4px;
+}
+.gr-meta-wrap .gr-avg-badge,
+.gr-meta-wrap .homo-badge {
+  align-self: flex-end;
 }
 .gr-avg-badge {
   min-width: 48px;
@@ -730,10 +747,10 @@ window.setSortGames = function(mode) {
 };
 
 function homoBadge(pct) {
-  if (pct >= 80) return '<span class="homo-badge homo-high">Alta</span>';
-  if (pct >= 60) return '<span class="homo-badge homo-mid">Média</span>';
-  if (pct >= 45) return '<span class="homo-badge homo-low">Baixa</span>';
-  return '<span class="homo-badge homo-chaos">Dividida</span>';
+  if (pct >= 80) return '<span class="homo-badge homo-high">Alto consenso</span>';
+  if (pct >= 60) return '<span class="homo-badge homo-mid">Médio consenso</span>';
+  if (pct >= 45) return '<span class="homo-badge homo-low">Baixo consenso</span>';
+  return '<span class="homo-badge homo-chaos">Dividido</span>';
 }
 
 function renderGames() {
@@ -778,12 +795,13 @@ function renderGames() {
     return '<div class="game-row">' +
       '<div class="gr-header">' +
         '<div class="gr-teams">' +
+          '<span class="gr-date-inline">' + fmtDate(j.data) + '</span>' +
+          '<span class="gr-bullet">•</span>' +
           flagA + '<span>' + j.time_a.nome + '</span>' +
           '<span class="gr-vs">×</span>' +
           '<span>' + j.time_b.nome + '</span>' + flagB +
         '</div>' +
         '<div class="gr-meta-wrap">' +
-          '<span class="gr-meta">' + fmtDate(j.data) + '</span>' +
           renderAverageBadge(g.avgPoints) +
           homoBadge(g.consensusPct) +
         '</div>' +
@@ -799,7 +817,7 @@ function renderGames() {
         '<span class="' + (g.dominant === 'b' ? 'major' : '') + '" style="color:' + colB + '">' + pB + '% ' + j.time_b.nome + '</span>' +
       '</div>' +
       '<div style="font-size:0.68rem;color:var(--sub);display:flex;align-items:center;justify-content:space-between">' +
-        '<span>' + g.total + ' apostas · ' + g.nA + '/' + g.nE + '/' + g.nB + '</span>' +
+        '<span>' + g.total + ' apostas · ' + g.nA + '|' + g.nE + '|' + g.nB + '</span>' +
         '<span style="font-weight:700;color:' + dominantColor + '">' + g.consensusPct + '% maioria: ' + g.dominantName + '</span>' +
       '</div>' +
     '</div>';
