@@ -416,8 +416,6 @@ function orientESPNEntry(entry, reversed) {
   };
 }
 
-var espnHistoricMapPromise = null;
-
 function utcDateStr(d) {
   var y = d.getUTCFullYear();
   var m = String(d.getUTCMonth() + 1).padStart(2, '0');
@@ -427,17 +425,6 @@ function utcDateStr(d) {
 
 function addDaysUTC(base, days) {
   return new Date(base.getTime() + days * 86400000);
-}
-
-function buildDateRangeUTC(startDate, endDate) {
-  var out = [];
-  var day = new Date(Date.UTC(startDate.getUTCFullYear(), startDate.getUTCMonth(), startDate.getUTCDate()));
-  var end = new Date(Date.UTC(endDate.getUTCFullYear(), endDate.getUTCMonth(), endDate.getUTCDate()));
-  while (day <= end) {
-    out.push(utcDateStr(day));
-    day = addDaysUTC(day, 1);
-  }
-  return out;
 }
 
 function storeESPNEntry(map, key, entry) {
@@ -475,14 +462,20 @@ function parseESPNEventsIntoMap(map, events) {
     var st = (ev.status || {}).type || {};
     var isLive = st.state === 'in';
     var isFinal = st.completed === true;
-    if (!isLive && !isFinal) return;
 
     var goalDetails = parseESPNGoalDetails(comp.details, home.id, away.id);
+    var homeScoreRaw = (home || {}).score;
+    var awayScoreRaw = (away || {}).score;
+    var homeScore = (homeScoreRaw === null || homeScoreRaw === undefined || homeScoreRaw === '') ? null : parseInt(homeScoreRaw, 10);
+    var awayScore = (awayScoreRaw === null || awayScoreRaw === undefined || awayScoreRaw === '') ? null : parseInt(awayScoreRaw, 10);
+    if (isNaN(homeScore)) homeScore = null;
+    if (isNaN(awayScore)) awayScore = null;
+
     var entry = {
       eventId: String(ev.id || ''),
       eventDate: (ev.date || comp.date || ''),
-      homeScore: parseInt(home.score) || 0,
-      awayScore: parseInt(away.score) || 0,
+      homeScore: homeScore,
+      awayScore: awayScore,
       homeGoals: goalDetails.home,
       awayGoals: goalDetails.away,
       isLive: isLive,
@@ -518,36 +511,29 @@ async function fetchESPNMapByDates(dateStrings) {
   return map;
 }
 
-async function fetchESPNHistoricMap(now) {
-  // Carrega histórico recente uma vez por sessão (inclui jogos já finalizados)
-  // Janela cobre 45 dias para abranger jogos anteriores a ontem.
-  var start = addDaysUTC(now, -45);
-  var end = addDaysUTC(now, -2);
-  var dates = buildDateRangeUTC(start, end);
-  return fetchESPNMapByDates(dates);
-}
-
-async function fetchESPNScores() {
+// Regra de negocio: garantir tentativa de correspondencia para todos os jogos do APEX.
+// Para cada data do APEX, consulta a ESPN em D-1, D e D+1 para cobrir diferencas de fuso.
+async function fetchESPNScoresForJogos(list) {
   try {
-    var now = new Date();
-    if (!espnHistoricMapPromise) {
-      espnHistoricMapPromise = fetchESPNHistoricMap(now).catch(function () {
-        return {};
-      });
-    }
+    var datesMap = {};
 
-    var historicMap = await espnHistoricMapPromise;
-    var recentDates = buildDateRangeUTC(addDaysUTC(now, -1), addDaysUTC(now, 1));
-    var recentMap = await fetchESPNMapByDates(recentDates);
-    var map = Object.assign({}, historicMap);
-    Object.keys(recentMap).forEach(function (key) {
-      var list = recentMap[key] || [];
-      list.forEach(function (entry) {
-        storeESPNEntry(map, key, entry);
+    (list || []).forEach(function (j) {
+      if (!j || !j.data) return;
+      var ts = parseApexDateToMillis(j.data);
+      if (isNaN(ts)) return;
+      var d = new Date(ts);
+      [addDaysUTC(d, -1), d, addDaysUTC(d, 1)].forEach(function (x) {
+        datesMap[utcDateStr(x)] = true;
       });
     });
 
-    return map;
+    var dates = Object.keys(datesMap).sort();
+    if (!dates.length) {
+      var now = new Date();
+      dates = [utcDateStr(addDaysUTC(now, -1)), utcDateStr(now), utcDateStr(addDaysUTC(now, 1))];
+    }
+
+    return fetchESPNMapByDates(dates);
   } catch (e) { return {}; }
 }
 
@@ -592,7 +578,8 @@ function findESPNMatch(espnMap, nameA, nameB, apexDateStr) {
       var diff = 0;
       if (!isNaN(apexTs) && !isNaN(espnTs)) {
         diff = Math.abs(espnTs - apexTs);
-        // Tolerância ampla para diferenças de fuso/ajustes das APIs
+        // Regra de negocio: match exige proximidade de data/hora (fuso entre APIs).
+        // Limite de 36h cobre mudanca de dia entre provedores sem misturar partidas distantes.
         if (diff > 36 * 60 * 60 * 1000) continue;
       } else if (!isNaN(apexTs) || !isNaN(espnTs)) {
         diff = 12 * 60 * 60 * 1000;
@@ -608,10 +595,13 @@ function findESPNMatch(espnMap, nameA, nameB, apexDateStr) {
   return best;
 }
 
-// Aplica placares ao vivo/recentes da ESPN sobre a lista de jogos (modifica in-place)
-// Preferência ESPN quando: jogo ao vivo, ou placar ESPN > placar APEX (total de gols)
+// Regras de negocio APEX x ESPN:
+// 1) Match deve considerar Time A + Time B + Data.
+// 2) Se status APEX for "F" (finalizado), placar oficial e o do APEX.
+// 3) Se status APEX for "A" (em aberto), placar oficial e o da ESPN.
+// 4) Detalhes de gols e dados de andamento (ao vivo/relogio) sao sempre trazidos da ESPN quando houver match.
 async function applyESPNOverrides(list) {
-  var espnMap = await fetchESPNScores();
+  var espnMap = await fetchESPNScoresForJogos(list);
 
   list.forEach(function (j) {
     var espn = findESPNMatch(espnMap, j.time_a.nome, j.time_b.nome, j.data);
@@ -619,32 +609,27 @@ async function applyESPNOverrides(list) {
     // Sem correspondência na ESPN
     if (!espn) return;
 
-    j.golsDetalhesA = espn.goalsA;
-    j.golsDetalhesB = espn.goalsB;
+    j.golsDetalhesA = espn.goalsA || [];
+    j.golsDetalhesB = espn.goalsB || [];
+    j.isLive = !!espn.isLive;
+    j.liveClock = espn.isLive ? (espn.clock || '') : '';
 
-    // Se ESPN indicar ao vivo, prioriza ESPN mesmo quando status do APEX atrasar.
-    if (espn.isLive) {
-      j.gols_a = espn.scoreA;
-      j.gols_b = espn.scoreB;
-      j.isLive = true;
-      j.liveClock = espn.clock || '';
-      return;
-    }
-
-    // Jogo finalizado no APEX → mantém placar APEX.
+    // Status F: placar permanece do APEX.
     if (j.status === 'F') {
       j.isLive = false;
       j.liveClock = '';
       return;
     }
 
-    // Se APEX disser em andamento e ESPN já tiver final, sincroniza placar final.
-    if (j.status === 'A' && espn.isFinal) {
-      j.gols_a = espn.scoreA;
-      j.gols_b = espn.scoreB;
-      j.isLive = false;
-      j.liveClock = '';
+    // Status A: placar vem da ESPN (quando disponivel).
+    if (j.status === 'A') {
+      if (espn.scoreA !== null && espn.scoreB !== null) {
+        j.gols_a = espn.scoreA;
+        j.gols_b = espn.scoreB;
+      }
       return;
     }
+
+    // Outros status: mantem placar APEX.
   });
 }
