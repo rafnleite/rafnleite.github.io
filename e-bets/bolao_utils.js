@@ -19,6 +19,58 @@ async function fetchAll(path) {
 
 var bolaoDataPromise = null;
 
+function bolaoCalcBreakdown(betA, betB, realA, realB) {
+  var gol = (betA === realA ? 1 : 0) + (betB === realB ? 1 : 0);
+  var dif = (betA - betB) === (realA - realB) ? 1 : 0;
+  var pts = gol + dif;
+  var bR = betA > betB ? 'A' : betA < betB ? 'B' : 'E';
+  var rR = realA > realB ? 'A' : realA < realB ? 'B' : 'E';
+  var isRes = bR === rR ? 1 : 0;
+  if (isRes) pts += (rR === 'E' ? 1 : 2);
+  return { pts: pts };
+}
+
+function bolaoGetMultiplier(jogo) {
+  var g = ((jogo || {}).grupo || '').toUpperCase().trim();
+  if (!g || /^[A-L]$/.test(g)) return 1;
+  if (/^3/.test(g) || g === 'TER') return 4;
+  if (g === 'FIN' || g === 'FINAL') return 10;
+  return 1;
+}
+
+function bolaoGetAveragePoints(jogo) {
+  if (!jogo || jogo.gols_a === null || jogo.gols_a === undefined || jogo.gols_b === null || jogo.gols_b === undefined) {
+    return null;
+  }
+
+  var apostas = []
+    .concat(jogo.apostadores_a || [], jogo.apostadores_empate || [], jogo.apostadores_b || []);
+
+  if (!apostas.length) return null;
+
+  var total = 0;
+  apostas.forEach(function (aposta) {
+    var placar = (aposta.placar || '0x0').split('x');
+    total += bolaoCalcBreakdown(+placar[0] || 0, +placar[1] || 0, jogo.gols_a, jogo.gols_b).pts;
+  });
+
+  return Math.round(total / apostas.length * 10) / 10;
+}
+
+function bolaoGetAverageColor(value) {
+  if (value === null || value === undefined || isNaN(value)) {
+    return { bg: '#f3f4f6', border: '#d1d5db', text: '#6b7280' };
+  }
+
+  var clamped = Math.max(0, Math.min(5, value));
+  var hue = clamped / 5 * 120;
+  return {
+    bg: 'hsl(' + hue + ' 85% 92%)',
+    border: 'hsl(' + hue + ' 70% 72%)',
+    text: 'hsl(' + hue + ' 75% 28%)'
+  };
+}
+
 async function loadBolaoBaseData() {
   if (!bolaoDataPromise) {
     bolaoDataPromise = Promise.all([

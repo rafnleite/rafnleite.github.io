@@ -228,6 +228,35 @@
   color: var(--sub);
   white-space: nowrap;
 }
+.gr-meta-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.gr-avg-badge {
+  min-width: 48px;
+  min-height: 38px;
+  padding: 4px 6px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  line-height: 1;
+}
+.gr-avg-label {
+  font-size: 0.46rem;
+  font-weight: 800;
+  letter-spacing: .8px;
+  text-transform: uppercase;
+}
+.gr-avg-value {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 1rem;
+  letter-spacing: 1px;
+}
 .gr-consensus {
   font-family: 'Bebas Neue', cursive;
   font-size: 1.35rem;
@@ -506,6 +535,8 @@
     <div class="sort-tabs">
       <button class="sort-tab" onclick="setSortGames('homo-desc')">Mais consenso primeiro</button>
       <button class="sort-tab" onclick="setSortGames('homo-asc')">Menos consenso primeiro</button>
+      <button class="sort-tab" onclick="setSortGames('avg-desc')">Maior média primeiro</button>
+      <button class="sort-tab" onclick="setSortGames('avg-asc')">Menor média primeiro</button>
       <button class="sort-tab active" onclick="setSortGames('date')">Por data</button>
     </div>
     <div class="games-grid" id="games-grid"></div>
@@ -532,6 +563,15 @@ function shortName(name) {
   if (p.length === 1) return name;
   const f = p[0], l = p[p.length - 1];
   return (f.length + l.length <= 16) ? (f + ' ' + l) : (f + ' ' + l[0] + '.');
+}
+
+function renderAverageBadge(avg) {
+  const color = bolaoGetAverageColor(avg);
+  const value = avg === null ? '—' : avg.toFixed(1);
+  return '<div class="gr-avg-badge" style="background:' + color.bg + ';border-color:' + color.border + ';color:' + color.text + '">' +
+    '<span class="gr-avg-label">Média</span>' +
+    '<span class="gr-avg-value">' + value + '</span>' +
+  '</div>';
 }
 
 async function init() {
@@ -617,9 +657,10 @@ JOGOS.forEach(function(j) {
   const hhi = Math.round(((nA/total)**2 + (nE/total)**2 + (nB/total)**2) * 100) / 100;
   const dominant = (nA >= nE && nA >= nB) ? 'a' : (nE >= nB ? 'emp' : 'b');
   const dominantName = dominant === 'a' ? j.time_a.nome : (dominant === 'emp' ? 'Empate' : j.time_b.nome);
+  const avgPoints = bolaoGetAveragePoints(j);
 
   gameStats.push({ j: j, nA: nA, nE: nE, nB: nB, total: total,
-    consensusPct: consensusPct, hhi: hhi, dominant: dominant, dominantName: dominantName });
+    consensusPct: consensusPct, hhi: hhi, dominant: dominant, dominantName: dominantName, avgPoints: avgPoints });
 });
 
 // Build ranking array
@@ -699,6 +740,12 @@ function renderGames() {
   const sorted = gameStats.slice().sort(function(a, b) {
     if (currentSortGames === 'homo-desc') return b.consensusPct - a.consensusPct;
     if (currentSortGames === 'homo-asc')  return a.consensusPct - b.consensusPct;
+    if (currentSortGames === 'avg-desc')  return (b.avgPoints === null ? -1 : b.avgPoints) - (a.avgPoints === null ? -1 : a.avgPoints);
+    if (currentSortGames === 'avg-asc') {
+      var av = a.avgPoints === null ? 999 : a.avgPoints;
+      var bv = b.avgPoints === null ? 999 : b.avgPoints;
+      return av - bv;
+    }
     return (a.j.data || '').localeCompare(b.j.data || '');
   });
 
@@ -735,8 +782,9 @@ function renderGames() {
           '<span class="gr-vs">×</span>' +
           '<span>' + j.time_b.nome + '</span>' + flagB +
         '</div>' +
-        '<div style="display:flex;align-items:center;gap:6px">' +
+        '<div class="gr-meta-wrap">' +
           '<span class="gr-meta">' + fmtDate(j.data) + '</span>' +
+          renderAverageBadge(g.avgPoints) +
           homoBadge(g.consensusPct) +
         '</div>' +
       '</div>' +

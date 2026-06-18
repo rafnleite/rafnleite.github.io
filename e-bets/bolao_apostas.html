@@ -240,6 +240,35 @@
   font-weight: 800;
   letter-spacing: .4px;
 }
+.game-avg-wrap {
+  margin-top: 4px;
+  display: flex;
+  justify-content: center;
+}
+.game-avg-badge {
+  min-width: 52px;
+  min-height: 42px;
+  padding: 4px 6px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  line-height: 1;
+}
+.game-avg-label {
+  font-size: 0.48rem;
+  font-weight: 800;
+  letter-spacing: .8px;
+  text-transform: uppercase;
+}
+.game-avg-value {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 1.05rem;
+  letter-spacing: 1px;
+}
 .emp-count {
   font-size: 0.63rem;
   color: var(--light);
@@ -482,6 +511,7 @@
   .goal-events { width: min(180px, 46vw); }
   .goal-event { font-size: 0.61rem; }
   .goal-player { max-width: 108px; }
+  .game-avg-badge { min-width: 48px; min-height: 40px; }
   .bet-item  { padding: 7px 9px; }
   .bi-name   { font-size: .7rem; }
   .bets-grid { grid-template-columns: 1fr; }
@@ -598,6 +628,18 @@ function renderGoalEvents(j) {
   }).join('') + '</div>';
 }
 
+function renderGameAverage(j) {
+  const avg = bolaoGetAveragePoints(j);
+  const color = bolaoGetAverageColor(avg);
+  const value = avg === null ? '—' : avg.toFixed(1);
+  return '<div class="game-avg-wrap">' +
+    '<div class="game-avg-badge" style="background:' + color.bg + ';border-color:' + color.border + ';color:' + color.text + '">' +
+      '<span class="game-avg-label">Média</span>' +
+      '<span class="game-avg-value">' + value + '</span>' +
+    '</div>' +
+  '</div>';
+}
+
 function betItem(ap, type, hitResult, hitScore, rawPts, mult) {
   var cls = 'bet-item' + (hitScore ? ' score-hit' : hitResult ? ' result-hit' : '');
   var icon = hitScore ? '<span class="bi-hit-icon">★</span>' : '';
@@ -658,9 +700,10 @@ function renderGame(idx) {
   const pE = pct(j.apostadores_empate.length, total);
   const pB = 100 - pA - pE;
   const goalEvents = renderGoalEvents(j);
+  const avgBadge = renderGameAverage(j);
 
   const vsContent = (j.gols_a !== null && j.gols_b !== null)
-    ? '<div class="score-live"><span class="s-num" id="score-a">' + j.gols_a + '</span><span class="s-x">×</span><span class="s-num" id="score-b">' + j.gols_b + '</span></div>' + goalEvents
+    ? '<div class="score-live"><span class="s-num" id="score-a">' + j.gols_a + '</span><span class="s-x">×</span><span class="s-num" id="score-b">' + j.gols_b + '</span></div>' + avgBadge + goalEvents
     : '<div class="vs-text">×</div>';
 
   // Determine who got the result / exact score right
