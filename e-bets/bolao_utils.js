@@ -411,6 +411,7 @@ function orientESPNEntry(entry, reversed) {
     goalsB: (reversed ? entry.homeGoals : entry.awayGoals).slice(),
     isLive: entry.isLive,
     isFinal: entry.isFinal,
+    isPre: entry.isPre,
     clock: entry.clock || ''
   };
 }
@@ -460,6 +461,7 @@ function parseESPNEventsIntoMap(map, events) {
     if (!home || !away) return;
     var st = (ev.status || {}).type || {};
     var isLive = st.state === 'in';
+    var isPre = st.state === 'pre';
     var isFinal = st.completed === true;
 
     var goalDetails = parseESPNGoalDetails(comp.details, home.id, away.id);
@@ -479,6 +481,7 @@ function parseESPNEventsIntoMap(map, events) {
       awayGoals: goalDetails.away,
       isLive: isLive,
       isFinal: isFinal,
+      isPre: isPre,
       clock: st.shortDetail || ''
     };
 
@@ -622,7 +625,10 @@ async function applyESPNOverrides(list) {
 
     // Status A: placar vem da ESPN (quando disponivel).
     if (j.status === 'A') {
-      if (espn.scoreA !== null && espn.scoreB !== null) {
+      if (espn.isPre) {
+        j.gols_a = null;
+        j.gols_b = null;
+      } else {
         j.gols_a = espn.scoreA;
         j.gols_b = espn.scoreB;
       }
