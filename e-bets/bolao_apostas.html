@@ -58,7 +58,7 @@
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 72%;
+  width: 100%;
   background: var(--white);
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -71,8 +71,8 @@
   pointer-events: none;
   z-index: 1;
 }
-.swipe-peek.prev { left: 0; transform: translate3d(-35%,0,0); }
-.swipe-peek.next { right: 0; transform: translate3d(35%,0,0); }
+.swipe-peek.prev { left: 0; }
+.swipe-peek.next { left: 0; }
 .swipe-peek-inner {
   width: 100%;
   display: flex;
@@ -707,6 +707,7 @@
 let JOGOS = [];
 let currentIndex = 0;
 let isSwipeAnimating = false;
+const gameCardStage = document.getElementById('game-card-stage');
 const gamePeekPrev = document.getElementById('game-peek-prev');
 const gamePeekNext = document.getElementById('game-peek-next');
 
@@ -862,9 +863,7 @@ function updatePageTitle(j) {
   }
 }
 
-function renderGame(idx) {
-  const j = JOGOS[idx];
-  updatePageTitle(j);
+function buildGameCardHtml(j) {
   const total = j.apostadores_a.length + j.apostadores_empate.length + j.apostadores_b.length;
   const pA = pct(j.apostadores_a.length, total);
   const pE = pct(j.apostadores_empate.length, total);
@@ -873,7 +872,7 @@ function renderGame(idx) {
   const avgBadge = renderGameAverage(j);
 
   const vsContent = (j.gols_a !== null && j.gols_b !== null)
-    ? '<div class="score-live"><span class="s-num" id="score-a">' + j.gols_a + '</span><span class="s-x">×</span><span class="s-num" id="score-b">' + j.gols_b + '</span></div>' + goalEvents + avgBadge
+    ? '<div class="score-live"><span class="s-num">' + j.gols_a + '</span><span class="s-x">×</span><span class="s-num">' + j.gols_b + '</span></div>' + goalEvents + avgBadge
     : '<div class="vs-text">×</div>';
 
   // Determine who got the result / exact score right
@@ -918,7 +917,7 @@ function renderGame(idx) {
     ? '<span class="meta-item"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg><strong>' + localStr + '</strong></span>'
     : '';
 
-  document.getElementById('game-card').innerHTML =
+  return 
     '<div class="game-header">' +
       '<button class="btn-img" onclick="exportImage()" title="Salvar imagem" style="position:absolute;top:10px;right:12px">' +
         '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">' +
@@ -947,49 +946,49 @@ function renderGame(idx) {
       '<div class="stats-track"><div class="seg-a" style="width:' + pA + '%"></div><div class="seg-emp" style="width:' + pE + '%"></div><div class="seg-b" style="width:' + pB + '%"></div></div>' +
       '<div class="stats-labels"><span class="sl-a">' + j.time_a.nome + ' ' + pA + '%</span><span class="sl-emp">Empate ' + pE + '%</span><span class="sl-b">' + pB + '% ' + j.time_b.nome + '</span></div>' +
     '</div>';
-
-  renderGamePeeks();
 }
 
-function buildPeekHtml(j, label) {
-  if (!j) return '';
-  return '<div class="swipe-peek-inner">' +
-    '<div class="swipe-peek-label">' + label + '</div>' +
-    '<div class="swipe-peek-title">' + j.time_a.nome + ' × ' + j.time_b.nome + '</div>' +
-    '<div class="swipe-peek-sub">' + formatDate(j.data) + '</div>' +
-  '</div>';
+function renderGame(idx) {
+  const j = JOGOS[idx];
+  updatePageTitle(j);
+  document.getElementById('game-card').innerHTML = buildGameCardHtml(j);
+
+  renderGamePeeks();
 }
 
 function renderGamePeeks() {
   if (!gamePeekPrev || !gamePeekNext || !JOGOS.length) return;
   var prev = currentIndex > 0 ? JOGOS[currentIndex - 1] : null;
   var next = currentIndex < JOGOS.length - 1 ? JOGOS[currentIndex + 1] : null;
-  gamePeekPrev.innerHTML = buildPeekHtml(prev, 'Anterior');
-  gamePeekNext.innerHTML = buildPeekHtml(next, 'Próximo');
+  gamePeekPrev.innerHTML = prev ? buildGameCardHtml(prev) : '';
+  gamePeekNext.innerHTML = next ? buildGameCardHtml(next) : '';
+  clearGamePeeks();
 }
 
 function clearGamePeeks() {
   if (!gamePeekPrev || !gamePeekNext) return;
+  var w = gameCardStage ? gameCardStage.offsetWidth : window.innerWidth;
   gamePeekPrev.style.opacity = '0';
   gamePeekNext.style.opacity = '0';
-  gamePeekPrev.style.transform = 'translate3d(-35%,0,0)';
-  gamePeekNext.style.transform = 'translate3d(35%,0,0)';
+  gamePeekPrev.style.transform = 'translate3d(' + (-w) + 'px,0,0)';
+  gamePeekNext.style.transform = 'translate3d(' + w + 'px,0,0)';
 }
 
 function setGamePeekDrag(dx) {
   if (!gamePeekPrev || !gamePeekNext) return;
-  var absX = Math.min(Math.abs(dx), 220);
-  var p = absX / 220;
+  var w = gameCardStage ? gameCardStage.offsetWidth : window.innerWidth;
+  var absX = Math.min(Math.abs(dx), w);
+  var p = absX / Math.max(1, w);
   if (dx > 0 && currentIndex > 0) {
-    gamePeekPrev.style.opacity = String(0.12 + p * 0.88);
-    gamePeekPrev.style.transform = 'translate3d(' + (-35 + p * 35) + '%,0,0)';
+    gamePeekPrev.style.opacity = String(0.22 + p * 0.78);
+    gamePeekPrev.style.transform = 'translate3d(' + (-w + absX) + 'px,0,0)';
     gamePeekNext.style.opacity = '0';
-    gamePeekNext.style.transform = 'translate3d(35%,0,0)';
+    gamePeekNext.style.transform = 'translate3d(' + w + 'px,0,0)';
   } else if (dx < 0 && currentIndex < JOGOS.length - 1) {
-    gamePeekNext.style.opacity = String(0.12 + p * 0.88);
-    gamePeekNext.style.transform = 'translate3d(' + (35 - p * 35) + '%,0,0)';
+    gamePeekNext.style.opacity = String(0.22 + p * 0.78);
+    gamePeekNext.style.transform = 'translate3d(' + (w - absX) + 'px,0,0)';
     gamePeekPrev.style.opacity = '0';
-    gamePeekPrev.style.transform = 'translate3d(-35%,0,0)';
+    gamePeekPrev.style.transform = 'translate3d(' + (-w) + 'px,0,0)';
   } else {
     clearGamePeeks();
   }

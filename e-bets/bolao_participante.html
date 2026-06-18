@@ -34,7 +34,7 @@
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 72%;
+  width: 100%;
   background: var(--white);
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -47,8 +47,8 @@
   pointer-events: none;
   z-index: 1;
 }
-.swipe-peek.prev { left: 0; transform: translate3d(-35%,0,0); }
-.swipe-peek.next { right: 0; transform: translate3d(35%,0,0); }
+.swipe-peek.prev { left: 0; }
+.swipe-peek.next { left: 0; }
 
 .swipe-peek-inner {
   width: 100%;
@@ -67,7 +67,7 @@
 
 .swipe-peek-title {
   font-family: 'Bebas Neue', cursive;
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   letter-spacing: 1.3px;
   line-height: 1;
   color: var(--text);
@@ -491,6 +491,7 @@ var colorMap    = {};
 var currentNome = null;
 var posChart    = null;
 var isSwipeAnimating = false;
+var playerSwipeStage = null;
 var playerPeekPrev = null;
 var playerPeekNext = null;
 
@@ -659,10 +660,23 @@ function resetSwipeContainer(container, animated) {
 function buildPlayerPeekHtml(nome, label) {
   if (!nome) return '';
   var s = scoreboard[nome] || { pts: 0 };
-  return '<div class="swipe-peek-inner">' +
-    '<div class="swipe-peek-label">' + label + '</div>' +
-    '<div class="swipe-peek-title">' + nome + '</div>' +
-    '<div class="swipe-peek-sub">' + s.pts + ' pontos</div>' +
+  var idx = sortedPlayers.indexOf(nome);
+  var pos = idx >= 0 ? idx + 1 : '—';
+  return '<div class="card" style="width:100%;overflow:hidden">' +
+    '<div class="card-head"><span class="card-head-title">' + label + '</span></div>' +
+    '<div class="swipe-peek-inner" style="padding:16px 18px 18px">' +
+      '<div class="swipe-peek-label">Participante</div>' +
+      '<div class="swipe-peek-title">' + nome + '</div>' +
+      '<div class="swipe-peek-sub">' + s.pts + ' pontos · ' + pos + 'º lugar</div>' +
+    '</div>' +
+  '</div>' +
+  '<div style="height:12px"></div>' +
+  '<div class="card" style="width:100%;overflow:hidden">' +
+    '<div class="card-head"><span class="card-head-title">Resumo</span></div>' +
+    '<div class="swipe-peek-inner" style="padding:14px 18px 16px">' +
+      '<div class="swipe-peek-sub">Resultados: ' + (s.res || 0) + ' · Vencedores: ' + (s.ven || 0) + ' · Empates: ' + (s.emp || 0) + '</div>' +
+      '<div class="swipe-peek-sub">Gols exatos: ' + (s.gol || 0) + ' · Dif. exata: ' + (s.dif || 0) + '</div>' +
+    '</div>' +
   '</div>';
 }
 
@@ -678,26 +692,28 @@ function renderPlayerPeeks() {
 
 function clearPlayerPeeks() {
   if (!playerPeekPrev || !playerPeekNext) return;
+  var w = playerSwipeStage ? playerSwipeStage.offsetWidth : window.innerWidth;
   playerPeekPrev.style.opacity = '0';
   playerPeekNext.style.opacity = '0';
-  playerPeekPrev.style.transform = 'translate3d(-35%,0,0)';
-  playerPeekNext.style.transform = 'translate3d(35%,0,0)';
+  playerPeekPrev.style.transform = 'translate3d(' + (-w) + 'px,0,0)';
+  playerPeekNext.style.transform = 'translate3d(' + w + 'px,0,0)';
 }
 
 function setPlayerPeekDrag(dx) {
   if (!playerPeekPrev || !playerPeekNext) return;
-  var absX = Math.min(Math.abs(dx), 220);
-  var p = absX / 220;
+  var w = playerSwipeStage ? playerSwipeStage.offsetWidth : window.innerWidth;
+  var absX = Math.min(Math.abs(dx), w);
+  var p = absX / Math.max(1, w);
   if (dx > 0) {
-    playerPeekPrev.style.opacity = String(0.12 + p * 0.88);
-    playerPeekPrev.style.transform = 'translate3d(' + (-35 + p * 35) + '%,0,0)';
+    playerPeekPrev.style.opacity = String(0.22 + p * 0.78);
+    playerPeekPrev.style.transform = 'translate3d(' + (-w + absX) + 'px,0,0)';
     playerPeekNext.style.opacity = '0';
-    playerPeekNext.style.transform = 'translate3d(35%,0,0)';
+    playerPeekNext.style.transform = 'translate3d(' + w + 'px,0,0)';
   } else if (dx < 0) {
-    playerPeekNext.style.opacity = String(0.12 + p * 0.88);
-    playerPeekNext.style.transform = 'translate3d(' + (35 - p * 35) + '%,0,0)';
+    playerPeekNext.style.opacity = String(0.22 + p * 0.78);
+    playerPeekNext.style.transform = 'translate3d(' + (w - absX) + 'px,0,0)';
     playerPeekPrev.style.opacity = '0';
-    playerPeekPrev.style.transform = 'translate3d(-35%,0,0)';
+    playerPeekPrev.style.transform = 'translate3d(' + (-w) + 'px,0,0)';
   } else {
     clearPlayerPeeks();
   }
@@ -1164,6 +1180,7 @@ async function init() {
   });
 
   populateSelector(sortedPlayers);
+  playerSwipeStage = document.getElementById('swipe-stage');
   playerPeekPrev = document.getElementById('player-peek-prev');
   playerPeekNext = document.getElementById('player-peek-next');
 
