@@ -229,10 +229,10 @@
   font-size: 0.72rem;
 }
 .bet-row:last-child { border-bottom: none; }
-.bet-row.hit   { background: #f0fdf4; }
-.bet-row.miss  { background: #fef2f2; }
-.bet-row.partial { background: #fffbeb; }
-.bet-row.future { background: var(--white); }
+.bet-row.hit   { background: var(--score-success-soft-bg); }
+.bet-row.miss  { background: var(--score-danger-soft-bg); }
+.bet-row.partial { background: var(--score-mid-soft-bg); }
+.bet-row.future { background: var(--score-neutral-soft-bg); }
 .bet-meta { color: var(--sub); font-size: 0.58rem; white-space: nowrap; flex-shrink: 0; min-width: 60px; }
 .bet-teams { flex: 1; font-weight: 600; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .bet-score { font-family: 'Bebas Neue', cursive; font-size: 1rem; letter-spacing: 1px; color: var(--text); flex-shrink: 0; white-space: nowrap; }
@@ -240,15 +240,88 @@
 .bet-pts-badge {
   font-family: 'Bebas Neue', cursive;
   font-size: 0.95rem;
-  width: 32px; text-align: right;
+  display: block;
+  width: auto;
+  min-width: 0;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  text-align: right;
   flex-shrink: 0;
 }
-.bet-pts-badge.full    { color: #166534; }
-.bet-pts-badge.partial { color: #b45309; }
-.bet-pts-badge.zero    { color: #ef4444; }
-.bet-pts-badge.future  { color: var(--light); }
+.bet-pts-badge.full    { color: var(--score-success-text); }
+.bet-pts-badge.three   { color: var(--score-success-text); }
+.bet-pts-badge.two     { color: var(--score-mid-text); }
+.bet-pts-badge.one     { color: var(--score-caution-text); }
+.bet-pts-badge.partial { color: var(--score-mid-text); }
+.bet-pts-badge.zero    { color: var(--score-danger-text); }
+.bet-pts-badge.future  { color: var(--score-neutral-text); }
 
 .bets-empty { padding: 24px 16px; text-align: center; color: var(--sub); font-size: 0.72rem; }
+
+/* ── HEATMAP 104 JOGOS ───────────────────── */
+.heatmap-wrap {
+  padding: 12px 16px 16px;
+}
+
+.heatmap-grid-scroll {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.heatmap-grid {
+  min-width: 640px;
+  display: grid;
+  grid-template-columns: repeat(26, 1fr);
+  gap: 4px;
+}
+
+.heatmap-cell {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 3px;
+  border: 1px solid var(--border);
+  background: var(--score-neutral-bg);
+}
+
+.heatmap-cell.pending {
+  background: var(--score-neutral-bg);
+}
+
+.heatmap-cell.undefined {
+  background: var(--score-neutral-soft-bg);
+  border-style: dashed;
+}
+
+.heatmap-legend {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  font-size: 0.6rem;
+  color: var(--sub);
+  font-weight: 600;
+}
+
+.heatmap-legend-scale {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.heatmap-legend-box {
+  width: 11px;
+  height: 11px;
+  border-radius: 2px;
+  border: 1px solid var(--border);
+}
+
+@media (max-width: 760px) {
+  .heatmap-grid { min-width: 0; grid-template-columns: repeat(13, 1fr); }
+}
 
 /* ── STREAKS ─────────────────────────────── */
 .extra-grid {
@@ -370,6 +443,17 @@
     </div>
   </div>
 
+  <div class="card">
+    <div class="card-head">
+      <span class="card-head-title">Histórico de desempenho</span>
+    </div>
+    <div class="heatmap-wrap">
+      <div class="heatmap-grid-scroll">
+        <div class="heatmap-grid" id="heatmap-grid"></div>
+      </div>
+    </div>
+  </div>
+
   <!-- ── EXTRAS: palpites + sequências ────── -->
   <div class="extra-grid">
     <div class="card" id="card-dist">
@@ -449,6 +533,7 @@ var PLAYER_COLORS = [
 
 // ── State ─────────────────────────────────────────────────────────────────────
 var JOGOS       = [];
+var TOTAL_COPA_JOGOS = 104;
 var scoreboard  = {};  // { nome: { pts, res, ven, emp, gol, dif, game_pts:{id:pts} } }
 var gameHistory = [];  // [{ jogo, posMap }]
 var sortedPlayers = []; // sorted by final rank
@@ -593,6 +678,67 @@ function getBetFor(j, nome) {
     if (all[i].nome === nome) return all[i].placar;
   }
   return null;
+}
+
+function escAttr(s) {
+  return String(s || '')
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+function renderHeatmap(nome) {
+  var grid = document.getElementById('heatmap-grid');
+  if (!grid) return;
+
+  var html = [];
+  for (var i = 0; i < TOTAL_COPA_JOGOS; i++) {
+    var j = JOGOS[i];
+
+    if (!j) {
+      html.push('<span class="heatmap-cell undefined" data-tip="A definir"></span>');
+      continue;
+    }
+
+    var gameName = (j.time_a && j.time_a.nome ? j.time_a.nome : 'Time A') +
+      ' × ' +
+      (j.time_b && j.time_b.nome ? j.time_b.nome : 'Time B');
+
+    var bet = getBetFor(j, nome);
+    var betDisp = bet ? bet.replace('x', ' × ') : 'Sem aposta';
+    var isDone = j.gols_a !== null && j.gols_b !== null;
+
+    if (!isDone) {
+      var pendingTip = gameName + '\n' +
+        'Jogo ainda não realizado\n' +
+        'Palpite: ' + betDisp;
+      html.push('<span class="heatmap-cell pending" data-tip="' + escAttr(pendingTip) + '"></span>');
+      continue;
+    }
+
+    if (!bet) {
+      var noBetTip = gameName + '\n' +
+        'Resultado: ' + j.gols_a + ' × ' + j.gols_b + '\n' +
+        'Sem aposta';
+      html.push('<span class="heatmap-cell" style="background:var(--score-neutral-bg);color:var(--score-neutral-text)" data-tip="' + escAttr(noBetTip) + '"></span>');
+      continue;
+    }
+
+    var sp = bet.split('x');
+    var bd = calcBreakdown(+sp[0] || 0, +sp[1] || 0, j.gols_a, j.gols_b);
+    var mult = getMultiplier(j);
+    var gp = bd.pts * mult;
+    var pointColor = bolaoGetPointsColor(bd.pts);
+    var doneTip = gameName + '\n' +
+      'Resultado: ' + j.gols_a + ' × ' + j.gols_b + '\n' +
+      'Palpite: ' + bet.replace('x', ' × ') + '\n' +
+      (gp > 0 ? '+' + gp : '0') + ' pontos';
+
+    html.push('<span class="heatmap-cell" style="background:' + pointColor.bg + ';border-color:' + pointColor.bg + '" data-tip="' + escAttr(doneTip) + '"></span>');
+  }
+
+  grid.innerHTML = html.join('');
 }
 
 // ── Populate player selector ──────────────────────────────────────────────────
@@ -1037,12 +1183,17 @@ var pastPage = 0, nextPage = 0, pastRows = [], nextRows = [];
 function buildPastRow(j, nome) {
   var bet = getBetFor(j, nome);
   var rowClass = '', ptsClass = 'zero', ptsLabel = '0';
+  var ptsStyle = '';
+  var rowStyle = '';
   if (bet) {
     var sp = bet.split('x');
     var bd = calcBreakdown(+sp[0]||0, +sp[1]||0, j.gols_a, j.gols_b);
     var mult = getMultiplier(j);
     var pts = bd.pts * mult;
-    if (bd.pts >= 4)       { rowClass = 'hit';     ptsClass = 'full';    }
+    var pointColor = bolaoGetPointsColor(bd.pts);
+    rowStyle = ' style="background:' + pointColor.bg + '"';
+    ptsStyle = ' style="color:' + pointColor.text + ';background:transparent;border:none;padding:0"';
+    if (bd.pts >= 4)       { rowClass = 'hit';     ptsClass = 'full'; }
     else if (bd.pts >= 1)  { rowClass = 'partial'; ptsClass = 'partial'; }
     else                   { rowClass = 'miss'; }
     ptsLabel = '+' + pts;
@@ -1050,12 +1201,12 @@ function buildPastRow(j, nome) {
   var meta = fmtDate(j.data), hora = fmtHora(j.data);
   var groups = j.grupo ? ' · ' + j.grupo : '';
   var betDisp = bet !== '—' ? bet.replace('x',' × ') : '—';
-  return '<div class="bet-row ' + rowClass + '">' +
+  return '<div class="bet-row ' + rowClass + '"' + rowStyle + '>' +
     '<div class="bet-meta">' + meta + (hora?' · '+hora:'') + groups + '</div>' +
     '<div class="bet-teams">' + j.time_a.nome + ' × ' + j.time_b.nome + '</div>' +
     '<div class="bet-score">' + j.gols_a + ' × ' + j.gols_b + '</div>' +
     '<div class="bet-palpite">palpite: ' + betDisp + '</div>' +
-    '<div class="bet-pts-badge ' + ptsClass + '">' + ptsLabel + '</div>' +
+    '<div class="bet-pts-badge ' + ptsClass + '"' + ptsStyle + '>' + ptsLabel + '</div>' +
   '</div>';
 }
 
@@ -1143,6 +1294,7 @@ function selectPlayer(nome, fromSwipe) {
   renderChart(nome);
   renderPastBets(nome);
   renderNextBets(nome);
+  renderHeatmap(nome);
   renderAdjacentPlayerSlots();
   setPlayerTrackX(0, false);
 }
@@ -1185,6 +1337,52 @@ async function init() {
   selectPlayer(startNome);
 }
 init();
+
+// ── JS Tooltip (body-level, never clipped) ───────────────────────────────────
+(function () {
+  var tip = document.createElement('div');
+  tip.style.cssText = [
+    'position:fixed', 'z-index:9999', 'pointer-events:none',
+    'background:#111', 'color:#fff',
+    'font-family:Inter,sans-serif', 'font-size:0.65rem', 'font-weight:400',
+    'line-height:1.55', 'padding:6px 10px', 'border-radius:6px',
+    'white-space:pre-wrap', 'box-shadow:0 4px 14px rgba(0,0,0,.3)',
+    'display:none', 'max-width:280px', 'word-break:break-word'
+  ].join(';');
+  document.body.appendChild(tip);
+
+  var GAP = 12;
+  document.addEventListener('mouseover', function (e) {
+    var el = e.target.closest('[data-tip]');
+    if (!el) { tip.style.display = 'none'; return; }
+    tip.textContent = el.getAttribute('data-tip');
+    tip.style.display = 'block';
+    position(e);
+  });
+
+  document.addEventListener('mousemove', function (e) {
+    if (tip.style.display === 'none') return;
+    position(e);
+  });
+
+  document.addEventListener('mouseout', function (e) {
+    var el = e.target.closest('[data-tip]');
+    if (el) tip.style.display = 'none';
+  });
+
+  function position(e) {
+    var tw = tip.offsetWidth;
+    var th = tip.offsetHeight;
+    var vw = window.innerWidth;
+    var vh = window.innerHeight;
+    var x = e.clientX + GAP;
+    var y = e.clientY - th - GAP;
+    if (x + tw > vw - 6) x = e.clientX - tw - GAP;
+    if (y < 6) y = e.clientY + GAP;
+    tip.style.left = x + 'px';
+    tip.style.top = y + 'px';
+  }
+})();
 </script>
 </body>
 </html>

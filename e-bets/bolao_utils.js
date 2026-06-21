@@ -59,7 +59,11 @@ function bolaoGetAveragePoints(jogo) {
 
 function bolaoGetAverageColor(value) {
   if (value === null || value === undefined || isNaN(value)) {
-    return { bg: '#f3f4f6', border: '#d1d5db', text: '#6b7280' };
+    return {
+      bg: 'var(--score-neutral-bg)',
+      border: 'var(--score-neutral-border)',
+      text: 'var(--score-neutral-text)'
+    };
   }
 
   var clamped = Math.max(0, Math.min(5, value));
@@ -69,6 +73,13 @@ function bolaoGetAverageColor(value) {
     border: 'hsl(' + hue + ' 70% 72%)',
     text: 'hsl(' + hue + ' 75% 28%)'
   };
+}
+
+function bolaoGetPointsColor(value) {
+  if (value === null || value === undefined || isNaN(value)) {
+    return bolaoGetAverageColor(null);
+  }
+  return bolaoGetAverageColor(Math.max(0, Math.min(5, Number(value))));
 }
 
 async function loadBolaoBaseData() {

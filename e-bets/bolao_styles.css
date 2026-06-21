@@ -13,6 +13,26 @@
   --accent: #166534;
   --accent-light: #dcfce7;
   --radius: 14px;
+  --score-success-bg: #dcfce7;
+  --score-success-border: #86efac;
+  --score-success-text: #166534;
+  --score-mid-bg: #fef3c7;
+  --score-mid-border: #fcd34d;
+  --score-mid-text: #854d0e;
+  --score-caution-bg: #ffedd5;
+  --score-caution-border: #fdba74;
+  --score-caution-text: #9a3412;
+  --score-danger-bg: #fee2e2;
+  --score-danger-border: #fecaca;
+  --score-danger-text: #991b1b;
+  --score-neutral-bg: #f3f4f6;
+  --score-neutral-border: #d1d5db;
+  --score-neutral-text: #6b7280;
+  --score-success-soft-bg: #f0fdf4;
+  --score-mid-soft-bg: #fef9c3;
+  --score-caution-soft-bg: #ffedd5;
+  --score-danger-soft-bg: #fef2f2;
+  --score-neutral-soft-bg: #ffffff;
 }
 
 html, body {
@@ -108,3 +128,106 @@ html, body {
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 .loading-text { font-size: .82rem; font-weight: 600; color: var(--sub); }
+
+/* ── Score palette shared by bet/result badges ─────────────────────────────── */
+.score-pip,
+.bet-pts-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Bebas Neue', cursive;
+  font-weight: 700;
+  border-radius: 4px;
+}
+
+.score-pip {
+  height: 20px;
+  padding: 0 4px;
+  font-size: 0.75rem;
+  line-height: 1;
+  display: inline-grid;
+  place-items: center;
+  min-width: 22px;
+}
+
+.score-pip-text {
+  display: block;
+  line-height: 1;
+  transform: translateY(1px);
+}
+
+.bet-pts-badge {
+  min-width: 32px;
+  font-size: 0.95rem;
+  line-height: 1;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.score-pip.max,
+.bet-pts-badge.full {
+  background: var(--score-success-bg);
+  color: var(--score-success-text);
+}
+
+.score-pip.one,
+.bet-pts-badge.one {
+  background: var(--score-caution-bg);
+  color: var(--score-caution-text);
+}
+
+.score-pip.two,
+.bet-pts-badge.two {
+  background: var(--score-mid-bg);
+  color: var(--score-mid-text);
+}
+
+.score-pip.three,
+.bet-pts-badge.three {
+  background: var(--score-success-border);
+  color: var(--score-success-text);
+}
+
+.score-pip.some,
+.bet-pts-badge.partial {
+  background: var(--score-mid-bg);
+  color: var(--score-mid-text);
+}
+
+.score-pip.zero,
+.bet-pts-badge.zero {
+  background: var(--score-danger-bg);
+  color: var(--score-danger-text);
+}
+
+.score-pip.none,
+.bet-pts-badge.future {
+  background: var(--score-neutral-bg);
+  color: var(--score-neutral-text);
+}
+
+.bet-row.hit,
+.bet-item.score-hit,
+.bet-col-head.win-col {
+  background: var(--score-success-soft-bg);
+}
+
+.bet-col-head.win-col {
+  border-bottom: 2px solid var(--score-success-border);
+}
+
+.bet-col-head.win-col .bch-label {
+  color: var(--accent);
+}
+
+.bet-row.partial {
+  background: var(--score-mid-soft-bg);
+}
+
+.bet-row.miss {
+  background: var(--score-danger-soft-bg);
+}
+
+.bet-row.future {
+  background: var(--score-neutral-soft-bg);
+}

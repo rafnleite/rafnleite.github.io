@@ -585,37 +585,8 @@
       padding-right: 14px !important;
     }
 
-    .last5-pip {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 20px;
-      height: 20px;
-      border-radius: 4px;
-      font-family: 'Bebas Neue', cursive;
-      font-size: 0.75rem;
-      font-weight: 700;
+    .last5-cell .score-pip + .score-pip {
       margin-left: 2px;
-    }
-
-    .last5-pip.max {
-      background: #dcfce7;
-      color: #166534;
-    }
-
-    .last5-pip.some {
-      background: #fef9c3;
-      color: #854d0e;
-    }
-
-    .last5-pip.zero {
-      background: #fee2e2;
-      color: #991b1b;
-    }
-
-    .last5-pip.none {
-      background: #f3f4f6;
-      color: #9ca3af;
     }
 
     /* Position delta badge */
@@ -1359,16 +1330,16 @@
           var mult = getMultiplier(j);
           var allBettors = [].concat(j.apostadores_a, j.apostadores_empate, j.apostadores_b);
           var betEntry = allBettors.find(function (a) { return a.nome === e.nome; });
-          if (!betEntry) return '<span class="last5-pip none" data-tip="' + (j.time_a.nome || '') + ' × ' + (j.time_b.nome || '') + '\nSem aposta">—</span>';
+          if (!betEntry) return '<span class="score-pip none" data-tip="' + (j.time_a.nome || '') + ' × ' + (j.time_b.nome || '') + '\nSem aposta">—</span>';
           var gp = e.total_game_pts[j.id] || 0;
           var rawPts = mult > 0 ? Math.round(gp / mult) : 0;
-          var cls = rawPts === 0 ? 'zero' : rawPts <= 3 ? 'some' : 'max';
+          var pointColor = bolaoGetPointsColor(rawPts);
           var betDisp = betEntry.placar.replace('x', ' × ');
           var tipLines = (j.time_a.nome || '') + ' × ' + (j.time_b.nome || '') +
             '\nResultado: ' + j.gols_a + ' × ' + j.gols_b +
             '\nPalpite: ' + betDisp +
             '\n' + (gp > 0 ? '+' + gp : '0') + ' pontos';
-          return '<span class="last5-pip ' + cls + '" data-tip="' + tipLines.replace(/"/g, '&quot;') + '">' + gp + '</span>';
+          return '<span class="score-pip" style="background:' + pointColor.bg + ';color:' + pointColor.text + '" data-tip="' + tipLines.replace(/"/g, '&quot;') + '"><span class="score-pip-text">' + gp + '</span></span>';
         }).join('');
         return '<tr>' +
           '<td class="rank-pos ' + posClass + '">' + pos + '</td>' +
