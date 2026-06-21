@@ -770,7 +770,7 @@ function renderGoalEvents(j) {
     if (goal.contra) tags.push('<span class="goal-tag">GC</span>');
     return '<div class="goal-event goal-event-' + item.side + '">' +
       '<span class="goal-minute">' + (goal.minuto || 'Gol') + '</span>' +
-      '<span class="goal-team goal-team-' + item.side + '">' + (item.side === 'a' ? j.time_a.nome : j.time_b.nome) + '</span>' +
+      '<span class="goal-team goal-team-' + item.side + '">' + (item.side === 'a' ? j.time_a.sigla : j.time_b.sigla) + '</span>' +
       '<span class="goal-player">' + shortName(goal.jogador || 'Gol') + '</span>' +
       (tags.length ? '<span class="goal-tags">' + tags.join('') + '</span>' : '') +
       '</div>';

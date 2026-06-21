@@ -3,6 +3,57 @@ const API_BASE = 'https://oracleapex.com/ords/ebets/bolao';
 const WEEKDAY = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
 const MONTH_BR = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
 
+const TEAM_ABBR = {
+  "França": "FRA",
+  "Noruega": "NOR",
+  "Tchéquia": "TCH",
+  "México": "MEX",
+  "África do Sul": "AFS",
+  "Coreia do Sul": "COS",
+  "Canadá": "CAN",
+  "Bósnia e Herzegovina": "BOH",
+  "Catar": "CAT",
+  "Brasil": "BRA",
+  "Marrocos": "MAR",
+  "Haiti": "HAI",
+  "Escócia": "ESC",
+  "Estados Unidos": "EUA",
+  "Paraguai": "PAR",
+  "Austrália": "AUS",
+  "Turquia": "TUR",
+  "Curaçao": "CUR",
+  "Equador": "EQU",
+  "Japão": "JAP",
+  "Tunísia": "TUN",
+  "Egito": "EGI",
+  "Irã": "IRA",
+  "Nova Zelândia": "NZL",
+  "Espanha": "ESP",
+  "Cabo Verde": "CBV",
+  "Arábia Saudita": "ASA",
+  "Uruguai": "URU",
+  "Senegal": "SEN",
+  "Iraque": "IRQ",
+  "Argentina": "ARG",
+  "Argélia": "AGL",
+  "Áustria": "AUT",
+  "Jordânia": "JOR",
+  "Portugal": "POR",
+  "RD Congo": "RDC",
+  "Uzbequistão": "UZB",
+  "Colômbia": "COL",
+  "Inglaterra": "ING",
+  "Croácia": "CRO",
+  "Gana": "GAN",
+  "Panamá": "PAN",
+  "Suíça": "SUI",
+  "Holanda": "HOL",
+  "Alemanha": "ALE",
+  "Bélgica": "BEL",
+  "Suécia": "SUE",
+  "Costa do Marfim": "CDM"
+};
+
 // ── Apex API ──────────────────────────────────────────────────────────────────
 async function fetchAll(path) {
   var items = [], url = API_BASE + path + '?limit=500';
@@ -106,7 +157,7 @@ async function loadBolaoBaseData() {
 async function buildJogos() {
   var data = await loadBolaoBaseData();
   var jogos = data.jogos, apostas = data.apostas, grupos = data.grupos,
-      times = data.times, chutadores = data.chutadores;
+    times = data.times, chutadores = data.chutadores;
   var gMap = {}, tMap = {}, cMap = {}, aPorJ = {};
   grupos.forEach(function (g) { gMap[g.id_grupo] = g; });
   times.forEach(function (t) { tMap[t.id_time] = t; });
@@ -132,8 +183,18 @@ async function buildJogos() {
       cidade: j.cidade,
       grupo: gr.sigla || '',
       sede: gr.sede || '',
-      time_a: { nome: tA.nome || '', logo: tA.logo || '', id: j.id_time_a },
-      time_b: { nome: tB.nome || '', logo: tB.logo || '', id: j.id_time_b },
+      time_a: {
+        nome: tA.nome || '',
+        sigla: TEAM_ABBR[tA.nome] || (tA.nome || '').substring(0, 3).toUpperCase(),
+        logo: tA.logo || '',
+        id: j.id_time_a
+      },
+      time_b: {
+        nome: tB.nome || '',
+        sigla: TEAM_ABBR[tB.nome] || (tB.nome || '').substring(0, 3).toUpperCase(),
+        logo: tB.logo || '',
+        id: j.id_time_b
+      },
       gols_a: j.gols_a,
       gols_b: j.gols_b,
       status: j.status_jogo,
@@ -462,7 +523,7 @@ function storeESPNEntry(map, key, entry) {
 }
 
 function parseESPNEventsIntoMap(map, events) {
-  
+
   (events || []).forEach(function (ev) {
     var comp = (ev.competitions || [])[0];
     if (!comp) return;
