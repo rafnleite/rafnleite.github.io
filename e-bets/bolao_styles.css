@@ -231,3 +231,66 @@ html, body {
 .bet-row.future {
   background: var(--score-neutral-soft-bg);
 }
+
+/* ── Shared Sidebar Toggle + Slide ───────────────────────── */
+.sidebar-fab {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 420;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  padding: 10px 18px 10px 14px;
+  border: none;
+  border-radius: 28px;
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, .22);
+  cursor: pointer;
+  transition: opacity .15s, transform .25s;
+}
+
+.sidebar-fab:hover { opacity: .88; }
+
+.sidebar-fab.hidden {
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+}
+
+.sidebar-close-btn {
+  background: none;
+  border: none;
+  font-size: 1.3rem;
+  color: var(--sub);
+  cursor: pointer;
+  line-height: 1;
+  padding: 2px 4px;
+}
+
+.sidebar-close-btn:hover { color: var(--text); }
+
+.main-layout .sidebar {
+  transition: transform .28s cubic-bezier(.4, 0, .2, 1), opacity .22s ease, width .28s cubic-bezier(.4, 0, .2, 1), border-color .2s ease;
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.main-layout.sidebar-hidden .sidebar {
+  transform: translateX(28px);
+  opacity: 0;
+  width: 0 !important;
+  min-width: 0 !important;
+  border-left-color: transparent;
+  pointer-events: none;
+}
+
+.main-layout.sidebar-hidden {
+  overflow-x: hidden;
+}

@@ -17,6 +17,7 @@
       min-height: calc(100vh - 56px);
     }
 
+
     .main-col {
       flex: 1;
       min-width: 0;
@@ -287,6 +288,7 @@
     }
 
     .sim-inp[type=number] {
+      appearance: textfield;
       -moz-appearance: textfield;
     }
 
@@ -453,6 +455,31 @@
     .rank-table {
       width: 100%;
       border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+    .col-rank {
+      width: 34px;
+    }
+
+    .col-name {
+      width: 150px;
+    }
+
+    .col-stat {
+      width: max(80px, calc((100% - 34px - 150px - 52px - 84px - 150px) / 6));
+    }
+
+    .col-points {
+      width: 52px;
+    }
+
+    .col-bar {
+      width: 84px;
+    }
+
+    .col-last5 {
+      width: 150px;
     }
 
     .rank-table th {
@@ -517,6 +544,15 @@
       font-weight: 600;
       color: var(--text);
       font-size: 0.8rem;
+      width: 150px;
+
+      white-space: normal;
+      overflow: visible;
+      text-overflow: clip;
+
+      word-break: break-word;
+      overflow-wrap: break-word;
+      line-height: 1.2;
     }
 
     /* Points column */
@@ -539,9 +575,20 @@
       margin-left: 4px;
     }
 
+    .pts-last5-mobile {
+      display: none;
+      margin-top: 4px;
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .pts-last5-mobile .score-pip+.score-pip {
+      margin-left: 2px;
+    }
+
     /* Stat columns */
     .stat-cell {
-      text-align: right;
+      text-align: center;
       white-space: nowrap;
     }
 
@@ -560,7 +607,7 @@
 
     /* Bar */
     .bar-cell {
-      width: 70px;
+      width: 84px;
       padding-left: 4px !important;
     }
 
@@ -582,10 +629,12 @@
     .last5-cell {
       text-align: right;
       white-space: nowrap;
+      text-align: center;
       padding-right: 14px !important;
     }
 
-    .last5-cell .score-pip + .score-pip {
+    .last5-cell .score-pip+.score-pip {
+      text-align: center;
       margin-left: 2px;
     }
 
@@ -895,12 +944,109 @@
         display: none;
       }
 
+      .sidebar-fab {
+        display: none;
+      }
+
       .main-col {
         padding: 16px 12px 72px;
       }
 
-      .bar-cell {
+      .rank-table {
+        table-layout: fixed;
+        width: 100%;
+      }
+
+      .col-rank {
+        width: 34px;
+      }
+
+      .col-name {
+        width: 120px;
+      }
+
+      .col-points {
+        width: 64px;
+      }
+
+      .col-bar {
+        width: clamp(0px, calc(100% - 34px - 120px - 64px - 122px), 100px);
+      }
+
+      .col-stat {
         display: none;
+        width: 0 !important;
+      }
+
+      .col-last5 {
+        width: 122px;
+      }
+
+      .rank-table th.last5-cell {
+        white-space: normal;
+        line-height: 1.05;
+        overflow-wrap: anywhere;
+      }
+
+      .rank-table td.last5-cell {
+        white-space: nowrap;
+      }
+
+      .hide-sm {
+        display: none !important;
+      }
+
+      .rank-table th,
+      .rank-table td {
+        overflow: hidden;
+      }
+
+      .pts-cell {
+        width: 64px;
+      }
+
+      .bar-cell {
+        width: clamp(0px, calc(100% - 34px - 120px - 64px - 122px), 100px);
+        display: table-cell;
+      }
+
+      .bar-wrap {
+        width: min(100%, 100px);
+        margin: 0 auto;
+      }
+
+      .rank-name {
+        width: 120px;
+        max-width: 120px;
+        min-width: 120px;
+        white-space: normal;
+        overflow: visible;
+        text-overflow: clip;
+        line-height: 1.2;
+      }
+
+      .rank-name a {
+        white-space: normal;
+        word-break: normal;
+        overflow-wrap: normal;
+      }
+
+      .last5-cell {
+        width: auto;
+        text-align: center;
+        padding-left: 6px !important;
+        padding-right: 6px !important;
+      }
+
+      .last5-cell .score-pip {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        white-space: nowrap;
+        min-width: 18px;
+        height: 18px;
+        padding: 0 3px;
+        font-size: 0.68rem;
       }
 
       .mob-fab {
@@ -908,13 +1054,29 @@
       }
     }
 
+    @media (min-width: 801px) and (max-width: 1180px) {
+      .rank-table th.hide-sm {
+        white-space: normal;
+        overflow-wrap: anywhere;
+        line-height: 1.05;
+        font-size: 0.48rem;
+        padding: 6px 4px;
+      }
+
+      .rank-table th.center {
+        font-size: 0.52rem;
+        padding-left: 6px;
+        padding-right: 6px;
+      }
+
+      .stat-cell {
+        font-size: 0.72rem;
+      }
+    }
+
     @media (max-width: 480px) {
       .summary-row {
         grid-template-columns: 1fr 1fr;
-      }
-
-      .hide-sm {
-        display: none;
       }
 
       .rank-table th,
@@ -939,9 +1101,6 @@
         padding: 5px 9px;
       }
 
-      .last5-cell {
-        display: none;
-      }
     }
   </style>
 </head>
@@ -985,18 +1144,31 @@
             da final.
           </div>
           <table class="rank-table">
+            <colgroup>
+              <col class="col-rank">
+              <col class="col-name">
+              <col class="col-stat">
+              <col class="col-stat">
+              <col class="col-stat">
+              <col class="col-stat">
+              <col class="col-stat">
+              <col class="col-stat">
+              <col class="col-points">
+              <col class="col-bar">
+              <col class="col-last5">
+            </colgroup>
             <thead>
               <tr>
                 <th class="center">#</th>
                 <th class="left">Apostador</th>
-                <th class="right hide-sm" title="Quantidade de resultados corretos (vitória ou empate)">Resultados</th>
-                <th class="right hide-sm" title="Quantidade de times vencedores acertados">Vencedores</th>
-                <th class="right hide-sm" title="Quantidade de empates acertados">Empates</th>
-                <th class="right hide-sm" title="Gols individuais exatos (gols A + gols B corretos)">Gols</th>
-                <th class="right hide-sm" title="Jogos com diferença de gols exata">Dif. Gols</th>
-                <th class="right" title="Total de pontos">Pontos</th>
-                <th class="bar-cell"></th>
-                <th class="right hide-sm last5-cell" title="Pontos nas últimas 5 partidas">5 últ.</th>
+                <th class="center hide-sm" title="Quantidade de resultados corretos (vitória ou empate)">Resultados</th>
+                <th class="center hide-sm" title="Quantidade de times vencedores acertados">Vencedores</th>
+                <th class="center hide-sm" title="Quantidade de empates acertados">Empates</th>
+                <th class="center hide-sm" title="Gols individuais exatos (gols A + gols B corretos)">Gols</th>
+                <th class="center hide-sm" title="Jogos com diferença de gols exata">Dif. Gols</th>
+                <th class="center hide-sm" title="Partidas com placar exato (gols A e B acertados)">Placar exato</th>
+                <th class="center" colspan="2" title="Total de pontos e barra relativa">Pontos</th>
+                <th class="center last5-cell" title="Pontos nas últimas 5 partidas"><span class="last5-title">Desempenho recente</span></th>
               </tr>
             </thead>
             <tbody id="ranking-body"></tbody>
@@ -1035,7 +1207,10 @@
     <aside class="sidebar">
       <div class="sidebar-head">
         <span class="sidebar-head-title">Partidas</span>
-        <span class="sb-count-badge" id="sb-count"></span>
+        <span style="display:inline-flex;align-items:center;gap:8px">
+          <span class="sb-count-badge" id="sb-count"></span>
+          <button class="sidebar-close-btn" onclick="toggleSidebarVisibility()" title="Fechar menu">X</button>
+        </span>
       </div>
       <div class="sidebar-actions">
         <button class="sim-btn" onclick="useMostVoted()"
@@ -1055,6 +1230,16 @@
 
   </div>
 
+  <button class="sidebar-fab" id="sidebar-toggle-btn" onclick="toggleSidebarVisibility()"
+    title="Ocultar ou exibir menu lateral">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+      <line x1="3" y1="12" x2="21" y2="12" />
+      <line x1="3" y1="6" x2="21" y2="6" />
+      <line x1="3" y1="18" x2="21" y2="18" />
+    </svg>
+    <span id="sidebar-toggle-label">SIMULAR</span>
+  </button>
+
   <!-- ── MOBILE FAB + DRAWER ──────────────── -->
   <button class="mob-fab" id="mob-fab" onclick="openMobDrawer()">
     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -1062,7 +1247,7 @@
       <line x1="3" y1="6" x2="21" y2="6" />
       <line x1="3" y1="18" x2="21" y2="18" />
     </svg>
-    Simular
+    SIMULAR
   </button>
   <div class="mob-overlay" id="mob-overlay" onclick="closeMobDrawer()"></div>
   <div class="mob-drawer" id="mob-drawer">
@@ -1098,6 +1283,7 @@
     // ── Scoring ──────────────────────────────────────────────────────────────────
     function calcBreakdown(betA, betB, realA, realB) {
       var gol = (betA === realA ? 1 : 0) + (betB === realB ? 1 : 0);
+      var exa = (betA === realA && betB === realB) ? 1 : 0;
       var dif = (betA - betB) === (realA - realB) ? 1 : 0;
       var pts = gol + dif;
       var bR = betA > betB ? 'A' : betA < betB ? 'B' : 'E';
@@ -1106,7 +1292,7 @@
       var isVen = (isRes && rR !== 'E') ? 1 : 0;
       var isEmp = (isRes && rR === 'E') ? 1 : 0;
       if (isRes) pts += (rR === 'E' ? 1 : 2);
-      return { pts: pts, res: isRes, ven: isVen, emp: isEmp, gol: gol, dif: dif };
+      return { pts: pts, res: isRes, ven: isVen, emp: isEmp, gol: gol, dif: dif, exa: exa };
     }
 
     function getMultiplier(j) {
@@ -1126,7 +1312,7 @@
     function emptyEntry() {
       return {
         real_pts: 0, sim_pts: 0, real_res: 0, sim_res: 0, real_ven: 0, sim_ven: 0, real_emp: 0, sim_emp: 0,
-        real_gol: 0, sim_gol: 0, real_dif: 0, sim_dif: 0, real_game_pts: {}, sim_game_pts: {}
+        real_gol: 0, sim_gol: 0, real_dif: 0, sim_dif: 0, real_exa: 0, sim_exa: 0, real_game_pts: {}, sim_game_pts: {}
       };
     }
 
@@ -1149,6 +1335,7 @@
           s.real_emp += bd.emp;
           s.real_gol += bd.gol;
           s.real_dif += bd.dif;
+          s.real_exa += bd.exa;
           s.real_game_pts[j.id] = (s.real_game_pts[j.id] || 0) + bd.pts * mult;
         });
       });
@@ -1158,7 +1345,7 @@
       Object.keys(scoreboard).forEach(function (k) {
         var s = scoreboard[k];
         s.sim_pts = 0; s.sim_res = 0; s.sim_ven = 0; s.sim_emp = 0;
-        s.sim_gol = 0; s.sim_dif = 0; s.sim_game_pts = {};
+        s.sim_gol = 0; s.sim_dif = 0; s.sim_exa = 0; s.sim_game_pts = {};
       });
       JOGOS.forEach(function (j) {
         if (j.gols_a !== null && j.gols_b !== null) return;
@@ -1176,6 +1363,7 @@
           sc.sim_emp += bd.emp;
           sc.sim_gol += bd.gol;
           sc.sim_dif += bd.dif;
+          sc.sim_exa += bd.exa;
           sc.sim_game_pts[j.id] = (sc.sim_game_pts[j.id] || 0) + bd.pts * mult;
         });
       });
@@ -1223,6 +1411,7 @@
         var simEmp = showSim ? s.sim_emp : 0;
         var simGol = showSim ? s.sim_gol : 0;
         var simDif = showSim ? s.sim_dif : 0;
+        var simExa = showSim ? s.sim_exa : 0;
         var simGP = showSim ? s.sim_game_pts : {};
         var tgp = {};
         JOGOS.forEach(function (j) { tgp[j.id] = (s.real_game_pts[j.id] || 0) + (simGP[j.id] || 0); });
@@ -1234,6 +1423,7 @@
           total_emp: s.real_emp + simEmp,
           total_gol: s.real_gol + simGol,
           total_dif: s.real_dif + simDif,
+          total_exa: s.real_exa + simExa,
           real_pts: s.real_pts, real_res: s.real_res, real_ven: s.real_ven, real_emp: s.real_emp,
           real_game_pts: s.real_game_pts,
           total_game_pts: tgp
@@ -1349,9 +1539,10 @@
           '<td class="stat-cell hide-sm">' + e.total_emp + '</td>' +
           '<td class="stat-cell hide-sm">' + e.total_gol + '</td>' +
           '<td class="stat-cell hide-sm">' + e.total_dif + '</td>' +
+          '<td class="stat-cell hide-sm">' + e.total_exa + '</td>' +
           '<td class="pts-cell"><span class="pts-real">' + e.total + '</span></td>' +
           '<td class="bar-cell"><div class="bar-wrap"><div class="bar-fill" style="width:' + pct + '%"></div></div></td>' +
-          '<td class="last5-cell hide-sm">' + last5Html + '</td>' +
+          '<td class="last5-cell">' + last5Html + '</td>' +
           '</tr>';
       }).join('');
     }
@@ -1363,6 +1554,45 @@
       el.textContent = hasSim
         ? 'Pontos reais + simulados'
         : 'Pontos dos jogos já realizados';
+    }
+
+    function isMobileLayout() {
+      return window.matchMedia('(max-width: 800px)').matches;
+    }
+
+    function isIntermediateLayout() {
+      return window.matchMedia('(min-width: 801px) and (max-width: 1180px)').matches;
+    }
+
+    function applySidebarVisibility() {
+      var layout = document.querySelector('.main-layout');
+      var btn = document.getElementById('sidebar-toggle-btn');
+      var lbl = document.getElementById('sidebar-toggle-label');
+      if (!layout || !btn) return;
+      if (isMobileLayout()) {
+        layout.classList.remove('sidebar-hidden');
+        return;
+      }
+      layout.classList.toggle('sidebar-hidden', !sidebarVisible);
+      if (lbl) lbl.textContent = 'SIMULAR';
+      btn.setAttribute('title', 'Exibir ou ocultar menu lateral');
+      btn.classList.toggle('hidden', !isMobileLayout() && sidebarVisible);
+    }
+
+    function toggleSidebarVisibility() {
+      if (isMobileLayout()) return;
+      sidebarTouched = true;
+      sidebarVisible = !sidebarVisible;
+      applySidebarVisibility();
+    }
+
+    function syncSidebarByViewport() {
+      if (sidebarTouched) {
+        applySidebarVisibility();
+        return;
+      }
+      sidebarVisible = !isIntermediateLayout();
+      applySidebarVisibility();
     }
 
     // ── Render sidebar ───────────────────────────────────────────────────────────
@@ -1581,6 +1811,8 @@
     var raceCurrentSorted = [];
     var currentChartType = 'positions';
     var showSim = true;
+    var sidebarVisible = true;
+    var sidebarTouched = false;
 
     function abbrevTeam(nome) {
       if (!nome) return '?';
@@ -2111,9 +2343,12 @@
         buildScoreboard();
         renderRanking();
         renderSidebar();
+        syncSidebarByViewport();
       } catch (err) {
         console.error('Erro ao renderizar ranking:', err);
       }
+
+      window.addEventListener('resize', syncSidebarByViewport);
 
       document.getElementById('loading-overlay').style.display = 'none';
       updateSubtitle();

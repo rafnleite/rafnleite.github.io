@@ -348,6 +348,7 @@
 .mob-section-body.open { display: block; }
 @media (max-width: 700px) {
   .sidebar { display: none; }
+  .sidebar-fab { display: none; }
   .main-content { padding: 12px 10px 72px; max-width: 100%; }
   .team-group-badge { display: none; }
   .stand-table { min-width: 440px; }
@@ -390,6 +391,10 @@
 <main class="main-layout">
 
   <aside class="sidebar">
+    <div class="sidebar-section-head" style="border-bottom:1px solid var(--border)">
+      <span class="sidebar-section-title">Filtros</span>
+      <button class="sidebar-close-btn" onclick="toggleSidebarVisibility()" title="Fechar menu">X</button>
+    </div>
     <!-- Mode checkbox -->
     <div class="sidebar-section" style="border-bottom:1px solid var(--border)">
       <label class="sidebar-mode-label">
@@ -419,6 +424,10 @@
   </aside>
 
   <div class="main-content" style="position:relative">
+    <button class="sidebar-fab" id="sidebar-toggle-btn" onclick="toggleSidebarVisibility()" title="Exibir ou ocultar menu lateral">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      FILTROS
+    </button>
     <button class="btn-img" onclick="exportImage()" title="Salvar imagem" style="position:absolute;top:12px;right:12px;z-index:10">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
         <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
@@ -434,12 +443,12 @@
 <!-- ── MOBILE FAB + DRAWER ──────────────── -->
 <button class="mob-fab" id="mob-fab" onclick="openMobDrawer()">
   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-  Filtros
+  FILTROS
 </button>
 <div class="mob-overlay" id="mob-overlay" onclick="closeMobDrawer()"></div>
 <div class="mob-drawer" id="mob-drawer">
   <div class="mob-drawer-handle">
-    <span class="mob-drawer-title">Filtros</span>
+    <span class="mob-drawer-title">FILTROS</span>
     <button class="mob-drawer-close" onclick="closeMobDrawer()">✕</button>
   </div>
   <div class="mob-drawer-body">
@@ -498,6 +507,8 @@ function fmtSG(v) {
 var allParticipants = [];
 var groups = [];
 var useActualResults = false;
+var sidebarVisible = true;
+var sidebarTouched = false;
 
 function onModeChange(cb) {
   useActualResults = cb.checked;
@@ -510,6 +521,43 @@ function onModeChange(cb) {
   renderContent();
 }
 function onModeChangeMob(cb) { onModeChange(cb); }
+
+function isMobileLayout() {
+  return window.matchMedia('(max-width: 700px)').matches;
+}
+
+function isIntermediateLayout() {
+  return window.matchMedia('(min-width: 701px) and (max-width: 1180px)').matches;
+}
+
+function applySidebarVisibility() {
+  var layout = document.querySelector('.main-layout');
+  var btn = document.getElementById('sidebar-toggle-btn');
+  if (!layout || !btn) return;
+  if (isMobileLayout()) {
+    layout.classList.remove('sidebar-hidden');
+    return;
+  }
+  layout.classList.toggle('sidebar-hidden', !sidebarVisible);
+  btn.setAttribute('title', 'Exibir ou ocultar menu lateral');
+  btn.classList.toggle('hidden', !isMobileLayout() && sidebarVisible);
+}
+
+function toggleSidebarVisibility() {
+  if (isMobileLayout()) return;
+  sidebarTouched = true;
+  sidebarVisible = !sidebarVisible;
+  applySidebarVisibility();
+}
+
+function syncSidebarByViewport() {
+  if (sidebarTouched) {
+    applySidebarVisibility();
+    return;
+  }
+  sidebarVisible = !isIntermediateLayout();
+  applySidebarVisibility();
+}
 
 // ── Mobile drawer ─────────────────────────────────────────────────────────────
 function openMobDrawer() {
@@ -798,6 +846,8 @@ async function init() {
   renderSidebar();
   renderTabs();
   renderContent();
+  syncSidebarByViewport();
+  window.addEventListener('resize', syncSidebarByViewport);
 }
 init();
 
