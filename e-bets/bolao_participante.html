@@ -1003,6 +1003,25 @@ function bindSwipeNavigation() {
   document.body.dataset.swipeBoundParticipante = '1';
 }
 
+function bindKeyboardNavigation() {
+  if (document.body.dataset.keyboardBoundParticipante === '1') return;
+
+  function isInteractiveTarget(target) {
+    return !!(target && target.closest('input, textarea, select, button, a, [contenteditable="true"]'));
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.defaultPrevented || e.isComposing || e.altKey || e.ctrlKey || e.metaKey) return;
+    if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+    if (isInteractiveTarget(e.target)) return;
+
+    e.preventDefault();
+    stepPlayer(e.key === 'ArrowRight' ? 1 : -1);
+  });
+
+  document.body.dataset.keyboardBoundParticipante = '1';
+}
+
 function syncStickySelectorOffset() {
   // no-op — selector is no longer sticky
 }
@@ -1333,6 +1352,7 @@ async function init() {
   document.getElementById('main-content').style.display = '';
 
   bindSwipeNavigation();
+  bindKeyboardNavigation();
   window.addEventListener('resize', function() { setPlayerTrackX(0, false); });
   selectPlayer(startNome);
 }

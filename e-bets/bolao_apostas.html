@@ -1326,6 +1326,25 @@ function bindSwipeNavigation() {
   document.body.dataset.swipeBoundApostas = '1';
 }
 
+function bindKeyboardNavigation() {
+  if (document.body.dataset.keyboardBoundApostas === '1') return;
+
+  function isInteractiveTarget(target) {
+    return !!(target && target.closest('input, textarea, select, button, a, [contenteditable="true"]'));
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.defaultPrevented || e.isComposing || e.altKey || e.ctrlKey || e.metaKey) return;
+    if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+    if (isInteractiveTarget(e.target)) return;
+
+    e.preventDefault();
+    navigate(e.key === 'ArrowRight' ? 1 : -1);
+  });
+
+  document.body.dataset.keyboardBoundApostas = '1';
+}
+
 function imgToDataURL(img) {
   return new Promise(function(resolve) {
     if (!img.src || img.src.startsWith('data:')) { resolve(); return; }
@@ -1423,6 +1442,7 @@ function exportImage() {
   renderGame(currentIndex);
   updateNav();
   bindSwipeNavigation();
+  bindKeyboardNavigation();
 
   // ── Reposition track on window resize ───────────────────────────────────
   window.addEventListener('resize', function() {
