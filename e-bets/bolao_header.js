@@ -144,6 +144,15 @@
   ];
 
   function injectHeader(currentPage, subtitle) {
+    var faviconHref = 'favicon.ico';
+    var favicon = document.querySelector('link[rel="icon"]');
+    if (!favicon) {
+      favicon = document.createElement('link');
+      favicon.rel = 'icon';
+      document.head.appendChild(favicon);
+    }
+    favicon.href = faviconHref;
+
     if (!document.getElementById('_bolao_hdr_css')) {
       var s = document.createElement('style');
       s.id = '_bolao_hdr_css';
