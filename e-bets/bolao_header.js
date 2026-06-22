@@ -144,7 +144,7 @@
   ];
 
   function injectHeader(currentPage, subtitle) {
-    var faviconHref = 'favicon.ico';
+    var faviconHref = './favicon.ico';
     var favicon = document.querySelector('link[rel="icon"]');
     if (!favicon) {
       favicon = document.createElement('link');
