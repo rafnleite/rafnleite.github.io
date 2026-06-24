@@ -1050,7 +1050,7 @@
       return (f.length + l.length <= 17) ? (f + ' ' + l) : (f + ' ' + l[0] + '.');
     }
 
-    function renderGoalEvents(j) {
+    function renderEvents(j) {
       const goalsA = (j.golsDetalhesA || []).slice().sort(function (x, y) {
         return (x.minutoValor || 0) - (y.minutoValor || 0);
       });
@@ -1091,26 +1091,74 @@
           '</div>';
       }
 
-      const compactEvents = goalsA.map(function (goal) {
-        return { goal: goal, side: 'a', minute: goal.minutoValor || 0 };
-      }).concat(goalsB.map(function (goal) {
-        return { goal: goal, side: 'b', minute: goal.minutoValor || 0 };
-      })).sort(function (x, y) {
-        return x.minute - y.minute;
-      });
+      const compactGoalsHtml =
+        (goalsA.length || goalsB.length)
+          ? '<div class="event-section">' +
+          '<div class="event-title">Gols</div>' +
 
-      const compactHtml = compactEvents.map(function (item) {
-        const goal = item.goal || {};
-        const tags = [];
-        if (goal.penalti) tags.push('<span class="goal-tag">P</span>');
-        if (goal.contra) tags.push('<span class="goal-tag">GC</span>');
-        return '<div class="goal-event goal-event-' + item.side + '">' +
-          '<span class="goal-minute">' + (goal.minuto || 'Gol') + '</span>' +
-          '<span class="goal-team goal-team-' + item.side + '">' + (item.side === 'a' ? j.time_a.sigla : j.time_b.sigla) + '</span>' +
-          '<span class="goal-player">' + shortName(goal.jogador || 'Gol') + '</span>' +
-          (tags.length ? '<span class="goal-tags">' + tags.join('') + '</span>' : '') +
-          '</div>';
-      }).join('');
+          goalsA.map(function (goal) {
+            return '<div class="goal-event goal-event-a">' +
+              '<span class="goal-minute">' + (goal.minuto || '') + '</span>' +
+              '<span class="goal-team goal-team-a">' +
+              j.time_a.sigla +
+              '</span>' +
+              '<span class="goal-player">' +
+              shortName(goal.jogador || '') +
+              '</span>' +
+              '</div>';
+          }).join('') +
+
+          goalsB.map(function (goal) {
+            return '<div class="goal-event goal-event-b">' +
+              '<span class="goal-minute">' + (goal.minuto || '') + '</span>' +
+              '<span class="goal-team goal-team-b">' +
+              j.time_b.sigla +
+              '</span>' +
+              '<span class="goal-player">' +
+              shortName(goal.jogador || '') +
+              '</span>' +
+              '</div>';
+          }).join('') +
+
+          '</div>'
+          : '';
+
+      const compactRedsHtml =
+        (redsA.length || redsB.length)
+          ? '<div class="event-section">' +
+
+          ((goalsA.length || goalsB.length)
+            ? '<div class="event-divider"></div>'
+            : '') +
+
+          '<div class="event-title">Expulsões</div>' +
+
+          redsA.map(function (card) {
+            return '<div class="goal-event goal-event-a">' +
+              '<span class="goal-minute">' + (card.minuto || '') + '</span>' +
+              '<span class="goal-team goal-team-a">' +
+              j.time_a.sigla +
+              '</span>' +
+              '<span class="goal-player">' +
+              shortName(card.jogador || '') +
+              '</span>' +
+              '</div>';
+          }).join('') +
+
+          redsB.map(function (card) {
+            return '<div class="goal-event goal-event-b">' +
+              '<span class="goal-minute">' + (card.minuto || '') + '</span>' +
+              '<span class="goal-team goal-team-b">' +
+              j.time_b.sigla +
+              '</span>' +
+              '<span class="goal-player">' +
+              shortName(card.jogador || '') +
+              '</span>' +
+              '</div>';
+          }).join('') +
+
+          '</div>'
+          : '';
 
       const goalsHtml =
         (goalsA.length || goalsB.length)
@@ -1151,7 +1199,12 @@
           '</div>'
           : '';
 
-      return goalsHtml + redsHtml;
+      return goalsHtml +
+        redsHtml +
+        '<div class="goal-events-compact">' +
+        compactGoalsHtml +
+        compactRedsHtml +
+        '</div>';
     }
 
     function renderGameAverage(j) {
@@ -1309,7 +1362,7 @@
       const pA = pct(j.apostadores_a.length, total);
       const pE = pct(j.apostadores_empate.length, total);
       const pB = 100 - pA - pE;
-      const goalEvents = renderGoalEvents(j);
+      const goalEvents = renderEvents(j);
       const avgBadge = renderGameAverage(j);
 
       const vsContent = (j.gols_a !== null && j.gols_b !== null)
