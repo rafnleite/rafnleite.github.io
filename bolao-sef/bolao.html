@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bolão - Bar Race Final</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            margin: 0;
+        }
+        #chart-container {
+            width: 100%;
+            max-width: 1000px;
+            height: 600px;
+        }
+        .controls { margin-bottom: 10px; }
+        button {
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            transition: background 0.2s;
+        }
+        button:hover { background-color: #0056b3; }
+        #date-display {
+            font-size: 32px;
+            font-weight: bold;
+            margin: 10px 0;
+            color: #d32f2f; /* Cor de destaque para a data */
+            font-family: 'Courier New', Courier, monospace;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="controls">
+        <button id="play-btn">Play</button>
+    </div>
+    <div id="date-display">Aguardando...</div>
+    <div id="chart-container"></div>
+
+    <script>
+        const chartDom = document.getElementById('chart-container');
+        const myChart = echarts.init(chartDom);
+        const dateDisplay = document.getElementById('date-display');
+        const playBtn = document.getElementById('play-btn');
+
+        const monthNames = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
+        const colors = ['#5470c6', '#91cc75', '#fac858', '#ee6666', '#73c0de', '#3ba272', '#fc8452', '#9a60b4'];
+
+        let formattedDates = [];
+        let participantsData = [];
+        let currentIndex = 0;
+        let timer = null;
+        const transitionDuration = 1600;
+        const dayPause = 500;
+        const maxVisibleBars = 30;
+        const visibleValueLabels = 44;
+        const minChartHeight = 600;
+        const pixelsPerParticipant = 28;
+
+        function parseCsvData(csvText) {
+            const lines = csvText
+                .split(/\r?\n/)
+                .map(line => line.trim())
+                .filter(Boolean);
+
+            if (!lines.length) {
+                throw new Error('CSV vazio.');
+            }
+
+            const headers = lines[0].split(';').map(h => h.trim());
+            const participantIndex = headers.indexOf('Participante');
+            const dateColumnIndexes = headers
+                .map((h, idx) => ({ header: h, idx }))
+                .filter(({ header }) => /^\d{4}-\d{2}-\d{2}$/.test(header));
+
+            if (participantIndex < 0 || !dateColumnIndexes.length) {
+                throw new Error('CSV sem colunas esperadas (Participante e datas).');
+            }
+
+            formattedDates = dateColumnIndexes.map(({ header }) => {
+                const [, month, day] = header.split('-');
+                return `${day}/${monthNames[parseInt(month, 10) - 1]}`;
+            });
+
+            participantsData = lines.slice(1).map((line, index) => {
+                const parts = line.split(';');
+                const name = (parts[participantIndex] || '').trim();
+                let cumulative = 0;
+                const cumulativeScores = dateColumnIndexes.map(({ idx }) => {
+                    const value = parseInt((parts[idx] || '0').trim(), 10);
+                    cumulative += Number.isNaN(value) ? 0 : value;
+                    return cumulative;
+                });
+
+                return {
+                    name,
+                    scores: cumulativeScores,
+                    order: index,
+                    color: colors[index % colors.length]
+                };
+            }).filter(p => p.name.length > 0);
+        }
+
+        function updateChart(index, animate = true) {
+            const dataForDate = participantsData.map(p => ({
+                value: [
+                    (p.scores[index] || 0) + (p.order * 0.000001),
+                    p.name
+                ],
+                itemStyle: { color: p.color }
+            }));
+
+            myChart.setOption({
+                series: [{
+                    data: dataForDate
+                }],
+                animationDuration: animate ? transitionDuration : 0,
+                animationDurationUpdate: animate ? transitionDuration : 0
+            }, false, true);
+
+            dateDisplay.innerText = formattedDates[index];
+        }
+
+        function resizeChartForParticipants() {
+            const targetHeight = Math.max(minChartHeight, participantsData.length * pixelsPerParticipant);
+            chartDom.style.height = `${targetHeight}px`;
+            myChart.resize();
+        }
+
+        const option = {
+            grid: { top: 40, bottom: 30, left: 300, right: 100 },
+            xAxis: {
+                type: 'value',
+                max: 'dataMax',
+                splitLine: { show: true }
+            },
+            yAxis: {
+                type: 'category',
+                inverse: true,
+                max: maxVisibleBars - 1,
+                axisLabel: {
+                    show: true,
+                    fontSize: 14,
+                    fontWeight: 'bold',
+                    margin: 20,
+                    width: 250,
+                    overflow: 'truncate'
+                },
+                axisTick: { show: false },
+                axisLine: { show: false },
+                animationDuration: 300,
+                animationDurationUpdate: 300
+            },
+            series: [{
+                realtimeSort: true,
+                type: 'bar',
+                encode: { x: 0, y: 1 },
+                barMaxWidth: 38,
+                label: {
+                    show: true,
+                    position: 'right',
+                    valueAnimation: false,
+                    fontFamily: 'monospace',
+                    fontSize: 15,
+                    fontWeight: 'bold',
+                    formatter: (param) => param.dataIndex < visibleValueLabels ? Math.round(param.value[0]) : ''
+                }
+            }],
+            animationDuration: transitionDuration,
+            animationDurationUpdate: transitionDuration,
+            animationEasing: 'linear',
+            animationEasingUpdate: 'linear'
+        };
+
+        myChart.setOption(option);
+
+        function play() {
+            if (currentIndex >= formattedDates.length - 1) {
+                currentIndex = 0;
+                myChart.setOption({
+                    animationDuration: 0,
+                    animationDurationUpdate: 0,
+                    yAxis: {
+                        animationDuration: 0,
+                        animationDurationUpdate: 0
+                    }
+                });
+                updateChart(currentIndex, false);
+
+                setTimeout(() => {
+                    myChart.setOption({
+                        animationDuration: transitionDuration,
+                        animationDurationUpdate: transitionDuration,
+                        yAxis: {
+                            animationDuration: 300,
+                            animationDurationUpdate: 300
+                        }
+                    });
+                    startTimer();
+                }, 100);
+            } else {
+                startTimer();
+            }
+            playBtn.innerText = 'Pause';
+        }
+
+        function stop() {
+            clearTimeout(timer);
+            timer = null;
+            playBtn.innerText = 'Play';
+        }
+
+        function startTimer() {
+            if (timer) return;
+            const advanceDay = () => {
+                if (!timer) return;
+
+                currentIndex++;
+                if (currentIndex >= formattedDates.length) {
+                    stop();
+                } else {
+                    updateChart(currentIndex, true);
+                    timer = setTimeout(advanceDay, transitionDuration + dayPause);
+                }
+            };
+
+            timer = setTimeout(advanceDay, 0);
+        }
+
+        playBtn.addEventListener('click', () => {
+            timer ? stop() : play();
+        });
+
+        async function init() {
+            try {
+                const response = await fetch('pontuacao-por-dia-grupo-3484.csv');
+                if (!response.ok) {
+                    throw new Error(`Falha ao carregar CSV (${response.status}).`);
+                }
+
+                const csvText = await response.text();
+                parseCsvData(csvText);
+
+                if (!participantsData.length || !formattedDates.length) {
+                    throw new Error('CSV sem dados válidos para exibição.');
+                }
+
+                resizeChartForParticipants();
+                updateChart(0, false);
+                dateDisplay.innerText = formattedDates[0];
+            } catch (error) {
+                dateDisplay.innerText = 'Erro ao carregar CSV';
+                playBtn.disabled = true;
+                playBtn.innerText = 'Indisponível';
+                console.error(error);
+            }
+        }
+
+        init();
+        window.addEventListener('resize', () => myChart.resize());
+    </script>
+</body>
+</html>
