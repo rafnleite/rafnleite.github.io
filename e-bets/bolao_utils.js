@@ -443,7 +443,7 @@ function espnTeamsMatch(t1, t2) {
   return false;
 }
 
-function getESPNGoalScorer(detail) {
+function getESPNAthleteName(detail) {
   var athlete = ((detail || {}).athletesInvolved || [])[0] || {};
   return athlete.shortName || athlete.displayName || athlete.fullName || 'Gol';
 }
@@ -459,7 +459,7 @@ function parseESPNGoalDetails(details, homeId, awayId) {
 
     var teamId = String((detail.team || {}).id || '');
     var goal = {
-      jogador: getESPNGoalScorer(detail),
+      jogador: getESPNAthleteName(detail),
       minuto: ((detail.clock || {}).displayValue || '').trim(),
       minutoValor: Number((detail.clock || {}).value) || 0,
       contra: detail.ownGoal === true,
@@ -475,12 +475,57 @@ function parseESPNGoalDetails(details, homeId, awayId) {
   return goals;
 }
 
+function parseESPNRedCardDetails(details, homeId, awayId) {
+  var cards = {
+    home: [],
+    away: []
+  };
+
+  (details || []).forEach(function (detail) {
+    if (!detail) return;
+
+    var typeText = (((detail.type || {}).text) || '').toLowerCase();
+
+    var isRedCard =
+      detail.redCard === true ||
+      typeText === 'red card';
+
+    if (!isRedCard) return;
+
+    var card = {
+      jogador: getESPNAthleteName(detail),
+      minuto: ((detail.clock || {}).displayValue || '').trim(),
+      minutoValor: Number((detail.clock || {}).value) || 0
+    };
+
+    var teamId = String((detail.team || {}).id || '');
+
+    if (teamId === String(homeId)) {
+      cards.home.push(card);
+    } else if (teamId === String(awayId)) {
+      cards.away.push(card);
+    }
+  });
+
+  cards.home.sort(function (a, b) {
+    return a.minutoValor - b.minutoValor;
+  });
+
+  cards.away.sort(function (a, b) {
+    return a.minutoValor - b.minutoValor;
+  });
+
+  return cards;
+}
+
 function orientESPNEntry(entry, reversed) {
   return {
     scoreA: reversed ? entry.awayScore : entry.homeScore,
     scoreB: reversed ? entry.homeScore : entry.awayScore,
     goalsA: (reversed ? entry.awayGoals : entry.homeGoals).slice(),
     goalsB: (reversed ? entry.homeGoals : entry.awayGoals).slice(),
+    redCardsA: (reversed ? entry.awayRedCards : entry.homeRedCards).slice(),
+    redCardsB: (reversed ? entry.homeRedCards : entry.awayRedCards).slice(),
     isLive: entry.isLive,
     isFinal: entry.isFinal,
     isPre: entry.isPre,
@@ -538,6 +583,7 @@ function parseESPNEventsIntoMap(map, events) {
     var isFinal = st.completed === true;
 
     var goalDetails = parseESPNGoalDetails(comp.details, home.id, away.id);
+    var redCardDetails = parseESPNRedCardDetails(comp.details, home.id, away.id);
     var homeScoreRaw = (home || {}).score;
     var awayScoreRaw = (away || {}).score;
     var homeScore = (homeScoreRaw === null || homeScoreRaw === undefined || homeScoreRaw === '') ? null : parseInt(homeScoreRaw, 10);
@@ -552,6 +598,8 @@ function parseESPNEventsIntoMap(map, events) {
       awayScore: awayScore,
       homeGoals: goalDetails.home,
       awayGoals: goalDetails.away,
+      homeRedCards: redCardDetails.home,
+      awayRedCards: redCardDetails.away,
       isLive: isLive,
       isFinal: isFinal,
       isPre: isPre,
@@ -679,6 +727,8 @@ async function applyESPNOverrides(list) {
 
     j.golsDetalhesA = espn.goalsA || [];
     j.golsDetalhesB = espn.goalsB || [];
+    j.cartoesVermelhosA = espn.redCardsA || [];
+    j.cartoesVermelhosB = espn.redCardsB || [];
     j.isLive = !!espn.isLive;
     j.liveClock = espn.isLive ? (espn.clock || '') : '';
 
