@@ -1018,23 +1018,33 @@
     const cardSlotPrev = document.getElementById('card-slot-prev');
     const cardSlotNext = document.getElementById('card-slot-next');
 
-    function calcBreakdown(betA, betB, realA, realB) {
+    function calcBreakdown(betA, betB, realA, realB, betWinnerId, realWinnerId) {
       var gol = (betA === realA ? 1 : 0) + (betB === realB ? 1 : 0);
       var dif = (betA - betB) === (realA - realB) ? 1 : 0;
-      var pts = gol + dif;
       var bR = betA > betB ? 'A' : betA < betB ? 'B' : 'E';
       var rR = realA > realB ? 'A' : realA < realB ? 'B' : 'E';
       var isRes = bR === rR ? 1 : 0;
-      if (isRes) pts += (rR === 'E' ? 1 : 2);
-      return { pts: pts };
+      var isVen = (betWinnerId !== null && betWinnerId !== undefined &&
+        realWinnerId !== null && realWinnerId !== undefined &&
+        String(betWinnerId) === String(realWinnerId)) ? 1 : 0;
+      var pts = gol + dif + isRes + isVen;
+      return { pts: pts, res: isRes, ven: isVen, emp: (isRes && rR === 'E') ? 1 : 0 };
     }
 
     function getMultiplier(j) {
       var g = (j.grupo || '').toUpperCase().trim();
       if (!g || /^[A-L]$/.test(g)) return 1;
-      if (/^3/.test(g) || g === 'TER') return 4;
-      if (g === 'FIN' || g === 'FINAL') return 10;
+      if (/^3/.test(g) || g === 'TER') return 2;
+      if (g === 'FIN' || g === 'FINAL') return 4;
       return 1;
+    }
+
+    function resolveWinnerId(j, scoreA, scoreB) {
+      if (j && j.id_time_vencedor !== null && j.id_time_vencedor !== undefined) return j.id_time_vencedor;
+      if (scoreA === null || scoreA === undefined || scoreB === null || scoreB === undefined) return null;
+      if (scoreA > scoreB) return ((j || {}).time_a || {}).id || null;
+      if (scoreB > scoreA) return ((j || {}).time_b || {}).id || null;
+      return null;
     }
 
     function isGroupStage(j) {
@@ -1272,19 +1282,16 @@
       names.forEach(function (n) { acc[n] = { pts: 0, res: 0, ven: 0, emp: 0, gp: {} }; });
       doneGames.forEach(function (j, ji) {
         var mult = getMultiplier(j);
+        var realWinnerId = resolveWinnerId(j, j.gols_a, j.gols_b);
         [].concat(j.apostadores_a, j.apostadores_empate, j.apostadores_b).forEach(function (a) {
           if (!acc[a.nome]) acc[a.nome] = { pts: 0, res: 0, ven: 0, emp: 0, gp: {} };
           var sp = a.placar.split('x'), bA = +sp[0] || 0, bB = +sp[1] || 0;
-          var rR = j.gols_a > j.gols_b ? 'A' : j.gols_a < j.gols_b ? 'B' : 'E';
-          var bR = bA > bB ? 'A' : bA < bB ? 'B' : 'E';
-          var isRes = bR === rR ? 1 : 0;
-          var gol = (bA === j.gols_a ? 1 : 0) + (bB === j.gols_b ? 1 : 0);
-          var dif = (bA - bB) === (j.gols_a - j.gols_b) ? 1 : 0;
-          var pts = (gol + dif + (isRes ? (rR === 'E' ? 1 : 2) : 0)) * mult;
+          var bd = calcBreakdown(bA, bB, j.gols_a, j.gols_b, a.id_time_vencedor, realWinnerId);
+          var pts = bd.pts * mult;
           var r = acc[a.nome];
-          r.pts += pts; r.res += isRes;
-          r.ven += (isRes && rR !== 'E') ? 1 : 0;
-          r.emp += (isRes && rR === 'E') ? 1 : 0;
+          r.pts += pts; r.res += bd.res;
+          r.ven += bd.ven;
+          r.emp += bd.emp;
           r.gp[j.id] = (r.gp[j.id] || 0) + pts;
         });
         var doneIds = doneGames.slice(0, ji + 1).map(function (x) { return x.id; });
@@ -1434,7 +1441,14 @@
       function betPts(ap) {
         if (actualPlacar === null) return undefined;
         var sp = ap.placar.split('x');
-        return calcBreakdown(+sp[0] || 0, +sp[1] || 0, j.gols_a, j.gols_b).pts;
+        return calcBreakdown(
+          +sp[0] || 0,
+          +sp[1] || 0,
+          j.gols_a,
+          j.gols_b,
+          ap.id_time_vencedor,
+          resolveWinnerId(j, j.gols_a, j.gols_b)
+        ).pts;
       }
 
       const listA = j.apostadores_a.length

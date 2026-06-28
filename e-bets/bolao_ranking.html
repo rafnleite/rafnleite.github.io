@@ -264,6 +264,32 @@
       flex-shrink: 0;
     }
 
+    .sim-win-wrap {
+      margin-top: 6px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .sim-win-select {
+      width: 100%;
+      max-width: 180px;
+      height: 24px;
+      border: 1.5px solid var(--border);
+      border-radius: 5px;
+      background: var(--white);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.62rem;
+      font-weight: 600;
+      padding: 0 6px;
+      outline: none;
+      transition: border-color .15s;
+    }
+
+    .sim-win-select:focus {
+      border-color: var(--accent);
+    }
+
     .sim-inp {
       width: 28px;
       height: 26px;
@@ -1139,8 +1165,8 @@
         <div id="view-table">
           <div class="info-strip">
             <strong style="color:var(--text)">Pontuação por jogo:</strong>
-            Gols A exatos +1 · Gols B exatos +1 · Diferença exata +1 · Resultado correto +1 (empate) / +2 (vencedor).
-            Máx. 5 pts/jogo · 3º lugar ×4 · Final ×10 · Desempate: resultados → vencedores → empates → jogo mais próximo
+            Gols A exatos +1 · Gols B exatos +1 · Diferença exata +1 · Resultado correto +1 · Vencedor do confronto +1.
+            Máx. 5 pts/jogo · 3º lugar ×2 · Final ×4 · Desempate: resultados → vencedores → empates → jogo mais próximo
             da final.
           </div>
           <table class="rank-table">
@@ -1281,26 +1307,59 @@
     let JOGOS = [];
 
     // ── Scoring ──────────────────────────────────────────────────────────────────
-    function calcBreakdown(betA, betB, realA, realB) {
+    function calcBreakdown(betA, betB, realA, realB, betWinnerId, realWinnerId) {
       var gol = (betA === realA ? 1 : 0) + (betB === realB ? 1 : 0);
       var exa = (betA === realA && betB === realB) ? 1 : 0;
       var dif = (betA - betB) === (realA - realB) ? 1 : 0;
-      var pts = gol + dif;
       var bR = betA > betB ? 'A' : betA < betB ? 'B' : 'E';
       var rR = realA > realB ? 'A' : realA < realB ? 'B' : 'E';
       var isRes = bR === rR ? 1 : 0;
-      var isVen = (isRes && rR !== 'E') ? 1 : 0;
+      var isVen = (betWinnerId !== null && betWinnerId !== undefined &&
+        realWinnerId !== null && realWinnerId !== undefined &&
+        String(betWinnerId) === String(realWinnerId)) ? 1 : 0;
       var isEmp = (isRes && rR === 'E') ? 1 : 0;
-      if (isRes) pts += (rR === 'E' ? 1 : 2);
+      var pts = gol + dif + isRes + isVen;
       return { pts: pts, res: isRes, ven: isVen, emp: isEmp, gol: gol, dif: dif, exa: exa };
     }
 
     function getMultiplier(j) {
       var g = (j.grupo || '').toUpperCase().trim();
       if (!g || /^[A-L]$/.test(g)) return 1;
-      if (/^3/.test(g) || g === 'TER') return 4;
-      if (g === 'FIN' || g === 'FINAL') return 10;
+      if (/^3/.test(g) || g === 'TER') return 2;
+      if (g === 'FIN' || g === 'FINAL') return 4;
       return 1;
+    }
+
+    function resolveWinnerId(j, scoreA, scoreB, forcedWinnerId) {
+      if (forcedWinnerId !== null && forcedWinnerId !== undefined && forcedWinnerId !== '') return forcedWinnerId;
+      if (j && j.id_time_vencedor !== null && j.id_time_vencedor !== undefined) return j.id_time_vencedor;
+      if (scoreA === null || scoreA === undefined || scoreB === null || scoreB === undefined) return null;
+      if (scoreA > scoreB) return ((j || {}).time_a || {}).id || null;
+      if (scoreB > scoreA) return ((j || {}).time_b || {}).id || null;
+      return null;
+    }
+
+    function isGroupStage(j) {
+      var g = ((j || {}).grupo || '').toUpperCase().trim();
+      return !!g && /^[A-L]$/.test(g);
+    }
+
+    function needsWinnerChoiceForDraw(j, a, b) {
+      return a === b && !isGroupStage(j);
+    }
+
+    function winnerSiglaById(j, winnerId) {
+      if (winnerId === null || winnerId === undefined || winnerId === '') return '';
+      if (String(winnerId) === String(((j || {}).time_a || {}).id)) return ((j || {}).time_a || {}).sigla || '';
+      if (String(winnerId) === String(((j || {}).time_b || {}).id)) return ((j || {}).time_b || {}).sigla || '';
+      return '';
+    }
+
+    function getSimEntryComplete(j) {
+      var s = simScores[j.id];
+      if (!s || s.a === null || s.a === undefined || s.b === null || s.b === undefined) return null;
+      if (needsWinnerChoiceForDraw(j, s.a, s.b) && (s.w === null || s.w === undefined || s.w === '')) return null;
+      return s;
     }
 
     // ── State ────────────────────────────────────────────────────────────────────
@@ -1325,9 +1384,10 @@
         });
         if (j.gols_a === null || j.gols_b === null) return;
         var mult = getMultiplier(j);
+        var realWinnerId = resolveWinnerId(j, j.gols_a, j.gols_b);
         all.forEach(function (a) {
           var p = a.placar.split('x');
-          var bd = calcBreakdown(+p[0] || 0, +p[1] || 0, j.gols_a, j.gols_b);
+          var bd = calcBreakdown(+p[0] || 0, +p[1] || 0, j.gols_a, j.gols_b, a.id_time_vencedor, realWinnerId);
           var s = scoreboard[a.nome];
           s.real_pts += bd.pts * mult;
           s.real_res += bd.res;
@@ -1349,13 +1409,14 @@
       });
       JOGOS.forEach(function (j) {
         if (j.gols_a !== null && j.gols_b !== null) return;
-        var s = simScores[j.id];
-        if (!s || s.a === null || s.b === null) return;
+        var s = getSimEntryComplete(j);
+        if (!s) return;
         var mult = getMultiplier(j);
+        var realWinnerId = resolveWinnerId(j, s.a, s.b, s.w);
         [].concat(j.apostadores_a, j.apostadores_empate, j.apostadores_b).forEach(function (a) {
           if (!scoreboard[a.nome]) return;
           var p = a.placar.split('x');
-          var bd = calcBreakdown(+p[0] || 0, +p[1] || 0, s.a, s.b);
+          var bd = calcBreakdown(+p[0] || 0, +p[1] || 0, s.a, s.b, a.id_time_vencedor, realWinnerId);
           var sc = scoreboard[a.nome];
           sc.sim_pts += bd.pts * mult;
           sc.sim_res += bd.res;
@@ -1501,8 +1562,11 @@
       var hasSim = entries.some(function (e) { return e.total > e.real_pts; });
       var maxPts = sorted.length ? Math.max(sorted[0].total, 1) : 1;
 
-      var done = JOGOS.filter(function (j) { return j.gols_a !== null && j.gols_b !== null; });
-      var last5 = done.slice(-5);
+      var recentGames = JOGOS.filter(function (j) {
+        if (j.gols_a !== null && j.gols_b !== null) return true;
+        if (!showSim) return false;
+        return !!getSimEntryComplete(j);
+      }).slice(-5);
 
       document.getElementById('ranking-body').innerHTML = sorted.map(function (e, i) {
         var pos = totalRanks[i];
@@ -1516,7 +1580,7 @@
           else if (delta < 0) deltaHtml = '<span class="rank-delta dn">▼' + Math.abs(delta) + '</span>';
           else deltaHtml = '<span class="rank-delta eq">=</span>';
         }
-        var last5Html = last5.map(function (j) {
+        var last5Html = recentGames.map(function (j) {
           var mult = getMultiplier(j);
           var allBettors = [].concat(j.apostadores_a, j.apostadores_empate, j.apostadores_b);
           var betEntry = allBettors.find(function (a) { return a.nome === e.nome; });
@@ -1524,9 +1588,20 @@
           var gp = e.total_game_pts[j.id] || 0;
           var rawPts = mult > 0 ? Math.round(gp / mult) : 0;
           var pointColor = bolaoGetPointsColor(rawPts);
+          var betParts = (betEntry.placar || '0x0').split('x');
           var betDisp = betEntry.placar.replace('x', ' × ');
+          if ((+betParts[0] || 0) === (+betParts[1] || 0) && betEntry.time_vencedor_sigla) {
+            betDisp += ' ' + betEntry.time_vencedor_sigla;
+          }
+          var sim = getSimEntryComplete(j);
+          var effA = j.gols_a !== null && j.gols_a !== undefined ? j.gols_a : (sim ? sim.a : null);
+          var effB = j.gols_b !== null && j.gols_b !== undefined ? j.gols_b : (sim ? sim.b : null);
+          var effWinnerId = resolveWinnerId(j, effA, effB, sim ? sim.w : null);
+          var effWinnerSigla = (effA === effB) ? winnerSiglaById(j, effWinnerId) : '';
+          var statusLabel = (j.gols_a !== null && j.gols_b !== null) ? 'Resultado' : 'Simulação';
+          var statusDisp = effA + ' × ' + effB + (effWinnerSigla ? ' ' + effWinnerSigla : '');
           var tipLines = (j.time_a.nome || '') + ' × ' + (j.time_b.nome || '') +
-            '\nResultado: ' + j.gols_a + ' × ' + j.gols_b +
+            '\n' + statusLabel + ': ' + statusDisp +
             '\nPalpite: ' + betDisp +
             '\n' + (gp > 0 ? '+' + gp : '0') + ' pontos';
           return '<span class="score-pip" style="background:' + pointColor.bg + ';color:' + pointColor.text + '" data-tip="' + tipLines.replace(/"/g, '&quot;') + '"><span class="score-pip-text">' + gp + '</span></span>';
@@ -1659,18 +1734,20 @@
       pfx = pfx || '';
       var isDone = j.gols_a !== null && j.gols_b !== null;
       var isLive = !!j.isLive;
+      var isKo = !isGroupStage(j);
       var fA = j.time_a.logo ? '<img src="' + j.time_a.logo + '" class="sim-flag" alt="">' : '';
       var fB = j.time_b.logo ? '<img src="' + j.time_b.logo + '" class="sim-flag" alt="">' : '';
       var hora = j.data
         ? (j.data.slice(11, 13) + 'h' + (j.data.slice(14, 16) !== '00' ? j.data.slice(14, 16) : ''))
         : '';
+      var stageLabel = isGroupStage(j) ? (j.grupo || '') : (j.fase || j.grupo || '');
 
       // meta row: clock (if live) or time · group · city
       var metaParts;
       if (isLive) {
-        metaParts = [j.grupo || '', j.cidade].filter(Boolean).join(' · ');
+        metaParts = [stageLabel, j.cidade].filter(Boolean).join(' · ');
       } else {
-        metaParts = [hora, j.grupo || '', j.cidade].filter(Boolean).join(' · ');
+        metaParts = [hora, stageLabel, j.cidade].filter(Boolean).join(' · ');
       }
 
       var liveBadge = isLive
@@ -1682,6 +1759,7 @@
       var apostasLink = '<a class="sb-apostas-link" href="bolao_apostas.html' + (apostasIdx >= 0 ? '?jogo=' + apostasIdx : '') + '" target="_blank">Ver apostas ↗</a>';
 
       var midHtml;
+      var winnerHtml = '';
       if (isDone) {
         if (isLive) {
           midHtml = '<div class="score-live-sb">' +
@@ -1696,6 +1774,17 @@
         var sv = simScores[j.id];
         var vA = sv && sv.a !== null ? sv.a : '';
         var vB = sv && sv.b !== null ? sv.b : '';
+        var w = sv && sv.w !== null && sv.w !== undefined ? String(sv.w) : '';
+        var drawNow = vA !== '' && vB !== '' && +vA === +vB;
+        winnerHtml = isKo
+          ? '<div class="sim-win-wrap" id="siw-wrap-' + pfx + j.id + '" style="display:' + (drawNow ? 'flex' : 'none') + '">' +
+          '<select class="sim-win-select" id="siw-' + pfx + j.id + '" onchange="onSim(' + j.id + ')"' + (drawNow ? '' : ' disabled') + '>' +
+          '<option value="">Vencedor do confronto</option>' +
+          '<option value="' + j.time_a.id + '"' + (w === String(j.time_a.id) ? ' selected' : '') + '>' + j.time_a.nome + '</option>' +
+          '<option value="' + j.time_b.id + '"' + (w === String(j.time_b.id) ? ' selected' : '') + '>' + j.time_b.nome + '</option>' +
+          '</select>' +
+          '</div>'
+          : '';
         midHtml =
           '<div class="sim-inputs">' +
           '<input class="sim-inp" id="sia-' + pfx + j.id + '" type="number" min="0" max="30" value="' + vA + '" placeholder="\u2014" oninput="onSim(' + j.id + ')">' +
@@ -1704,8 +1793,7 @@
           '</div>';
       }
 
-      var sv2 = simScores[j.id];
-      var filled = !isDone && sv2 && sv2.a !== null && sv2.b !== null;
+      var filled = !isDone && !!getSimEntryComplete(j);
       var cardCls = isLive ? ' live' : (isDone ? ' done' : (filled ? ' filled' : ''));
 
       return '<div class="sim-game-card' + cardCls + '" id="sgc-' + pfx + j.id + '">' +
@@ -1718,7 +1806,28 @@
         midHtml +
         '<div class="sim-team-side b">' + fB + '<span class="sim-team-lbl">' + j.time_b.nome + '</span></div>' +
         '</div>' +
+        winnerHtml +
         '</div>';
+    }
+
+    function syncWinnerSelectorVisibility(id, a, b, w) {
+      var j = JOGOS.find(function (g) { return g.id === id; });
+      var drawNeedsWinner = a !== '' && b !== '' && j && needsWinnerChoiceForDraw(j, +a, +b);
+      ['', 'm'].forEach(function (pfx) {
+        var wrap = document.getElementById('siw-wrap-' + pfx + id);
+        var sel = document.getElementById('siw-' + pfx + id);
+        if (!wrap || !sel) return;
+        if (drawNeedsWinner) {
+          wrap.style.display = 'flex';
+          sel.disabled = false;
+          if (w !== undefined) sel.value = (w === null || w === '') ? '' : String(w);
+        } else {
+          wrap.style.display = 'none';
+          sel.disabled = true;
+          sel.value = '';
+        }
+      });
+      return !!drawNeedsWinner;
     }
 
     // ── Simulator actions ────────────────────────────────────────────────────────
@@ -1730,23 +1839,40 @@
       var bElM = document.getElementById('sib-m' + id);
       var aEl0 = document.getElementById('sia-' + id);
       var bEl0 = document.getElementById('sib-' + id);
+      var wElM = document.getElementById('siw-m' + id);
+      var wEl0 = document.getElementById('siw-' + id);
+      var j = JOGOS.find(function (g) { return g.id === id; });
       // Determine which fired and sync the other
-      var a, b;
+      var a, b, w;
       if (document.activeElement === aEl0 || document.activeElement === bEl0) {
         a = aEl0 ? aEl0.value.trim() : ''; b = bEl0 ? bEl0.value.trim() : '';
-        if (aElM) aElM.value = a; if (bElM) bElM.value = b;
+        w = wEl0 ? wEl0.value : (wElM ? wElM.value : '');
+        if (aElM) aElM.value = a; if (bElM) bElM.value = b; if (wElM) wElM.value = w;
+      } else if (document.activeElement === wEl0) {
+        a = aEl0 ? aEl0.value.trim() : ''; b = bEl0 ? bEl0.value.trim() : '';
+        w = wEl0 ? wEl0.value : '';
+        if (aElM) aElM.value = a; if (bElM) bElM.value = b; if (wElM) wElM.value = w;
+      } else if (document.activeElement === wElM) {
+        a = aElM ? aElM.value.trim() : ''; b = bElM ? bElM.value.trim() : '';
+        w = wElM ? wElM.value : '';
+        if (aEl0) aEl0.value = a; if (bEl0) bEl0.value = b; if (wEl0) wEl0.value = w;
       } else {
         a = aElM ? aElM.value.trim() : ''; b = bElM ? bElM.value.trim() : '';
-        if (aEl0) aEl0.value = a; if (bEl0) bEl0.value = b;
+        w = wElM ? wElM.value : (wEl0 ? wEl0.value : '');
+        if (aEl0) aEl0.value = a; if (bEl0) bEl0.value = b; if (wEl0) wEl0.value = w;
       }
       var card0 = document.getElementById('sgc-' + id);
       var cardM = document.getElementById('sgc-m' + id);
-      if (a !== '' && b !== '') {
-        simScores[id] = { a: +a, b: +b };
+      var hasScore = a !== '' && b !== '';
+      var needsWinner = syncWinnerSelectorVisibility(id, a, b, w);
+      if (!needsWinner) w = '';
+
+      if (hasScore && (!needsWinner || w !== '')) {
+        simScores[id] = { a: +a, b: +b, w: needsWinner ? +w : null };
         if (card0) card0.classList.add('filled');
         if (cardM) cardM.classList.add('filled');
       } else {
-        simScores[id] = null;
+        simScores[id] = hasScore ? { a: +a, b: +b, w: w ? +w : null } : null;
         if (card0) card0.classList.remove('filled');
         if (cardM) cardM.classList.remove('filled');
       }
@@ -1764,14 +1890,32 @@
         var top = Object.keys(cnt).sort(function (x, y) { return cnt[y] - cnt[x]; })[0];
         if (!top) return;
         var sp = top.split('x'), va = +sp[0] || 0, vb = +sp[1] || 0;
-        simScores[j.id] = { a: va, b: vb };
+        var w = null;
+        if (needsWinnerChoiceForDraw(j, va, vb)) {
+          var cntW = {};
+          grp.filter(function (a) {
+            return a.placar === top && a.id_time_vencedor !== null && a.id_time_vencedor !== undefined;
+          }).forEach(function (a) {
+            var k = String(a.id_time_vencedor);
+            cntW[k] = (cntW[k] || 0) + 1;
+          });
+          var bestW = Object.keys(cntW).sort(function (x, y) { return cntW[y] - cntW[x]; })[0];
+          w = bestW ? +bestW : null;
+        }
+        simScores[j.id] = { a: va, b: vb, w: w };
+        syncWinnerSelectorVisibility(j.id, String(va), String(vb), w);
         ['', 'm'].forEach(function (pfx) {
           var ia = document.getElementById('sia-' + pfx + j.id);
           var ib = document.getElementById('sib-' + pfx + j.id);
+          var iw = document.getElementById('siw-' + pfx + j.id);
           var card = document.getElementById('sgc-' + pfx + j.id);
           if (ia) ia.value = va;
           if (ib) ib.value = vb;
-          if (card) card.classList.add('filled');
+          if (iw) iw.value = w === null ? '' : String(w);
+          if (card) {
+            if (needsWinnerChoiceForDraw(j, va, vb) && (w === null || w === undefined)) card.classList.remove('filled');
+            else card.classList.add('filled');
+          }
         });
       });
       recomputeSim();
@@ -1781,12 +1925,15 @@
       simScores = {};
       JOGOS.forEach(function (j) {
         if (j.gols_a !== null && j.gols_b !== null) return;
+        syncWinnerSelectorVisibility(j.id, '', '', '');
         ['', 'm'].forEach(function (pfx) {
           var ia = document.getElementById('sia-' + pfx + j.id);
           var ib = document.getElementById('sib-' + pfx + j.id);
+          var iw = document.getElementById('siw-' + pfx + j.id);
           var card = document.getElementById('sgc-' + pfx + j.id);
           if (ia) ia.value = '';
           if (ib) ib.value = '';
+          if (iw) iw.value = '';
           if (card) card.classList.remove('filled');
         });
       });
@@ -1827,13 +1974,12 @@
       var done = JOGOS.filter(function (j) {
         if (j.gols_a !== null && j.gols_b !== null) return true;
         if (!showSim) return false;
-        var s = simScores[j.id];
-        return s && s.a !== null && s.b !== null;
+        return !!getSimEntryComplete(j);
       });
       // For each game resolve the effective score (real or sim)
       function effectiveScore(j) {
         if (j.gols_a !== null && j.gols_b !== null) return { a: j.gols_a, b: j.gols_b };
-        var s = simScores[j.id]; return { a: s.a, b: s.b };
+        var s = getSimEntryComplete(j); return { a: s.a, b: s.b };
       }
       var players = Object.keys(scoreboard);
       var acc = {};
@@ -1842,10 +1988,12 @@
       gameHistory = done.map(function (j) {
         var eff = effectiveScore(j);
         var mult = getMultiplier(j);
+        var sim = getSimEntryComplete(j);
+        var realWinnerId = resolveWinnerId(j, eff.a, eff.b, sim ? sim.w : null);
         [].concat(j.apostadores_a, j.apostadores_empate, j.apostadores_b).forEach(function (a) {
           if (!acc[a.nome]) return;
           var sp = a.placar.split('x');
-          var bd = calcBreakdown(+sp[0] || 0, +sp[1] || 0, eff.a, eff.b);
+          var bd = calcBreakdown(+sp[0] || 0, +sp[1] || 0, eff.a, eff.b, a.id_time_vencedor, realWinnerId);
           var r = acc[a.nome];
           r.pts += bd.pts * mult; r.res += bd.res; r.ven += bd.ven; r.emp += bd.emp;
           if (!r.gp) r.gp = {};

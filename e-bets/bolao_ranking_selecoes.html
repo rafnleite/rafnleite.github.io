@@ -287,6 +287,219 @@
   line-height: 1.6;
 }
 
+/* ── COMPARATIVOS TODOS GRUPOS ───────────────────────── */
+.compare-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding: 12px 14px 14px;
+}
+
+.compare-quad {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #fff;
+  padding: 10px;
+  min-height: 86px;
+}
+
+.compare-quad-title {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.7px;
+  text-transform: uppercase;
+  color: var(--sub);
+  margin-bottom: 8px;
+}
+
+.team-chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.team-chip {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 6px 8px;
+  background: var(--bg);
+  font-size: 0.64rem;
+  color: var(--text);
+  min-width: 72px;
+}
+
+.team-chip-flag {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--border);
+  flex-shrink: 0;
+  background: #fff;
+}
+
+.team-chip-name {
+  text-align: center;
+  line-height: 1.2;
+  font-weight: 600;
+}
+
+.team-chip-empty {
+  color: var(--light);
+  font-size: 0.68rem;
+}
+
+.diff-table-wrap {
+  overflow-x: auto;
+}
+
+.diff-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 620px;
+}
+
+.diff-table th,
+.diff-table td {
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+  padding: 8px 10px;
+}
+
+.diff-table th {
+  background: #f5f6f8;
+  text-align: left;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--sub);
+}
+
+.diff-bettor {
+  white-space: nowrap;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.sortable {
+  cursor: pointer;
+  user-select: none;
+}
+
+.sort-ind {
+  margin-left: 4px;
+  color: var(--light);
+}
+
+.card-head-main {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.card-head .card-actions {
+  display: flex;
+}
+
+.section-export-head .card-actions {
+  display: flex;
+}
+
+.section-export-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: -4px 0 -10px;
+}
+
+.section-export-title {
+  font-size: 0.7rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--sub);
+}
+
+.group-export-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.td-center {
+  text-align: center !important;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+
+.status-badge-ok {
+  background: var(--pos-green-bg);
+  color: var(--pos-green);
+  border-color: #86efac;
+}
+
+.status-badge-no {
+  background: var(--pos-red-bg);
+  color: var(--pos-red);
+  border-color: #fecaca;
+}
+
+.diff-table th:nth-child(1),
+.diff-table td:nth-child(1) {
+  width: 16%;
+  min-width: 150px;
+}
+
+.diff-table th:nth-child(2),
+.diff-table td:nth-child(2),
+.diff-table th:nth-child(3),
+.diff-table td:nth-child(3),
+.diff-table th:nth-child(4),
+.diff-table td:nth-child(4) {
+  width: 28%;
+}
+
+.diff-table th:nth-child(2),
+.diff-table td:nth-child(2) {
+  width: 10%;
+  min-width: 110px;
+}
+
+.outcome-table th:nth-child(1),
+.outcome-table td:nth-child(1) {
+  width: 50%;
+}
+
+.outcome-table th:nth-child(2),
+.outcome-table td:nth-child(2) {
+  width: 20%;
+}
+
+.outcome-table th:nth-child(3),
+.outcome-table td:nth-child(3) {
+  width: 30%;
+}
+
 /* ── RESPONSIVE ────────────────────────────── */
 /* ── MOBILE DRAWER ───────────────────────── */
 .mob-fab {
@@ -353,6 +566,10 @@
   .team-group-badge { display: none; }
   .stand-table { min-width: 440px; }
   .mob-fab { display: flex; }
+  .compare-grid { grid-template-columns: 1fr; }
+  .section-export-head {
+    margin: 0;
+  }
 }
 @media (max-width: 480px) {
   .stand-table { min-width: 0; font-size: 0.72rem; }
@@ -427,13 +644,6 @@
     <button class="sidebar-fab" id="sidebar-toggle-btn" onclick="toggleSidebarVisibility()" title="Exibir ou ocultar menu lateral">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
       FILTROS
-    </button>
-    <button class="btn-img" onclick="exportImage()" title="Salvar imagem" style="position:absolute;top:12px;right:12px;z-index:10">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
-        <polyline points="7,10 12,15 17,10"/>
-        <line x1="12" y1="15" x2="12" y2="3"/>
-      </svg>
     </button>
     <div id="tables-container"></div>
   </div>
@@ -579,64 +789,388 @@ function toggleMobSection(headEl) {
 var activeView = 'total'; // 'total', 'todos', or a group letter
 var selectedParticipants = new Set();
 var allTeams = [];
+var allTeamsData = { teams: [], h2hPts: {} };
+var teamMetaMap = {};
+var teamOutcomeSort = { key: 'team', dir: 1 };
+var bettorDiffSort = { key: 'hits', dir: -1 };
 
-// ── Compute team stats from filtered apostas ──────────────────────────────────
-function computeAllTeams() {
+function buildTeamMetaMap() {
+  teamMetaMap = {};
+  JOGOS.forEach(function(j) {
+    if (j.time_a && j.time_a.id !== undefined && j.time_a.id !== null) {
+      teamMetaMap[j.time_a.id] = {
+        id: j.time_a.id,
+        nome: j.time_a.nome || '',
+        logo: j.time_a.logo || '',
+        grupo: j.grupo || ''
+      };
+    }
+    if (j.time_b && j.time_b.id !== undefined && j.time_b.id !== null) {
+      teamMetaMap[j.time_b.id] = {
+        id: j.time_b.id,
+        nome: j.time_b.nome || '',
+        logo: j.time_b.logo || '',
+        grupo: j.grupo || ''
+      };
+    }
+  });
+}
+
+function addH2H(h2hPts, teamId, oppId, pts) {
+  if (!h2hPts[teamId]) h2hPts[teamId] = {};
+  h2hPts[teamId][oppId] = (h2hPts[teamId][oppId] || 0) + pts;
+}
+
+function h2hPoints(h2hPts, teamId, oppId) {
+  if (!h2hPts || !h2hPts[teamId]) return 0;
+  return h2hPts[teamId][oppId] || 0;
+}
+
+function computeTeamsData(participantSet, useActualFlag) {
   var teamsMap = {};
+  var h2hPts = {};
+
   function getOrCreate(id, nome, logo, grupo) {
-    if (!teamsMap[id]) teamsMap[id] = { id: id, nome: nome, logo: logo, grupo: grupo,
-      jogos: 0, expV: 0, expE: 0, expD: 0, expGF: 0, expGC: 0 };
+    if (!teamsMap[id]) teamsMap[id] = {
+      id: id,
+      nome: nome,
+      logo: logo,
+      grupo: grupo,
+      jogos: 0,
+      expV: 0,
+      expE: 0,
+      expD: 0,
+      expGF: 0,
+      expGC: 0
+    };
     return teamsMap[id];
   }
+
   JOGOS.forEach(function(j) {
     var tA = getOrCreate(j.time_a.id, j.time_a.nome, j.time_a.logo, j.grupo);
     var tB = getOrCreate(j.time_b.id, j.time_b.nome, j.time_b.logo, j.grupo);
-    if (useActualResults && j.gols_a !== null && j.gols_b !== null) {
-      // Use actual match result
-      var vA = j.gols_a > j.gols_b ? 1 : 0;
-      var e  = j.gols_a === j.gols_b ? 1 : 0;
-      var vB = j.gols_a < j.gols_b ? 1 : 0;
+
+    if (useActualFlag && j.gols_a !== null && j.gols_b !== null) {
+      var ptsA = j.gols_a > j.gols_b ? 3 : j.gols_a === j.gols_b ? 1 : 0;
+      var ptsB = j.gols_b > j.gols_a ? 3 : j.gols_b === j.gols_a ? 1 : 0;
+      var vA = ptsA === 3 ? 1 : 0;
+      var e = ptsA === 1 ? 1 : 0;
+      var vB = ptsB === 3 ? 1 : 0;
+
       tA.jogos++; tA.expV += vA; tA.expE += e; tA.expD += vB;
       tA.expGF += j.gols_a; tA.expGC += j.gols_b;
       tB.jogos++; tB.expV += vB; tB.expE += e; tB.expD += vA;
       tB.expGF += j.gols_b; tB.expGC += j.gols_a;
-    } else {
-      var fA = j.apostadores_a.filter(function(a) { return selectedParticipants.has(a.nome); });
-      var fE = j.apostadores_empate.filter(function(a) { return selectedParticipants.has(a.nome); });
-      var fB = j.apostadores_b.filter(function(a) { return selectedParticipants.has(a.nome); });
-      var nA = fA.length, nE = fE.length, nB = fB.length;
-      var total = nA + nE + nB;
-      if (total === 0) return;
-      var allApostas = fA.concat(fE, fB);
-      var sumGA = 0, sumGB = 0;
-      allApostas.forEach(function(a) {
-        var parts = (a.placar || '0x0').split('x');
-        sumGA += (parseInt(parts[0]) || 0);
-        sumGB += (parseInt(parts[1]) || 0);
-      });
-      var avgGA = sumGA / total, avgGB = sumGB / total;
-      tA.jogos++; tA.expV += nA/total; tA.expE += nE/total; tA.expD += nB/total;
-      tA.expGF += avgGA; tA.expGC += avgGB;
-      tB.jogos++; tB.expV += nB/total; tB.expE += nE/total; tB.expD += nA/total;
-      tB.expGF += avgGB; tB.expGC += avgGA;
+
+      addH2H(h2hPts, j.time_a.id, j.time_b.id, ptsA);
+      addH2H(h2hPts, j.time_b.id, j.time_a.id, ptsB);
+      return;
     }
+
+    var fA = j.apostadores_a.filter(function(a) { return participantSet.has(a.nome); });
+    var fE = j.apostadores_empate.filter(function(a) { return participantSet.has(a.nome); });
+    var fB = j.apostadores_b.filter(function(a) { return participantSet.has(a.nome); });
+    var nA = fA.length, nE = fE.length, nB = fB.length;
+    var total = nA + nE + nB;
+    if (total === 0) return;
+
+    var allApostas = fA.concat(fE, fB);
+    var sumGA = 0, sumGB = 0;
+    allApostas.forEach(function(a) {
+      var parts = (a.placar || '0x0').split('x');
+      sumGA += (parseInt(parts[0], 10) || 0);
+      sumGB += (parseInt(parts[1], 10) || 0);
+    });
+
+    var avgGA = sumGA / total;
+    var avgGB = sumGB / total;
+    var ptsAExp = (3 * nA + nE) / total;
+    var ptsBExp = (3 * nB + nE) / total;
+
+    tA.jogos++; tA.expV += nA / total; tA.expE += nE / total; tA.expD += nB / total;
+    tA.expGF += avgGA; tA.expGC += avgGB;
+    tB.jogos++; tB.expV += nB / total; tB.expE += nE / total; tB.expD += nA / total;
+    tB.expGF += avgGB; tB.expGC += avgGA;
+
+    addH2H(h2hPts, j.time_a.id, j.time_b.id, ptsAExp);
+    addH2H(h2hPts, j.time_b.id, j.time_a.id, ptsBExp);
   });
-  allTeams = Object.values(teamsMap).map(function(t) {
-    return Object.assign({}, t, { pts: t.expV*3 + t.expE, sg: t.expGF - t.expGC });
+
+  var teams = Object.values(teamsMap).map(function(t) {
+    return Object.assign({}, t, { pts: t.expV * 3 + t.expE, sg: t.expGF - t.expGC });
   });
+
+  return { teams: teams, h2hPts: h2hPts };
+}
+
+// ── Compute team stats from filtered apostas ──────────────────────────────────
+function computeAllTeams() {
+  allTeamsData = computeTeamsData(selectedParticipants, useActualResults);
+  allTeams = allTeamsData.teams;
 }
 
 // ── Sort function: pts desc → sg desc → gf desc → alphabetical ──────────────
-function sortTeams(arr) {
+function sortTeams(arr, h2hPts) {
+  var eps = 0.0001;
   return arr.slice().sort(function(a, b) {
     var dp = b.pts - a.pts;
-    if (Math.abs(dp) > 0.0001) return dp;
+    if (Math.abs(dp) > eps) return dp;
+
+    // Criterio FIFA para empate em pontos: confronto direto (quando houver).
+    var h2hA = h2hPoints(h2hPts, a.id, b.id);
+    var h2hB = h2hPoints(h2hPts, b.id, a.id);
+    if (Math.abs(h2hB - h2hA) > eps) return h2hB - h2hA;
+
     var ds = b.sg - a.sg;
-    if (Math.abs(ds) > 0.0001) return ds;
+    if (Math.abs(ds) > eps) return ds;
     var dg = b.expGF - a.expGF;
-    if (Math.abs(dg) > 0.0001) return dg;
+    if (Math.abs(dg) > eps) return dg;
     return a.nome.localeCompare(b.nome, 'pt-BR', { sensitivity: 'base' });
   });
+}
+
+function getQualifiedTeamIds(teams, h2hPts) {
+  var qualified = new Set();
+  var terceiros = [];
+
+  groups.forEach(function(g) {
+    var groupTeams = teams.filter(function(t) { return t.grupo === g; });
+    var sortedGroup = sortTeams(groupTeams, h2hPts);
+    if (sortedGroup[0]) qualified.add(sortedGroup[0].id);
+    if (sortedGroup[1]) qualified.add(sortedGroup[1].id);
+    if (sortedGroup[2]) terceiros.push(Object.assign({}, sortedGroup[2], { _grupo: g }));
+  });
+
+  sortTeams(terceiros, null).slice(0, 8).forEach(function(t) { qualified.add(t.id); });
+  return qualified;
+}
+
+function teamChipHtml(teamId) {
+  var t = teamMetaMap[teamId];
+  if (!t) return '';
+  var flag = t.logo
+    ? '<img class="team-chip-flag" src="' + t.logo + '" alt="' + t.nome + '" loading="lazy">'
+    : '<span class="team-chip-flag"></span>';
+  return '<span class="team-chip">' + flag + '<span class="team-chip-name">' + t.nome + '</span></span>';
+}
+
+function teamChipListHtml(ids) {
+  if (!ids.length) return '<span class="team-chip-empty">Nenhuma</span>';
+  return '<div class="team-chip-list">' + ids.map(teamChipHtml).join('') + '</div>';
+}
+
+function exportButtonHtml(targetId, fileSuffix, title) {
+  var btnTitle = title || 'Salvar imagem';
+  return '<div class="card-actions">' +
+    '<button class="btn-img" onclick="exportById(\'' + targetId + '\', \'' + fileSuffix + '\')" title="' + btnTitle + '">' +
+      '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">' +
+        '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>' +
+        '<polyline points="7,10 12,15 17,10"/>' +
+        '<line x1="12" y1="15" x2="12" y2="3"/>' +
+      '</svg>' +
+    '</button>' +
+  '</div>';
+}
+
+function compareSummaryCardHtml(simQualified, realQualified) {
+  var simAndReal = [];
+  var notSimButReal = [];
+  var simButNotReal = [];
+  var notSimAndNotReal = [];
+
+  Object.keys(teamMetaMap).forEach(function(id) {
+    var inSim = simQualified.has(Number(id));
+    var inReal = realQualified.has(Number(id));
+    if (inSim && inReal) simAndReal.push(Number(id));
+    else if (!inSim && inReal) notSimButReal.push(Number(id));
+    else if (inSim && !inReal) simButNotReal.push(Number(id));
+    else notSimAndNotReal.push(Number(id));
+  });
+
+  function byName(a, b) {
+    var na = (teamMetaMap[a] || {}).nome || '';
+    var nb = (teamMetaMap[b] || {}).nome || '';
+    return na.localeCompare(nb, 'pt-BR', { sensitivity: 'base' });
+  }
+
+  simAndReal.sort(byName);
+  notSimButReal.sort(byName);
+  simButNotReal.sort(byName);
+  notSimAndNotReal.sort(byName);
+
+  return '<div class="card" id="export-comparativo">' +
+    '<div class="card-head">' +
+      '<div class="card-head-main"><span class="card-head-title">Comparativo Apostas x Realidade</span></div>' +
+      exportButtonHtml('export-comparativo', 'comparativo-simulacao-realidade', 'Baixar tabela de comparativo') +
+    '</div>' +
+    '<div class="compare-grid">' +
+      '<div class="compare-quad"><div class="compare-quad-title">Sim classificou · Real classificou</div>' + teamChipListHtml(simAndReal) + '</div>' +
+      '<div class="compare-quad"><div class="compare-quad-title">Sim não classificou · Real classificou</div>' + teamChipListHtml(notSimButReal) + '</div>' +
+      '<div class="compare-quad"><div class="compare-quad-title">Sim classificou · Real não classificou</div>' + teamChipListHtml(simButNotReal) + '</div>' +
+      '<div class="compare-quad"><div class="compare-quad-title">Sim não classificou · Real não classificou</div>' + teamChipListHtml(notSimAndNotReal) + '</div>' +
+    '</div>' +
+  '</div>';
+}
+
+function bettorDiffCardHtml(realQualified) {
+  var rowsData = allParticipants.map(function(nome) {
+    var simData = computeTeamsData(new Set([nome]), false);
+    var simQualified = getQualifiedTeamIds(simData.teams, simData.h2hPts);
+    var missReal = [];
+    var extraReal = [];
+    var hits = 0;
+
+    realQualified.forEach(function(id) {
+      if (!simQualified.has(id)) missReal.push(id);
+    });
+    simQualified.forEach(function(id) {
+      if (!realQualified.has(id)) extraReal.push(id);
+    });
+    Object.keys(teamMetaMap).forEach(function(idStr) {
+      var id = Number(idStr);
+      var inSim = simQualified.has(id);
+      var inReal = realQualified.has(id);
+      if (inSim === inReal) hits++;
+    });
+
+    function byName(a, b) {
+      var na = (teamMetaMap[a] || {}).nome || '';
+      var nb = (teamMetaMap[b] || {}).nome || '';
+      return na.localeCompare(nb, 'pt-BR', { sensitivity: 'base' });
+    }
+    missReal.sort(byName);
+    extraReal.sort(byName);
+
+    return {
+      nome: nome,
+      hits: hits,
+      missReal: missReal,
+      extraReal: extraReal
+    };
+  });
+
+  rowsData.sort(function(a, b) {
+    if (bettorDiffSort.key === 'name') {
+      return bettorDiffSort.dir * a.nome.localeCompare(b.nome, 'pt-BR', { sensitivity: 'base' });
+    }
+    if (a.hits !== b.hits) return bettorDiffSort.dir * (a.hits - b.hits);
+    return a.nome.localeCompare(b.nome, 'pt-BR', { sensitivity: 'base' });
+  });
+
+  var rows = rowsData.map(function(r) {
+    return '<tr>' +
+      '<td class="diff-bettor">' + r.nome + '</td>' +
+      '<td class="td-num td-center">' + r.hits + '</td>' +
+      '<td>' + teamChipListHtml(r.missReal) + '</td>' +
+      '<td>' + teamChipListHtml(r.extraReal) + '</td>' +
+    '</tr>';
+  }).join('');
+
+  return '<div class="card" id="export-divergencia">' +
+    '<div class="card-head">' +
+      '<div class="card-head-main"><span class="card-head-title">Apostas x Resultados por Apostador</span></div>' +
+      exportButtonHtml('export-divergencia', 'divergencia-por-apostador', 'Baixar tabela de divergência') +
+    '</div>' +
+    '<div class="diff-table-wrap">' +
+      '<table class="diff-table">' +
+        '<thead><tr>' +
+          '<th class="sortable" onclick="setBettorDiffSort(\'name\')">Apostador' + bettorDiffSortIndicator('name') + '</th>' +
+          '<th class="center sortable" onclick="setBettorDiffSort(\'hits\')">Número de acertos' + bettorDiffSortIndicator('hits') + '</th>' +
+          '<th>Nas apostas NÃO classificaram e na realidade classificaram</th>' +
+          '<th>Nas apostas classificaram e na realidade NÃO classificaram</th>' +
+        '</tr></thead>' +
+        '<tbody>' + rows + '</tbody>' +
+      '</table>' +
+    '</div>' +
+  '</div>';
+}
+
+function setTeamOutcomeSort(key) {
+  if (teamOutcomeSort.key === key) teamOutcomeSort.dir = -teamOutcomeSort.dir;
+  else teamOutcomeSort = { key: key, dir: key === 'team' ? 1 : -1 };
+  renderContent();
+}
+
+function setBettorDiffSort(key) {
+  if (bettorDiffSort.key === key) bettorDiffSort.dir = -bettorDiffSort.dir;
+  else bettorDiffSort = { key: key, dir: key === 'name' ? 1 : -1 };
+  renderContent();
+}
+
+function outcomeSortIndicator(key) {
+  if (teamOutcomeSort.key !== key) return '';
+  return '<span class="sort-ind">' + (teamOutcomeSort.dir > 0 ? '▲' : '▼') + '</span>';
+}
+
+function bettorDiffSortIndicator(key) {
+  if (bettorDiffSort.key !== key) return '';
+  return '<span class="sort-ind">' + (bettorDiffSort.dir > 0 ? '▲' : '▼') + '</span>';
+}
+
+function perTeamOutcomeCardHtml(realQualified) {
+  var rowsData = Object.keys(teamMetaMap).map(function(idStr) {
+    var id = Number(idStr);
+    var count = 0;
+    allParticipants.forEach(function(nome) {
+      var simData = computeTeamsData(new Set([nome]), false);
+      var simQualified = getQualifiedTeamIds(simData.teams, simData.h2hPts);
+      if (simQualified.has(id)) count++;
+    });
+    return {
+      id: id,
+      nome: (teamMetaMap[id] || {}).nome || '',
+      count: count,
+      finalQualified: realQualified.has(id)
+    };
+  });
+
+  rowsData.sort(function(a, b) {
+    if (teamOutcomeSort.key === 'team') {
+      return teamOutcomeSort.dir * a.nome.localeCompare(b.nome, 'pt-BR', { sensitivity: 'base' });
+    }
+    if (teamOutcomeSort.key === 'count') {
+      if (a.count !== b.count) return teamOutcomeSort.dir * (a.count - b.count);
+      return a.nome.localeCompare(b.nome, 'pt-BR', { sensitivity: 'base' });
+    }
+    if (teamOutcomeSort.key === 'final') {
+      var av = a.finalQualified ? 1 : 0;
+      var bv = b.finalQualified ? 1 : 0;
+      if (av !== bv) return teamOutcomeSort.dir * (av - bv);
+      return a.nome.localeCompare(b.nome, 'pt-BR', { sensitivity: 'base' });
+    }
+    return 0;
+  });
+
+  var body = rowsData.map(function(r) {
+    var t = teamMetaMap[r.id] || {};
+    var flag = t.logo
+      ? '<img class="team-flag" src="' + t.logo + '" alt="' + t.nome + '" loading="lazy">'
+      : '<div class="team-flag" style="background:var(--border)"></div>';
+    var statusLabel = r.finalQualified ? 'Classificada' : 'Não classificada';
+    var statusClass = r.finalQualified ? 'status-badge status-badge-ok' : 'status-badge status-badge-no';
+    return '<tr>' +
+      '<td class="td-team"><div class="team-cell">' + flag + '<span class="team-name">' + r.nome + '</span></div></td>' +
+      '<td class="td-num td-center">' + r.count + '</td>' +
+      '<td class="td-center"><span class="' + statusClass + '">' + statusLabel + '</span></td>' +
+    '</tr>';
+  }).join('');
+
+  return '<div class="card" id="export-selecao-apostadores">' +
+    '<div class="card-head">' +
+      '<div class="card-head-main"><span class="card-head-title">Seleção x Apostadores x Resultado Final</span></div>' +
+      exportButtonHtml('export-selecao-apostadores', 'selecao-apostadores-resultado-final', 'Baixar tabela de seleção x apostadores') +
+    '</div>' +
+    '<div class="stand-wrap">' +
+      '<table class="stand-table outcome-table">' +
+        '<thead><tr>' +
+          '<th class="left sortable" onclick="setTeamOutcomeSort(\'team\')">Seleção' + outcomeSortIndicator('team') + '</th>' +
+          '<th class="center sortable" onclick="setTeamOutcomeSort(\'count\')" title="Quantidade de apostadores que classificavam a seleção">Qtd. que classificavam' + outcomeSortIndicator('count') + '</th>' +
+          '<th class="center sortable" onclick="setTeamOutcomeSort(\'final\')">Resultado final' + outcomeSortIndicator('final') + '</th>' +
+        '</tr></thead>' +
+        '<tbody>' + body + '</tbody>' +
+      '</table>' +
+    '</div>' +
+  '</div>';
 }
 
 // ── Render tabs ───────────────────────────────────────────────────────────────
@@ -701,7 +1235,13 @@ function tableCardHtml(title, subtitle, teamsArr, showGroup, showInfo, showSubti
   if (showInfo === undefined) showInfo = true;
   if (showSubtitle === undefined) showSubtitle = true;
   if (mode === undefined) mode = 'geral';
-  var sorted = sortTeams(teamsArr);
+  var cardId = '';
+  var exportBtn = '';
+  if (arguments.length > 7 && arguments[7] && arguments[7].targetId && arguments[7].fileSuffix) {
+    cardId = ' id="' + arguments[7].targetId + '"';
+    exportBtn = exportButtonHtml(arguments[7].targetId, arguments[7].fileSuffix, arguments[7].title);
+  }
+  var sorted = sortTeams(teamsArr, mode === 'group' ? allTeamsData.h2hPts : null);
   var rows = sorted.map(function(t, i) {
     var pos = i + 1;
     var rc = '';
@@ -714,10 +1254,13 @@ function tableCardHtml(title, subtitle, teamsArr, showGroup, showInfo, showSubti
     return rowHtml(t, pos, showGroup, rc);
   }).join('');
 
-  return '<div class="card">' +
+  return '<div class="card"' + cardId + '>' +
     '<div class="card-head">' +
-      '<span class="card-head-title">' + title + '</span>' +
-      (showSubtitle && subtitle ? '<span class="card-head-sub">' + subtitle + '</span>' : '') +
+      '<div class="card-head-main">' +
+        '<span class="card-head-title">' + title + '</span>' +
+        (showSubtitle && subtitle ? '<span class="card-head-sub">' + subtitle + '</span>' : '') +
+      '</div>' +
+      exportBtn +
     '</div>' +
     (showInfo ? '<div class="info-strip">' +
       (useActualResults
@@ -750,16 +1293,29 @@ function renderContent() {
   var html = '';
 
   if (activeView === 'total') {
-    html = tableCardHtml('Classificação Geral', 'Todas as seleções · ' + allTeams.length + ' equipes', allTeams, true);
+    html = tableCardHtml(
+      'Classificação Geral',
+      'Todas as seleções · ' + allTeams.length + ' equipes',
+      allTeams,
+      true,
+      true,
+      true,
+      'geral',
+      { targetId: 'export-geral', fileSuffix: 'geral', title: 'Baixar classificação geral' }
+    );
   } else if (activeView === 'todos') {
+    var validGroups = groups.filter(function(g) {
+      if (!g) return false;
+      return allTeams.some(function(t) { return t.grupo === g; });
+    });
     // One compact card per group (no info strip, no subtitle)
-    var groupCards = groups.map(function(g) {
+    var groupCards = validGroups.map(function(g) {
       var groupTeams = allTeams.filter(function(t) { return t.grupo === g; });
       return tableCardHtml('Grupo ' + g, '', groupTeams, false, false, false, 'group');
     }).join('');
     // Best 3rd-place teams card
-    var terceiros = groups.map(function(g) {
-      var groupTeams = sortTeams(allTeams.filter(function(t) { return t.grupo === g; }));
+    var terceiros = validGroups.map(function(g) {
+      var groupTeams = sortTeams(allTeams.filter(function(t) { return t.grupo === g; }), allTeamsData.h2hPts);
       return groupTeams[2] ? Object.assign({}, groupTeams[2], { _grupo: g }) : null;
     }).filter(Boolean);
     var terceirosCard = tableCardHtml(
@@ -767,7 +1323,24 @@ function renderContent() {
       'Top 8 avançam — critério: Pontos → Saldo de gols → Gols pró',
       terceiros, true, false, true, 'terceiros'
     );
-    html = '<div class="todos-groups-wrap">' + groupCards + terceirosCard + '</div>';
+    // Comparativos simulacao vs realidade (sempre simulacao pura x resultados reais).
+    var simData = computeTeamsData(selectedParticipants, false);
+    var simQualified = getQualifiedTeamIds(simData.teams, simData.h2hPts);
+    var realData = computeTeamsData(new Set(allParticipants), true);
+    var realQualified = getQualifiedTeamIds(realData.teams, realData.h2hPts);
+
+    var summaryCard = compareSummaryCardHtml(simQualified, realQualified);
+    var bettorDiffCard = bettorDiffCardHtml(realQualified);
+    var perTeamCard = perTeamOutcomeCardHtml(realQualified);
+
+    html = '<div class="todos-groups-wrap">' +
+      '<div class="section-export-head">' +
+        '<span class="section-export-title">Grupos e Melhores 3º colocados</span>' +
+        exportButtonHtml('export-grupos-terceiros', 'grupos-e-melhores-terceiros', 'Baixar grupos e melhores terceiros') +
+      '</div>' +
+      '<div id="export-grupos-terceiros" class="group-export-stack">' + groupCards + terceirosCard + '</div>' +
+      summaryCard + bettorDiffCard + perTeamCard +
+    '</div>';
   }
 
   container.innerHTML = html;
@@ -841,6 +1414,7 @@ async function init() {
   });
   allParticipants.sort(function(a, b) { return a.localeCompare(b, 'pt-BR', { sensitivity: 'base' }); });
   groups.sort();
+  buildTeamMetaMap();
   selectedParticipants = new Set(allParticipants);
   computeAllTeams();
   renderSidebar();
@@ -884,11 +1458,11 @@ function imgToDataURL(img) {
   });
 }
 
-function exportImage() {
-  var container = document.getElementById('tables-container');
-  var groupLabel = activeView === 'total' ? 'geral' : activeView === 'todos' ? 'todos-grupos' : 'grupo-' + activeView;
-  var fname = 'bolao_selecoes_' + groupLabel + '.png';
-  var imgs = Array.from(container.querySelectorAll('img.team-flag'));
+function exportById(targetId, fileSuffix) {
+  var container = document.getElementById(targetId);
+  if (!container) return;
+  var fname = 'bolao_selecoes_' + fileSuffix + '.png';
+  var imgs = Array.from(container.querySelectorAll('img.team-flag, img.team-chip-flag'));
   var origSrcs = imgs.map(function(img) { return img.src; });
   Promise.all(imgs.map(imgToDataURL)).then(function() {
     html2canvas(container, {
@@ -908,6 +1482,14 @@ function exportImage() {
       a.click();
     });
   });
+}
+
+function exportImage() {
+  if (activeView === 'todos') {
+    exportById('export-grupos-terceiros', 'grupos-e-melhores-terceiros');
+    return;
+  }
+  exportById('export-geral', 'geral');
 }
 </script>
 </body>

@@ -73,19 +73,23 @@ var bolaoDataPromise = null;
 function bolaoCalcBreakdown(betA, betB, realA, realB) {
   var gol = (betA === realA ? 1 : 0) + (betB === realB ? 1 : 0);
   var dif = (betA - betB) === (realA - realB) ? 1 : 0;
-  var pts = gol + dif;
   var bR = betA > betB ? 'A' : betA < betB ? 'B' : 'E';
   var rR = realA > realB ? 'A' : realA < realB ? 'B' : 'E';
   var isRes = bR === rR ? 1 : 0;
-  if (isRes) pts += (rR === 'E' ? 1 : 2);
+  var betWinnerId = arguments.length > 4 ? arguments[4] : null;
+  var realWinnerId = arguments.length > 5 ? arguments[5] : null;
+  var isVen = (betWinnerId !== null && betWinnerId !== undefined &&
+    realWinnerId !== null && realWinnerId !== undefined &&
+    String(betWinnerId) === String(realWinnerId)) ? 1 : 0;
+  var pts = gol + dif + isRes + isVen;
   return { pts: pts };
 }
 
 function bolaoGetMultiplier(jogo) {
   var g = ((jogo || {}).grupo || '').toUpperCase().trim();
   if (!g || /^[A-L]$/.test(g)) return 1;
-  if (/^3/.test(g) || g === 'TER') return 4;
-  if (g === 'FIN' || g === 'FINAL') return 10;
+  if (/^3/.test(g) || g === 'TER') return 2;
+  if (g === 'FIN' || g === 'FINAL') return 4;
   return 1;
 }
 
@@ -100,9 +104,21 @@ function bolaoGetAveragePoints(jogo) {
   if (!apostas.length) return null;
 
   var total = 0;
+  var realWinnerId = (jogo.id_time_vencedor !== null && jogo.id_time_vencedor !== undefined)
+    ? jogo.id_time_vencedor
+    : (jogo.gols_a > jogo.gols_b ? ((jogo.time_a || {}).id || null)
+      : jogo.gols_b > jogo.gols_a ? ((jogo.time_b || {}).id || null)
+        : null);
   apostas.forEach(function (aposta) {
     var placar = (aposta.placar || '0x0').split('x');
-    total += bolaoCalcBreakdown(+placar[0] || 0, +placar[1] || 0, jogo.gols_a, jogo.gols_b).pts;
+    total += bolaoCalcBreakdown(
+      +placar[0] || 0,
+      +placar[1] || 0,
+      jogo.gols_a,
+      jogo.gols_b,
+      aposta.id_time_vencedor,
+      realWinnerId
+    ).pts;
   });
 
   return Math.round(total / apostas.length * 10) / 10;
@@ -208,6 +224,7 @@ async function buildJogos() {
       },
       gols_a: j.gols_a,
       gols_b: j.gols_b,
+      id_time_vencedor: j.id_time_vencedor || null,
       status: j.status_jogo,
       apostadores_a: aA,
       apostadores_empate: aE,
