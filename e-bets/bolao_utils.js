@@ -137,14 +137,15 @@ async function loadBolaoBaseData() {
   if (!bolaoDataPromise) {
     bolaoDataPromise = Promise.all([
       fetchAll('/jogo'), fetchAll('/aposta'), fetchAll('/grupo'),
-      fetchAll('/time'), fetchAll('/chutador')
+      fetchAll('/time'), fetchAll('/chutador'), fetchAll('/fase')
     ]).then(function (res) {
       return {
         jogos: res[0],
         apostas: res[1],
         grupos: res[2],
         times: res[3],
-        chutadores: res[4]
+        chutadores: res[4],
+        fases: res[5]
       };
     }).catch(function (err) {
       bolaoDataPromise = null;
@@ -157,21 +158,29 @@ async function loadBolaoBaseData() {
 async function buildJogos() {
   var data = await loadBolaoBaseData();
   var jogos = data.jogos, apostas = data.apostas, grupos = data.grupos,
-    times = data.times, chutadores = data.chutadores;
-  var gMap = {}, tMap = {}, cMap = {}, aPorJ = {};
+    times = data.times, chutadores = data.chutadores, fases = data.fases;
+  var gMap = {}, tMap = {}, cMap = {}, fMap = {}, aPorJ = {};
   grupos.forEach(function (g) { gMap[g.id_grupo] = g; });
   times.forEach(function (t) { tMap[t.id_time] = t; });
   chutadores.forEach(function (c) { cMap[c.id_chutador] = c; });
+  fases.forEach(function (f) { fMap[f.id_fase] = f; });
   apostas.forEach(function (a) {
     if (!aPorJ[a.id_jogo]) aPorJ[a.id_jogo] = [];
     aPorJ[a.id_jogo].push(a);
   });
   var list = jogos.map(function (j) {
-    var gr = gMap[j.id_grupo] || {}, tA = tMap[j.id_time_a] || {}, tB = tMap[j.id_time_b] || {};
+    var gr = gMap[j.id_grupo] || {}, fa = fMap[j.id_fase] || {}, tA = tMap[j.id_time_a] || {}, tB = tMap[j.id_time_b] || {};
     var aA = [], aE = [], aB = [];
     (aPorJ[j.id_jogo] || []).forEach(function (a) {
       var ch = cMap[a.id_chutador] || {};
-      var e = { nome: ch.nome || '?', placar: a.gols_a + 'x' + a.gols_b };
+      var tV = tMap[a.id_time_vencedor] || {};
+      var e = {
+        nome: ch.nome || '?',
+        placar: a.gols_a + 'x' + a.gols_b,
+        id_time_vencedor: a.id_time_vencedor || null,
+        time_vencedor_nome: tV.nome || '',
+        time_vencedor_sigla: TEAM_ABBR[tV.nome] || tV.sigla || (tV.nome || '').substring(0, 3).toUpperCase()
+      };
       if (a.gols_a > a.gols_b) aA.push(e);
       else if (a.gols_a < a.gols_b) aB.push(e);
       else aE.push(e);
@@ -182,6 +191,8 @@ async function buildJogos() {
       estadio: j.estadio,
       cidade: j.cidade,
       grupo: gr.sigla || '',
+      id_fase: j.id_fase || null,
+      fase: fa.nome || fa.descricao || fa.fase || fa.sigla || '',
       sede: gr.sede || '',
       time_a: {
         nome: tA.nome || '',

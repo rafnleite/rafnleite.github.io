@@ -1037,6 +1037,17 @@
       return 1;
     }
 
+    function isGroupStage(j) {
+      var g = (j.grupo || '').toUpperCase().trim();
+      return !!g && /^[A-L]$/.test(g);
+    }
+
+    function getStageLabel(j) {
+      if (isGroupStage(j)) return 'Grupo ' + j.grupo;
+      if (j.fase) return j.fase;
+      return j.grupo ? ('Grupo ' + j.grupo) : '';
+    }
+
     function formatDate(s) {
       if (!s) return '—';
       const d = new Date(s.replace(' ', 'T') + ':00');
@@ -1322,6 +1333,10 @@
     function betItem(ap, type, hitResult, hitScore, rawPts, mult, posInfo) {
       var cls = 'bet-item' + (hitScore ? ' score-hit' : hitResult ? ' result-hit' : '');
       var icon = hitScore ? '<span class="bi-hit-icon">\u2605</span>' : '';
+      var scoreLabel = ap.placar;
+      if (type === 'emp' && ap.time_vencedor_sigla) {
+        scoreLabel += ' ' + ap.time_vencedor_sigla;
+      }
       var ptsBadge = '';
       if (rawPts !== undefined && rawPts !== null) {
         var dispPts = rawPts * (mult || 1);
@@ -1342,7 +1357,7 @@
       return '<li class="' + cls + '">' +
         posCell +
         '<span class="bi-name-wrap"><span class="bi-name">' + shortName(ap.nome) + '</span>' + icon + '</span>' +
-        '<span class="bi-score-pts"><span class="bi-score bi-score-' + type + '">' + ap.placar + '</span>' + ptsBadge + '</span>' +
+        '<span class="bi-score-pts"><span class="bi-score bi-score-' + type + '">' + scoreLabel + '</span>' + ptsBadge + '</span>' +
         '</li>';
     }
 
@@ -1442,7 +1457,8 @@
       const localStr = localParts.join(' · ');
 
       const livePill = j.isLive ? '<span class="pill pill-live"><span class="live-dot"></span>AO VIVO' + (j.liveClock ? ' · ' + j.liveClock : '') + '</span>' : '';
-      const groupPill = j.grupo ? '<span class="pill">Grupo ' + j.grupo + '</span>' : '';
+      const stageLabel = getStageLabel(j);
+      const groupPill = stageLabel ? '<span class="pill">' + stageLabel + '</span>' : '';
 
       const localMeta = localStr
         ? '<span class="meta-item"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg><strong>' + localStr + '</strong></span>'
@@ -1548,9 +1564,10 @@
             ds = d.getDate() + ' de ' + MONTH_BR[d.getMonth()];
           }
           const teams = highlight(m.j.time_a.nome + ' × ' + m.j.time_b.nome, term);
+          const stageLabel = getStageLabel(m.j);
           return '<div class="sd-item" data-idx="' + m.i + '" data-pos="' + pos + '">' +
             '<span class="sd-teams">' + teams + '</span>' +
-            '<span class="sd-meta">' + ds + (m.j.grupo ? ' · Grupo ' + m.j.grupo : '') + (m.j.cidade ? ' · ' + m.j.cidade : '') + '</span>' +
+            '<span class="sd-meta">' + ds + (stageLabel ? ' · ' + stageLabel : '') + (m.j.cidade ? ' · ' + m.j.cidade : '') + '</span>' +
             '</div>';
         }).join('');
       }
