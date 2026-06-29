@@ -745,6 +745,14 @@ function findESPNMatch(espnMap, nameA, nameB, apexDateStr) {
 // 3) Se status APEX for "A" (em aberto), placar oficial e o da ESPN.
 // 4) Detalhes de gols e dados de andamento (ao vivo/relogio) sao sempre trazidos da ESPN quando houver match.
 async function applyESPNOverrides(list) {
+  function resolveWinnerIdFromScore(jogo, scoreA, scoreB) {
+    if (!jogo) return null;
+    if (scoreA === null || scoreA === undefined || scoreB === null || scoreB === undefined) return null;
+    if (scoreA > scoreB) return ((jogo.time_a || {}).id || null);
+    if (scoreB > scoreA) return ((jogo.time_b || {}).id || null);
+    return null;
+  }
+
   var espnMap = await fetchESPNScoresForJogos(list);
 
   list.forEach(function (j) {
@@ -775,6 +783,10 @@ async function applyESPNOverrides(list) {
       } else {
         j.gols_a = espn.scoreA;
         j.gols_b = espn.scoreB;
+      }
+
+      if (j.id_time_vencedor === null || j.id_time_vencedor === undefined) {
+        j.id_time_vencedor = resolveWinnerIdFromScore(j, j.gols_a, j.gols_b);
       }
       return;
     }
