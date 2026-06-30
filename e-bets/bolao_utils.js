@@ -719,26 +719,34 @@ function parseESPNSummaryShootoutDetails(summaryJson, homeName, awayName) {
 }
 
 var espnSummaryShootoutCache = {};
+var ESPN_SUMMARY_CACHE_TTL_MS = 10 * 60 * 1000;
+var ESPN_SUMMARY_ACTIVE_CACHE_TTL_MS = 0;
 
-async function fetchESPNSummaryShootoutByEvent(eventId, homeName, awayName) {
+async function fetchESPNSummaryShootoutByEvent(eventId, homeName, awayName, options) {
+  options = options || {};
   if (!eventId) return null;
-  if (Object.prototype.hasOwnProperty.call(espnSummaryShootoutCache, eventId)) {
-    return espnSummaryShootoutCache[eventId];
+
+  var cacheTTL = options.active ? ESPN_SUMMARY_ACTIVE_CACHE_TTL_MS : ESPN_SUMMARY_CACHE_TTL_MS;
+  var now = Date.now();
+  var cached = espnSummaryShootoutCache[eventId];
+
+  if (cached && (now - cached.at) < cacheTTL) {
+    return cached.data;
   }
 
   try {
     var url = 'https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/summary?event=' + encodeURIComponent(eventId);
     var r = await fetch(url);
     if (!r.ok) {
-      espnSummaryShootoutCache[eventId] = null;
+      espnSummaryShootoutCache[eventId] = { data: null, at: now };
       return null;
     }
     var data = await r.json();
     var parsed = parseESPNSummaryShootoutDetails(data, homeName, awayName);
-    espnSummaryShootoutCache[eventId] = parsed;
+    espnSummaryShootoutCache[eventId] = { data: parsed, at: Date.now() };
     return parsed;
   } catch (e) {
-    espnSummaryShootoutCache[eventId] = null;
+    espnSummaryShootoutCache[eventId] = { data: null, at: now };
     return null;
   }
 }
@@ -994,7 +1002,10 @@ async function applyESPNOverrides(list) {
     // Fallback: o endpoint scoreboard costuma omitir penaltis perdidos.
     // Quando houver disputa por penaltis, completa os detalhes via summary do evento.
     if (j.penaltis_a !== null && j.penaltis_b !== null && espn.eventId) {
-      var sumShootout = await fetchESPNSummaryShootoutByEvent(espn.eventId, j.time_a.nome, j.time_b.nome);
+      var summaryActive = (j.status === 'A') || !!espn.isLive;
+      var sumShootout = await fetchESPNSummaryShootoutByEvent(espn.eventId, j.time_a.nome, j.time_b.nome, {
+        active: summaryActive
+      });
       if (sumShootout && ((sumShootout.home || []).length || (sumShootout.away || []).length)) {
         j.penaltisDetalhesA = sumShootout.home || [];
         j.penaltisDetalhesB = sumShootout.away || [];

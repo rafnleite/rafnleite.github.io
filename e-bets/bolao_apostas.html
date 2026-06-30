@@ -2069,59 +2069,68 @@
         setTrackX(0, false);
       });
 
-      // ── Auto-refresh every 40 s ──────────────────────────────────────────────
+      // ── Auto-refresh every 1 s ───────────────────────────────────────────────
+      var refreshingJogos = false;
       setInterval(async function () {
-        var fresh;
-        try { fresh = await buildJogos(); } catch (e) { return; }
+        if (refreshingJogos) return;
+        refreshingJogos = true;
+        try {
+          var fresh;
+          try { fresh = await buildJogos(); } catch (e) { return; }
 
-        // Compare only the data that can change (scores, status, bets)
-        function snapshot(list) {
-          return JSON.stringify(list.map(function (j) {
-            return [
-              j.id, j.gols_a, j.gols_b, j.status, j.isLive, j.liveClock,
-              JSON.stringify(j.golsDetalhesA || []),
-              JSON.stringify(j.golsDetalhesB || []),
-              JSON.stringify(j.cartoesVermelhosA || []),
-              JSON.stringify(j.cartoesVermelhosB || []),
-              JSON.stringify(j.penaltisDetalhesA || []),
-              JSON.stringify(j.penaltisDetalhesB || []),
-              j.penaltis_a,
-              j.penaltis_b,
-              j.apostadores_a.length, j.apostadores_empate.length, j.apostadores_b.length,
-              j.apostadores_a.map(function (a) { return a.nome + a.placar; }).join(','),
-              j.apostadores_empate.map(function (a) { return a.nome + a.placar; }).join(','),
-              j.apostadores_b.map(function (a) { return a.nome + a.placar; }).join(',')
-            ];
-          }));
-        }
-
-        if (snapshot(fresh) === snapshot(JOGOS)) return; // nothing changed
-
-        // Detect goals in the current game before swapping JOGOS
-        var currentId = JOGOS[currentIndex] ? JOGOS[currentIndex].id : null;
-        var prevGame = currentId !== null ? JOGOS.find(function (j) { return j.id === currentId; }) : null;
-        var freshGame = currentId !== null ? fresh.find(function (j) { return j.id === currentId; }) : null;
-        var goalA = prevGame && freshGame && freshGame.gols_a !== null && prevGame.gols_a !== null && freshGame.gols_a > prevGame.gols_a;
-        var goalB = prevGame && freshGame && freshGame.gols_b !== null && prevGame.gols_b !== null && freshGame.gols_b > prevGame.gols_b;
-
-        JOGOS = fresh;
-        buildGameRankHistory();
-        var newIdx = currentId !== null ? JOGOS.findIndex(function (j) { return j.id === currentId; }) : -1;
-        if (newIdx < 0) newIdx = Math.min(currentIndex, JOGOS.length - 1);
-        currentIndex = newIdx;
-
-        renderGame(currentIndex);
-        updateNav();
-
-        // Flash score digits if a goal was scored
-        if (goalA || goalB) {
-          var nums = document.querySelectorAll('.score-live .s-num');
-          if (nums.length === 2) {
-            if (goalA) { nums[0].classList.remove('goal-flash'); void nums[0].offsetWidth; nums[0].classList.add('goal-flash'); }
-            if (goalB) { nums[1].classList.remove('goal-flash'); void nums[1].offsetWidth; nums[1].classList.add('goal-flash'); }
+          // Compare only the data that can change (scores, status, bets)
+          function snapshot(list) {
+            return JSON.stringify(list.map(function (j) {
+              return [
+                j.id, j.gols_a, j.gols_b, j.status, j.isLive, j.liveClock,
+                JSON.stringify(j.golsDetalhesA || []),
+                JSON.stringify(j.golsDetalhesB || []),
+                JSON.stringify(j.cartoesVermelhosA || []),
+                JSON.stringify(j.cartoesVermelhosB || []),
+                JSON.stringify(j.penaltisDetalhesA || []),
+                JSON.stringify(j.penaltisDetalhesB || []),
+                j.penaltis_a,
+                j.penaltis_b,
+                j.apostadores_a.length, j.apostadores_empate.length, j.apostadores_b.length,
+                j.apostadores_a.map(function (a) { return a.nome + a.placar; }).join(','),
+                j.apostadores_empate.map(function (a) { return a.nome + a.placar; }).join(','),
+                j.apostadores_b.map(function (a) { return a.nome + a.placar; }).join(',')
+              ];
+            }));
           }
+
+          if (snapshot(fresh) === snapshot(JOGOS)) {
+            return; // nothing changed
+          }
+
+          // Detect goals in the current game before swapping JOGOS
+          var currentId = JOGOS[currentIndex] ? JOGOS[currentIndex].id : null;
+          var prevGame = currentId !== null ? JOGOS.find(function (j) { return j.id === currentId; }) : null;
+          var freshGame = currentId !== null ? fresh.find(function (j) { return j.id === currentId; }) : null;
+          var goalA = prevGame && freshGame && freshGame.gols_a !== null && prevGame.gols_a !== null && freshGame.gols_a > prevGame.gols_a;
+          var goalB = prevGame && freshGame && freshGame.gols_b !== null && prevGame.gols_b !== null && freshGame.gols_b > prevGame.gols_b;
+
+          JOGOS = fresh;
+          buildGameRankHistory();
+          var newIdx = currentId !== null ? JOGOS.findIndex(function (j) { return j.id === currentId; }) : -1;
+          if (newIdx < 0) newIdx = Math.min(currentIndex, JOGOS.length - 1);
+          currentIndex = newIdx;
+
+          renderGame(currentIndex);
+          updateNav();
+
+          // Flash score digits if a goal was scored
+          if (goalA || goalB) {
+            var nums = document.querySelectorAll('.score-live .s-num');
+            if (nums.length === 2) {
+              if (goalA) { nums[0].classList.remove('goal-flash'); void nums[0].offsetWidth; nums[0].classList.add('goal-flash'); }
+              if (goalB) { nums[1].classList.remove('goal-flash'); void nums[1].offsetWidth; nums[1].classList.add('goal-flash'); }
+            }
+          }
+        } finally {
+          refreshingJogos = false;
         }
-      }, 5000);
+      }, 1000);
     })();
 
     // ── Goal flash helper (exposed for testing) ──────────────────────────────────
