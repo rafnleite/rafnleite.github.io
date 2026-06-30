@@ -6,7 +6,7 @@
   <title>Histograma de Gols - Copa 2026</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;600;700&display=swap');
- 
+
     :root {
       --bg-top: #f7f2e8;
       --bg-bottom: #dfebf8;
@@ -151,6 +151,49 @@
       padding: 14px 12px 12px;
       overflow-x: auto;
       overflow-y: hidden;
+      position: relative;
+    }
+
+    .loading-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(247, 252, 255, 0.92);
+      z-index: 5;
+    }
+
+    .loading-overlay.hidden {
+      display: none;
+    }
+
+    .loading-box {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--panel-border);
+      background: #ffffff;
+      color: #2a4560;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .spinner {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 2px solid #b7c9de;
+      border-top-color: #1e5bb5;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
     }
 
     .histogram {
@@ -299,16 +342,26 @@
     </div>
 
     <div class="chart-area">
+      <div id="initialLoading" class="loading-overlay">
+        <div class="loading-box">
+          <span class="spinner" aria-hidden="true"></span>
+          <span>Carregando dados iniciais...</span>
+        </div>
+      </div>
       <div id="histogram" class="histogram"></div>
     </div>
 
-    <div id="status" class="status">Carregando CSV...</div>
+    <div id="status" class="status">Carregando dados da API...</div>
   </div>
 
   <div id="tooltip" class="tooltip"></div>
 
   <script>
-    const CSV_PATH = 'gols_copa_espn.csv';
+    const ESPN_SCOREBOARD_URL = 'https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard';
+    const WORLD_CUP_START = new Date('2026-06-11T00:00:00');
+    const WORLD_CUP_END = new Date('2026-07-19T23:59:59');
+    const AUTO_REFRESH_MS = 0.2 * 60 * 1000;
+    const FETCH_BATCH_SIZE = 5;
 
     const CLASS_COLORS = {
       'Desempate': 'var(--desempate)',
@@ -321,56 +374,163 @@
     const histogram = document.getElementById('histogram');
     const statusEl = document.getElementById('status');
     const tooltip = document.getElementById('tooltip');
+    const initialLoadingEl = document.getElementById('initialLoading');
     const legendItems = Array.from(document.querySelectorAll('.legend-item[data-classificacao]'));
 
     let allGoals = [];
     let activeClasses = new Set(Object.keys(CLASS_COLORS));
+    let isLoading = false;
+    let refreshTimer = null;
+    let lastUpdatedAt = null;
+    let hasLoadedOnce = false;
 
-    function normalizeHeader(h) {
-      return String(h || '').trim().replace(/^\uFEFF/, '');
+    function toYmd(d) {
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      return `${y}${m}${day}`;
     }
 
-    function parseCsvLine(line) {
-      const result = [];
-      let current = '';
-      let inQuotes = false;
+    function toIsoDate(d) {
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    }
 
-      for (let i = 0; i < line.length; i += 1) {
-        const ch = line[i];
-        const next = line[i + 1];
+    function dateRange(start, end) {
+      const dates = [];
+      const cur = new Date(start.getFullYear(), start.getMonth(), start.getDate());
+      const last = new Date(end.getFullYear(), end.getMonth(), end.getDate());
+      while (cur <= last) {
+        dates.push(new Date(cur));
+        cur.setDate(cur.getDate() + 1);
+      }
+      return dates;
+    }
 
-        if (ch === '"') {
-          if (inQuotes && next === '"') {
-            current += '"';
-            i += 1;
-          } else {
-            inQuotes = !inQuotes;
-          }
-        } else if (ch === ',' && !inQuotes) {
-          result.push(current);
-          current = '';
-        } else {
-          current += ch;
-        }
+    function classifyGoal(preHome, preAway, postHome, postAway, scoringTeamId, homeId, teamWasTrailing) {
+      if (postHome === postAway) {
+        return 'Empate';
       }
 
-      result.push(current);
-      return result;
+      const scorerIsHome = scoringTeamId === homeId;
+      const scorerWasTrailing = scorerIsHome ? preHome < preAway : preAway < preHome;
+      const scorerWasLeading = scorerIsHome ? preHome > preAway : preAway > preHome;
+      const scorerNowLeading = scorerIsHome ? postHome > postAway : postAway > postHome;
+
+      if (scorerWasLeading) {
+        return 'Ampliando o placar';
+      }
+
+      if (scorerNowLeading) {
+        if (preHome === preAway) {
+          return teamWasTrailing[scoringTeamId] ? 'Desempate - Virada' : 'Desempate';
+        }
+        return scorerWasTrailing ? 'Desempate - Virada' : 'Desempate';
+      }
+
+      return 'Empate';
     }
 
-    function csvToObjects(text) {
-      const lines = text.replace(/\r/g, '').split('\n').filter((l) => l.trim() !== '');
-      if (!lines.length) return [];
+    function extractGoalsFromEvent(event) {
+      const competition = (event.competitions || [])[0];
+      if (!competition) return [];
 
-      const headers = parseCsvLine(lines[0]).map(normalizeHeader);
-      return lines.slice(1).map((line) => {
-        const values = parseCsvLine(line);
-        const obj = {};
-        headers.forEach((h, idx) => {
-          obj[h] = values[idx] ?? '';
-        });
-        return obj;
+      const competitors = competition.competitors || [];
+      const home = competitors.find((c) => c.homeAway === 'home') || {};
+      const away = competitors.find((c) => c.homeAway === 'away') || {};
+
+      const homeId = String(home.id || '');
+      const awayId = String(away.id || '');
+
+      const teamNames = {};
+      competitors.forEach((c) => {
+        const id = String(c.id || '');
+        teamNames[id] = c.team?.shortDisplayName || c.team?.displayName || id;
       });
+
+      const partida = `${teamNames[homeId] || 'Mandante'} x ${teamNames[awayId] || 'Visitante'}`;
+      const gameDate = String(event.date || '').split('T')[0] || '';
+
+      let homeScore = 0;
+      let awayScore = 0;
+      const teamWasTrailing = { [homeId]: false, [awayId]: false };
+
+      const goals = [];
+      (competition.details || []).forEach((detail) => {
+        if (!detail?.scoringPlay) return;
+        if (detail?.shootout) return;
+
+        const scoringTeamId = String(detail.team?.id || '');
+        const scoreValue = Number.parseInt(detail.scoreValue || 1, 10) || 1;
+        const preHome = homeScore;
+        const preAway = awayScore;
+
+        if (scoringTeamId === homeId) homeScore += scoreValue;
+        else if (scoringTeamId === awayId) awayScore += scoreValue;
+        else return;
+
+        const scorer = Array.isArray(detail.athletesInvolved) && detail.athletesInvolved[0]
+          ? detail.athletesInvolved[0].displayName || 'Desconhecido'
+          : 'Desconhecido';
+
+        const classification = classifyGoal(
+          preHome,
+          preAway,
+          homeScore,
+          awayScore,
+          scoringTeamId,
+          homeId,
+          teamWasTrailing
+        );
+
+        goals.push({
+          data_jogo: gameDate,
+          partida,
+          autor_gol: scorer,
+          equipe_do_autor: teamNames[scoringTeamId] || scoringTeamId,
+          minuto: detail.clock?.displayValue || '',
+          placar_apos_gol: `${homeScore} x ${awayScore}`,
+          tipo_lance: detail.type?.text || 'Goal',
+          classificacao_gol: classification
+        });
+
+        if (homeScore > awayScore) teamWasTrailing[awayId] = true;
+        if (awayScore > homeScore) teamWasTrailing[homeId] = true;
+      });
+
+      return goals;
+    }
+
+    async function fetchScoreboardByDate(day) {
+      const url = `${ESPN_SCOREBOARD_URL}?dates=${toYmd(day)}`;
+      const res = await fetch(url, { cache: 'no-store' });
+      if (!res.ok) {
+        throw new Error(`Erro HTTP ${res.status}`);
+      }
+      return res.json();
+    }
+
+    async function fetchAllGoalsFromApi() {
+      const today = new Date();
+      const end = today < WORLD_CUP_END ? today : WORLD_CUP_END;
+      const days = dateRange(WORLD_CUP_START, end);
+
+      const payloads = [];
+      for (let i = 0; i < days.length; i += FETCH_BATCH_SIZE) {
+        const batch = days.slice(i, i + FETCH_BATCH_SIZE);
+        const results = await Promise.all(
+          batch.map((day) => fetchScoreboardByDate(day).catch(() => ({ events: [] })))
+        );
+        payloads.push(...results);
+      }
+
+      const goals = [];
+      payloads.forEach((payload) => {
+        (payload.events || []).forEach((event) => {
+          goals.push(...extractGoalsFromEvent(event));
+        });
+      });
+
+      return goals;
     }
 
     function parseMinute(minuteRaw) {
@@ -625,15 +785,10 @@
         histogram.appendChild(col);
       });
 
-      statusEl.textContent = `${filteredGoals.length} gols exibidos em ${bins.length} faixas (${mode} min).`;
-    }
-
-    async function loadCsvFromPath(path) {
-      const res = await fetch(path, { cache: 'no-store' });
-      if (!res.ok) {
-        throw new Error(`Falha ao carregar CSV (${res.status})`);
-      }
-      return res.text();
+      const last = lastUpdatedAt
+        ? ` | ultima atualizacao: ${lastUpdatedAt.toLocaleTimeString('pt-BR')}`
+        : '';
+      statusEl.textContent = `${filteredGoals.length} gols exibidos em ${bins.length} faixas (${mode} min)${last}.`;
     }
 
     function prepareGoals(records) {
@@ -642,15 +797,43 @@
         .sort((a, b) => a._parsedMinute.sortValue - b._parsedMinute.sortValue);
     }
 
-    async function init() {
-      try {
-        const csvText = await loadCsvFromPath(CSV_PATH);
-        allGoals = prepareGoals(csvToObjects(csvText));
-        render(allGoals);
-        statusEl.textContent = `${allGoals.length} gols carregados de ${CSV_PATH}.`;
-      } catch (err) {
-        statusEl.textContent = 'Nao foi possivel abrir o CSV automaticamente. Use o campo CSV local para carregar o arquivo.';
+    async function refreshData() {
+      if (isLoading) return;
+      isLoading = true;
+      if (!hasLoadedOnce) {
+        initialLoadingEl.classList.remove('hidden');
       }
+      statusEl.textContent = 'Atualizando dados da API...';
+
+      try {
+        const goals = await fetchAllGoalsFromApi();
+        allGoals = prepareGoals(goals);
+        lastUpdatedAt = new Date();
+        render(allGoals);
+      } catch (err) {
+        const message = err instanceof Error ? err.message : 'erro desconhecido';
+        statusEl.textContent = `Falha ao atualizar da API (${message}).`;
+      } finally {
+        if (!hasLoadedOnce) {
+          hasLoadedOnce = true;
+          initialLoadingEl.classList.add('hidden');
+        }
+        isLoading = false;
+      }
+    }
+
+    function startAutoRefresh() {
+      if (refreshTimer) {
+        clearInterval(refreshTimer);
+      }
+      refreshTimer = setInterval(() => {
+        refreshData();
+      }, AUTO_REFRESH_MS);
+    }
+
+    async function init() {
+      await refreshData();
+      startAutoRefresh();
     }
 
     modeSelect.addEventListener('change', () => {
