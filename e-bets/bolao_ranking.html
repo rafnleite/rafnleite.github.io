@@ -337,6 +337,24 @@
       color: var(--text);
     }
 
+    .score-wrap-sb {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1px;
+      flex-shrink: 0;
+    }
+
+    .score-pen {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.58rem;
+      font-weight: 700;
+      letter-spacing: .2px;
+      color: var(--sub);
+      margin-left: 0;
+      white-space: nowrap;
+    }
+
     /* Live score in sidebar */
     .score-live-sb {
       display: flex;
@@ -1355,6 +1373,15 @@
       return '';
     }
 
+    function hasShootout(j) {
+      return !!(j && j.penaltis_a !== null && j.penaltis_a !== undefined && j.penaltis_b !== null && j.penaltis_b !== undefined);
+    }
+
+    function getShootoutText(j) {
+      if (!hasShootout(j)) return '';
+      return ' (' + j.penaltis_a + ' × ' + j.penaltis_b + ')';
+    }
+
     function getSimEntryComplete(j) {
       var s = simScores[j.id];
       if (!s || s.a === null || s.a === undefined || s.b === null || s.b === undefined) return null;
@@ -1598,8 +1625,9 @@
           var effB = j.gols_b !== null && j.gols_b !== undefined ? j.gols_b : (sim ? sim.b : null);
           var effWinnerId = resolveWinnerId(j, effA, effB, sim ? sim.w : null);
           var effWinnerSigla = (effA === effB) ? winnerSiglaById(j, effWinnerId) : '';
+          var shootoutSuffix = (j.gols_a !== null && j.gols_b !== null) ? getShootoutText(j) : '';
           var statusLabel = (j.gols_a !== null && j.gols_b !== null) ? 'Resultado' : 'Simulação';
-          var statusDisp = effA + ' × ' + effB + (effWinnerSigla ? ' ' + effWinnerSigla : '');
+          var statusDisp = effA + ' × ' + effB + shootoutSuffix;
           var tipLines = (j.time_a.nome || '') + ' × ' + (j.time_b.nome || '') +
             '\n' + statusLabel + ': ' + statusDisp +
             '\nPalpite: ' + betDisp +
@@ -1761,14 +1789,23 @@
       var midHtml;
       var winnerHtml = '';
       if (isDone) {
+        var shootoutHtml = hasShootout(j)
+          ? '<div class="score-pen">(' + j.penaltis_a + ' × ' + j.penaltis_b + ')</div>'
+          : '';
         if (isLive) {
-          midHtml = '<div class="score-live-sb">' +
+          midHtml = '<div class="score-wrap-sb">' +
+            '<div class="score-live-sb">' +
             '<span class="sn" id="sbn-a-' + pfx + j.id + '">' + j.gols_a + '</span>' +
             '<span class="sim-vs">\xd7</span>' +
             '<span class="sn" id="sbn-b-' + pfx + j.id + '">' + j.gols_b + '</span>' +
+            '</div>' +
+            shootoutHtml +
             '</div>';
         } else {
-          midHtml = '<div class="score-done">' + j.gols_a + '<span class="sim-vs">\xd7</span>' + j.gols_b + '</div>';
+          midHtml = '<div class="score-wrap-sb">' +
+            '<div class="score-done">' + j.gols_a + '<span class="sim-vs">\xd7</span>' + j.gols_b + '</div>' +
+            shootoutHtml +
+            '</div>';
         }
       } else {
         var sv = simScores[j.id];

@@ -67,10 +67,6 @@
       box-shadow: 0 2px 12px rgba(0, 0, 0, .06);
     }
 
-    #game-card {
-      /* alias for .card-slot — kept for exportImage() compatibility */
-    }
-
     /* ── GAME HEADER ──────────────────────────── */
     .game-header {
       padding: 18px 22px 14px;
@@ -262,6 +258,15 @@
       line-height: 1;
     }
 
+    .score-shootout-sub {
+      margin-top: -2px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--light);
+      letter-spacing: 0.2px;
+      line-height: 1;
+    }
+
     .goal-events {
       width: min(420px, 72vw);
       display: grid;
@@ -337,6 +342,37 @@
       font-size: 0.55rem;
       font-weight: 800;
       letter-spacing: .4px;
+    }
+
+    .goal-tag-ok {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .goal-tag-miss {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .goal-tag-shootout {
+      min-width: 16px;
+      width: 16px;
+      height: 16px;
+      padding: 0;
+      font-size: 0.64rem;
+      line-height: 1;
+      border-radius: 50%;
+      font-weight: 900;
+    }
+
+    .goal-tag-shootout.goal-tag-ok {
+      color: #14532d;
+      background: #bbf7d0;
+    }
+
+    .goal-tag-shootout.goal-tag-miss {
+      color: #7f1d1d;
+      background: #fecaca;
     }
 
     .goal-events-compact {
@@ -1084,6 +1120,14 @@
       const goalsB = (j.golsDetalhesB || []).slice().sort(function (x, y) {
         return (x.minutoValor || 0) - (y.minutoValor || 0);
       });
+      const pensA = (j.penaltisDetalhesA || []).slice().sort(function (x, y) {
+        if ((x.ordem || 0) !== (y.ordem || 0)) return (x.ordem || 0) - (y.ordem || 0);
+        return (x.minutoValor || 0) - (y.minutoValor || 0);
+      });
+      const pensB = (j.penaltisDetalhesB || []).slice().sort(function (x, y) {
+        if ((x.ordem || 0) !== (y.ordem || 0)) return (x.ordem || 0) - (y.ordem || 0);
+        return (x.minutoValor || 0) - (y.minutoValor || 0);
+      });
       const redsA = (j.cartoesVermelhosA || []).slice().sort(function (x, y) {
         return (x.minutoValor || 0) - (y.minutoValor || 0);
       });
@@ -1095,6 +1139,8 @@
       if (
         !goalsA.length &&
         !goalsB.length &&
+        !pensA.length &&
+        !pensB.length &&
         !redsA.length &&
         !redsB.length
       ) return '';
@@ -1115,6 +1161,21 @@
         return '<div class="goal-event red-event goal-event-' + side + '">' +
           '<span class="goal-minute">' + (card.minuto || '') + '</span>' +
           '<span class="goal-player">' + shortName(card.jogador || '') + '</span>' +
+          '</div>';
+      }
+
+      function renderShootout(kick, side) {
+        kick = kick || {};
+        var tags = [];
+        if (kick.convertido === true) tags.push('<span class="goal-tag goal-tag-shootout goal-tag-ok" title="Converteu">✓</span>');
+        else if (kick.convertido === false) tags.push('<span class="goal-tag goal-tag-shootout goal-tag-miss" title="Errou">✕</span>');
+        var tagsHtml = tags.length ? '<span class="goal-tags">' + tags.join('') + '</span>' : '';
+        var playerHtml = '<span class="goal-player">' + shortName(kick.jogador || 'Cobrador') + '</span>';
+        var innerOrderHtml = side === 'b'
+          ? (tagsHtml + playerHtml)
+          : (playerHtml + tagsHtml);
+        return '<div class="goal-event goal-event-' + side + '">' +
+          innerOrderHtml +
           '</div>';
       }
 
@@ -1209,6 +1270,52 @@
           '</div>'
           : '';
 
+      const allPens = [];
+
+      pensA.forEach(function (kick) {
+        allPens.push({
+          side: 'a',
+          data: kick
+        });
+      });
+
+      pensB.forEach(function (kick) {
+        allPens.push({
+          side: 'b',
+          data: kick
+        });
+      });
+
+      allPens.sort(function (a, b) {
+        if ((a.data.ordem || 0) !== (b.data.ordem || 0)) return (a.data.ordem || 0) - (b.data.ordem || 0);
+        return (a.data.minutoValor || 0) - (b.data.minutoValor || 0);
+      });
+
+      const compactPensHtml =
+        allPens.length
+          ? '<div class="event-section">' +
+          ((compactGoalsHtml || compactRedsHtml)
+            ? '<div class="event-divider"></div>'
+            : '') +
+          '<div class="event-title">Pênaltis</div>' +
+          allPens.map(function (item) {
+            var kick = item.data;
+            var status = kick.convertido === true
+              ? '<span class="goal-tag goal-tag-shootout goal-tag-ok" title="Converteu">✓</span>'
+              : (kick.convertido === false
+                ? '<span class="goal-tag goal-tag-shootout goal-tag-miss" title="Errou">✕</span>'
+                : '');
+            return '<div class="goal-event goal-event-' + item.side + '">' +
+              '<span class="goal-team goal-team-' + item.side + '">' +
+              (item.side === 'a' ? j.time_a.sigla : j.time_b.sigla) +
+              '</span>' +
+              '<span class="goal-player">' + shortName(kick.jogador || '') + '</span>' +
+              (status ? '<span class="goal-tags">' + status + '</span>' : '') +
+              '</div>';
+          }).join('') +
+          '</div>'
+          : '';
+
       const goalsHtml =
         (goalsA.length || goalsB.length)
           ? '<div class="event-section desktop-events">' +
@@ -1248,11 +1355,33 @@
           '</div>'
           : '';
 
+      const pensHtml =
+        (pensA.length || pensB.length)
+          ? '<div class="event-section desktop-events">' +
+          ((goalsHtml || redsHtml) ? '<div class="event-divider"></div>' : '') +
+          '<div class="event-title">Pênaltis</div>' +
+          '<div class="goal-events">' +
+          '<div class="goal-col goal-col-a">' +
+          pensA.map(function (kick) {
+            return renderShootout(kick, 'a');
+          }).join('') +
+          '</div>' +
+          '<div class="goal-col goal-col-b">' +
+          pensB.map(function (kick) {
+            return renderShootout(kick, 'b');
+          }).join('') +
+          '</div>' +
+          '</div>' +
+          '</div>'
+          : '';
+
       return goalsHtml +
         redsHtml +
+        pensHtml +
         '<div class="goal-events-compact">' +
         compactGoalsHtml +
         compactRedsHtml +
+        compactPensHtml +
         '</div>';
     }
 
@@ -1266,6 +1395,13 @@
         '<span class="game-avg-value">' + value + '</span>' +
         '</div>' +
         '</div>';
+    }
+
+    function renderShootoutScore(j) {
+      if (!j || j.penaltis_a === null || j.penaltis_a === undefined || j.penaltis_b === null || j.penaltis_b === undefined) {
+        return '';
+      }
+      return '<div class="score-shootout-sub">(' + j.penaltis_a + ' × ' + j.penaltis_b + ')</div>';
     }
 
     function buildGameRankHistory() {
@@ -1414,9 +1550,10 @@
       const pB = 100 - pA - pE;
       const goalEvents = renderEvents(j);
       const avgBadge = renderGameAverage(j);
+      const shootoutScore = renderShootoutScore(j);
 
       const vsContent = (j.gols_a !== null && j.gols_b !== null)
-        ? '<div class="score-live"><span class="s-num">' + j.gols_a + '</span><span class="s-x">×</span><span class="s-num">' + j.gols_b + '</span></div>' + goalEvents + avgBadge
+        ? '<div class="score-live"><span class="s-num">' + j.gols_a + '</span><span class="s-x">×</span><span class="s-num">' + j.gols_b + '</span></div>' + shootoutScore + goalEvents + avgBadge
         : '<div class="vs-text">×</div>';
 
       // Determine who got the result / exact score right
@@ -1946,6 +2083,10 @@
               JSON.stringify(j.golsDetalhesB || []),
               JSON.stringify(j.cartoesVermelhosA || []),
               JSON.stringify(j.cartoesVermelhosB || []),
+              JSON.stringify(j.penaltisDetalhesA || []),
+              JSON.stringify(j.penaltisDetalhesB || []),
+              j.penaltis_a,
+              j.penaltis_b,
               j.apostadores_a.length, j.apostadores_empate.length, j.apostadores_b.length,
               j.apostadores_a.map(function (a) { return a.nome + a.placar; }).join(','),
               j.apostadores_empate.map(function (a) { return a.nome + a.placar; }).join(','),

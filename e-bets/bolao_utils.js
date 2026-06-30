@@ -546,10 +546,212 @@ function parseESPNRedCardDetails(details, homeId, awayId) {
   return cards;
 }
 
+function parseESPNShootoutDetails(details, homeId, awayId) {
+  var kicks = {
+    home: [],
+    away: []
+  };
+  var seq = 0;
+
+  (details || []).forEach(function (detail) {
+    if (!detail || detail.shootout !== true) return;
+
+    var typeText = (((detail.type || {}).text) || '').toLowerCase();
+    var teamId = String((detail.team || {}).id || '');
+    if (!teamId) return;
+
+    var converted = null;
+    if (detail.scoreValue === 1) converted = true;
+    else if (detail.scoreValue === 0) converted = false;
+    else if (
+      typeText.indexOf('scored') >= 0 ||
+      typeText.indexOf('converted') >= 0 ||
+      typeText.indexOf('made') >= 0
+    ) {
+      converted = true;
+    } else if (
+      typeText.indexOf('miss') >= 0 ||
+      typeText.indexOf('saved') >= 0 ||
+      typeText.indexOf('off') >= 0 ||
+      typeText.indexOf('post') >= 0 ||
+      typeText.indexOf('bar') >= 0 ||
+      typeText.indexOf('fail') >= 0
+    ) {
+      converted = false;
+    }
+
+    // Em disputa de penaltis, quando a ESPN nao marca explicitamente como gol,
+    // tratamos a cobranca como erro para nao ocultar tentativas nao convertidas.
+    if (converted === null) {
+      converted = false;
+    }
+
+    seq += 1;
+    var teamId = String((detail.team || {}).id || '');
+    var kick = {
+      jogador: getESPNAthleteName(detail),
+      minuto: ((detail.clock || {}).displayValue || '').trim(),
+      minutoValor: Number((detail.clock || {}).value) || 0,
+      convertido: converted,
+      resultado: converted === true ? 'CONVERTEU' : converted === false ? 'ERROU' : '—',
+      ordem: seq
+    };
+
+    if (teamId === String(homeId)) kicks.home.push(kick);
+    else if (teamId === String(awayId)) kicks.away.push(kick);
+  });
+
+  kicks.home.sort(function (a, b) {
+    if (a.ordem !== b.ordem) return a.ordem - b.ordem;
+    return a.minutoValor - b.minutoValor;
+  });
+  kicks.away.sort(function (a, b) {
+    if (a.ordem !== b.ordem) return a.ordem - b.ordem;
+    return a.minutoValor - b.minutoValor;
+  });
+
+  return kicks;
+}
+
+function extractPenaltyPlayerName(detail) {
+  var shortText = (detail && detail.shortText) || '';
+  var text = (detail && detail.text) || '';
+
+  var mShort = shortText.match(/^(.+?)\s+Penalty\s*-/i);
+  if (mShort && mShort[1]) return mShort[1].trim();
+
+  var mText = text.match(/^Penalty[^.]*\.\s*([^()]+)\s*\(/i);
+  if (mText && mText[1]) return mText[1].trim();
+
+  return getESPNAthleteName(detail);
+}
+
+function parseESPNSummaryShootoutDetails(summaryJson, homeName, awayName) {
+  var kicks = { home: [], away: [] };
+  var seq = 0;
+  var homeKey = normalizeESPNName(espnNormTeam(homeName));
+  var awayKey = normalizeESPNName(espnNormTeam(awayName));
+
+  function getTeamKey(detail) {
+    var team = (detail || {}).team || {};
+    return normalizeESPNName(espnNormTeam(team.name || team.displayName || ''));
+  }
+
+  function collect(node, out) {
+    if (Array.isArray(node)) {
+      node.forEach(function (x) { collect(x, out); });
+      return;
+    }
+    if (!node || typeof node !== 'object') return;
+
+    var typeObj = node.type || {};
+    var typeText = ((typeObj.text || '') + ' ' + (typeObj.type || '')).toLowerCase();
+    var shortText = (node.shortText || '').toLowerCase();
+    var text = (node.text || '').toLowerCase();
+
+    var isShootoutPenalty =
+      typeText.indexOf('penalty') >= 0 ||
+      shortText.indexOf('penalty') >= 0 ||
+      /^penalty\b/.test(text);
+
+    if (isShootoutPenalty && node.team) {
+      out.push(node);
+    }
+
+    Object.keys(node).forEach(function (k) { collect(node[k], out); });
+  }
+
+  var raw = [];
+  collect(summaryJson, raw);
+
+  var seen = {};
+  var filtered = [];
+  raw.forEach(function (d) {
+    var key = [
+      ((d.team || {}).id || ''),
+      (d.shortText || ''),
+      (d.text || ''),
+      (((d.clock || {}).displayValue) || ''),
+      (((d.type || {}).type) || ((d.type || {}).text) || '')
+    ].join('|');
+    if (seen[key]) return;
+    seen[key] = true;
+    filtered.push(d);
+  });
+
+  filtered.forEach(function (detail) {
+    var typeText = ((((detail || {}).type || {}).text || '') + ' ' + ((((detail || {}).type || {}).type) || '')).toLowerCase();
+    var shortText = ((detail || {}).shortText || '').toLowerCase();
+    var text = ((detail || {}).text || '').toLowerCase();
+
+    var converted = null;
+    if (typeText.indexOf('scored') >= 0 || shortText.indexOf('penalty - scored') >= 0 || text.indexOf('converts the penalty') >= 0) {
+      converted = true;
+    } else if (
+      typeText.indexOf('saved') >= 0 ||
+      typeText.indexOf('missed') >= 0 ||
+      shortText.indexOf('penalty - saved') >= 0 ||
+      shortText.indexOf('penalty - missed') >= 0 ||
+      text.indexOf('penalty saved') >= 0 ||
+      text.indexOf('penalty missed') >= 0
+    ) {
+      converted = false;
+    }
+
+    if (converted === null) return;
+
+    seq += 1;
+    var teamKey = getTeamKey(detail);
+    var kick = {
+      jogador: extractPenaltyPlayerName(detail),
+      minuto: (((detail || {}).clock || {}).displayValue || '').trim(),
+      minutoValor: Number((((detail || {}).clock || {}).value)) || 0,
+      convertido: converted,
+      resultado: converted ? 'CONVERTEU' : 'ERROU',
+      ordem: seq
+    };
+
+    if (espnTeamsMatch(teamKey, homeKey)) kicks.home.push(kick);
+    else if (espnTeamsMatch(teamKey, awayKey)) kicks.away.push(kick);
+  });
+
+  return kicks;
+}
+
+var espnSummaryShootoutCache = {};
+
+async function fetchESPNSummaryShootoutByEvent(eventId, homeName, awayName) {
+  if (!eventId) return null;
+  if (Object.prototype.hasOwnProperty.call(espnSummaryShootoutCache, eventId)) {
+    return espnSummaryShootoutCache[eventId];
+  }
+
+  try {
+    var url = 'https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/summary?event=' + encodeURIComponent(eventId);
+    var r = await fetch(url);
+    if (!r.ok) {
+      espnSummaryShootoutCache[eventId] = null;
+      return null;
+    }
+    var data = await r.json();
+    var parsed = parseESPNSummaryShootoutDetails(data, homeName, awayName);
+    espnSummaryShootoutCache[eventId] = parsed;
+    return parsed;
+  } catch (e) {
+    espnSummaryShootoutCache[eventId] = null;
+    return null;
+  }
+}
+
 function orientESPNEntry(entry, reversed) {
   return {
+    eventId: entry.eventId || '',
     scoreA: reversed ? entry.awayScore : entry.homeScore,
     scoreB: reversed ? entry.homeScore : entry.awayScore,
+    shootoutA: reversed ? entry.awayShootoutScore : entry.homeShootoutScore,
+    shootoutB: reversed ? entry.homeShootoutScore : entry.awayShootoutScore,
+    shootoutDetailsA: (reversed ? entry.awayShootoutDetails : entry.homeShootoutDetails).slice(),
+    shootoutDetailsB: (reversed ? entry.homeShootoutDetails : entry.awayShootoutDetails).slice(),
     goalsA: (reversed ? entry.awayGoals : entry.homeGoals).slice(),
     goalsB: (reversed ? entry.homeGoals : entry.awayGoals).slice(),
     redCardsA: (reversed ? entry.awayRedCards : entry.homeRedCards).slice(),
@@ -612,18 +814,29 @@ function parseESPNEventsIntoMap(map, events) {
 
     var goalDetails = parseESPNGoalDetails(comp.details, home.id, away.id);
     var redCardDetails = parseESPNRedCardDetails(comp.details, home.id, away.id);
+    var shootoutDetails = parseESPNShootoutDetails(comp.details, home.id, away.id);
     var homeScoreRaw = (home || {}).score;
     var awayScoreRaw = (away || {}).score;
+    var homeShootoutRaw = (home || {}).shootoutScore;
+    var awayShootoutRaw = (away || {}).shootoutScore;
     var homeScore = (homeScoreRaw === null || homeScoreRaw === undefined || homeScoreRaw === '') ? null : parseInt(homeScoreRaw, 10);
     var awayScore = (awayScoreRaw === null || awayScoreRaw === undefined || awayScoreRaw === '') ? null : parseInt(awayScoreRaw, 10);
+    var homeShootoutScore = (homeShootoutRaw === null || homeShootoutRaw === undefined || homeShootoutRaw === '') ? null : parseInt(homeShootoutRaw, 10);
+    var awayShootoutScore = (awayShootoutRaw === null || awayShootoutRaw === undefined || awayShootoutRaw === '') ? null : parseInt(awayShootoutRaw, 10);
     if (isNaN(homeScore)) homeScore = null;
     if (isNaN(awayScore)) awayScore = null;
+    if (isNaN(homeShootoutScore)) homeShootoutScore = null;
+    if (isNaN(awayShootoutScore)) awayShootoutScore = null;
 
     var entry = {
       eventId: String(ev.id || ''),
       eventDate: (ev.date || comp.date || ''),
       homeScore: homeScore,
       awayScore: awayScore,
+      homeShootoutScore: homeShootoutScore,
+      awayShootoutScore: awayShootoutScore,
+      homeShootoutDetails: shootoutDetails.home,
+      awayShootoutDetails: shootoutDetails.away,
       homeGoals: goalDetails.home,
       awayGoals: goalDetails.away,
       homeRedCards: redCardDetails.home,
@@ -745,34 +958,59 @@ function findESPNMatch(espnMap, nameA, nameB, apexDateStr) {
 // 3) Se status APEX for "A" (em aberto), placar oficial e o da ESPN.
 // 4) Detalhes de gols e dados de andamento (ao vivo/relogio) sao sempre trazidos da ESPN quando houver match.
 async function applyESPNOverrides(list) {
-  function resolveWinnerIdFromScore(jogo, scoreA, scoreB) {
+  function resolveWinnerIdFromScore(jogo, scoreA, scoreB, shootoutA, shootoutB) {
     if (!jogo) return null;
     if (scoreA === null || scoreA === undefined || scoreB === null || scoreB === undefined) return null;
     if (scoreA > scoreB) return ((jogo.time_a || {}).id || null);
     if (scoreB > scoreA) return ((jogo.time_b || {}).id || null);
+
+    // Empate no tempo normal: usa disputa de penaltis quando disponivel.
+    if (shootoutA !== null && shootoutA !== undefined && shootoutB !== null && shootoutB !== undefined) {
+      if (shootoutA > shootoutB) return ((jogo.time_a || {}).id || null);
+      if (shootoutB > shootoutA) return ((jogo.time_b || {}).id || null);
+    }
+
     return null;
   }
 
   var espnMap = await fetchESPNScoresForJogos(list);
 
-  list.forEach(function (j) {
+  for (var idx = 0; idx < list.length; idx++) {
+    var j = list[idx];
     var espn = findESPNMatch(espnMap, j.time_a.nome, j.time_b.nome, j.data);
 
     // Sem correspondência na ESPN
-    if (!espn) return;
+    if (!espn) continue;
 
     j.golsDetalhesA = espn.goalsA || [];
     j.golsDetalhesB = espn.goalsB || [];
     j.cartoesVermelhosA = espn.redCardsA || [];
     j.cartoesVermelhosB = espn.redCardsB || [];
+    j.penaltis_a = (espn.shootoutA === null || espn.shootoutA === undefined) ? null : espn.shootoutA;
+    j.penaltis_b = (espn.shootoutB === null || espn.shootoutB === undefined) ? null : espn.shootoutB;
+    j.penaltisDetalhesA = espn.shootoutDetailsA || [];
+    j.penaltisDetalhesB = espn.shootoutDetailsB || [];
+
+    // Fallback: o endpoint scoreboard costuma omitir penaltis perdidos.
+    // Quando houver disputa por penaltis, completa os detalhes via summary do evento.
+    if (j.penaltis_a !== null && j.penaltis_b !== null && espn.eventId) {
+      var sumShootout = await fetchESPNSummaryShootoutByEvent(espn.eventId, j.time_a.nome, j.time_b.nome);
+      if (sumShootout && ((sumShootout.home || []).length || (sumShootout.away || []).length)) {
+        j.penaltisDetalhesA = sumShootout.home || [];
+        j.penaltisDetalhesB = sumShootout.away || [];
+      }
+    }
     j.isLive = !!espn.isLive;
     j.liveClock = espn.isLive ? (espn.clock || '') : '';
 
     // Status F: placar permanece do APEX.
     if (j.status === 'F') {
+      if (j.id_time_vencedor === null || j.id_time_vencedor === undefined) {
+        j.id_time_vencedor = resolveWinnerIdFromScore(j, j.gols_a, j.gols_b, j.penaltis_a, j.penaltis_b);
+      }
       j.isLive = false;
       j.liveClock = '';
-      return;
+      continue;
     }
 
     // Status A: placar vem da ESPN (quando disponivel).
@@ -785,12 +1023,15 @@ async function applyESPNOverrides(list) {
         j.gols_b = espn.scoreB;
       }
 
-      if (j.id_time_vencedor === null || j.id_time_vencedor === undefined) {
-        j.id_time_vencedor = resolveWinnerIdFromScore(j, j.gols_a, j.gols_b);
+      // Em jogos em aberto no APEX, prioriza o vencedor inferido pela ESPN
+      // (incluindo vencedor da disputa de penaltis).
+      var espnWinnerId = resolveWinnerIdFromScore(j, j.gols_a, j.gols_b, j.penaltis_a, j.penaltis_b);
+      if (espnWinnerId !== null && espnWinnerId !== undefined) {
+        j.id_time_vencedor = espnWinnerId;
       }
-      return;
+      continue;
     }
 
     // Outros status: mantem placar APEX.
-  });
+  }
 }

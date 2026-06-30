@@ -708,6 +708,15 @@ function escAttr(s) {
     .replace(/>/g, '&gt;');
 }
 
+function hasShootout(j) {
+  return !!(j && j.penaltis_a !== null && j.penaltis_a !== undefined && j.penaltis_b !== null && j.penaltis_b !== undefined);
+}
+
+function getShootoutText(j) {
+  if (!hasShootout(j)) return '';
+  return ' (' + j.penaltis_a + ' × ' + j.penaltis_b + ')';
+}
+
 function renderHeatmap(nome) {
   var grid = document.getElementById('heatmap-grid');
   if (!grid) return;
@@ -739,8 +748,9 @@ function renderHeatmap(nome) {
     }
 
     if (!bet) {
+      var resultDispNoBet = j.gols_a + ' × ' + j.gols_b + getShootoutText(j);
       var noBetTip = gameName + '\n' +
-        'Resultado: ' + j.gols_a + ' × ' + j.gols_b + '\n' +
+        'Resultado: ' + resultDispNoBet + '\n' +
         'Sem aposta';
       html.push('<span class="heatmap-cell" style="background:var(--score-neutral-bg);color:var(--score-neutral-text)" data-tip="' + escAttr(noBetTip) + '"></span>');
       continue;
@@ -758,8 +768,9 @@ function renderHeatmap(nome) {
     var mult = getMultiplier(j);
     var gp = bd.pts * mult;
     var pointColor = bolaoGetPointsColor(bd.pts);
+    var resultDispDone = j.gols_a + ' × ' + j.gols_b + getShootoutText(j);
     var doneTip = gameName + '\n' +
-      'Resultado: ' + j.gols_a + ' × ' + j.gols_b + '\n' +
+      'Resultado: ' + resultDispDone + '\n' +
       'Palpite: ' + bet.replace('x', ' × ') + '\n' +
       (gp > 0 ? '+' + gp : '0') + ' pontos';
 
