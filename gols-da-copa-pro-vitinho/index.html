@@ -628,6 +628,54 @@
           }
         });
 
+        for (let start = 90; start <= 105; start += 5) {
+          bins.push({
+            id: `m2-${start}`,
+            label: `${start + 1}-${start + 5}`,
+            order: start + 1,
+            match(goal) {
+              const p = goal._parsedMinute;
+              if (p.base > 105 || (p.base === 105 && p.extra > 0)) return false;
+              const minute = p.base;
+              return minute >= start + 1 && minute <= start + 5;
+            }
+          });
+        }
+
+        bins.push({
+          id: 'et1',
+          label: 'Acréscimos PT1',
+          order: 105.9,
+          match(goal) {
+            const p = goal._parsedMinute;
+            return p.base === 105 && p.extra > 0;
+          }
+        });
+
+        for (let start = 105; start <= 120; start += 5) {
+          bins.push({
+            id: `m2-${start}`,
+            label: `${start + 1}-${start + 5}`,
+            order: start + 1,
+            match(goal) {
+              const p = goal._parsedMinute;
+              if (p.base > 120 || (p.base === 120 && p.extra > 0)) return false;
+              const minute = p.base;
+              return minute >= start + 1 && minute <= start + 5;
+            }
+          });
+        }
+
+        bins.push({
+          id: 'et2',
+          label: 'Acréscimos PT2',
+          order: 120.9,
+          match(goal) {
+            const p = goal._parsedMinute;
+            return p.base === 120 && p.extra > 0;
+          }
+        });
+
         return bins.sort((a, b) => a.order - b.order);
       }
 
@@ -701,7 +749,7 @@
           order: 90.9,
           match(goal) {
             const p = goal._parsedMinute;
-            return (p.base === 90 && p.extra > 0) || p.base > 90;
+            return (p.base === 90 && p.extra > 0);
           }
         },
         {
