@@ -175,7 +175,7 @@
             
             <ul class="rules-list">
                 <li><strong>Acerto de Tendência (+5 pontos):</strong> Se você acertar o vencedor do jogo (Time A ou Time B) ou acertar que o jogo terminará em empate, você garante 5 pontos iniciais.</li>
-                <li><strong>Bônus de Placar Exato (+2 pontos):</strong> Se você acertar cirurgicamente o placar do jogo, ganha 2 pontos extras além de todas as outras pontuações.</li>
+                <li><strong>Bônus de Placar Exato (+3 pontos):</strong> Se você acertar cirurgicamente o placar do jogo, ganha 2 pontos extras além de todas as outras pontuações.</li>
                 <li><strong>Pontuação de Proximidade (Até 5 pontos):</strong> Baseado no quão perto sua aposta chegou do placar real. Ela começa em 5 pontos e sofre subtrações de acordo com os erros.</li>
             </ul>
 
@@ -224,7 +224,7 @@
 
     <!-- SIMULADOR 1 -->
     <section class="card">
-        <h3>Grade do Modelo 1: Proximidade Dinâmica (Teto: 12 pts)</h3>
+        <h3>Grade do Modelo 1: Proximidade Dinâmica (Teto: 13 pts)</h3>
         <p>As linhas indicam os gols apostados para o <strong>Time A</strong> e as colunas os gols para o <strong>Time B</strong>.</p>
         
         <div class="table-container">
@@ -292,7 +292,7 @@
         let proximityPoints = 5 - diffA - diffB - diffSaldo;
         if (proximityPoints < 0) proximityPoints = 0;
 
-        let exactBonus = (realA === betA && realB === betB) ? 2 : 0;
+        let exactBonus = (realA === betA && realB === betB) ? 3 : 0;
 
         return trendPoints + proximityPoints + exactBonus;
     }
@@ -369,7 +369,7 @@
     }
 
     function updateAll() {
-        renderTable(matrixBody1, 12, calculateModel1);
+        renderTable(matrixBody1, 13, calculateModel1);
         renderTable(matrixBody2, 18, calculateModel2);
     }
 
