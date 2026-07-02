@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -100,7 +101,8 @@
       letter-spacing: 0.6px;
     }
 
-    select, input[type="file"] {
+    select,
+    input[type="file"] {
       border: 1px solid #b5c5d8;
       border-radius: 8px;
       padding: 6px 8px;
@@ -316,6 +318,7 @@
     }
   </style>
 </head>
+
 <body>
   <div class="wrap">
     <div class="top">
@@ -335,10 +338,14 @@
     </div>
 
     <div class="legend">
-      <button class="legend-item" data-classificacao="Desempate" type="button"><span class="dot-preview" style="background: var(--desempate)"></span>Desempate</button>
-      <button class="legend-item" data-classificacao="Desempate - Virada" type="button"><span class="dot-preview" style="background: var(--virada)"></span>Desempate - Virada</button>
-      <button class="legend-item" data-classificacao="Empate" type="button"><span class="dot-preview" style="background: var(--empate)"></span>Empate</button>
-      <button class="legend-item" data-classificacao="Ampliando o placar" type="button"><span class="dot-preview" style="background: var(--ampliando)"></span>Ampliando o placar</button>
+      <button class="legend-item" data-classificacao="Desempate" type="button"><span class="dot-preview"
+          style="background: var(--desempate)"></span>Desempate</button>
+      <button class="legend-item" data-classificacao="Desempate - Virada" type="button"><span class="dot-preview"
+          style="background: var(--virada)"></span>Desempate - Virada</button>
+      <button class="legend-item" data-classificacao="Empate" type="button"><span class="dot-preview"
+          style="background: var(--empate)"></span>Empate</button>
+      <button class="legend-item" data-classificacao="Ampliando o placar" type="button"><span class="dot-preview"
+          style="background: var(--ampliando)"></span>Ampliando o placar</button>
     </div>
 
     <div class="chart-area">
@@ -617,7 +624,7 @@
           order: 90.9,
           match(goal) {
             const p = goal._parsedMinute;
-            return (p.base === 90 && p.extra > 0) || p.base > 90;
+            return (p.base === 90 && p.extra > 0);
           }
         });
 
@@ -695,6 +702,42 @@
           match(goal) {
             const p = goal._parsedMinute;
             return (p.base === 90 && p.extra > 0) || p.base > 90;
+          }
+        },
+        {
+          id: '91-105',
+          label: '91-105',
+          order: 105,
+          match(goal) {
+            const p = goal._parsedMinute;
+            return p.base >= 91 && p.base <= 105 && p.extra === 0;
+          }
+        },
+        {
+          id: 'et1',
+          label: 'Acréscimos PT1',
+          order: 105.9,
+          match(goal) {
+            const p = goal._parsedMinute;
+            return p.base === 105 && p.extra > 0;
+          }
+        },
+        {
+          id: '106-120',
+          label: '106-120',
+          order: 120,
+          match(goal) {
+            const p = goal._parsedMinute;
+            return p.base >= 106 && p.base <= 120 && p.extra === 0;
+          }
+        },
+        {
+          id: 'et2',
+          label: 'Acréscimos PT2',
+          order: 120.9,
+          match(goal) {
+            const p = goal._parsedMinute;
+            return p.base === 120 && p.extra > 0;
           }
         }
       ];
@@ -870,4 +913,5 @@
     init();
   </script>
 </body>
+
 </html>
