@@ -1,1008 +1,502 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>e-BÉTS - Ranking do Bolão</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
-  <script src="bolao_header.js"></script>
-  <link rel="stylesheet" href="bolao_styles.css">
-  <style>
-    /* ── MAIN LAYOUT ────────────────────────── */
-    .main-layout {
-      display: flex;
-      align-items: flex-start;
-      min-height: calc(100vh - 56px);
-    }
-
-
-    .main-col {
-      flex: 1;
-      min-width: 0;
-      padding: 20px 20px 72px;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    /* ── SIDEBAR ────────────────────────────── */
-    .sidebar {
-      width: 268px;
-      flex-shrink: 0;
-      position: sticky;
-      top: 56px;
-      height: calc(100vh - 56px);
-      overflow: hidden;
-      background: var(--white);
-      border-left: 1px solid var(--border);
-      display: flex;
-      flex-direction: column;
-      order: 2;
-    }
-
-    .sidebar-head {
-      padding: 10px 14px 9px;
-      background: #fafafa;
-      border-bottom: 1px solid var(--border);
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-    }
-
-    .sidebar-head-title {
-      font-family: 'Bebas Neue', cursive;
-      font-size: 0.9rem;
-      letter-spacing: 2px;
-      color: var(--text);
-    }
-
-    .sb-count-badge {
-      font-size: 0.58rem;
-      color: var(--sub);
-      font-weight: 600;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 1px 6px;
-      white-space: nowrap;
-    }
-
-    .sidebar-actions {
-      display: flex;
-      gap: 5px;
-      padding: 7px 10px;
-      border-bottom: 1px solid var(--border);
-      flex-shrink: 0;
-      background: #fdfdfd;
-    }
-
-    .sim-btn {
-      flex: 1;
-      font-family: 'Inter', sans-serif;
-      font-size: 0.62rem;
-      font-weight: 600;
-      padding: 4px 6px;
-      border-radius: 5px;
-      border: 1.5px solid var(--border);
-      background: var(--white);
-      color: var(--sub);
-      cursor: pointer;
-      transition: all .12s;
-      white-space: nowrap;
-    }
-
-    .sim-btn:hover {
-      background: var(--accent);
-      border-color: var(--accent);
-      color: white;
-    }
-
-    .sim-toggle-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 6px 10px 5px;
-      border-bottom: 1px solid var(--border);
-      background: #fdfdfd;
-    }
-
-    .sim-toggle-label {
-      font-family: 'Inter', sans-serif;
-      font-size: 0.62rem;
-      font-weight: 600;
-      color: var(--sub);
-      flex: 1;
-    }
-
-    .sim-toggle-switch {
-      position: relative;
-      width: 32px;
-      height: 18px;
-      flex-shrink: 0;
-      cursor: pointer;
-    }
-
-    .sim-toggle-switch input {
-      opacity: 0;
-      width: 0;
-      height: 0;
-      position: absolute;
-    }
-
-    .sim-toggle-track {
-      position: absolute;
-      inset: 0;
-      border-radius: 18px;
-      background: var(--border);
-      transition: background .2s;
-    }
-
-    .sim-toggle-switch input:checked+.sim-toggle-track {
-      background: var(--accent);
-    }
-
-    .sim-toggle-thumb {
-      position: absolute;
-      top: 2px;
-      left: 2px;
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      background: #fff;
-      transition: transform .2s;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, .2);
-    }
-
-    .sim-toggle-switch input:checked~.sim-toggle-thumb {
-      transform: translateX(14px);
-    }
-
-    .sidebar-scroll {
-      flex: 1;
-      overflow-y: auto;
-    }
-
-    /* ── SIDEBAR GAME CARDS ─────────────────── */
-    .sim-day-header {
-      padding: 5px 12px;
-      font-size: 0.57rem;
-      font-weight: 700;
-      letter-spacing: 1.2px;
-      text-transform: uppercase;
-      color: var(--sub);
-      background: #f5f6f8;
-      border-bottom: 1px solid var(--border);
-      border-top: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      position: sticky;
-      top: 0;
-      z-index: 1;
-    }
-
-    .sim-day-header:first-child {
-      border-top: none;
-    }
-
-    .sim-day-games {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .sim-game-card {
-      border-bottom: 1px solid var(--border);
-      padding: 7px 10px;
-      background: var(--white);
-      transition: background .1s;
-    }
-
-    .sim-game-card.filled {
-      background: #f0fdf4;
-    }
-
-    .sim-game-card.done {
-      background: #fafafa;
-    }
-
-    .sim-game-card.live {
-      background: #fff5f5;
-      border-left: 2px solid #dc2626;
-    }
-
-    .sim-meta {
-      font-size: 0.57rem;
-      color: var(--light);
-      margin-bottom: 5px;
-      line-height: 1;
-    }
-
-    .sim-row {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .sim-team-side {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      min-width: 0;
-    }
-
-    .sim-team-side.b {
-      flex-direction: row-reverse;
-    }
-
-    .sim-flag {
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 1px solid var(--border);
-      flex-shrink: 0;
-    }
-
-    .sim-team-lbl {
-      font-size: 0.63rem;
-      font-weight: 600;
-      color: var(--text);
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .sim-inputs {
-      display: flex;
-      align-items: center;
-      gap: 3px;
-      flex-shrink: 0;
-    }
-
-    .sim-win-wrap {
-      margin-top: 6px;
-      display: flex;
-      justify-content: center;
-    }
-
-    .sim-win-select {
-      width: 100%;
-      max-width: 180px;
-      height: 24px;
-      border: 1.5px solid var(--border);
-      border-radius: 5px;
-      background: var(--white);
-      color: var(--text);
-      font-family: 'Inter', sans-serif;
-      font-size: 0.62rem;
-      font-weight: 600;
-      padding: 0 6px;
-      outline: none;
-      transition: border-color .15s;
-    }
-
-    .sim-win-select:focus {
-      border-color: var(--accent);
-    }
-
-    .sim-inp {
-      width: 28px;
-      height: 26px;
-      text-align: center;
-      border: 1.5px solid var(--border);
-      border-radius: 5px;
-      font-family: 'Bebas Neue', cursive;
-      font-size: 1rem;
-      background: var(--white);
-      color: var(--text);
-      outline: none;
-      transition: border-color .15s;
-    }
-
-    .sim-inp:focus {
-      border-color: var(--accent);
-    }
-
-    .sim-inp::-webkit-outer-spin-button,
-    .sim-inp::-webkit-inner-spin-button {
-      -webkit-appearance: none;
-    }
-
-    .sim-inp[type=number] {
-      appearance: textfield;
-      -moz-appearance: textfield;
-    }
-
-    .sim-vs {
-      font-family: 'Bebas Neue', cursive;
-      font-size: 0.8rem;
-      color: var(--light);
-      flex-shrink: 0;
-    }
-
-    /* Score for done games */
-    .score-done {
-      display: flex;
-      align-items: center;
-      gap: 3px;
-      flex-shrink: 0;
-      font-family: 'Bebas Neue', cursive;
-      font-size: 1.05rem;
-      letter-spacing: 1px;
-      color: var(--text);
-    }
-
-    .score-wrap-sb {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1px;
-      flex-shrink: 0;
-    }
-
-    .score-pen {
-      font-family: 'Inter', sans-serif;
-      font-size: 0.58rem;
-      font-weight: 700;
-      letter-spacing: .2px;
-      color: var(--sub);
-      margin-left: 0;
-      white-space: nowrap;
-    }
-
-    /* Live score in sidebar */
-    .score-live-sb {
-      display: flex;
-      align-items: center;
-      gap: 3px;
-      flex-shrink: 0;
-      font-family: 'Bebas Neue', cursive;
-      font-size: 1.05rem;
-      letter-spacing: 1px;
-    }
-
-    .score-live-sb .sn {
-      color: var(--text);
-      display: inline-block;
-      transition: color .1s;
-    }
-
-    .score-live-sb .sn.goal-flash {
-      animation: sbGoalPop .7s ease-out forwards;
-    }
-
-    @keyframes sbGoalPop {
-      0% {
-        transform: scale(1);
-        color: var(--text);
-      }
-
-      20% {
-        transform: scale(1.7);
-        color: #16a34a;
-      }
-
-      60% {
-        transform: scale(1.4);
-        color: #16a34a;
-      }
-
-      100% {
-        transform: scale(1);
-        color: var(--text);
-      }
-    }
-
-    /* Live badge in sidebar */
-    .sb-live-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 3px;
-      font-size: 0.52rem;
-      font-weight: 700;
-      letter-spacing: .8px;
-      text-transform: uppercase;
-      color: #dc2626;
-      line-height: 1;
-    }
-
-    .sb-live-dot {
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: #dc2626;
-      animation: sbPulse 1.2s ease-in-out infinite;
-      flex-shrink: 0;
-    }
-
-    @keyframes sbPulse {
-
-      0%,
-      100% {
-        opacity: 1;
-      }
-
-      50% {
-        opacity: .25;
-      }
-    }
-
-    /* Ver apostas link */
-    .sb-apostas-link {
-      font-size: 0.56rem;
-      font-weight: 600;
-      color: var(--accent);
-      text-decoration: none;
-      letter-spacing: .5px;
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
-
-    .sb-apostas-link:hover {
-      text-decoration: underline;
-    }
-
-    /* ── SUMMARY CARDS ──────────────────────── */
-    .summary-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-    }
-
-    .summary-card {
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 14px 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
-    }
-
-    .sc-label {
-      font-size: 0.58rem;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: var(--sub);
-    }
-
-    .sc-value {
-      font-family: 'Bebas Neue', cursive;
-      font-size: 1.9rem;
-      letter-spacing: 2px;
-      color: var(--text);
-      line-height: 1;
-    }
-
-    .sc-sub {
-      font-size: 0.63rem;
-      color: var(--light);
-      font-weight: 500;
-    }
-
-    .info-strip {
-      padding: 8px 18px;
-      font-size: 0.68rem;
-      color: var(--sub);
-      border-bottom: 1px solid var(--border);
-      background: #fcfcfd;
-      line-height: 1.7;
-    }
-
-    /* ── RANKING TABLE ──────────────────────── */
-    .rank-table {
-      width: 100%;
-      border-collapse: collapse;
-      table-layout: fixed;
-    }
-
-    .col-rank {
-      width: 34px;
-    }
-
-    .col-name {
-      width: 150px;
-    }
-
-    .col-stat {
-      width: max(80px, calc((100% - 34px - 150px - 52px - 84px - 150px) / 6));
-    }
-
-    .col-points {
-      width: 52px;
-    }
-
-    .col-bar {
-      width: 84px;
-    }
-
-    .col-last5 {
-      width: 150px;
-    }
-
-    .rank-table th {
-      padding: 7px 10px;
-      font-size: 0.56rem;
-      font-weight: 700;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      color: var(--sub);
-      border-bottom: 1px solid var(--border);
-      background: #f5f6f8;
-      white-space: nowrap;
-    }
-
-    .rank-table th.right {
-      text-align: right;
-    }
-
-    .rank-table th.left {
-      text-align: left;
-    }
-
-    .rank-table th.center {
-      text-align: center;
-    }
-
-    .rank-table td {
-      padding: 9px 10px;
-      border-bottom: 1px solid var(--border);
-      vertical-align: middle;
-    }
-
-    .rank-table tr:last-child td {
-      border-bottom: none;
-    }
-
-    .rank-table tr:hover td {
-      background: #f9fafb;
-    }
-
-    .rank-pos {
-      font-family: 'Bebas Neue', cursive;
-      font-size: 1.05rem;
-      color: var(--light);
-      text-align: center;
-      width: 28px;
-    }
-
-    .rank-pos.gold {
-      color: #ca8a04;
-    }
-
-    .rank-pos.silver {
-      color: #6b7280;
-    }
-
-    .rank-pos.bronze {
-      color: #92400e;
-    }
-
-    .rank-name {
-      font-weight: 600;
-      color: var(--text);
-      font-size: 0.8rem;
-      width: 150px;
-
-      white-space: normal;
-      overflow: visible;
-      text-overflow: clip;
-
-      word-break: break-word;
-      overflow-wrap: break-word;
-      line-height: 1.2;
-    }
-
-    /* Points column */
-    .pts-cell {
-      text-align: right;
-      white-space: nowrap;
-    }
-
-    .pts-real {
-      font-family: 'Bebas Neue', cursive;
-      font-size: 1.25rem;
-      letter-spacing: 1px;
-      color: var(--text);
-    }
-
-    .pts-sim {
-      font-size: 0.72rem;
-      font-weight: 700;
-      color: var(--accent);
-      margin-left: 4px;
-    }
-
-    .pts-last5-mobile {
-      display: none;
-      margin-top: 4px;
-      text-align: right;
-      white-space: nowrap;
-    }
-
-    .pts-last5-mobile .score-pip+.score-pip {
-      margin-left: 2px;
-    }
-
-    /* Stat columns */
-    .stat-cell {
-      text-align: center;
-      white-space: nowrap;
-    }
-
-    .stat-real {
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: var(--text);
-    }
-
-    .stat-sim {
-      font-size: 0.68rem;
-      font-weight: 700;
-      color: var(--accent);
-      margin-left: 3px;
-    }
-
-    /* Bar */
-    .bar-cell {
-      width: 84px;
-      padding-left: 4px !important;
-    }
-
-    .bar-wrap {
-      height: 5px;
-      background: var(--bg);
-      border-radius: 3px;
-      overflow: hidden;
-    }
-
-    .bar-fill {
-      height: 100%;
-      background: var(--accent);
-      border-radius: 3px;
-      transition: width .35s;
-    }
-
-    /* Last 5 games mini-column */
-    .last5-cell {
-      text-align: right;
-      white-space: nowrap;
-      text-align: center;
-      padding-right: 14px !important;
-    }
-
-    .last5-cell .score-pip+.score-pip {
-      text-align: center;
-      margin-left: 2px;
-    }
-
-    /* Position delta badge */
-    .rank-delta {
-      font-size: 0.58rem;
-      font-weight: 700;
-      padding: 1px 5px;
-      border-radius: 4px;
-      vertical-align: middle;
-      white-space: nowrap;
-    }
-
-    .rank-delta.up {
-      color: #166534;
-      background: #dcfce7;
-    }
-
-    .rank-delta.dn {
-      color: #991b1b;
-      background: #fee2e2;
-    }
-
-    .rank-delta.eq {
-      color: var(--light);
-      font-weight: 500;
-    }
-
-    /* ── VIEW TOGGLE ────────────────────────── */
-    .rank-view-toggle {
-      display: flex;
-      gap: 2px;
-      margin-left: auto;
-      flex-shrink: 0;
-    }
-
-    .rvt-btn {
-      font-family: 'Inter', sans-serif;
-      font-size: 0.6rem;
-      font-weight: 700;
-      letter-spacing: 0.8px;
-      text-transform: uppercase;
-      padding: 4px 12px;
-      border-radius: 5px;
-      border: 1.5px solid var(--border);
-      background: transparent;
-      color: var(--sub);
-      cursor: pointer;
-      transition: all .12s;
-    }
-
-    .rvt-btn.active {
-      background: var(--accent);
-      border-color: var(--accent);
-      color: white;
-    }
-
-    .rvt-btn:hover:not(.active) {
-      background: var(--bg);
-    }
-
-    /* ── CHART ──────────────────────────────── */
-    .chart-wrap {
-      padding: 0;
-      position: relative;
-      height: 460px;
-    }
-
-    .chart-legend {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 4px 16px;
-      padding: 12px 16px 16px;
-      border-top: 1px solid var(--border);
-    }
-
-    .chart-legend-item {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      font-size: 0.65rem;
-      font-weight: 600;
-      color: var(--text);
-      cursor: pointer;
-      transition: opacity .15s;
-      user-select: none;
-    }
-
-    .chart-legend-item.inactive {
-      opacity: 0.35;
-    }
-
-    .chart-legend-dot {
-      width: 9px;
-      height: 9px;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
-
-    /* ── CHART TYPE DROPDOWN ────────────────────── */
-    .chart-type-bar {
-      padding: 10px 16px 0;
-    }
-
-    .ct-dropdown {
-      position: relative;
-      display: inline-block;
-    }
-
-    .ct-btn {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      background: var(--bg);
-      border: 1.5px solid var(--border);
-      border-radius: 7px;
-      padding: 5px 12px;
-      font-family: 'Inter', sans-serif;
-      font-size: 0.78rem;
-      font-weight: 600;
-      color: var(--text);
-      cursor: pointer;
-      transition: border-color .15s;
-    }
-
-    .ct-btn:hover {
-      border-color: var(--accent);
-    }
-
-    .ct-menu {
-      position: absolute;
-      top: calc(100% + 5px);
-      left: 0;
-      background: var(--white);
-      border: 1.5px solid var(--border);
-      border-radius: 9px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, .12);
-      min-width: 270px;
-      z-index: 200;
-      overflow: hidden;
-      display: none;
-    }
-
-    .ct-menu.open {
-      display: block;
-    }
-
-    .ct-opt {
-      padding: 10px 14px;
-      font-family: 'Inter', sans-serif;
-      font-size: 0.78rem;
-      cursor: pointer;
-      border-bottom: 1px solid var(--border);
-      color: var(--text);
-    }
-
-    .ct-opt:last-child {
-      border-bottom: none;
-    }
-
-    .ct-opt:hover {
-      background: var(--accent-light);
-    }
-
-    .ct-opt.active {
-      font-weight: 700;
-      color: var(--accent);
-    }
-
-    /* ── RACE CONTROLS ──────────────────────────── */
-    .race-controls {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 4px 16px 12px;
-    }
-
-    .race-play-btn {
-      background: var(--accent);
-      color: #fff;
-      border: none;
-      border-radius: 6px;
-      padding: 5px 0;
-      font-size: 0.9rem;
-      cursor: pointer;
-      flex-shrink: 0;
-      line-height: 1;
-      width: 42px;
-      text-align: center;
-    }
-
-    .race-play-btn:hover {
-      opacity: .85;
-    }
-
-    .race-scrubber {
-      flex: 1;
-      accent-color: var(--accent);
-      cursor: pointer;
-    }
-
-    .race-game-label {
-      font-size: 0.7rem;
-      color: var(--sub);
-      white-space: nowrap;
-      min-width: 0;
-      text-align: right;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-
-    /* ── MOBILE DRAWER ───────────────────────── */
-    .mob-fab {
-      display: none;
-      position: fixed;
-      bottom: 18px;
-      right: 18px;
-      z-index: 400;
-      background: var(--accent);
-      color: #fff;
-      border: none;
-      border-radius: 28px;
-      padding: 10px 18px 10px 14px;
-      font-family: 'Inter', sans-serif;
-      font-size: 0.78rem;
-      font-weight: 700;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, .22);
-      cursor: pointer;
-      align-items: center;
-      gap: 7px;
-      transition: opacity .15s;
-    }
-
-    .mob-fab:hover {
-      opacity: .88;
-    }
-
-    .mob-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      z-index: 500;
-      background: rgba(0, 0, 0, .4);
-      backdrop-filter: blur(2px);
-    }
-
-    .mob-overlay.open {
-      display: block;
-    }
-
-    .mob-drawer {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      z-index: 501;
-      background: var(--white);
-      border-radius: 18px 18px 0 0;
-      box-shadow: 0 -4px 32px rgba(0, 0, 0, .18);
-      max-height: 82vh;
-      display: flex;
-      flex-direction: column;
-      transform: translateY(100%);
-      transition: transform .28s cubic-bezier(.4, 0, .2, 1);
-    }
-
-    .mob-drawer.open {
-      transform: translateY(0);
-    }
-
-    .mob-drawer-handle {
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 12px 16px 10px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .mob-drawer-title {
-      font-family: 'Bebas Neue', cursive;
-      font-size: 1rem;
-      letter-spacing: 2px;
-      color: var(--text);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .mob-drawer-close {
-      background: none;
-      border: none;
-      font-size: 1.3rem;
-      color: var(--sub);
-      cursor: pointer;
-      line-height: 1;
-      padding: 2px 4px;
-    }
-
-    .mob-drawer-body {
-      flex: 1;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-    }
-
-    /* ── RESPONSIVE ─────────────────────────── */
-    @media (max-width: 800px) {
-      .sidebar {
-        display: none;
-      }
-
-      .sidebar-fab {
-        display: none;
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>e-BÉTS - Ranking do Bolão</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+    <script src="bolao_header.js"></script>
+    <link rel="stylesheet" href="bolao_styles.css" />
+    <style>
+      /* ── MAIN LAYOUT ────────────────────────── */
+      .main-layout {
+        display: flex;
+        align-items: flex-start;
+        min-height: calc(100vh - 56px);
       }
 
       .main-col {
-        padding: 16px 12px 72px;
+        flex: 1;
+        min-width: 0;
+        padding: 20px 20px 72px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
       }
 
-      .rank-table {
-        table-layout: fixed;
+      /* ── SIDEBAR ────────────────────────────── */
+      .sidebar {
+        width: 268px;
+        flex-shrink: 0;
+        position: sticky;
+        top: 56px;
+        height: calc(100vh - 56px);
+        overflow: hidden;
+        background: var(--white);
+        border-left: 1px solid var(--border);
+        display: flex;
+        flex-direction: column;
+        order: 2;
+      }
+
+      .sidebar-head {
+        padding: 10px 14px 9px;
+        background: #fafafa;
+        border-bottom: 1px solid var(--border);
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+      }
+
+      .sidebar-head-title {
+        font-family: "Bebas Neue", cursive;
+        font-size: 0.9rem;
+        letter-spacing: 2px;
+        color: var(--text);
+      }
+
+      .sb-count-badge {
+        font-size: 0.58rem;
+        color: var(--sub);
+        font-weight: 600;
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 1px 6px;
+        white-space: nowrap;
+      }
+
+      .sidebar-actions {
+        display: flex;
+        gap: 5px;
+        padding: 7px 10px;
+        border-bottom: 1px solid var(--border);
+        flex-shrink: 0;
+        background: #fdfdfd;
+      }
+
+      .sim-btn {
+        flex: 1;
+        font-family: "Inter", sans-serif;
+        font-size: 0.62rem;
+        font-weight: 600;
+        padding: 4px 6px;
+        border-radius: 5px;
+        border: 1.5px solid var(--border);
+        background: var(--white);
+        color: var(--sub);
+        cursor: pointer;
+        transition: all 0.12s;
+        white-space: nowrap;
+      }
+
+      .sim-btn:hover {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: white;
+      }
+
+      .sim-toggle-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 10px 5px;
+        border-bottom: 1px solid var(--border);
+        background: #fdfdfd;
+      }
+
+      .sim-toggle-label {
+        font-family: "Inter", sans-serif;
+        font-size: 0.62rem;
+        font-weight: 600;
+        color: var(--sub);
+        flex: 1;
+      }
+
+      .sim-toggle-switch {
+        position: relative;
+        width: 32px;
+        height: 18px;
+        flex-shrink: 0;
+        cursor: pointer;
+      }
+
+      .sim-toggle-switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+        position: absolute;
+      }
+
+      .sim-toggle-track {
+        position: absolute;
+        inset: 0;
+        border-radius: 18px;
+        background: var(--border);
+        transition: background 0.2s;
+      }
+
+      .sim-toggle-switch input:checked + .sim-toggle-track {
+        background: var(--accent);
+      }
+
+      .sim-toggle-thumb {
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background: #fff;
+        transition: transform 0.2s;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+      }
+
+      .sim-toggle-switch input:checked ~ .sim-toggle-thumb {
+        transform: translateX(14px);
+      }
+
+      .sidebar-scroll {
+        flex: 1;
+        overflow-y: auto;
+      }
+
+      /* ── SIDEBAR GAME CARDS ─────────────────── */
+      .sim-day-header {
+        padding: 5px 12px;
+        font-size: 0.57rem;
+        font-weight: 700;
+        letter-spacing: 1.2px;
+        text-transform: uppercase;
+        color: var(--sub);
+        background: #f5f6f8;
+        border-bottom: 1px solid var(--border);
+        border-top: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: sticky;
+        top: 0;
+        z-index: 1;
+      }
+
+      .sim-day-header:first-child {
+        border-top: none;
+      }
+
+      .sim-day-games {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .sim-game-card {
+        border-bottom: 1px solid var(--border);
+        padding: 7px 10px;
+        background: var(--white);
+        transition: background 0.1s;
+      }
+
+      .sim-game-card.filled {
+        background: #f0fdf4;
+      }
+
+      .sim-game-card.done {
+        background: #fafafa;
+      }
+
+      .sim-game-card.live {
+        background: #fff5f5;
+        border-left: 2px solid #dc2626;
+      }
+
+      .sim-meta {
+        font-size: 0.57rem;
+        color: var(--light);
+        margin-bottom: 5px;
+        line-height: 1;
+      }
+
+      .sim-row {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+
+      .sim-team-side {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        min-width: 0;
+      }
+
+      .sim-team-side.b {
+        flex-direction: row-reverse;
+      }
+
+      .sim-flag {
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 1px solid var(--border);
+        flex-shrink: 0;
+      }
+
+      .sim-team-lbl {
+        font-size: 0.63rem;
+        font-weight: 600;
+        color: var(--text);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .sim-inputs {
+        display: flex;
+        align-items: center;
+        gap: 3px;
+        flex-shrink: 0;
+      }
+
+      .sim-win-wrap {
+        margin-top: 6px;
+        display: flex;
+        justify-content: center;
+      }
+
+      .sim-win-select {
         width: 100%;
+        max-width: 180px;
+        height: 24px;
+        border: 1.5px solid var(--border);
+        border-radius: 5px;
+        background: var(--white);
+        color: var(--text);
+        font-family: "Inter", sans-serif;
+        font-size: 0.62rem;
+        font-weight: 600;
+        padding: 0 6px;
+        outline: none;
+        transition: border-color 0.15s;
+      }
+
+      .sim-win-select:focus {
+        border-color: var(--accent);
+      }
+
+      .sim-inp {
+        width: 28px;
+        height: 26px;
+        text-align: center;
+        border: 1.5px solid var(--border);
+        border-radius: 5px;
+        font-family: "Bebas Neue", cursive;
+        font-size: 1rem;
+        background: var(--white);
+        color: var(--text);
+        outline: none;
+        transition: border-color 0.15s;
+      }
+
+      .sim-inp:focus {
+        border-color: var(--accent);
+      }
+
+      .sim-inp::-webkit-outer-spin-button,
+      .sim-inp::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+      }
+
+      .sim-inp[type="number"] {
+        appearance: textfield;
+        -moz-appearance: textfield;
+      }
+
+      .sim-vs {
+        font-family: "Bebas Neue", cursive;
+        font-size: 0.8rem;
+        color: var(--light);
+        flex-shrink: 0;
+      }
+
+      /* Score for done games */
+      .score-done {
+        display: flex;
+        align-items: center;
+        gap: 3px;
+        flex-shrink: 0;
+        font-family: "Bebas Neue", cursive;
+        font-size: 1.05rem;
+        letter-spacing: 1px;
+        color: var(--text);
+      }
+
+      .score-wrap-sb {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1px;
+        flex-shrink: 0;
+      }
+
+      .score-pen {
+        font-family: "Inter", sans-serif;
+        font-size: 0.58rem;
+        font-weight: 700;
+        letter-spacing: 0.2px;
+        color: var(--sub);
+        margin-left: 0;
+        white-space: nowrap;
+      }
+
+      /* Live score in sidebar */
+      .score-live-sb {
+        display: flex;
+        align-items: center;
+        gap: 3px;
+        flex-shrink: 0;
+        font-family: "Bebas Neue", cursive;
+        font-size: 1.05rem;
+        letter-spacing: 1px;
+      }
+
+      .score-live-sb .sn {
+        color: var(--text);
+        display: inline-block;
+        transition: color 0.1s;
+      }
+
+      .score-live-sb .sn.goal-flash {
+        animation: sbGoalPop 0.7s ease-out forwards;
+      }
+
+      @keyframes sbGoalPop {
+        0% {
+          transform: scale(1);
+          color: var(--text);
+        }
+
+        20% {
+          transform: scale(1.7);
+          color: #16a34a;
+        }
+
+        60% {
+          transform: scale(1.4);
+          color: #16a34a;
+        }
+
+        100% {
+          transform: scale(1);
+          color: var(--text);
+        }
+      }
+
+      /* Live badge in sidebar */
+      .sb-live-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 3px;
+        font-size: 0.52rem;
+        font-weight: 700;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        color: #dc2626;
+        line-height: 1;
+      }
+
+      .sb-live-dot {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: #dc2626;
+        animation: sbPulse 1.2s ease-in-out infinite;
+        flex-shrink: 0;
+      }
+
+      @keyframes sbPulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+
+        50% {
+          opacity: 0.25;
+        }
+      }
+
+      /* Ver apostas link */
+      .sb-apostas-link {
+        font-size: 0.56rem;
+        font-weight: 600;
+        color: var(--accent);
+        text-decoration: none;
+        letter-spacing: 0.5px;
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+
+      .sb-apostas-link:hover {
+        text-decoration: underline;
+      }
+
+      /* ── SUMMARY CARDS ──────────────────────── */
+      .summary-row {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+      }
+
+      .summary-card {
+        background: var(--white);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 14px 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+      }
+
+      .sc-label {
+        font-size: 0.58rem;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: var(--sub);
+      }
+
+      .sc-value {
+        font-family: "Bebas Neue", cursive;
+        font-size: 1.9rem;
+        letter-spacing: 2px;
+        color: var(--text);
+        line-height: 1;
+      }
+
+      .sc-sub {
+        font-size: 0.63rem;
+        color: var(--light);
+        font-weight: 500;
+      }
+
+      .info-strip {
+        padding: 8px 18px;
+        font-size: 0.68rem;
+        color: var(--sub);
+        border-bottom: 1px solid var(--border);
+        background: #fcfcfd;
+        line-height: 1.7;
+      }
+
+      /* ── RANKING TABLE ──────────────────────── */
+      .rank-table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed;
       }
 
       .col-rank {
@@ -1010,1686 +504,3149 @@
       }
 
       .col-name {
-        width: 120px;
-      }
-
-      .col-points {
-        width: 64px;
-      }
-
-      .col-bar {
-        width: clamp(0px, calc(100% - 34px - 120px - 64px - 122px), 100px);
+        width: 150px;
       }
 
       .col-stat {
-        display: none;
-        width: 0 !important;
+        width: max(80px, calc((100% - 34px - 150px - 52px - 84px - 150px) / 6));
+      }
+
+      .col-points {
+        width: 52px;
+      }
+
+      .col-bar {
+        width: 84px;
       }
 
       .col-last5 {
-        width: 122px;
+        width: 150px;
       }
 
-      .rank-table th.last5-cell {
-        white-space: normal;
-        line-height: 1.05;
-        overflow-wrap: anywhere;
-      }
-
-      .rank-table td.last5-cell {
+      .rank-table th {
+        padding: 7px 10px;
+        font-size: 0.56rem;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: var(--sub);
+        border-bottom: 1px solid var(--border);
+        background: #f5f6f8;
         white-space: nowrap;
       }
 
-      .hide-sm {
-        display: none !important;
+      .rank-table th.right {
+        text-align: right;
       }
 
-      .rank-table th,
-      .rank-table td {
-        overflow: hidden;
-      }
-
-      .pts-cell {
-        width: 64px;
-      }
-
-      .bar-cell {
-        width: clamp(0px, calc(100% - 34px - 120px - 64px - 122px), 100px);
-        display: table-cell;
-      }
-
-      .bar-wrap {
-        width: min(100%, 100px);
-        margin: 0 auto;
-      }
-
-      .rank-name {
-        width: 120px;
-        max-width: 120px;
-        min-width: 120px;
-        white-space: normal;
-        overflow: visible;
-        text-overflow: clip;
-        line-height: 1.2;
-      }
-
-      .rank-name a {
-        white-space: normal;
-        word-break: normal;
-        overflow-wrap: normal;
-      }
-
-      .last5-cell {
-        width: auto;
-        text-align: center;
-        padding-left: 6px !important;
-        padding-right: 6px !important;
-      }
-
-      .last5-cell .score-pip {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        white-space: nowrap;
-        min-width: 18px;
-        height: 18px;
-        padding: 0 3px;
-        font-size: 0.68rem;
-      }
-
-      .mob-fab {
-        display: flex;
-      }
-    }
-
-    @media (min-width: 801px) and (max-width: 1180px) {
-      .rank-table th.hide-sm {
-        white-space: normal;
-        overflow-wrap: anywhere;
-        line-height: 1.05;
-        font-size: 0.48rem;
-        padding: 6px 4px;
+      .rank-table th.left {
+        text-align: left;
       }
 
       .rank-table th.center {
-        font-size: 0.52rem;
-        padding-left: 6px;
-        padding-right: 6px;
+        text-align: center;
       }
 
-      .stat-cell {
-        font-size: 0.72rem;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .summary-row {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .rank-table th,
       .rank-table td {
-        padding: 7px 7px;
+        padding: 9px 10px;
+        border-bottom: 1px solid var(--border);
+        vertical-align: middle;
+      }
+
+      .rank-table tr:last-child td {
+        border-bottom: none;
+      }
+
+      .rank-table tr:hover td {
+        background: #f9fafb;
+      }
+
+      .rank-pos {
+        font-family: "Bebas Neue", cursive;
+        font-size: 1.05rem;
+        color: var(--light);
+        text-align: center;
+        width: 28px;
+      }
+
+      .rank-pos.gold {
+        color: #ca8a04;
+      }
+
+      .rank-pos.silver {
+        color: #6b7280;
+      }
+
+      .rank-pos.bronze {
+        color: #92400e;
       }
 
       .rank-name {
-        font-size: 0.72rem;
+        font-weight: 600;
+        color: var(--text);
+        font-size: 0.8rem;
+        width: 150px;
+
+        white-space: normal;
+        overflow: visible;
+        text-overflow: clip;
+
+        word-break: break-word;
+        overflow-wrap: break-word;
+        line-height: 1.2;
+      }
+
+      /* Points column */
+      .pts-cell {
+        text-align: right;
+        white-space: nowrap;
       }
 
       .pts-real {
-        font-size: 1.05rem;
+        font-family: "Bebas Neue", cursive;
+        font-size: 1.25rem;
+        letter-spacing: 1px;
+        color: var(--text);
       }
 
+      .pts-sim {
+        font-size: 0.72rem;
+        font-weight: 700;
+        color: var(--accent);
+        margin-left: 4px;
+      }
+
+      .pts-last5-mobile {
+        display: none;
+        margin-top: 4px;
+        text-align: right;
+        white-space: nowrap;
+      }
+
+      .pts-last5-mobile .score-pip + .score-pip {
+        margin-left: 2px;
+      }
+
+      /* Stat columns */
+      .stat-cell {
+        text-align: center;
+        white-space: nowrap;
+      }
+
+      .stat-real {
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--text);
+      }
+
+      .stat-sim {
+        font-size: 0.68rem;
+        font-weight: 700;
+        color: var(--accent);
+        margin-left: 3px;
+      }
+
+      /* Bar */
+      .bar-cell {
+        width: 84px;
+        padding-left: 4px !important;
+      }
+
+      .bar-wrap {
+        height: 5px;
+        background: var(--bg);
+        border-radius: 3px;
+        overflow: hidden;
+      }
+
+      .bar-fill {
+        height: 100%;
+        background: var(--accent);
+        border-radius: 3px;
+        transition: width 0.35s;
+      }
+
+      /* Last 5 games mini-column */
+      .last5-cell {
+        text-align: right;
+        white-space: nowrap;
+        text-align: center;
+        padding-right: 14px !important;
+      }
+
+      .last5-cell .score-pip + .score-pip {
+        text-align: center;
+        margin-left: 2px;
+      }
+
+      /* Position delta badge */
+      .rank-delta {
+        font-size: 0.58rem;
+        font-weight: 700;
+        padding: 1px 5px;
+        border-radius: 4px;
+        vertical-align: middle;
+        white-space: nowrap;
+      }
+
+      .rank-delta.up {
+        color: #166534;
+        background: #dcfce7;
+      }
+
+      .rank-delta.dn {
+        color: #991b1b;
+        background: #fee2e2;
+      }
+
+      .rank-delta.eq {
+        color: var(--light);
+        font-weight: 500;
+      }
+
+      /* ── VIEW TOGGLE ────────────────────────── */
+      .rank-view-toggle {
+        display: flex;
+        gap: 2px;
+        margin-left: auto;
+        flex-shrink: 0;
+      }
+
+      .rvt-btn {
+        font-family: "Inter", sans-serif;
+        font-size: 0.6rem;
+        font-weight: 700;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        padding: 4px 12px;
+        border-radius: 5px;
+        border: 1.5px solid var(--border);
+        background: transparent;
+        color: var(--sub);
+        cursor: pointer;
+        transition: all 0.12s;
+      }
+
+      .rvt-btn.active {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: white;
+      }
+
+      .rvt-btn:hover:not(.active) {
+        background: var(--bg);
+      }
+
+      /* ── CHART ──────────────────────────────── */
       .chart-wrap {
-        height: 340px;
+        padding: 0;
+        position: relative;
+        height: 460px;
+      }
+
+      .chart-legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px 16px;
+        padding: 12px 16px 16px;
+        border-top: 1px solid var(--border);
+      }
+
+      .chart-legend-item {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 0.65rem;
+        font-weight: 600;
+        color: var(--text);
+        cursor: pointer;
+        transition: opacity 0.15s;
+        user-select: none;
+      }
+
+      .chart-legend-item.inactive {
+        opacity: 0.35;
+      }
+
+      .chart-legend-dot {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+
+      /* ── CHART TYPE DROPDOWN ────────────────────── */
+      .chart-type-bar {
+        padding: 10px 16px 0;
+      }
+
+      .ct-dropdown {
+        position: relative;
+        display: inline-block;
       }
 
       .ct-btn {
-        font-size: 0.68rem;
-        padding: 5px 9px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        background: var(--bg);
+        border: 1.5px solid var(--border);
+        border-radius: 7px;
+        padding: 5px 12px;
+        font-family: "Inter", sans-serif;
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: var(--text);
+        cursor: pointer;
+        transition: border-color 0.15s;
       }
 
-    }
-  </style>
-</head>
+      .ct-btn:hover {
+        border-color: var(--accent);
+      }
 
-<body>
+      .ct-menu {
+        position: absolute;
+        top: calc(100% + 5px);
+        left: 0;
+        background: var(--white);
+        border: 1.5px solid var(--border);
+        border-radius: 9px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        min-width: 270px;
+        z-index: 200;
+        overflow: hidden;
+        display: none;
+      }
 
-  <div id="site-header"></div>
-  <script>injectHeader('ranking', 'Ranking do Bolão');</script>
+      .ct-menu.open {
+        display: block;
+      }
 
-  <div id="loading-overlay">
-    <div class="loading-spinner"></div>
-    <div class="loading-text">Carregando dados...</div>
-  </div>
+      .ct-opt {
+        padding: 10px 14px;
+        font-family: "Inter", sans-serif;
+        font-size: 0.78rem;
+        cursor: pointer;
+        border-bottom: 1px solid var(--border);
+        color: var(--text);
+      }
 
-  <div class="main-layout">
+      .ct-opt:last-child {
+        border-bottom: none;
+      }
 
-    <!-- ── MAIN COLUMN ─────────────────────── -->
-    <div class="main-col">
+      .ct-opt:hover {
+        background: var(--accent-light);
+      }
 
-      <div class="card" id="ranking-card">
-        <div class="card-head">
-          <span class="card-head-title">Ranking</span>
-          <span class="card-head-sub" id="rank-sub">Pontos dos jogos já realizados</span>
-          <div class="rank-view-toggle">
-            <button class="rvt-btn active" id="btn-view-table" onclick="switchView('table')">Tabela</button>
-            <button class="rvt-btn" id="btn-view-chart" onclick="switchView('chart')">Gráfico</button>
-          </div>
-          <button class="btn-img" onclick="exportImage()" title="Salvar imagem">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-              <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
-              <polyline points="7,10 12,15 17,10" />
-              <line x1="12" y1="15" x2="12" y2="3" />
-            </svg>
-          </button>
-        </div>
-        <div id="view-table">
-          <div class="info-strip">
-            <strong style="color:var(--text)">Pontuação por jogo:</strong>
-            Gols A exatos +1 · Gols B exatos +1 · Diferença exata +1 · Resultado correto +1 · Vencedor do confronto +1.
-            Máx. 5 pts/jogo · 3º lugar ×2 · Final ×4 · Desempate: resultados → vencedores → empates → jogo mais próximo
-            da final.
-          </div>
-          <table class="rank-table">
-            <colgroup>
-              <col class="col-rank">
-              <col class="col-name">
-              <col class="col-stat">
-              <col class="col-stat">
-              <col class="col-stat">
-              <col class="col-stat">
-              <col class="col-stat">
-              <col class="col-stat">
-              <col class="col-points">
-              <col class="col-bar">
-              <col class="col-last5">
-            </colgroup>
-            <thead>
-              <tr>
-                <th class="center">#</th>
-                <th class="left">Apostador</th>
-                <th class="center hide-sm" title="Quantidade de resultados corretos (vitória ou empate)">Resultados</th>
-                <th class="center hide-sm" title="Quantidade de times vencedores acertados">Vencedores</th>
-                <th class="center hide-sm" title="Quantidade de empates acertados">Empates</th>
-                <th class="center hide-sm" title="Gols individuais exatos (gols A + gols B corretos)">Gols</th>
-                <th class="center hide-sm" title="Jogos com diferença de gols exata">Dif. Gols</th>
-                <th class="center hide-sm" title="Partidas com placar exato (gols A e B acertados)">Placar exato</th>
-                <th class="center" colspan="2" title="Total de pontos e barra relativa">Pontos</th>
-                <th class="center last5-cell" title="Pontos nas últimas 5 partidas"><span class="last5-title">Desempenho recente</span></th>
-              </tr>
-            </thead>
-            <tbody id="ranking-body"></tbody>
-          </table>
-        </div>
-        <div id="view-chart" style="display:none">
-          <div class="chart-type-bar">
-            <div class="ct-dropdown" id="ct-dropdown">
-              <button class="ct-btn" id="ct-btn" onclick="toggleChartMenu(event)">
-                <span id="ct-label">Histórico de posições</span>
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                  <polyline points="6,9 12,15 18,9" />
-                </svg>
+      .ct-opt.active {
+        font-weight: 700;
+        color: var(--accent);
+      }
+
+      /* ── RACE CONTROLS ──────────────────────────── */
+      .race-controls {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 4px 16px 12px;
+      }
+
+      .race-play-btn {
+        background: var(--accent);
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        padding: 5px 0;
+        font-size: 0.9rem;
+        cursor: pointer;
+        flex-shrink: 0;
+        line-height: 1;
+        width: 42px;
+        text-align: center;
+      }
+
+      .race-play-btn:hover {
+        opacity: 0.85;
+      }
+
+      .race-scrubber {
+        flex: 1;
+        accent-color: var(--accent);
+        cursor: pointer;
+      }
+
+      .race-game-label {
+        font-size: 0.7rem;
+        color: var(--sub);
+        white-space: nowrap;
+        min-width: 0;
+        text-align: right;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      /* ── MOBILE DRAWER ───────────────────────── */
+      .mob-fab {
+        display: none;
+        position: fixed;
+        bottom: 18px;
+        right: 18px;
+        z-index: 400;
+        background: var(--accent);
+        color: #fff;
+        border: none;
+        border-radius: 28px;
+        padding: 10px 18px 10px 14px;
+        font-family: "Inter", sans-serif;
+        font-size: 0.78rem;
+        font-weight: 700;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.22);
+        cursor: pointer;
+        align-items: center;
+        gap: 7px;
+        transition: opacity 0.15s;
+      }
+
+      .mob-fab:hover {
+        opacity: 0.88;
+      }
+
+      .mob-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 500;
+        background: rgba(0, 0, 0, 0.4);
+        backdrop-filter: blur(2px);
+      }
+
+      .mob-overlay.open {
+        display: block;
+      }
+
+      .mob-drawer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 501;
+        background: var(--white);
+        border-radius: 18px 18px 0 0;
+        box-shadow: 0 -4px 32px rgba(0, 0, 0, 0.18);
+        max-height: 82vh;
+        display: flex;
+        flex-direction: column;
+        transform: translateY(100%);
+        transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .mob-drawer.open {
+        transform: translateY(0);
+      }
+
+      .mob-drawer-handle {
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 16px 10px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .mob-drawer-title {
+        font-family: "Bebas Neue", cursive;
+        font-size: 1rem;
+        letter-spacing: 2px;
+        color: var(--text);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .mob-drawer-close {
+        background: none;
+        border: none;
+        font-size: 1.3rem;
+        color: var(--sub);
+        cursor: pointer;
+        line-height: 1;
+        padding: 2px 4px;
+      }
+
+      .mob-drawer-body {
+        flex: 1;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* ── RESPONSIVE ─────────────────────────── */
+      @media (max-width: 800px) {
+        .sidebar {
+          display: none;
+        }
+
+        .sidebar-fab {
+          display: none;
+        }
+
+        .main-col {
+          padding: 16px 12px 72px;
+        }
+
+        .rank-table {
+          table-layout: fixed;
+          width: 100%;
+        }
+
+        .col-rank {
+          width: 34px;
+        }
+
+        .col-name {
+          width: 120px;
+        }
+
+        .col-points {
+          width: 64px;
+        }
+
+        .col-bar {
+          width: clamp(0px, calc(100% - 34px - 120px - 64px - 122px), 100px);
+        }
+
+        .col-stat {
+          display: none;
+          width: 0 !important;
+        }
+
+        .col-last5 {
+          width: 122px;
+        }
+
+        .rank-table th.last5-cell {
+          white-space: normal;
+          line-height: 1.05;
+          overflow-wrap: anywhere;
+        }
+
+        .rank-table td.last5-cell {
+          white-space: nowrap;
+        }
+
+        .hide-sm {
+          display: none !important;
+        }
+
+        .rank-table th,
+        .rank-table td {
+          overflow: hidden;
+        }
+
+        .pts-cell {
+          width: 64px;
+        }
+
+        .bar-cell {
+          width: clamp(0px, calc(100% - 34px - 120px - 64px - 122px), 100px);
+          display: table-cell;
+        }
+
+        .bar-wrap {
+          width: min(100%, 100px);
+          margin: 0 auto;
+        }
+
+        .rank-name {
+          width: 120px;
+          max-width: 120px;
+          min-width: 120px;
+          white-space: normal;
+          overflow: visible;
+          text-overflow: clip;
+          line-height: 1.2;
+        }
+
+        .rank-name a {
+          white-space: normal;
+          word-break: normal;
+          overflow-wrap: normal;
+        }
+
+        .last5-cell {
+          width: auto;
+          text-align: center;
+          padding-left: 6px !important;
+          padding-right: 6px !important;
+        }
+
+        .last5-cell .score-pip {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          white-space: nowrap;
+          min-width: 18px;
+          height: 18px;
+          padding: 0 3px;
+          font-size: 0.68rem;
+        }
+
+        .mob-fab {
+          display: flex;
+        }
+      }
+
+      @media (min-width: 801px) and (max-width: 1180px) {
+        .rank-table th.hide-sm {
+          white-space: normal;
+          overflow-wrap: anywhere;
+          line-height: 1.05;
+          font-size: 0.48rem;
+          padding: 6px 4px;
+        }
+
+        .rank-table th.center {
+          font-size: 0.52rem;
+          padding-left: 6px;
+          padding-right: 6px;
+        }
+
+        .stat-cell {
+          font-size: 0.72rem;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .summary-row {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .rank-table th,
+        .rank-table td {
+          padding: 7px 7px;
+        }
+
+        .rank-name {
+          font-size: 0.72rem;
+        }
+
+        .pts-real {
+          font-size: 1.05rem;
+        }
+
+        .chart-wrap {
+          height: 340px;
+        }
+
+        .ct-btn {
+          font-size: 0.68rem;
+          padding: 5px 9px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="site-header"></div>
+    <script>
+      injectHeader("ranking", "Ranking do Bolão");
+    </script>
+
+    <div id="loading-overlay">
+      <div class="loading-spinner"></div>
+      <div class="loading-text">Carregando dados...</div>
+    </div>
+
+    <div class="main-layout">
+      <!-- ── MAIN COLUMN ─────────────────────── -->
+      <div class="main-col">
+        <div class="card" id="ranking-card">
+          <div class="card-head">
+            <span class="card-head-title">Ranking</span>
+            <span class="card-head-sub" id="rank-sub"
+              >Pontos dos jogos já realizados</span
+            >
+            <div class="rank-view-toggle">
+              <button
+                class="rvt-btn active"
+                id="btn-view-table"
+                onclick="switchView('table')"
+              >
+                Tabela
               </button>
-              <div class="ct-menu" id="ct-menu">
-                <div class="ct-opt active" onclick="setChartType('positions')">Histórico de posições</div>
-                <div class="ct-opt" onclick="setChartType('points')">Histórico de pontuação – Acumulado</div>
-                <div class="ct-opt" onclick="setChartType('points-leader')">Histórico de pontuação – Em relação ao líder</div>
-                <div class="ct-opt" onclick="setChartType('race')">Histórico de pontuação – Gráfico de barras</div>
+              <button
+                class="rvt-btn"
+                id="btn-view-chart"
+                onclick="switchView('chart')"
+              >
+                Gráfico
+              </button>
+            </div>
+            <button
+              class="btn-img"
+              onclick="exportImage()"
+              title="Salvar imagem"
+            >
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+              >
+                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+                <polyline points="7,10 12,15 17,10" />
+                <line x1="12" y1="15" x2="12" y2="3" />
+              </svg>
+            </button>
+          </div>
+          <div id="view-table">
+            <div class="info-strip">
+              <strong style="color: var(--text)">Pontuação por jogo:</strong>
+              Gols A exatos +1 · Gols B exatos +1 · Diferença exata +1 ·
+              Resultado correto +1 · Vencedor do confronto +1. Máx. 5 pts/jogo ·
+              3º lugar ×2 · Final ×4 · Desempate: resultados → vencedores →
+              empates → jogo mais próximo da final.
+            </div>
+            <table class="rank-table">
+              <colgroup>
+                <col class="col-rank" />
+                <col class="col-name" />
+                <col class="col-stat" />
+                <col class="col-stat" />
+                <col class="col-stat" />
+                <col class="col-stat" />
+                <col class="col-stat" />
+                <col class="col-stat" />
+                <col class="col-points" />
+                <col class="col-bar" />
+                <col class="col-last5" />
+              </colgroup>
+              <thead>
+                <tr>
+                  <th class="center">#</th>
+                  <th class="left">Apostador</th>
+                  <th
+                    class="center hide-sm"
+                    title="Quantidade de resultados corretos (vitória ou empate)"
+                  >
+                    Resultados
+                  </th>
+                  <th
+                    class="center hide-sm"
+                    title="Quantidade de times vencedores acertados"
+                  >
+                    Vencedores
+                  </th>
+                  <th
+                    class="center hide-sm"
+                    title="Quantidade de empates acertados"
+                  >
+                    Empates
+                  </th>
+                  <th
+                    class="center hide-sm"
+                    title="Gols individuais exatos (gols A + gols B corretos)"
+                  >
+                    Gols
+                  </th>
+                  <th
+                    class="center hide-sm"
+                    title="Jogos com diferença de gols exata"
+                  >
+                    Dif. Gols
+                  </th>
+                  <th
+                    class="center hide-sm"
+                    title="Partidas com placar exato (gols A e B acertados)"
+                  >
+                    Placar exato
+                  </th>
+                  <th
+                    class="center"
+                    colspan="2"
+                    title="Total de pontos e barra relativa"
+                  >
+                    Pontos
+                  </th>
+                  <th
+                    class="center last5-cell"
+                    title="Pontos nas últimas 5 partidas"
+                  >
+                    <span class="last5-title">Desempenho recente</span>
+                  </th>
+                </tr>
+              </thead>
+              <tbody id="ranking-body"></tbody>
+            </table>
+          </div>
+          <div id="view-chart" style="display: none">
+            <div class="chart-type-bar">
+              <div class="ct-dropdown" id="ct-dropdown">
+                <button
+                  class="ct-btn"
+                  id="ct-btn"
+                  onclick="toggleChartMenu(event)"
+                >
+                  <span id="ct-label">Histórico de posições</span>
+                  <svg
+                    width="11"
+                    height="11"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                  >
+                    <polyline points="6,9 12,15 18,9" />
+                  </svg>
+                </button>
+                <div class="ct-menu" id="ct-menu">
+                  <div
+                    class="ct-opt active"
+                    onclick="setChartType('positions')"
+                  >
+                    Histórico de posições
+                  </div>
+                  <div class="ct-opt" onclick="setChartType('points')">
+                    Histórico de pontuação – Acumulado
+                  </div>
+                  <div class="ct-opt" onclick="setChartType('points-leader')">
+                    Histórico de pontuação – Em relação ao líder
+                  </div>
+                  <div class="ct-opt" onclick="setChartType('race')">
+                    Histórico de pontuação – Gráfico de barras
+                  </div>
+                </div>
+              </div>
+              <div class="ct-ref-wrap hidden" id="ct-ref-wrap">
+                <span class="ct-ref-label">Referência</span>
+                <select class="ct-ref-select" id="reference-select"></select>
               </div>
             </div>
+            <div id="echart-container" class="chart-wrap"></div>
+            <div class="race-controls" id="race-controls" style="display: none">
+              <button
+                class="race-play-btn"
+                id="race-play-btn"
+                onclick="toggleRace()"
+              >
+                &#9654;
+              </button>
+              <input
+                class="race-scrubber"
+                type="range"
+                id="race-scrubber"
+                min="0"
+                value="0"
+                step="1"
+                oninput="scrubRace(+this.value)"
+              />
+              <span class="race-game-label" id="race-game-label">&#8212;</span>
+            </div>
+            <div class="chart-legend" id="chart-legend"></div>
           </div>
-          <div id="echart-container" class="chart-wrap"></div>
-          <div class="race-controls" id="race-controls" style="display:none">
-            <button class="race-play-btn" id="race-play-btn" onclick="toggleRace()">&#9654;</button>
-            <input class="race-scrubber" type="range" id="race-scrubber" min="0" value="0" step="1"
-              oninput="scrubRace(+this.value)">
-            <span class="race-game-label" id="race-game-label">&#8212;</span>
-          </div>
-          <div class="chart-legend" id="chart-legend"></div>
         </div>
       </div>
 
+      <!-- ── SIDEBAR ─────────────────────────── -->
+      <aside class="sidebar">
+        <div class="sidebar-head">
+          <span class="sidebar-head-title">Partidas</span>
+          <span style="display: inline-flex; align-items: center; gap: 8px">
+            <span class="sb-count-badge" id="sb-count"></span>
+            <button
+              class="sidebar-close-btn"
+              onclick="toggleSidebarVisibility()"
+              title="Fechar menu"
+            >
+              X
+            </button>
+          </span>
+        </div>
+        <div class="sidebar-actions">
+          <button
+            class="sim-btn"
+            onclick="useMostVoted()"
+            title="Preencher com o palpite mais votado em cada jogo futuro"
+          >
+            ★ Mais votado
+          </button>
+          <button class="sim-btn" onclick="resetSim()">Limpar</button>
+        </div>
+        <div class="sim-toggle-row">
+          <span class="sim-toggle-label">Considerar simulações</span>
+          <label class="sim-toggle-switch">
+            <input
+              type="checkbox"
+              id="sim-toggle-chk"
+              checked
+              onchange="toggleShowSim(this.checked)"
+            />
+            <span class="sim-toggle-track"></span>
+            <span class="sim-toggle-thumb"></span>
+          </label>
+        </div>
+        <div class="sidebar-scroll" id="sidebar-games"></div>
+      </aside>
     </div>
 
-    <!-- ── SIDEBAR ─────────────────────────── -->
-    <aside class="sidebar">
-      <div class="sidebar-head">
-        <span class="sidebar-head-title">Partidas</span>
-        <span style="display:inline-flex;align-items:center;gap:8px">
-          <span class="sb-count-badge" id="sb-count"></span>
-          <button class="sidebar-close-btn" onclick="toggleSidebarVisibility()" title="Fechar menu">X</button>
+    <button
+      class="sidebar-fab"
+      id="sidebar-toggle-btn"
+      onclick="toggleSidebarVisibility()"
+      title="Ocultar ou exibir menu lateral"
+    >
+      <svg
+        width="15"
+        height="15"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.5"
+      >
+        <line x1="3" y1="12" x2="21" y2="12" />
+        <line x1="3" y1="6" x2="21" y2="6" />
+        <line x1="3" y1="18" x2="21" y2="18" />
+      </svg>
+      <span id="sidebar-toggle-label">SIMULAR</span>
+    </button>
+
+    <!-- ── MOBILE FAB + DRAWER ──────────────── -->
+    <button class="mob-fab" id="mob-fab" onclick="openMobDrawer()">
+      <svg
+        width="15"
+        height="15"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.5"
+      >
+        <line x1="3" y1="12" x2="21" y2="12" />
+        <line x1="3" y1="6" x2="21" y2="6" />
+        <line x1="3" y1="18" x2="21" y2="18" />
+      </svg>
+      SIMULAR
+    </button>
+    <div class="mob-overlay" id="mob-overlay" onclick="closeMobDrawer()"></div>
+    <div class="mob-drawer" id="mob-drawer">
+      <div class="mob-drawer-handle">
+        <span class="mob-drawer-title">
+          ⚽ Simular partidas
+          <span class="sb-count-badge" id="sb-count-mob"></span>
         </span>
+        <button class="mob-drawer-close" onclick="closeMobDrawer()">✕</button>
       </div>
-      <div class="sidebar-actions">
-        <button class="sim-btn" onclick="useMostVoted()"
-          title="Preencher com o palpite mais votado em cada jogo futuro">★ Mais votado</button>
-        <button class="sim-btn" onclick="resetSim()">Limpar</button>
+      <div class="mob-drawer-body">
+        <div class="sidebar-actions">
+          <button
+            class="sim-btn"
+            onclick="useMostVoted()"
+            title="Preencher com o palpite mais votado em cada jogo futuro"
+          >
+            ★ Mais votado
+          </button>
+          <button class="sim-btn" onclick="resetSim()">Limpar</button>
+        </div>
+        <div class="sim-toggle-row">
+          <span class="sim-toggle-label">Considerar simulações</span>
+          <label class="sim-toggle-switch">
+            <input
+              type="checkbox"
+              id="sim-toggle-chk-mob"
+              checked
+              onchange="syncToggle(this)"
+            />
+            <span class="sim-toggle-track"></span>
+            <span class="sim-toggle-thumb"></span>
+          </label>
+        </div>
+        <div id="sidebar-games-mob" style="flex: 1; overflow-y: auto"></div>
       </div>
-      <div class="sim-toggle-row">
-        <span class="sim-toggle-label">Considerar simulações</span>
-        <label class="sim-toggle-switch">
-          <input type="checkbox" id="sim-toggle-chk" checked onchange="toggleShowSim(this.checked)">
-          <span class="sim-toggle-track"></span>
-          <span class="sim-toggle-thumb"></span>
-        </label>
-      </div>
-      <div class="sidebar-scroll" id="sidebar-games"></div>
-    </aside>
-
-  </div>
-
-  <button class="sidebar-fab" id="sidebar-toggle-btn" onclick="toggleSidebarVisibility()"
-    title="Ocultar ou exibir menu lateral">
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-      <line x1="3" y1="12" x2="21" y2="12" />
-      <line x1="3" y1="6" x2="21" y2="6" />
-      <line x1="3" y1="18" x2="21" y2="18" />
-    </svg>
-    <span id="sidebar-toggle-label">SIMULAR</span>
-  </button>
-
-  <!-- ── MOBILE FAB + DRAWER ──────────────── -->
-  <button class="mob-fab" id="mob-fab" onclick="openMobDrawer()">
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-      <line x1="3" y1="12" x2="21" y2="12" />
-      <line x1="3" y1="6" x2="21" y2="6" />
-      <line x1="3" y1="18" x2="21" y2="18" />
-    </svg>
-    SIMULAR
-  </button>
-  <div class="mob-overlay" id="mob-overlay" onclick="closeMobDrawer()"></div>
-  <div class="mob-drawer" id="mob-drawer">
-    <div class="mob-drawer-handle">
-      <span class="mob-drawer-title">
-        ⚽ Simular partidas
-        <span class="sb-count-badge" id="sb-count-mob"></span>
-      </span>
-      <button class="mob-drawer-close" onclick="closeMobDrawer()">✕</button>
     </div>
-    <div class="mob-drawer-body">
-      <div class="sidebar-actions">
-        <button class="sim-btn" onclick="useMostVoted()"
-          title="Preencher com o palpite mais votado em cada jogo futuro">★ Mais votado</button>
-        <button class="sim-btn" onclick="resetSim()">Limpar</button>
-      </div>
-      <div class="sim-toggle-row">
-        <span class="sim-toggle-label">Considerar simulações</span>
-        <label class="sim-toggle-switch">
-          <input type="checkbox" id="sim-toggle-chk-mob" checked onchange="syncToggle(this)">
-          <span class="sim-toggle-track"></span>
-          <span class="sim-toggle-thumb"></span>
-        </label>
-      </div>
-      <div id="sidebar-games-mob" style="flex:1;overflow-y:auto"></div>
-    </div>
-  </div>
 
-  <script src="bolao_utils.js"></script>
-  <script>
-    let JOGOS = [];
+    <script src="bolao_utils.js"></script>
+    <script>
+      let JOGOS = [];
 
-    // ── Scoring ──────────────────────────────────────────────────────────────────
-    function calcBreakdown(betA, betB, realA, realB, betWinnerId, realWinnerId) {
-      var gol = (betA === realA ? 1 : 0) + (betB === realB ? 1 : 0);
-      var exa = (betA === realA && betB === realB) ? 1 : 0;
-      var dif = (betA - betB) === (realA - realB) ? 1 : 0;
-      var bR = betA > betB ? 'A' : betA < betB ? 'B' : 'E';
-      var rR = realA > realB ? 'A' : realA < realB ? 'B' : 'E';
-      var isRes = bR === rR ? 1 : 0;
-      var isVen = (betWinnerId !== null && betWinnerId !== undefined &&
-        realWinnerId !== null && realWinnerId !== undefined &&
-        String(betWinnerId) === String(realWinnerId)) ? 1 : 0;
-      var isEmp = (isRes && rR === 'E') ? 1 : 0;
-      var pts = gol + dif + isRes + isVen;
-      return { pts: pts, res: isRes, ven: isVen, emp: isEmp, gol: gol, dif: dif, exa: exa };
-    }
-
-    function getMultiplier(j) {
-      var g = (j.grupo || '').toUpperCase().trim();
-      if (!g || /^[A-L]$/.test(g)) return 1;
-      if (/^3/.test(g) || g === 'TER') return 2;
-      if (g === 'FIN' || g === 'FINAL') return 4;
-      return 1;
-    }
-
-    function resolveWinnerId(j, scoreA, scoreB, forcedWinnerId) {
-      if (forcedWinnerId !== null && forcedWinnerId !== undefined && forcedWinnerId !== '') return forcedWinnerId;
-      if (j && j.id_time_vencedor !== null && j.id_time_vencedor !== undefined) return j.id_time_vencedor;
-      if (scoreA === null || scoreA === undefined || scoreB === null || scoreB === undefined) return null;
-      if (scoreA > scoreB) return ((j || {}).time_a || {}).id || null;
-      if (scoreB > scoreA) return ((j || {}).time_b || {}).id || null;
-      return null;
-    }
-
-    function isGroupStage(j) {
-      var g = ((j || {}).grupo || '').toUpperCase().trim();
-      return !!g && /^[A-L]$/.test(g);
-    }
-
-    function needsWinnerChoiceForDraw(j, a, b) {
-      return a === b && !isGroupStage(j);
-    }
-
-    function winnerSiglaById(j, winnerId) {
-      if (winnerId === null || winnerId === undefined || winnerId === '') return '';
-      if (String(winnerId) === String(((j || {}).time_a || {}).id)) return ((j || {}).time_a || {}).sigla || '';
-      if (String(winnerId) === String(((j || {}).time_b || {}).id)) return ((j || {}).time_b || {}).sigla || '';
-      return '';
-    }
-
-    function hasShootout(j) {
-      return !!(j && j.penaltis_a !== null && j.penaltis_a !== undefined && j.penaltis_b !== null && j.penaltis_b !== undefined);
-    }
-
-    function getShootoutText(j) {
-      if (!hasShootout(j)) return '';
-      return ' (' + j.penaltis_a + ' × ' + j.penaltis_b + ')';
-    }
-
-    function getSimEntryComplete(j) {
-      var s = simScores[j.id];
-      if (!s || s.a === null || s.a === undefined || s.b === null || s.b === undefined) return null;
-      if (needsWinnerChoiceForDraw(j, s.a, s.b) && (s.w === null || s.w === undefined || s.w === '')) return null;
-      return s;
-    }
-
-    // ── State ────────────────────────────────────────────────────────────────────
-    var scoreboard = {};
-    // { nome: { real_pts, sim_pts, real_res, sim_res, real_ven, sim_ven, real_emp, sim_emp } }
-    var simScores = {};
-    // { id: { a, b } | null }
-
-    function emptyEntry() {
-      return {
-        real_pts: 0, sim_pts: 0, real_res: 0, sim_res: 0, real_ven: 0, sim_ven: 0, real_emp: 0, sim_emp: 0,
-        real_gol: 0, sim_gol: 0, real_dif: 0, sim_dif: 0, real_exa: 0, sim_exa: 0, real_game_pts: {}, sim_game_pts: {}
-      };
-    }
-
-    function buildScoreboard() {
-      scoreboard = {};
-      JOGOS.forEach(function (j) {
-        var all = [].concat(j.apostadores_a, j.apostadores_empate, j.apostadores_b);
-        all.forEach(function (a) {
-          if (!scoreboard[a.nome]) scoreboard[a.nome] = emptyEntry();
-        });
-        if (j.gols_a === null || j.gols_b === null) return;
-        var mult = getMultiplier(j);
-        var realWinnerId = resolveWinnerId(j, j.gols_a, j.gols_b);
-        all.forEach(function (a) {
-          var p = a.placar.split('x');
-          var bd = calcBreakdown(+p[0] || 0, +p[1] || 0, j.gols_a, j.gols_b, a.id_time_vencedor, realWinnerId);
-          var s = scoreboard[a.nome];
-          s.real_pts += bd.pts * mult;
-          s.real_res += bd.res;
-          s.real_ven += bd.ven;
-          s.real_emp += bd.emp;
-          s.real_gol += bd.gol;
-          s.real_dif += bd.dif;
-          s.real_exa += bd.exa;
-          s.real_game_pts[j.id] = (s.real_game_pts[j.id] || 0) + bd.pts * mult;
-        });
-      });
-    }
-
-    function recomputeSim() {
-      Object.keys(scoreboard).forEach(function (k) {
-        var s = scoreboard[k];
-        s.sim_pts = 0; s.sim_res = 0; s.sim_ven = 0; s.sim_emp = 0;
-        s.sim_gol = 0; s.sim_dif = 0; s.sim_exa = 0; s.sim_game_pts = {};
-      });
-      JOGOS.forEach(function (j) {
-        if (j.gols_a !== null && j.gols_b !== null) return;
-        var s = getSimEntryComplete(j);
-        if (!s) return;
-        var mult = getMultiplier(j);
-        var realWinnerId = resolveWinnerId(j, s.a, s.b, s.w);
-        [].concat(j.apostadores_a, j.apostadores_empate, j.apostadores_b).forEach(function (a) {
-          if (!scoreboard[a.nome]) return;
-          var p = a.placar.split('x');
-          var bd = calcBreakdown(+p[0] || 0, +p[1] || 0, s.a, s.b, a.id_time_vencedor, realWinnerId);
-          var sc = scoreboard[a.nome];
-          sc.sim_pts += bd.pts * mult;
-          sc.sim_res += bd.res;
-          sc.sim_ven += bd.ven;
-          sc.sim_emp += bd.emp;
-          sc.sim_gol += bd.gol;
-          sc.sim_dif += bd.dif;
-          sc.sim_exa += bd.exa;
-          sc.sim_game_pts[j.id] = (sc.sim_game_pts[j.id] || 0) + bd.pts * mult;
-        });
-      });
-      renderRanking();
-      updateSubtitle();
-      // Refresh chart if visible
-      if (document.getElementById('view-chart').style.display !== 'none') renderChart();
-    }
-
-    function toggleShowSim(checked) {
-      showSim = checked;
-      // keep both toggles in sync
-      var chk0 = document.getElementById('sim-toggle-chk');
-      var chkM = document.getElementById('sim-toggle-chk-mob');
-      if (chk0) chk0.checked = checked;
-      if (chkM) chkM.checked = checked;
-      renderRanking();
-      updateSubtitle();
-      if (document.getElementById('view-chart').style.display !== 'none') renderChart();
-    }
-
-    function syncToggle(el) {
-      toggleShowSim(el.checked);
-    }
-
-    // ── Mobile drawer ────────────────────────────────────────────────────────────
-    function openMobDrawer() {
-      document.getElementById('mob-drawer').classList.add('open');
-      document.getElementById('mob-overlay').classList.add('open');
-      document.body.style.overflow = 'hidden';
-    }
-    function closeMobDrawer() {
-      document.getElementById('mob-drawer').classList.remove('open');
-      document.getElementById('mob-overlay').classList.remove('open');
-      document.body.style.overflow = '';
-    }
-
-    // ── Render ranking ───────────────────────────────────────────────────────────
-    function renderRanking() {
-      var entries = Object.keys(scoreboard).map(function (nome) {
-        var s = scoreboard[nome];
-        var simPts = showSim ? s.sim_pts : 0;
-        var simRes = showSim ? s.sim_res : 0;
-        var simVen = showSim ? s.sim_ven : 0;
-        var simEmp = showSim ? s.sim_emp : 0;
-        var simGol = showSim ? s.sim_gol : 0;
-        var simDif = showSim ? s.sim_dif : 0;
-        var simExa = showSim ? s.sim_exa : 0;
-        var simGP = showSim ? s.sim_game_pts : {};
-        var tgp = {};
-        JOGOS.forEach(function (j) { tgp[j.id] = (s.real_game_pts[j.id] || 0) + (simGP[j.id] || 0); });
+      // ── Scoring ──────────────────────────────────────────────────────────────────
+      function calcBreakdown(
+        betA,
+        betB,
+        realA,
+        realB,
+        betWinnerId,
+        realWinnerId,
+      ) {
+        var gol = (betA === realA ? 1 : 0) + (betB === realB ? 1 : 0);
+        var exa = betA === realA && betB === realB ? 1 : 0;
+        var dif = betA - betB === realA - realB ? 1 : 0;
+        var bR = betA > betB ? "A" : betA < betB ? "B" : "E";
+        var rR = realA > realB ? "A" : realA < realB ? "B" : "E";
+        var isRes = bR === rR ? 1 : 0;
+        var isVen =
+          betWinnerId !== null &&
+          betWinnerId !== undefined &&
+          realWinnerId !== null &&
+          realWinnerId !== undefined &&
+          String(betWinnerId) === String(realWinnerId)
+            ? 1
+            : 0;
+        var isEmp = isRes && rR === "E" ? 1 : 0;
+        var pts = gol + dif + isRes + isVen;
         return {
-          nome: nome,
-          total: s.real_pts + simPts,
-          total_res: s.real_res + simRes,
-          total_ven: s.real_ven + simVen,
-          total_emp: s.real_emp + simEmp,
-          total_gol: s.real_gol + simGol,
-          total_dif: s.real_dif + simDif,
-          total_exa: s.real_exa + simExa,
-          real_pts: s.real_pts, real_res: s.real_res, real_ven: s.real_ven, real_emp: s.real_emp,
-          real_game_pts: s.real_game_pts,
-          total_game_pts: tgp
+          pts: pts,
+          res: isRes,
+          ven: isVen,
+          emp: isEmp,
+          gol: gol,
+          dif: dif,
+          exa: exa,
         };
-      });
+      }
 
-      function makeSorter(getPts, getRes, getVen, getEmp, getGP) {
-        return function (a, b) {
-          if (getPts(b) !== getPts(a)) return getPts(b) - getPts(a);
-          if (getRes(b) !== getRes(a)) return getRes(b) - getRes(a);
-          if (getVen(b) !== getVen(a)) return getVen(b) - getVen(a);
-          if (getEmp(b) !== getEmp(a)) return getEmp(b) - getEmp(a);
+      function getMultiplier(j) {
+        var g = (j.grupo || "").toUpperCase().trim();
+        if (!g || /^[A-L]$/.test(g)) return 1;
+        if (/^3/.test(g) || g === "TER") return 2;
+        if (g === "FIN" || g === "FINAL") return 4;
+        return 1;
+      }
+
+      function resolveWinnerId(j, scoreA, scoreB, forcedWinnerId) {
+        if (
+          forcedWinnerId !== null &&
+          forcedWinnerId !== undefined &&
+          forcedWinnerId !== ""
+        )
+          return forcedWinnerId;
+        if (
+          j &&
+          j.id_time_vencedor !== null &&
+          j.id_time_vencedor !== undefined
+        )
+          return j.id_time_vencedor;
+        if (
+          scoreA === null ||
+          scoreA === undefined ||
+          scoreB === null ||
+          scoreB === undefined
+        )
+          return null;
+        if (scoreA > scoreB) return ((j || {}).time_a || {}).id || null;
+        if (scoreB > scoreA) return ((j || {}).time_b || {}).id || null;
+        return null;
+      }
+
+      function isGroupStage(j) {
+        var g = ((j || {}).grupo || "").toUpperCase().trim();
+        return !!g && /^[A-L]$/.test(g);
+      }
+
+      function needsWinnerChoiceForDraw(j, a, b) {
+        return a === b && !isGroupStage(j);
+      }
+
+      function winnerSiglaById(j, winnerId) {
+        if (winnerId === null || winnerId === undefined || winnerId === "")
+          return "";
+        if (String(winnerId) === String(((j || {}).time_a || {}).id))
+          return ((j || {}).time_a || {}).sigla || "";
+        if (String(winnerId) === String(((j || {}).time_b || {}).id))
+          return ((j || {}).time_b || {}).sigla || "";
+        return "";
+      }
+
+      function hasShootout(j) {
+        return !!(
+          j &&
+          j.penaltis_a !== null &&
+          j.penaltis_a !== undefined &&
+          j.penaltis_b !== null &&
+          j.penaltis_b !== undefined
+        );
+      }
+
+      function getShootoutText(j) {
+        if (!hasShootout(j)) return "";
+        return " (" + j.penaltis_a + " × " + j.penaltis_b + ")";
+      }
+
+      function getSimEntryComplete(j) {
+        var s = simScores[j.id];
+        if (
+          !s ||
+          s.a === null ||
+          s.a === undefined ||
+          s.b === null ||
+          s.b === undefined
+        )
+          return null;
+        if (
+          needsWinnerChoiceForDraw(j, s.a, s.b) &&
+          (s.w === null || s.w === undefined || s.w === "")
+        )
+          return null;
+        return s;
+      }
+
+      // ── State ────────────────────────────────────────────────────────────────────
+      var scoreboard = {};
+      // { nome: { real_pts, sim_pts, real_res, sim_res, real_ven, sim_ven, real_emp, sim_emp } }
+      var simScores = {};
+      // { id: { a, b } | null }
+
+      function emptyEntry() {
+        return {
+          real_pts: 0,
+          sim_pts: 0,
+          real_res: 0,
+          sim_res: 0,
+          real_ven: 0,
+          sim_ven: 0,
+          real_emp: 0,
+          sim_emp: 0,
+          real_gol: 0,
+          sim_gol: 0,
+          real_dif: 0,
+          sim_dif: 0,
+          real_exa: 0,
+          sim_exa: 0,
+          real_game_pts: {},
+          sim_game_pts: {},
+        };
+      }
+
+      function buildScoreboard() {
+        scoreboard = {};
+        JOGOS.forEach(function (j) {
+          var all = [].concat(
+            j.apostadores_a,
+            j.apostadores_empate,
+            j.apostadores_b,
+          );
+          all.forEach(function (a) {
+            if (!scoreboard[a.nome]) scoreboard[a.nome] = emptyEntry();
+          });
+          if (j.gols_a === null || j.gols_b === null) return;
+          var mult = getMultiplier(j);
+          var realWinnerId = resolveWinnerId(j, j.gols_a, j.gols_b);
+          all.forEach(function (a) {
+            var p = a.placar.split("x");
+            var bd = calcBreakdown(
+              +p[0] || 0,
+              +p[1] || 0,
+              j.gols_a,
+              j.gols_b,
+              a.id_time_vencedor,
+              realWinnerId,
+            );
+            var s = scoreboard[a.nome];
+            s.real_pts += bd.pts * mult;
+            s.real_res += bd.res;
+            s.real_ven += bd.ven;
+            s.real_emp += bd.emp;
+            s.real_gol += bd.gol;
+            s.real_dif += bd.dif;
+            s.real_exa += bd.exa;
+            s.real_game_pts[j.id] =
+              (s.real_game_pts[j.id] || 0) + bd.pts * mult;
+          });
+        });
+      }
+
+      function recomputeSim() {
+        Object.keys(scoreboard).forEach(function (k) {
+          var s = scoreboard[k];
+          s.sim_pts = 0;
+          s.sim_res = 0;
+          s.sim_ven = 0;
+          s.sim_emp = 0;
+          s.sim_gol = 0;
+          s.sim_dif = 0;
+          s.sim_exa = 0;
+          s.sim_game_pts = {};
+        });
+        JOGOS.forEach(function (j) {
+          if (j.gols_a !== null && j.gols_b !== null) return;
+          var s = getSimEntryComplete(j);
+          if (!s) return;
+          var mult = getMultiplier(j);
+          var realWinnerId = resolveWinnerId(j, s.a, s.b, s.w);
+          []
+            .concat(j.apostadores_a, j.apostadores_empate, j.apostadores_b)
+            .forEach(function (a) {
+              if (!scoreboard[a.nome]) return;
+              var p = a.placar.split("x");
+              var bd = calcBreakdown(
+                +p[0] || 0,
+                +p[1] || 0,
+                s.a,
+                s.b,
+                a.id_time_vencedor,
+                realWinnerId,
+              );
+              var sc = scoreboard[a.nome];
+              sc.sim_pts += bd.pts * mult;
+              sc.sim_res += bd.res;
+              sc.sim_ven += bd.ven;
+              sc.sim_emp += bd.emp;
+              sc.sim_gol += bd.gol;
+              sc.sim_dif += bd.dif;
+              sc.sim_exa += bd.exa;
+              sc.sim_game_pts[j.id] =
+                (sc.sim_game_pts[j.id] || 0) + bd.pts * mult;
+            });
+        });
+        renderRanking();
+        updateSubtitle();
+        // Refresh chart if visible
+        if (document.getElementById("view-chart").style.display !== "none")
+          renderChart();
+      }
+
+      function toggleShowSim(checked) {
+        showSim = checked;
+        // keep both toggles in sync
+        var chk0 = document.getElementById("sim-toggle-chk");
+        var chkM = document.getElementById("sim-toggle-chk-mob");
+        if (chk0) chk0.checked = checked;
+        if (chkM) chkM.checked = checked;
+        renderRanking();
+        updateSubtitle();
+        if (document.getElementById("view-chart").style.display !== "none")
+          renderChart();
+      }
+
+      function syncToggle(el) {
+        toggleShowSim(el.checked);
+      }
+
+      // ── Mobile drawer ────────────────────────────────────────────────────────────
+      function openMobDrawer() {
+        document.getElementById("mob-drawer").classList.add("open");
+        document.getElementById("mob-overlay").classList.add("open");
+        document.body.style.overflow = "hidden";
+      }
+      function closeMobDrawer() {
+        document.getElementById("mob-drawer").classList.remove("open");
+        document.getElementById("mob-overlay").classList.remove("open");
+        document.body.style.overflow = "";
+      }
+
+      // ── Render ranking ───────────────────────────────────────────────────────────
+      function renderRanking() {
+        var entries = Object.keys(scoreboard).map(function (nome) {
+          var s = scoreboard[nome];
+          var simPts = showSim ? s.sim_pts : 0;
+          var simRes = showSim ? s.sim_res : 0;
+          var simVen = showSim ? s.sim_ven : 0;
+          var simEmp = showSim ? s.sim_emp : 0;
+          var simGol = showSim ? s.sim_gol : 0;
+          var simDif = showSim ? s.sim_dif : 0;
+          var simExa = showSim ? s.sim_exa : 0;
+          var simGP = showSim ? s.sim_game_pts : {};
+          var tgp = {};
+          JOGOS.forEach(function (j) {
+            tgp[j.id] = (s.real_game_pts[j.id] || 0) + (simGP[j.id] || 0);
+          });
+          return {
+            nome: nome,
+            total: s.real_pts + simPts,
+            total_res: s.real_res + simRes,
+            total_ven: s.real_ven + simVen,
+            total_emp: s.real_emp + simEmp,
+            total_gol: s.real_gol + simGol,
+            total_dif: s.real_dif + simDif,
+            total_exa: s.real_exa + simExa,
+            real_pts: s.real_pts,
+            real_res: s.real_res,
+            real_ven: s.real_ven,
+            real_emp: s.real_emp,
+            real_game_pts: s.real_game_pts,
+            total_game_pts: tgp,
+          };
+        });
+
+        function makeSorter(getPts, getRes, getVen, getEmp, getGP) {
+          return function (a, b) {
+            if (getPts(b) !== getPts(a)) return getPts(b) - getPts(a);
+            if (getRes(b) !== getRes(a)) return getRes(b) - getRes(a);
+            if (getVen(b) !== getVen(a)) return getVen(b) - getVen(a);
+            if (getEmp(b) !== getEmp(a)) return getEmp(b) - getEmp(a);
+            for (var i = JOGOS.length - 1; i >= 0; i--) {
+              var id = JOGOS[i].id;
+              var pa = getGP(a, id),
+                pb = getGP(b, id);
+              if (pb !== pa) return pb - pa;
+            }
+            return a.nome.localeCompare(b.nome, "pt-BR", {
+              sensitivity: "base",
+            });
+          };
+        }
+
+        var sortTotal = makeSorter(
+          function (e) {
+            return e.total;
+          },
+          function (e) {
+            return e.total_res;
+          },
+          function (e) {
+            return e.total_ven;
+          },
+          function (e) {
+            return e.total_emp;
+          },
+          function (e, id) {
+            return e.total_game_pts[id] || 0;
+          },
+        );
+        var sortReal = makeSorter(
+          function (e) {
+            return e.real_pts;
+          },
+          function (e) {
+            return e.real_res;
+          },
+          function (e) {
+            return e.real_ven;
+          },
+          function (e) {
+            return e.real_emp;
+          },
+          function (e, id) {
+            return e.real_game_pts[id] || 0;
+          },
+        );
+
+        var sorted = entries.slice().sort(sortTotal);
+        var realSorted = entries.slice().sort(sortReal);
+
+        // Standard competition ranking (1,2,2,4) — ties share position
+        function tiedTotal(a, b) {
+          if (a.total !== b.total || a.total_res !== b.total_res) return false;
+          if (a.total_ven !== b.total_ven || a.total_emp !== b.total_emp)
+            return false;
           for (var i = JOGOS.length - 1; i >= 0; i--) {
             var id = JOGOS[i].id;
-            var pa = getGP(a, id), pb = getGP(b, id);
-            if (pb !== pa) return pb - pa;
+            if ((a.total_game_pts[id] || 0) !== (b.total_game_pts[id] || 0))
+              return false;
           }
-          return a.nome.localeCompare(b.nome, 'pt-BR', { sensitivity: 'base' });
-        };
-      }
-
-      var sortTotal = makeSorter(
-        function (e) { return e.total; },
-        function (e) { return e.total_res; },
-        function (e) { return e.total_ven; },
-        function (e) { return e.total_emp; },
-        function (e, id) { return e.total_game_pts[id] || 0; }
-      );
-      var sortReal = makeSorter(
-        function (e) { return e.real_pts; },
-        function (e) { return e.real_res; },
-        function (e) { return e.real_ven; },
-        function (e) { return e.real_emp; },
-        function (e, id) { return e.real_game_pts[id] || 0; }
-      );
-
-      var sorted = entries.slice().sort(sortTotal);
-      var realSorted = entries.slice().sort(sortReal);
-
-      // Standard competition ranking (1,2,2,4) — ties share position
-      function tiedTotal(a, b) {
-        if (a.total !== b.total || a.total_res !== b.total_res) return false;
-        if (a.total_ven !== b.total_ven || a.total_emp !== b.total_emp) return false;
-        for (var i = JOGOS.length - 1; i >= 0; i--) {
-          var id = JOGOS[i].id;
-          if ((a.total_game_pts[id] || 0) !== (b.total_game_pts[id] || 0)) return false;
+          return true;
         }
-        return true;
-      }
-      function tiedReal(a, b) {
-        if (a.real_pts !== b.real_pts || a.real_res !== b.real_res) return false;
-        if (a.real_ven !== b.real_ven || a.real_emp !== b.real_emp) return false;
-        for (var i = JOGOS.length - 1; i >= 0; i--) {
-          var id = JOGOS[i].id;
-          if ((a.real_game_pts[id] || 0) !== (b.real_game_pts[id] || 0)) return false;
-        }
-        return true;
-      }
-      function assignRanks(arr, isTied) {
-        return arr.map(function (e, i) {
-          return (i === 0 || !isTied(e, arr[i - 1])) ? i + 1 : assignRanks._prev;
-        });
-      }
-      // compute ranks imperatively
-      var totalRanks = [], realRanksArr = [];
-      sorted.forEach(function (e, i) {
-        totalRanks.push(i === 0 || !tiedTotal(e, sorted[i - 1]) ? i + 1 : totalRanks[i - 1]);
-      });
-      realSorted.forEach(function (e, i) {
-        realRanksArr.push(i === 0 || !tiedReal(e, realSorted[i - 1]) ? i + 1 : realRanksArr[i - 1]);
-      });
-      var realPosMap = {};
-      realSorted.forEach(function (e, i) { realPosMap[e.nome] = realRanksArr[i]; });
-
-      var hasSim = entries.some(function (e) { return e.total > e.real_pts; });
-      var maxPts = sorted.length ? Math.max(sorted[0].total, 1) : 1;
-
-      var recentGames = JOGOS.filter(function (j) {
-        if (j.gols_a !== null && j.gols_b !== null) return true;
-        if (!showSim) return false;
-        return !!getSimEntryComplete(j);
-      }).slice(-5);
-
-      document.getElementById('ranking-body').innerHTML = sorted.map(function (e, i) {
-        var pos = totalRanks[i];
-        var posClass = pos === 1 ? 'gold' : pos === 2 ? 'silver' : pos === 3 ? 'bronze' : '';
-        var pct = Math.round(e.total / maxPts * 100);
-        var deltaHtml = '';
-        if (hasSim) {
-          var realPos = realPosMap[e.nome] || pos;
-          var delta = realPos - pos;
-          if (delta > 0) deltaHtml = '<span class="rank-delta up">▲' + delta + '</span>';
-          else if (delta < 0) deltaHtml = '<span class="rank-delta dn">▼' + Math.abs(delta) + '</span>';
-          else deltaHtml = '<span class="rank-delta eq">=</span>';
-        }
-        var last5Html = recentGames.map(function (j) {
-          var mult = getMultiplier(j);
-          var allBettors = [].concat(j.apostadores_a, j.apostadores_empate, j.apostadores_b);
-          var betEntry = allBettors.find(function (a) { return a.nome === e.nome; });
-          if (!betEntry) return '<span class="score-pip none" data-tip="' + (j.time_a.nome || '') + ' × ' + (j.time_b.nome || '') + '\nSem aposta">—</span>';
-          var gp = e.total_game_pts[j.id] || 0;
-          var rawPts = mult > 0 ? Math.round(gp / mult) : 0;
-          var pointColor = bolaoGetPointsColor(rawPts);
-          var betParts = (betEntry.placar || '0x0').split('x');
-          var betDisp = betEntry.placar.replace('x', ' × ');
-          if ((+betParts[0] || 0) === (+betParts[1] || 0) && betEntry.time_vencedor_sigla) {
-            betDisp += ' ' + betEntry.time_vencedor_sigla;
+        function tiedReal(a, b) {
+          if (a.real_pts !== b.real_pts || a.real_res !== b.real_res)
+            return false;
+          if (a.real_ven !== b.real_ven || a.real_emp !== b.real_emp)
+            return false;
+          for (var i = JOGOS.length - 1; i >= 0; i--) {
+            var id = JOGOS[i].id;
+            if ((a.real_game_pts[id] || 0) !== (b.real_game_pts[id] || 0))
+              return false;
           }
-          var sim = getSimEntryComplete(j);
-          var effA = j.gols_a !== null && j.gols_a !== undefined ? j.gols_a : (sim ? sim.a : null);
-          var effB = j.gols_b !== null && j.gols_b !== undefined ? j.gols_b : (sim ? sim.b : null);
-          var effWinnerId = resolveWinnerId(j, effA, effB, sim ? sim.w : null);
-          var effWinnerSigla = (effA === effB) ? winnerSiglaById(j, effWinnerId) : '';
-          var shootoutSuffix = (j.gols_a !== null && j.gols_b !== null) ? getShootoutText(j) : '';
-          var statusLabel = (j.gols_a !== null && j.gols_b !== null) ? 'Resultado' : 'Simulação';
-          var statusDisp = effA + ' × ' + effB + shootoutSuffix;
-          var tipLines = (j.time_a.nome || '') + ' × ' + (j.time_b.nome || '') +
-            '\n' + statusLabel + ': ' + statusDisp +
-            '\nPalpite: ' + betDisp +
-            '\n' + (gp > 0 ? '+' + gp : '0') + ' pontos';
-          return '<span class="score-pip" style="background:' + pointColor.bg + ';color:' + pointColor.text + '" data-tip="' + tipLines.replace(/"/g, '&quot;') + '"><span class="score-pip-text">' + gp + '</span></span>';
-        }).join('');
-        return '<tr>' +
-          '<td class="rank-pos ' + posClass + '">' + pos + '</td>' +
-          '<td class="rank-name"><a href="bolao_participante.html?nome=' + encodeURIComponent(e.nome) + '" style="color:inherit;text-decoration:none;" onmouseover="this.style.color=\'var(--accent)\'" onmouseout="this.style.color=\'inherit\'">' + e.nome + '</a>' + (deltaHtml ? '&nbsp;' + deltaHtml : '') + '</td>' +
-          '<td class="stat-cell hide-sm">' + e.total_res + '</td>' +
-          '<td class="stat-cell hide-sm">' + e.total_ven + '</td>' +
-          '<td class="stat-cell hide-sm">' + e.total_emp + '</td>' +
-          '<td class="stat-cell hide-sm">' + e.total_gol + '</td>' +
-          '<td class="stat-cell hide-sm">' + e.total_dif + '</td>' +
-          '<td class="stat-cell hide-sm">' + e.total_exa + '</td>' +
-          '<td class="pts-cell"><span class="pts-real">' + e.total + '</span></td>' +
-          '<td class="bar-cell"><div class="bar-wrap"><div class="bar-fill" style="width:' + pct + '%"></div></div></td>' +
-          '<td class="last5-cell">' + last5Html + '</td>' +
-          '</tr>';
-      }).join('');
-    }
-
-    function updateSubtitle() {
-      var el = document.getElementById('rank-sub');
-      if (!el) return;
-      var hasSim = Object.keys(scoreboard).some(function (k) { return scoreboard[k].sim_pts > 0; });
-      el.textContent = hasSim
-        ? 'Pontos reais + simulados'
-        : 'Pontos dos jogos já realizados';
-    }
-
-    function isMobileLayout() {
-      return window.matchMedia('(max-width: 800px)').matches;
-    }
-
-    function isIntermediateLayout() {
-      return window.matchMedia('(min-width: 801px) and (max-width: 1180px)').matches;
-    }
-
-    function applySidebarVisibility() {
-      var layout = document.querySelector('.main-layout');
-      var btn = document.getElementById('sidebar-toggle-btn');
-      var lbl = document.getElementById('sidebar-toggle-label');
-      if (!layout || !btn) return;
-      if (isMobileLayout()) {
-        layout.classList.remove('sidebar-hidden');
-        return;
-      }
-      layout.classList.toggle('sidebar-hidden', !sidebarVisible);
-      if (lbl) lbl.textContent = 'SIMULAR';
-      btn.setAttribute('title', 'Exibir ou ocultar menu lateral');
-      btn.classList.toggle('hidden', !isMobileLayout() && sidebarVisible);
-    }
-
-    function toggleSidebarVisibility() {
-      if (isMobileLayout()) return;
-      sidebarTouched = true;
-      sidebarVisible = !sidebarVisible;
-      applySidebarVisibility();
-    }
-
-    function syncSidebarByViewport() {
-      if (sidebarTouched) {
-        applySidebarVisibility();
-        return;
-      }
-      sidebarVisible = !isIntermediateLayout();
-      applySidebarVisibility();
-    }
-
-    // ── Render sidebar ───────────────────────────────────────────────────────────
-    function fmtDayHeader(dayStr) {
-      if (!dayStr || dayStr === 'sem-data') return 'Sem data';
-      var d = new Date(dayStr + 'T12:00:00');
-      return WEEKDAY[d.getDay()] + ', ' + d.getDate() + ' de ' + MONTH_BR[d.getMonth()];
-    }
-
-    function renderSidebar() {
-      var byDay = {};
-      JOGOS.forEach(function (j) {
-        var day = j.data ? j.data.slice(0, 10) : 'sem-data';
-        if (!byDay[day]) byDay[day] = [];
-        byDay[day].push(j);
-      });
-
-      function buildHtml(pfx) {
-        if (!JOGOS.length) return '<div style="padding:20px;text-align:center;color:var(--sub);font-size:.72rem">Nenhum jogo encontrado.</div>';
-        return Object.keys(byDay).sort().map(function (day) {
-          var games = byDay[day].map(function (j) { return sidebarCardHtml(j, pfx); }).join('');
-          var n = byDay[day].length;
-          return '<div class="sim-day-header"><span>' + fmtDayHeader(day) + '</span>' +
-            '<span>' + n + (n === 1 ? ' jogo' : ' jogos') + '</span></div>' +
-            '<div class="sim-day-games">' + games + '</div>';
-        }).join('');
-      }
-
-      document.getElementById('sidebar-games').innerHTML = buildHtml('');
-      document.getElementById('sidebar-games-mob').innerHTML = buildHtml('m');
-
-      // Scroll sidebar to live game (or next upcoming), with offset showing prior content
-      function scrollSidebarToFocus(containerId, pfx) {
-        var container = document.getElementById(containerId);
-        if (!container) return;
-        var focusId = null;
-        var liveJ = JOGOS.find(function (j) { return j.isLive; });
-        if (liveJ) {
-          focusId = 'sgc-' + pfx + liveJ.id;
-        } else {
-          var now = new Date();
-          var nextJ = JOGOS.find(function (j) {
-            return j.gols_a === null && j.gols_b === null && j.data && new Date(j.data.replace(' ', 'T')) > now;
+          return true;
+        }
+        function assignRanks(arr, isTied) {
+          return arr.map(function (e, i) {
+            return i === 0 || !isTied(e, arr[i - 1])
+              ? i + 1
+              : assignRanks._prev;
           });
-          if (nextJ) focusId = 'sgc-' + pfx + nextJ.id;
         }
-        if (!focusId) return;
-        var el = document.getElementById(focusId);
-        if (!el) return;
-        // Scroll so the card appears with ~60px of content visible above it
-        var offset = el.offsetTop - 200;
-        container.scrollTop = offset < 0 ? 0 : offset;
-      }
-      scrollSidebarToFocus('sidebar-games', '');
-      scrollSidebarToFocus('sidebar-games-mob', 'm');
-
-      var future = JOGOS.filter(function (j) { return j.gols_a === null && j.gols_b === null; }).length;
-      var badge = future + ' pendente' + (future !== 1 ? 's' : '');
-      document.getElementById('sb-count').textContent = badge;
-      document.getElementById('sb-count-mob').textContent = badge;
-    }
-
-    function sidebarCardHtml(j, pfx) {
-      pfx = pfx || '';
-      var isDone = j.gols_a !== null && j.gols_b !== null;
-      var isLive = !!j.isLive;
-      var isKo = !isGroupStage(j);
-      var fA = j.time_a.logo ? '<img src="' + j.time_a.logo + '" class="sim-flag" alt="">' : '';
-      var fB = j.time_b.logo ? '<img src="' + j.time_b.logo + '" class="sim-flag" alt="">' : '';
-      var hora = j.data
-        ? (j.data.slice(11, 13) + 'h' + (j.data.slice(14, 16) !== '00' ? j.data.slice(14, 16) : ''))
-        : '';
-      var stageLabel = isGroupStage(j) ? (j.grupo || '') : (j.fase || j.grupo || '');
-
-      // meta row: clock (if live) or time · group · city
-      var metaParts;
-      if (isLive) {
-        metaParts = [stageLabel, j.cidade].filter(Boolean).join(' · ');
-      } else {
-        metaParts = [hora, stageLabel, j.cidade].filter(Boolean).join(' · ');
-      }
-
-      var liveBadge = isLive
-        ? '<span class="sb-live-badge"><span class="sb-live-dot"></span>' + (j.liveClock || 'AO VIVO') + '</span>'
-        : '';
-
-      // apostas page link — find index of this game by id in global JOGOS
-      var apostasIdx = JOGOS.findIndex(function (g) { return g.id === j.id; });
-      var apostasLink = '<a class="sb-apostas-link" href="bolao_apostas.html' + (apostasIdx >= 0 ? '?jogo=' + apostasIdx : '') + '" target="_blank">Ver apostas ↗</a>';
-
-      var midHtml;
-      var winnerHtml = '';
-      if (isDone) {
-        var shootoutHtml = hasShootout(j)
-          ? '<div class="score-pen">(' + j.penaltis_a + ' × ' + j.penaltis_b + ')</div>'
-          : '';
-        if (isLive) {
-          midHtml = '<div class="score-wrap-sb">' +
-            '<div class="score-live-sb">' +
-            '<span class="sn" id="sbn-a-' + pfx + j.id + '">' + j.gols_a + '</span>' +
-            '<span class="sim-vs">\xd7</span>' +
-            '<span class="sn" id="sbn-b-' + pfx + j.id + '">' + j.gols_b + '</span>' +
-            '</div>' +
-            shootoutHtml +
-            '</div>';
-        } else {
-          midHtml = '<div class="score-wrap-sb">' +
-            '<div class="score-done">' + j.gols_a + '<span class="sim-vs">\xd7</span>' + j.gols_b + '</div>' +
-            shootoutHtml +
-            '</div>';
-        }
-      } else {
-        var sv = simScores[j.id];
-        var vA = sv && sv.a !== null ? sv.a : '';
-        var vB = sv && sv.b !== null ? sv.b : '';
-        var w = sv && sv.w !== null && sv.w !== undefined ? String(sv.w) : '';
-        var drawNow = vA !== '' && vB !== '' && +vA === +vB;
-        winnerHtml = isKo
-          ? '<div class="sim-win-wrap" id="siw-wrap-' + pfx + j.id + '" style="display:' + (drawNow ? 'flex' : 'none') + '">' +
-          '<select class="sim-win-select" id="siw-' + pfx + j.id + '" onchange="onSim(' + j.id + ')"' + (drawNow ? '' : ' disabled') + '>' +
-          '<option value="">Vencedor do confronto</option>' +
-          '<option value="' + j.time_a.id + '"' + (w === String(j.time_a.id) ? ' selected' : '') + '>' + j.time_a.nome + '</option>' +
-          '<option value="' + j.time_b.id + '"' + (w === String(j.time_b.id) ? ' selected' : '') + '>' + j.time_b.nome + '</option>' +
-          '</select>' +
-          '</div>'
-          : '';
-        midHtml =
-          '<div class="sim-inputs">' +
-          '<input class="sim-inp" id="sia-' + pfx + j.id + '" type="number" min="0" max="30" value="' + vA + '" placeholder="\u2014" oninput="onSim(' + j.id + ')">' +
-          '<span class="sim-vs">\xd7</span>' +
-          '<input class="sim-inp" id="sib-' + pfx + j.id + '" type="number" min="0" max="30" value="' + vB + '" placeholder="\u2014" oninput="onSim(' + j.id + ')">' +
-          '</div>';
-      }
-
-      var filled = !isDone && !!getSimEntryComplete(j);
-      var cardCls = isLive ? ' live' : (isDone ? ' done' : (filled ? ' filled' : ''));
-
-      return '<div class="sim-game-card' + cardCls + '" id="sgc-' + pfx + j.id + '">' +
-        '<div class="sim-meta" style="display:flex;align-items:center;justify-content:space-between;gap:4px">' +
-        '<span>' + metaParts + '</span>' +
-        '<span style="display:flex;align-items:center;gap:6px">' + liveBadge + apostasLink + '</span>' +
-        '</div>' +
-        '<div class="sim-row">' +
-        '<div class="sim-team-side">' + fA + '<span class="sim-team-lbl">' + j.time_a.nome + '</span></div>' +
-        midHtml +
-        '<div class="sim-team-side b">' + fB + '<span class="sim-team-lbl">' + j.time_b.nome + '</span></div>' +
-        '</div>' +
-        winnerHtml +
-        '</div>';
-    }
-
-    function syncWinnerSelectorVisibility(id, a, b, w) {
-      var j = JOGOS.find(function (g) { return g.id === id; });
-      var drawNeedsWinner = a !== '' && b !== '' && j && needsWinnerChoiceForDraw(j, +a, +b);
-      ['', 'm'].forEach(function (pfx) {
-        var wrap = document.getElementById('siw-wrap-' + pfx + id);
-        var sel = document.getElementById('siw-' + pfx + id);
-        if (!wrap || !sel) return;
-        if (drawNeedsWinner) {
-          wrap.style.display = 'flex';
-          sel.disabled = false;
-          if (w !== undefined) sel.value = (w === null || w === '') ? '' : String(w);
-        } else {
-          wrap.style.display = 'none';
-          sel.disabled = true;
-          sel.value = '';
-        }
-      });
-      return !!drawNeedsWinner;
-    }
-
-    // ── Simulator actions ────────────────────────────────────────────────────────
-    function onSim(id) {
-      // Read from whichever pair of inputs has the value (desktop or mobile)
-      var aEl = document.getElementById('sia-' + id) || document.getElementById('sia-m' + id);
-      var bEl = document.getElementById('sib-' + id) || document.getElementById('sib-m' + id);
-      var aElM = document.getElementById('sia-m' + id);
-      var bElM = document.getElementById('sib-m' + id);
-      var aEl0 = document.getElementById('sia-' + id);
-      var bEl0 = document.getElementById('sib-' + id);
-      var wElM = document.getElementById('siw-m' + id);
-      var wEl0 = document.getElementById('siw-' + id);
-      var j = JOGOS.find(function (g) { return g.id === id; });
-      // Determine which fired and sync the other
-      var a, b, w;
-      if (document.activeElement === aEl0 || document.activeElement === bEl0) {
-        a = aEl0 ? aEl0.value.trim() : ''; b = bEl0 ? bEl0.value.trim() : '';
-        w = wEl0 ? wEl0.value : (wElM ? wElM.value : '');
-        if (aElM) aElM.value = a; if (bElM) bElM.value = b; if (wElM) wElM.value = w;
-      } else if (document.activeElement === wEl0) {
-        a = aEl0 ? aEl0.value.trim() : ''; b = bEl0 ? bEl0.value.trim() : '';
-        w = wEl0 ? wEl0.value : '';
-        if (aElM) aElM.value = a; if (bElM) bElM.value = b; if (wElM) wElM.value = w;
-      } else if (document.activeElement === wElM) {
-        a = aElM ? aElM.value.trim() : ''; b = bElM ? bElM.value.trim() : '';
-        w = wElM ? wElM.value : '';
-        if (aEl0) aEl0.value = a; if (bEl0) bEl0.value = b; if (wEl0) wEl0.value = w;
-      } else {
-        a = aElM ? aElM.value.trim() : ''; b = bElM ? bElM.value.trim() : '';
-        w = wElM ? wElM.value : (wEl0 ? wEl0.value : '');
-        if (aEl0) aEl0.value = a; if (bEl0) bEl0.value = b; if (wEl0) wEl0.value = w;
-      }
-      var card0 = document.getElementById('sgc-' + id);
-      var cardM = document.getElementById('sgc-m' + id);
-      var hasScore = a !== '' && b !== '';
-      var needsWinner = syncWinnerSelectorVisibility(id, a, b, w);
-      if (!needsWinner) w = '';
-
-      if (hasScore && (!needsWinner || w !== '')) {
-        simScores[id] = { a: +a, b: +b, w: needsWinner ? +w : null };
-        if (card0) card0.classList.add('filled');
-        if (cardM) cardM.classList.add('filled');
-      } else {
-        simScores[id] = hasScore ? { a: +a, b: +b, w: w ? +w : null } : null;
-        if (card0) card0.classList.remove('filled');
-        if (cardM) cardM.classList.remove('filled');
-      }
-      recomputeSim();
-    }
-
-    function useMostVoted() {
-      JOGOS.forEach(function (j) {
-        if (j.gols_a !== null && j.gols_b !== null) return;
-        var nA = j.apostadores_a.length, nE = j.apostadores_empate.length, nB = j.apostadores_b.length;
-        var grp = nA >= nE && nA >= nB ? j.apostadores_a : nE >= nB ? j.apostadores_empate : j.apostadores_b;
-        if (!grp.length) return;
-        var cnt = {};
-        grp.forEach(function (a) { cnt[a.placar] = (cnt[a.placar] || 0) + 1; });
-        var top = Object.keys(cnt).sort(function (x, y) { return cnt[y] - cnt[x]; })[0];
-        if (!top) return;
-        var sp = top.split('x'), va = +sp[0] || 0, vb = +sp[1] || 0;
-        var w = null;
-        if (needsWinnerChoiceForDraw(j, va, vb)) {
-          var cntW = {};
-          grp.filter(function (a) {
-            return a.placar === top && a.id_time_vencedor !== null && a.id_time_vencedor !== undefined;
-          }).forEach(function (a) {
-            var k = String(a.id_time_vencedor);
-            cntW[k] = (cntW[k] || 0) + 1;
-          });
-          var bestW = Object.keys(cntW).sort(function (x, y) { return cntW[y] - cntW[x]; })[0];
-          w = bestW ? +bestW : null;
-        }
-        simScores[j.id] = { a: va, b: vb, w: w };
-        syncWinnerSelectorVisibility(j.id, String(va), String(vb), w);
-        ['', 'm'].forEach(function (pfx) {
-          var ia = document.getElementById('sia-' + pfx + j.id);
-          var ib = document.getElementById('sib-' + pfx + j.id);
-          var iw = document.getElementById('siw-' + pfx + j.id);
-          var card = document.getElementById('sgc-' + pfx + j.id);
-          if (ia) ia.value = va;
-          if (ib) ib.value = vb;
-          if (iw) iw.value = w === null ? '' : String(w);
-          if (card) {
-            if (needsWinnerChoiceForDraw(j, va, vb) && (w === null || w === undefined)) card.classList.remove('filled');
-            else card.classList.add('filled');
-          }
+        // compute ranks imperatively
+        var totalRanks = [],
+          realRanksArr = [];
+        sorted.forEach(function (e, i) {
+          totalRanks.push(
+            i === 0 || !tiedTotal(e, sorted[i - 1]) ? i + 1 : totalRanks[i - 1],
+          );
         });
-      });
-      recomputeSim();
-    }
-
-    function resetSim() {
-      simScores = {};
-      JOGOS.forEach(function (j) {
-        if (j.gols_a !== null && j.gols_b !== null) return;
-        syncWinnerSelectorVisibility(j.id, '', '', '');
-        ['', 'm'].forEach(function (pfx) {
-          var ia = document.getElementById('sia-' + pfx + j.id);
-          var ib = document.getElementById('sib-' + pfx + j.id);
-          var iw = document.getElementById('siw-' + pfx + j.id);
-          var card = document.getElementById('sgc-' + pfx + j.id);
-          if (ia) ia.value = '';
-          if (ib) ib.value = '';
-          if (iw) iw.value = '';
-          if (card) card.classList.remove('filled');
+        realSorted.forEach(function (e, i) {
+          realRanksArr.push(
+            i === 0 || !tiedReal(e, realSorted[i - 1])
+              ? i + 1
+              : realRanksArr[i - 1],
+          );
         });
-      });
-      recomputeSim();
-    }
-
-    // ── Chart ─────────────────────────────────────────────────────────────────────
-    var PLAYER_COLORS = [
-      '#2563eb', '#dc2626', '#16a34a', '#ca8a04', '#9333ea',
-      '#ea580c', '#0891b2', '#db2777', '#84cc16', '#0284c7',
-      '#7c3aed', '#c2410c', '#15803d', '#a16207', '#1d4ed8',
-      '#be123c', '#0f766e', '#92400e', '#6d28d9', '#b45309',
-      '#0369a1', '#047857', '#1e40af', '#b91c1c', '#7e22ce'
-    ];
-    var gameHistory = [];
-    var colorMap = {};
-    var eChart = null;
-    var raceTimer = null;
-    var raceFrameIdx = 0;
-    var raceRunning = false;
-    var raceSpeed = 750;
-    var raceCurrentSorted = [];
-    var currentChartType = 'positions';
-    var showSim = true;
-    var sidebarVisible = true;
-    var sidebarTouched = false;
-    var seriesSelection = {};
-
-    function abbrevTeam(nome) {
-      if (!nome) return '?';
-      var p = nome.trim().split(/\s+/);
-      if (p.length === 1) return nome.slice(0, 3).toUpperCase();
-      if (p.length === 2) return (p[0].slice(0, 2) + p[1][0]).toUpperCase();
-      return p.slice(0, 3).map(function (x) { return x[0]; }).join('').toUpperCase();
-    }
-
-    function buildGameHistory() {
-      // Include simulated games when showSim is on
-      var done = JOGOS.filter(function (j) {
-        if (j.gols_a !== null && j.gols_b !== null) return true;
-        if (!showSim) return false;
-        return !!getSimEntryComplete(j);
-      });
-      // For each game resolve the effective score (real or sim)
-      function effectiveScore(j) {
-        if (j.gols_a !== null && j.gols_b !== null) return { a: j.gols_a, b: j.gols_b };
-        var s = getSimEntryComplete(j); return { a: s.a, b: s.b };
-      }
-      var players = Object.keys(scoreboard);
-      var acc = {};
-      players.forEach(function (n) { acc[n] = { pts: 0, res: 0, ven: 0, emp: 0 }; });
-
-      gameHistory = done.map(function (j) {
-        var eff = effectiveScore(j);
-        var mult = getMultiplier(j);
-        var sim = getSimEntryComplete(j);
-        var realWinnerId = resolveWinnerId(j, eff.a, eff.b, sim ? sim.w : null);
-        [].concat(j.apostadores_a, j.apostadores_empate, j.apostadores_b).forEach(function (a) {
-          if (!acc[a.nome]) return;
-          var sp = a.placar.split('x');
-          var bd = calcBreakdown(+sp[0] || 0, +sp[1] || 0, eff.a, eff.b, a.id_time_vencedor, realWinnerId);
-          var r = acc[a.nome];
-          r.pts += bd.pts * mult; r.res += bd.res; r.ven += bd.ven; r.emp += bd.emp;
-          if (!r.gp) r.gp = {};
-          r.gp[j.id] = (r.gp[j.id] || 0) + bd.pts * mult;
+        var realPosMap = {};
+        realSorted.forEach(function (e, i) {
+          realPosMap[e.nome] = realRanksArr[i];
         });
-        // Build a synthetic jogo object using effective score for display
-        var jDisplay = eff.a !== j.gols_a ? Object.assign({}, j, { gols_a: eff.a, gols_b: eff.b }) : j;
-        var doneIds = done.slice(0, done.indexOf(j) + 1).map(function (x) { return x.id; });
-        var entries = players.map(function (n) { var r = acc[n]; return { nome: n, pts: r.pts, res: r.res, ven: r.ven, emp: r.emp, gp: r.gp || {} }; });
-        entries.sort(function (a, b) {
-          if (b.pts !== a.pts) return b.pts - a.pts;
-          if (b.res !== a.res) return b.res - a.res;
-          if (b.ven !== a.ven) return b.ven - a.ven;
-          if (b.emp !== a.emp) return b.emp - a.emp;
-          for (var k = doneIds.length - 1; k >= 0; k--) {
-            var id = doneIds[k];
-            var pa = a.gp[id] || 0, pb = b.gp[id] || 0;
-            if (pb !== pa) return pb - pa;
-          }
-          return a.nome.localeCompare(b.nome, 'pt-BR', { sensitivity: 'base' });
+
+        var hasSim = entries.some(function (e) {
+          return e.total > e.real_pts;
         });
-        var posMap = {};
-        var rank = 1;
-        entries.forEach(function (e, i) {
-          if (i > 0) {
-            var prev = entries[i - 1];
-            var diff = e.pts !== prev.pts || e.res !== prev.res || e.ven !== prev.ven || e.emp !== prev.emp;
-            if (!diff) {
-              for (var k = doneIds.length - 1; k >= 0; k--) {
-                var id = doneIds[k];
-                if ((e.gp[id] || 0) !== (prev.gp[id] || 0)) { diff = true; break; }
-              }
+        var maxPts = sorted.length ? Math.max(sorted[0].total, 1) : 1;
+
+        var recentGames = JOGOS.filter(function (j) {
+          if (j.gols_a !== null && j.gols_b !== null) return true;
+          if (!showSim) return false;
+          return !!getSimEntryComplete(j);
+        }).slice(-5);
+
+        document.getElementById("ranking-body").innerHTML = sorted
+          .map(function (e, i) {
+            var pos = totalRanks[i];
+            var posClass =
+              pos === 1
+                ? "gold"
+                : pos === 2
+                  ? "silver"
+                  : pos === 3
+                    ? "bronze"
+                    : "";
+            var pct = Math.round((e.total / maxPts) * 100);
+            var deltaHtml = "";
+            if (hasSim) {
+              var realPos = realPosMap[e.nome] || pos;
+              var delta = realPos - pos;
+              if (delta > 0)
+                deltaHtml = '<span class="rank-delta up">▲' + delta + "</span>";
+              else if (delta < 0)
+                deltaHtml =
+                  '<span class="rank-delta dn">▼' + Math.abs(delta) + "</span>";
+              else deltaHtml = '<span class="rank-delta eq">=</span>';
             }
-            if (diff) rank = i + 1;
-          }
-          posMap[e.nome] = rank;
-        });
-        var ptsMap = {};
-        players.forEach(function (n) { ptsMap[n] = acc[n].pts; });
-        return { jogo: jDisplay, posMap: posMap, ptsMap: ptsMap };
-      });
-    }
-
-    function ensureSeriesSelection(names) {
-      names.forEach(function (name) {
-        if (typeof seriesSelection[name] === 'undefined') seriesSelection[name] = true;
-      });
-    }
-
-    function isSeriesVisible(name) {
-      return seriesSelection[name] !== false;
-    }
-
-    function toggleSeriesVisibility(name) {
-      seriesSelection[name] = !isSeriesVisible(name);
-      renderChart();
-    }
-
-    function selectedMapFor(names) {
-      var selected = {};
-      names.forEach(function (name) { selected[name] = isSeriesVisible(name); });
-      return selected;
-    }
-
-    // ── ECharts helpers ────────────────────────────────────────────────────────
-    function initChart() {
-      destroyChart();
-      var el = document.getElementById('echart-container');
-      eChart = echarts.init(el, null, { renderer: 'canvas' });
-      return eChart;
-    }
-
-    function destroyChart() {
-      stopRace();
-      if (eChart) { eChart.dispose(); eChart = null; }
-    }
-
-    window.addEventListener('resize', function () { if (eChart) eChart.resize(); });
-
-    // ── Chart type menu ────────────────────────────────────────────────────────
-    function toggleChartMenu(e) {
-      e.stopPropagation();
-      document.getElementById('ct-menu').classList.toggle('open');
-    }
-    document.addEventListener('click', function () {
-      var m = document.getElementById('ct-menu');
-      if (m) m.classList.remove('open');
-    });
-
-    function setChartType(type) {
-      currentChartType = type;
-      stopRace();
-      var labels = {
-        positions: 'Hist\u00f3rico de posi\u00e7\u00f5es',
-        points: 'Hist\u00f3rico de pontua\u00e7\u00e3o \u2013 Acumulado',
-        'points-leader': 'Hist\u00f3rico de pontua\u00e7\u00e3o \u2013 Em rela\u00e7\u00e3o ao l\u00edder',
-        race: 'Hist\u00f3rico de pontua\u00e7\u00e3o \u2013 Gr\u00e1fico de barras'
-      };
-      document.getElementById('ct-label').textContent = labels[type];
-      document.querySelectorAll('.ct-opt').forEach(function (el) {
-        el.classList.toggle('active', el.getAttribute('onclick').indexOf("'" + type + "'") !== -1);
-      });
-      document.getElementById('ct-menu').classList.remove('open');
-      document.getElementById('race-controls').style.display = type === 'race' ? '' : 'none';
-      document.getElementById('chart-legend').style.display = type === 'race' ? 'none' : '';
-      renderChart();
-    }
-
-    // ── Master renderChart dispatcher ─────────────────────────────────────────
-    function renderChart() {
-      buildGameHistory();
-      var players = Object.keys(scoreboard);
-      var N = players.length;
-      var sorted = players.slice().sort(function (a, b) {
-        if (!gameHistory.length) return a.localeCompare(b, 'pt-BR');
-        var last = gameHistory[gameHistory.length - 1];
-        return (last.posMap[a] || N + 1) - (last.posMap[b] || N + 1);
-      });
-      colorMap = {};
-      sorted.forEach(function (nome, i) { colorMap[nome] = PLAYER_COLORS[i % PLAYER_COLORS.length]; });
-      ensureSeriesSelection(sorted);
-
-      var legendEl = document.getElementById('chart-legend');
-      if (currentChartType !== 'race') {
-        legendEl.innerHTML = sorted.map(function (nome, i) {
-          var safe = nome.replace(/&/g, '&amp;').replace(/</g, '&lt;');
-          return '<div class="chart-legend-item' + (isSeriesVisible(nome) ? '' : ' inactive') + '" role="button" tabindex="0" data-idx="' + i + '" data-nome="' + safe + '">' +
-            '<span class="chart-legend-dot" style="background:' + colorMap[nome] + '"></span>' + safe + '</div>';
-        }).join('');
-        legendEl.querySelectorAll('.chart-legend-item').forEach(function (el) {
-          el.addEventListener('click', function () {
-            toggleSeriesVisibility(this.dataset.nome);
-          });
-          el.addEventListener('mouseenter', function () {
-            var nome = this.dataset.nome;
-            if (eChart) eChart.dispatchAction({ type: 'highlight', seriesName: nome });
-            this.style.opacity = '1';
-            legendEl.querySelectorAll('.chart-legend-item').forEach(function (o) {
-              if (o.dataset.nome !== nome) o.style.opacity = '0.25';
-            });
-          });
-          el.addEventListener('mouseleave', function () {
-            if (eChart) {
-              var opt = eChart.getOption();
-              if (opt && opt.series) opt.series.forEach(function (s) {
-                eChart.dispatchAction({ type: 'downplay', seriesName: s.name });
-              });
-            }
-            legendEl.querySelectorAll('.chart-legend-item').forEach(function (o) {
-              o.style.opacity = isSeriesVisible(o.dataset.nome) ? '1' : '0.35';
-            });
-          });
-        });
-      }
-
-      if (currentChartType === 'positions') renderPositionsChart(sorted, N);
-      else if (currentChartType === 'points') renderPointsChart(sorted, 'absolute');
-      else if (currentChartType === 'points-leader') renderPointsChart(sorted, 'leader');
-      else if (currentChartType === 'race') renderRaceChart(sorted);
-    }
-
-    // ── Bump chart – Histórico de posições ─────────────────────────────────────
-    function renderPositionsChart(sorted, N) {
-      var ec = initChart();
-      if (!gameHistory.length) return;
-      var gameLabels = gameHistory.map(function (s, i) {
-        return 'J' + (i + 1);
-      });
-      var fullLabels = gameHistory.map(function (s, i) {
-        return 'J' + (i + 1) + ' ' + abbrevTeam(s.jogo.time_a.nome) + ' \u00d7 ' + abbrevTeam(s.jogo.time_b.nome);
-      });
-      ec.setOption({
-        legend: { show: false, data: sorted, selected: selectedMapFor(sorted) },
-        tooltip: {
-          trigger: 'item',
-          appendToBody: true,
-          confine: true,
-          formatter: function (p) { return '<b>' + p.seriesName + '</b><br>' + fullLabels[p.dataIndex] + ': ' + p.value + '\u00ba'; }
-        },
-        grid: { left: 8, right: 150, top: 20, bottom: 32, containLabel: true },
-        xAxis: {
-          type: 'category', data: gameLabels, boundaryGap: false,
-          axisLabel: { fontSize: 10, color: '#9ca3af' },
-          axisLine: { lineStyle: { color: '#e5e7eb' } },
-          splitLine: { show: true, lineStyle: { color: '#f3f4f6' } }
-        },
-        yAxis: {
-          type: 'value', inverse: true, min: 1, max: N, interval: 1,
-          axisLabel: { formatter: '{value}\u00ba', fontSize: 10, color: '#9ca3af' },
-          splitLine: { lineStyle: { color: '#f3f4f6' } }
-        },
-        series: sorted.map(function (nome) {
-          return {
-            name: nome, type: 'line', smooth: true, clip: false,
-            symbol: 'circle', symbolSize: 9,
-            lineStyle: { width: 2, color: colorMap[nome] },
-            itemStyle: { color: colorMap[nome], borderColor: '#fff', borderWidth: 2 },
-            emphasis: {
-              focus: 'series',
-              lineStyle: { width: 4, opacity: 1 },
-              itemStyle: { opacity: 1 }
-            },
-            blur: {
-              lineStyle: { opacity: 0.07 },
-              itemStyle: { opacity: 0.07 },
-              endLabel: { opacity: 0.07 }
-            },
-            endLabel: {
-              show: true, formatter: '{a}',
-              color: colorMap[nome], fontSize: 10, fontWeight: 700,
-              distance: 8
-            },
-            labelLayout: { moveOverlap: 'shiftY' },
-            data: gameHistory.map(function (s) { return s.posMap[nome] || N; })
-          };
-        })
-      });
-    }
-
-    // ── Line race – Histórico de pontuação (linha) ─────────────────────────────
-    function renderPointsChart(sorted, mode) {
-      var ec = initChart();
-      if (!gameHistory.length) return;
-
-      mode = mode || 'absolute';
-
-      function getLeaderValue(snap) {
-        var maxPts = null;
-        Object.keys(snap.ptsMap || {}).forEach(function (nome) {
-          var pts = snap.ptsMap[nome] || 0;
-          if (maxPts === null || pts > maxPts) maxPts = pts;
-        });
-        return maxPts === null ? 0 : maxPts;
-      }
-
-      function getSeriesValue(snap, nome) {
-        var pts = snap.ptsMap[nome] || 0;
-        if (mode !== 'leader') return pts;
-        return pts - getLeaderValue(snap);
-      }
-
-      function getYAxisMin() {
-        if (mode !== 'leader') return 0;
-        var minValue = 0;
-        gameHistory.forEach(function (snap) {
-          var leaderValue = getLeaderValue(snap);
-          sorted.forEach(function (nome) {
-            var relative = (snap.ptsMap[nome] || 0) - leaderValue;
-            if (relative < minValue) minValue = relative;
-          });
-        });
-        return minValue;
-      }
-
-      var gameLabels = ['J0'].concat(
-        gameHistory.map(function (s, i) {
-          return 'J' + (i + 1);
-        })
-      );
-
-      var fullLabels = ['Início da Copa'].concat(
-        gameHistory.map(function (s, i) {
-          return 'J' + (i + 1) + ' ' +
-            abbrevTeam(s.jogo.time_a.nome) +
-            ' × ' +
-            abbrevTeam(s.jogo.time_b.nome);
-        })
-      );
-
-      ec.setOption({
-        animationDuration: 1000,
-        legend: { show: false, data: sorted, selected: selectedMapFor(sorted) },
-
-        tooltip: {
-          trigger: 'axis',
-          order: 'valueDesc',
-          appendToBody: true,
-          confine: true,
-          backgroundColor: 'rgba(17,17,17,0.75)',
-          borderWidth: 0,
-          textStyle: {
-            color: '#fff'
-          },
-          formatter: function (params) {
-            var lines = ['<b>' + fullLabels[params[0].dataIndex] + '</b>'];
-
-            if (mode === 'leader') {
-              var leaderValue = getLeaderValue(gameHistory[params[0].dataIndex]);
-              lines.push('L\u00edder: <b>' + leaderValue + ' pts</b>');
-            }
-
-            params
-              .slice()
-              .sort(function (a, b) {
-                return b.value - a.value;
-              })
-              .forEach(function (p) {
-                lines.push(
-                  '<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:' +
-                  p.color +
-                  ';margin-right:4px"></span>' +
-                  p.seriesName +
-                  ': <b>' +
-                  p.value +
-                  ' pts' + (mode === 'leader' ? ' do l\u00edder' : '') + '</b>'
+            var last5Html = recentGames
+              .map(function (j) {
+                var mult = getMultiplier(j);
+                var allBettors = [].concat(
+                  j.apostadores_a,
+                  j.apostadores_empate,
+                  j.apostadores_b,
                 );
-              });
-
-            return lines.join('<br>');
-          }
-        },
-
-        grid: {
-          left: 50,
-          right: 150,
-          top: 20,
-          bottom: 32,
-          containLabel: true
-        },
-
-        xAxis: {
-          type: 'category',
-          boundaryGap: false,
-          data: gameLabels,
-          axisLabel: {
-            fontSize: 10,
-            color: '#9ca3af'
-          },
-          splitLine: {
-            show: true,
-            lineStyle: {
-              color: '#f3f4f6'
-            }
-          }
-        },
-
-        yAxis: {
-          type: 'value',
-          min: getYAxisMin(),
-          max: mode === 'leader' ? 0 : undefined,
-          name: mode === 'leader' ? 'Diferença para o líder' : 'Pontuação',
-          nameLocation: 'middle',
-          nameGap: 45,
-          axisLabel: {
-            fontSize: 10,
-            color: '#9ca3af'
-          },
-          splitLine: {
-            lineStyle: {
-              color: '#f3f4f6'
-            }
-          }
-        },
-
-        series: sorted.map(function (nome) {
-          return {
-            name: nome,
-            type: 'line',
-
-            showSymbol: false,
-            smooth: false,
-            clip: false,
-
-            lineStyle: {
-              width: 2,
-              color: colorMap[nome]
-            },
-
-            endLabel: {
-              show: true,
-              formatter: '{a}',
-              color: colorMap[nome],
-              fontSize: 10,
-              fontWeight: 700
-            },
-
-            labelLayout: {
-              moveOverlap: 'shiftY'
-            },
-
-            emphasis: {
-              focus: 'series'
-            },
-
-            encode: {
-              x: 0,
-              y: 1
-            },
-
-            data: [0].concat(
-              gameHistory.map(function (s) {
-                return getSeriesValue(s, nome);
+                var betEntry = allBettors.find(function (a) {
+                  return a.nome === e.nome;
+                });
+                if (!betEntry)
+                  return (
+                    '<span class="score-pip none" data-tip="' +
+                    (j.time_a.nome || "") +
+                    " × " +
+                    (j.time_b.nome || "") +
+                    '\nSem aposta">—</span>'
+                  );
+                var gp = e.total_game_pts[j.id] || 0;
+                var rawPts = mult > 0 ? Math.round(gp / mult) : 0;
+                var pointColor = bolaoGetPointsColor(rawPts);
+                var betParts = (betEntry.placar || "0x0").split("x");
+                var betDisp = betEntry.placar.replace("x", " × ");
+                if (
+                  (+betParts[0] || 0) === (+betParts[1] || 0) &&
+                  betEntry.time_vencedor_sigla
+                ) {
+                  betDisp += " " + betEntry.time_vencedor_sigla;
+                }
+                var sim = getSimEntryComplete(j);
+                var effA =
+                  j.gols_a !== null && j.gols_a !== undefined
+                    ? j.gols_a
+                    : sim
+                      ? sim.a
+                      : null;
+                var effB =
+                  j.gols_b !== null && j.gols_b !== undefined
+                    ? j.gols_b
+                    : sim
+                      ? sim.b
+                      : null;
+                var effWinnerId = resolveWinnerId(
+                  j,
+                  effA,
+                  effB,
+                  sim ? sim.w : null,
+                );
+                var effWinnerSigla =
+                  effA === effB ? winnerSiglaById(j, effWinnerId) : "";
+                var shootoutSuffix =
+                  j.gols_a !== null && j.gols_b !== null
+                    ? getShootoutText(j)
+                    : "";
+                var statusLabel =
+                  j.gols_a !== null && j.gols_b !== null
+                    ? "Resultado"
+                    : "Simulação";
+                var statusDisp = effA + " × " + effB + shootoutSuffix;
+                var tipLines =
+                  (j.time_a.nome || "") +
+                  " × " +
+                  (j.time_b.nome || "") +
+                  "\n" +
+                  statusLabel +
+                  ": " +
+                  statusDisp +
+                  "\nPalpite: " +
+                  betDisp +
+                  "\n" +
+                  (gp > 0 ? "+" + gp : "0") +
+                  " pontos";
+                return (
+                  '<span class="score-pip" style="background:' +
+                  pointColor.bg +
+                  ";color:" +
+                  pointColor.text +
+                  '" data-tip="' +
+                  tipLines.replace(/"/g, "&quot;") +
+                  '"><span class="score-pip-text">' +
+                  gp +
+                  "</span></span>"
+                );
               })
-            )
-          };
-        })
-      });
-    }
-    // ── Bar race – Histórico de pontuação (barras) ─────────────────────────────
-    function renderRaceChart(sorted) {
-      destroyChart();
-      if (!gameHistory.length) return;
-      raceCurrentSorted = sorted;
-      // Default: show last frame (current standings)
-      var lastIdx = gameHistory.length - 1;
-      raceFrameIdx = lastIdx;
-      var scrubber = document.getElementById('race-scrubber');
-      scrubber.max = lastIdx;
-      scrubber.value = lastIdx;
-      updateRaceLabel(lastIdx);
-      document.getElementById('race-play-btn').innerHTML = '&#9654;';
-
-      var snapLast = gameHistory[lastIdx];
-      var namesLast = sorted.slice().sort(function (a, b) { return (snapLast.ptsMap[b] || 0) - (snapLast.ptsMap[a] || 0); });
-
-      var ec = initChart();
-      ec.setOption({
-        grid: { top: 10, bottom: 30, left: 10, right: 50, containLabel: true },
-        xAxis: {
-          max: 'dataMax',
-          axisLabel: { color: '#9ca3af', fontSize: 10, formatter: function (v) { return Math.round(v); } },
-          splitLine: { lineStyle: { color: '#f3f4f6' } }
-        },
-        yAxis: {
-          type: 'category',
-          data: raceCurrentSorted,
-          inverse: true,
-          axisLabel: { fontSize: 12, color: '#374151', fontWeight: 600, width: 120, overflow: 'truncate' }
-        },
-        series: [{
-          realtimeSort: true,
-          type: 'bar', barMaxWidth: 30,
-          data: namesLast.map(function (n) { return { value: snapLast.ptsMap[n] || 0, itemStyle: { color: colorMap[n] } }; }),
-          label: {
-            show: true, position: 'right', color: '#374151', fontSize: 12, fontWeight: 700,
-            valueAnimation: true, formatter: function (p) { return p.value; }
-          }
-        }],
-        animationDuration: 0,
-        animationDurationUpdate: raceSpeed + 50,
-        animationEasing: 'linear',
-        animationEasingUpdate: 'linear'
-      });
-    }
-
-    function updateRaceFrame(idx) {
-      if (!eChart) return;
-
-      var snap = gameHistory[idx];
-
-      eChart.setOption({
-        series: [{
-          data: raceCurrentSorted.map(function (n) {
-            return {
-              value: snap.ptsMap[n] || 0,
-              itemStyle: { color: colorMap[n] }
-            };
+              .join("");
+            return (
+              "<tr>" +
+              '<td class="rank-pos ' +
+              posClass +
+              '">' +
+              pos +
+              "</td>" +
+              '<td class="rank-name"><a href="bolao_participante.html?nome=' +
+              encodeURIComponent(e.nome) +
+              '" style="color:inherit;text-decoration:none;" onmouseover="this.style.color=\'var(--accent)\'" onmouseout="this.style.color=\'inherit\'">' +
+              e.nome +
+              "</a>" +
+              (deltaHtml ? "&nbsp;" + deltaHtml : "") +
+              "</td>" +
+              '<td class="stat-cell hide-sm">' +
+              e.total_res +
+              "</td>" +
+              '<td class="stat-cell hide-sm">' +
+              e.total_ven +
+              "</td>" +
+              '<td class="stat-cell hide-sm">' +
+              e.total_emp +
+              "</td>" +
+              '<td class="stat-cell hide-sm">' +
+              e.total_gol +
+              "</td>" +
+              '<td class="stat-cell hide-sm">' +
+              e.total_dif +
+              "</td>" +
+              '<td class="stat-cell hide-sm">' +
+              e.total_exa +
+              "</td>" +
+              '<td class="pts-cell"><span class="pts-real">' +
+              e.total +
+              "</span></td>" +
+              '<td class="bar-cell"><div class="bar-wrap"><div class="bar-fill" style="width:' +
+              pct +
+              '%"></div></div></td>' +
+              '<td class="last5-cell">' +
+              last5Html +
+              "</td>" +
+              "</tr>"
+            );
           })
-        }]
+          .join("");
+      }
+
+      function updateSubtitle() {
+        var el = document.getElementById("rank-sub");
+        if (!el) return;
+        var hasSim = Object.keys(scoreboard).some(function (k) {
+          return scoreboard[k].sim_pts > 0;
+        });
+        el.textContent = hasSim
+          ? "Pontos reais + simulados"
+          : "Pontos dos jogos já realizados";
+      }
+
+      function isMobileLayout() {
+        return window.matchMedia("(max-width: 800px)").matches;
+      }
+
+      function isIntermediateLayout() {
+        return window.matchMedia("(min-width: 801px) and (max-width: 1180px)")
+          .matches;
+      }
+
+      function applySidebarVisibility() {
+        var layout = document.querySelector(".main-layout");
+        var btn = document.getElementById("sidebar-toggle-btn");
+        var lbl = document.getElementById("sidebar-toggle-label");
+        if (!layout || !btn) return;
+        if (isMobileLayout()) {
+          layout.classList.remove("sidebar-hidden");
+          return;
+        }
+        layout.classList.toggle("sidebar-hidden", !sidebarVisible);
+        if (lbl) lbl.textContent = "SIMULAR";
+        btn.setAttribute("title", "Exibir ou ocultar menu lateral");
+        btn.classList.toggle("hidden", !isMobileLayout() && sidebarVisible);
+      }
+
+      function toggleSidebarVisibility() {
+        if (isMobileLayout()) return;
+        sidebarTouched = true;
+        sidebarVisible = !sidebarVisible;
+        applySidebarVisibility();
+      }
+
+      function syncSidebarByViewport() {
+        if (sidebarTouched) {
+          applySidebarVisibility();
+          return;
+        }
+        sidebarVisible = !isIntermediateLayout();
+        applySidebarVisibility();
+      }
+
+      // ── Render sidebar ───────────────────────────────────────────────────────────
+      function fmtDayHeader(dayStr) {
+        if (!dayStr || dayStr === "sem-data") return "Sem data";
+        var d = new Date(dayStr + "T12:00:00");
+        return (
+          WEEKDAY[d.getDay()] +
+          ", " +
+          d.getDate() +
+          " de " +
+          MONTH_BR[d.getMonth()]
+        );
+      }
+
+      function renderSidebar() {
+        var byDay = {};
+        JOGOS.forEach(function (j) {
+          var day = j.data ? j.data.slice(0, 10) : "sem-data";
+          if (!byDay[day]) byDay[day] = [];
+          byDay[day].push(j);
+        });
+
+        function buildHtml(pfx) {
+          if (!JOGOS.length)
+            return '<div style="padding:20px;text-align:center;color:var(--sub);font-size:.72rem">Nenhum jogo encontrado.</div>';
+          return Object.keys(byDay)
+            .sort()
+            .map(function (day) {
+              var games = byDay[day]
+                .map(function (j) {
+                  return sidebarCardHtml(j, pfx);
+                })
+                .join("");
+              var n = byDay[day].length;
+              return (
+                '<div class="sim-day-header"><span>' +
+                fmtDayHeader(day) +
+                "</span>" +
+                "<span>" +
+                n +
+                (n === 1 ? " jogo" : " jogos") +
+                "</span></div>" +
+                '<div class="sim-day-games">' +
+                games +
+                "</div>"
+              );
+            })
+            .join("");
+        }
+
+        document.getElementById("sidebar-games").innerHTML = buildHtml("");
+        document.getElementById("sidebar-games-mob").innerHTML = buildHtml("m");
+
+        // Scroll sidebar to live game (or next upcoming), with offset showing prior content
+        function scrollSidebarToFocus(containerId, pfx) {
+          var container = document.getElementById(containerId);
+          if (!container) return;
+          var focusId = null;
+          var liveJ = JOGOS.find(function (j) {
+            return j.isLive;
+          });
+          if (liveJ) {
+            focusId = "sgc-" + pfx + liveJ.id;
+          } else {
+            var now = new Date();
+            var nextJ = JOGOS.find(function (j) {
+              return (
+                j.gols_a === null &&
+                j.gols_b === null &&
+                j.data &&
+                new Date(j.data.replace(" ", "T")) > now
+              );
+            });
+            if (nextJ) focusId = "sgc-" + pfx + nextJ.id;
+          }
+          if (!focusId) return;
+          var el = document.getElementById(focusId);
+          if (!el) return;
+          // Scroll so the card appears with ~60px of content visible above it
+          var offset = el.offsetTop - 200;
+          container.scrollTop = offset < 0 ? 0 : offset;
+        }
+        scrollSidebarToFocus("sidebar-games", "");
+        scrollSidebarToFocus("sidebar-games-mob", "m");
+
+        var future = JOGOS.filter(function (j) {
+          return j.gols_a === null && j.gols_b === null;
+        }).length;
+        var badge = future + " pendente" + (future !== 1 ? "s" : "");
+        document.getElementById("sb-count").textContent = badge;
+        document.getElementById("sb-count-mob").textContent = badge;
+      }
+
+      function sidebarCardHtml(j, pfx) {
+        pfx = pfx || "";
+        var isDone = j.gols_a !== null && j.gols_b !== null;
+        var isLive = !!j.isLive;
+        var isKo = !isGroupStage(j);
+        var fA = j.time_a.logo
+          ? '<img src="' + j.time_a.logo + '" class="sim-flag" alt="">'
+          : "";
+        var fB = j.time_b.logo
+          ? '<img src="' + j.time_b.logo + '" class="sim-flag" alt="">'
+          : "";
+        var hora = j.data
+          ? j.data.slice(11, 13) +
+            "h" +
+            (j.data.slice(14, 16) !== "00" ? j.data.slice(14, 16) : "")
+          : "";
+        var stageLabel = isGroupStage(j)
+          ? j.grupo || ""
+          : j.fase || j.grupo || "";
+
+        // meta row: clock (if live) or time · group · city
+        var metaParts;
+        if (isLive) {
+          metaParts = [stageLabel, j.cidade].filter(Boolean).join(" · ");
+        } else {
+          metaParts = [hora, stageLabel, j.cidade].filter(Boolean).join(" · ");
+        }
+
+        var liveBadge = isLive
+          ? '<span class="sb-live-badge"><span class="sb-live-dot"></span>' +
+            (j.liveClock || "AO VIVO") +
+            "</span>"
+          : "";
+
+        // apostas page link — find index of this game by id in global JOGOS
+        var apostasIdx = JOGOS.findIndex(function (g) {
+          return g.id === j.id;
+        });
+        var apostasLink =
+          '<a class="sb-apostas-link" href="bolao_apostas.html' +
+          (apostasIdx >= 0 ? "?jogo=" + apostasIdx : "") +
+          '" target="_blank">Ver apostas ↗</a>';
+
+        var midHtml;
+        var winnerHtml = "";
+        if (isDone) {
+          var shootoutHtml = hasShootout(j)
+            ? '<div class="score-pen">(' +
+              j.penaltis_a +
+              " × " +
+              j.penaltis_b +
+              ")</div>"
+            : "";
+          if (isLive) {
+            midHtml =
+              '<div class="score-wrap-sb">' +
+              '<div class="score-live-sb">' +
+              '<span class="sn" id="sbn-a-' +
+              pfx +
+              j.id +
+              '">' +
+              j.gols_a +
+              "</span>" +
+              '<span class="sim-vs">\xd7</span>' +
+              '<span class="sn" id="sbn-b-' +
+              pfx +
+              j.id +
+              '">' +
+              j.gols_b +
+              "</span>" +
+              "</div>" +
+              shootoutHtml +
+              "</div>";
+          } else {
+            midHtml =
+              '<div class="score-wrap-sb">' +
+              '<div class="score-done">' +
+              j.gols_a +
+              '<span class="sim-vs">\xd7</span>' +
+              j.gols_b +
+              "</div>" +
+              shootoutHtml +
+              "</div>";
+          }
+        } else {
+          var sv = simScores[j.id];
+          var vA = sv && sv.a !== null ? sv.a : "";
+          var vB = sv && sv.b !== null ? sv.b : "";
+          var w = sv && sv.w !== null && sv.w !== undefined ? String(sv.w) : "";
+          var drawNow = vA !== "" && vB !== "" && +vA === +vB;
+          winnerHtml = isKo
+            ? '<div class="sim-win-wrap" id="siw-wrap-' +
+              pfx +
+              j.id +
+              '" style="display:' +
+              (drawNow ? "flex" : "none") +
+              '">' +
+              '<select class="sim-win-select" id="siw-' +
+              pfx +
+              j.id +
+              '" onchange="onSim(' +
+              j.id +
+              ')"' +
+              (drawNow ? "" : " disabled") +
+              ">" +
+              '<option value="">Vencedor do confronto</option>' +
+              '<option value="' +
+              j.time_a.id +
+              '"' +
+              (w === String(j.time_a.id) ? " selected" : "") +
+              ">" +
+              j.time_a.nome +
+              "</option>" +
+              '<option value="' +
+              j.time_b.id +
+              '"' +
+              (w === String(j.time_b.id) ? " selected" : "") +
+              ">" +
+              j.time_b.nome +
+              "</option>" +
+              "</select>" +
+              "</div>"
+            : "";
+          midHtml =
+            '<div class="sim-inputs">' +
+            '<input class="sim-inp" id="sia-' +
+            pfx +
+            j.id +
+            '" type="number" min="0" max="30" value="' +
+            vA +
+            '" placeholder="\u2014" oninput="onSim(' +
+            j.id +
+            ')">' +
+            '<span class="sim-vs">\xd7</span>' +
+            '<input class="sim-inp" id="sib-' +
+            pfx +
+            j.id +
+            '" type="number" min="0" max="30" value="' +
+            vB +
+            '" placeholder="\u2014" oninput="onSim(' +
+            j.id +
+            ')">' +
+            "</div>";
+        }
+
+        var filled = !isDone && !!getSimEntryComplete(j);
+        var cardCls = isLive
+          ? " live"
+          : isDone
+            ? " done"
+            : filled
+              ? " filled"
+              : "";
+
+        return (
+          '<div class="sim-game-card' +
+          cardCls +
+          '" id="sgc-' +
+          pfx +
+          j.id +
+          '">' +
+          '<div class="sim-meta" style="display:flex;align-items:center;justify-content:space-between;gap:4px">' +
+          "<span>" +
+          metaParts +
+          "</span>" +
+          '<span style="display:flex;align-items:center;gap:6px">' +
+          liveBadge +
+          apostasLink +
+          "</span>" +
+          "</div>" +
+          '<div class="sim-row">' +
+          '<div class="sim-team-side">' +
+          fA +
+          '<span class="sim-team-lbl">' +
+          j.time_a.nome +
+          "</span></div>" +
+          midHtml +
+          '<div class="sim-team-side b">' +
+          fB +
+          '<span class="sim-team-lbl">' +
+          j.time_b.nome +
+          "</span></div>" +
+          "</div>" +
+          winnerHtml +
+          "</div>"
+        );
+      }
+
+      function syncWinnerSelectorVisibility(id, a, b, w) {
+        var j = JOGOS.find(function (g) {
+          return g.id === id;
+        });
+        var drawNeedsWinner =
+          a !== "" && b !== "" && j && needsWinnerChoiceForDraw(j, +a, +b);
+        ["", "m"].forEach(function (pfx) {
+          var wrap = document.getElementById("siw-wrap-" + pfx + id);
+          var sel = document.getElementById("siw-" + pfx + id);
+          if (!wrap || !sel) return;
+          if (drawNeedsWinner) {
+            wrap.style.display = "flex";
+            sel.disabled = false;
+            if (w !== undefined)
+              sel.value = w === null || w === "" ? "" : String(w);
+          } else {
+            wrap.style.display = "none";
+            sel.disabled = true;
+            sel.value = "";
+          }
+        });
+        return !!drawNeedsWinner;
+      }
+
+      // ── Simulator actions ────────────────────────────────────────────────────────
+      function onSim(id) {
+        // Read from whichever pair of inputs has the value (desktop or mobile)
+        var aEl =
+          document.getElementById("sia-" + id) ||
+          document.getElementById("sia-m" + id);
+        var bEl =
+          document.getElementById("sib-" + id) ||
+          document.getElementById("sib-m" + id);
+        var aElM = document.getElementById("sia-m" + id);
+        var bElM = document.getElementById("sib-m" + id);
+        var aEl0 = document.getElementById("sia-" + id);
+        var bEl0 = document.getElementById("sib-" + id);
+        var wElM = document.getElementById("siw-m" + id);
+        var wEl0 = document.getElementById("siw-" + id);
+        var j = JOGOS.find(function (g) {
+          return g.id === id;
+        });
+        // Determine which fired and sync the other
+        var a, b, w;
+        if (
+          document.activeElement === aEl0 ||
+          document.activeElement === bEl0
+        ) {
+          a = aEl0 ? aEl0.value.trim() : "";
+          b = bEl0 ? bEl0.value.trim() : "";
+          w = wEl0 ? wEl0.value : wElM ? wElM.value : "";
+          if (aElM) aElM.value = a;
+          if (bElM) bElM.value = b;
+          if (wElM) wElM.value = w;
+        } else if (document.activeElement === wEl0) {
+          a = aEl0 ? aEl0.value.trim() : "";
+          b = bEl0 ? bEl0.value.trim() : "";
+          w = wEl0 ? wEl0.value : "";
+          if (aElM) aElM.value = a;
+          if (bElM) bElM.value = b;
+          if (wElM) wElM.value = w;
+        } else if (document.activeElement === wElM) {
+          a = aElM ? aElM.value.trim() : "";
+          b = bElM ? bElM.value.trim() : "";
+          w = wElM ? wElM.value : "";
+          if (aEl0) aEl0.value = a;
+          if (bEl0) bEl0.value = b;
+          if (wEl0) wEl0.value = w;
+        } else {
+          a = aElM ? aElM.value.trim() : "";
+          b = bElM ? bElM.value.trim() : "";
+          w = wElM ? wElM.value : wEl0 ? wEl0.value : "";
+          if (aEl0) aEl0.value = a;
+          if (bEl0) bEl0.value = b;
+          if (wEl0) wEl0.value = w;
+        }
+        var card0 = document.getElementById("sgc-" + id);
+        var cardM = document.getElementById("sgc-m" + id);
+        var hasScore = a !== "" && b !== "";
+        var needsWinner = syncWinnerSelectorVisibility(id, a, b, w);
+        if (!needsWinner) w = "";
+
+        if (hasScore && (!needsWinner || w !== "")) {
+          simScores[id] = { a: +a, b: +b, w: needsWinner ? +w : null };
+          if (card0) card0.classList.add("filled");
+          if (cardM) cardM.classList.add("filled");
+        } else {
+          simScores[id] = hasScore ? { a: +a, b: +b, w: w ? +w : null } : null;
+          if (card0) card0.classList.remove("filled");
+          if (cardM) cardM.classList.remove("filled");
+        }
+        recomputeSim();
+      }
+
+      function useMostVoted() {
+        JOGOS.forEach(function (j) {
+          if (j.gols_a !== null && j.gols_b !== null) return;
+          var nA = j.apostadores_a.length,
+            nE = j.apostadores_empate.length,
+            nB = j.apostadores_b.length;
+          var grp =
+            nA >= nE && nA >= nB
+              ? j.apostadores_a
+              : nE >= nB
+                ? j.apostadores_empate
+                : j.apostadores_b;
+          if (!grp.length) return;
+          var cnt = {};
+          grp.forEach(function (a) {
+            cnt[a.placar] = (cnt[a.placar] || 0) + 1;
+          });
+          var top = Object.keys(cnt).sort(function (x, y) {
+            return cnt[y] - cnt[x];
+          })[0];
+          if (!top) return;
+          var sp = top.split("x"),
+            va = +sp[0] || 0,
+            vb = +sp[1] || 0;
+          var w = null;
+          if (needsWinnerChoiceForDraw(j, va, vb)) {
+            var cntW = {};
+            grp
+              .filter(function (a) {
+                return (
+                  a.placar === top &&
+                  a.id_time_vencedor !== null &&
+                  a.id_time_vencedor !== undefined
+                );
+              })
+              .forEach(function (a) {
+                var k = String(a.id_time_vencedor);
+                cntW[k] = (cntW[k] || 0) + 1;
+              });
+            var bestW = Object.keys(cntW).sort(function (x, y) {
+              return cntW[y] - cntW[x];
+            })[0];
+            w = bestW ? +bestW : null;
+          }
+          simScores[j.id] = { a: va, b: vb, w: w };
+          syncWinnerSelectorVisibility(j.id, String(va), String(vb), w);
+          ["", "m"].forEach(function (pfx) {
+            var ia = document.getElementById("sia-" + pfx + j.id);
+            var ib = document.getElementById("sib-" + pfx + j.id);
+            var iw = document.getElementById("siw-" + pfx + j.id);
+            var card = document.getElementById("sgc-" + pfx + j.id);
+            if (ia) ia.value = va;
+            if (ib) ib.value = vb;
+            if (iw) iw.value = w === null ? "" : String(w);
+            if (card) {
+              if (
+                needsWinnerChoiceForDraw(j, va, vb) &&
+                (w === null || w === undefined)
+              )
+                card.classList.remove("filled");
+              else card.classList.add("filled");
+            }
+          });
+        });
+        recomputeSim();
+      }
+
+      function resetSim() {
+        simScores = {};
+        JOGOS.forEach(function (j) {
+          if (j.gols_a !== null && j.gols_b !== null) return;
+          syncWinnerSelectorVisibility(j.id, "", "", "");
+          ["", "m"].forEach(function (pfx) {
+            var ia = document.getElementById("sia-" + pfx + j.id);
+            var ib = document.getElementById("sib-" + pfx + j.id);
+            var iw = document.getElementById("siw-" + pfx + j.id);
+            var card = document.getElementById("sgc-" + pfx + j.id);
+            if (ia) ia.value = "";
+            if (ib) ib.value = "";
+            if (iw) iw.value = "";
+            if (card) card.classList.remove("filled");
+          });
+        });
+        recomputeSim();
+      }
+
+      // ── Chart ─────────────────────────────────────────────────────────────────────
+      var PLAYER_COLORS = [
+        "#2563eb",
+        "#dc2626",
+        "#16a34a",
+        "#ca8a04",
+        "#9333ea",
+        "#ea580c",
+        "#0891b2",
+        "#db2777",
+        "#84cc16",
+        "#0284c7",
+        "#7c3aed",
+        "#c2410c",
+        "#15803d",
+        "#a16207",
+        "#1d4ed8",
+        "#be123c",
+        "#0f766e",
+        "#92400e",
+        "#6d28d9",
+        "#b45309",
+        "#0369a1",
+        "#047857",
+        "#1e40af",
+        "#b91c1c",
+        "#7e22ce",
+      ];
+      var gameHistory = [];
+      var colorMap = {};
+      var eChart = null;
+      var raceTimer = null;
+      var raceFrameIdx = 0;
+      var raceRunning = false;
+      var raceSpeed = 750;
+      var raceCurrentSorted = [];
+      var currentChartType = "positions";
+      var showSim = true;
+      var sidebarVisible = true;
+      var sidebarTouched = false;
+      var seriesSelection = {};
+      var relativeReferenceName = "";
+
+      function abbrevTeam(nome) {
+        if (!nome) return "?";
+        var p = nome.trim().split(/\s+/);
+        if (p.length === 1) return nome.slice(0, 3).toUpperCase();
+        if (p.length === 2) return (p[0].slice(0, 2) + p[1][0]).toUpperCase();
+        return p
+          .slice(0, 3)
+          .map(function (x) {
+            return x[0];
+          })
+          .join("")
+          .toUpperCase();
+      }
+
+      function buildGameHistory() {
+        // Include simulated games when showSim is on
+        var done = JOGOS.filter(function (j) {
+          if (j.gols_a !== null && j.gols_b !== null) return true;
+          if (!showSim) return false;
+          return !!getSimEntryComplete(j);
+        });
+        // For each game resolve the effective score (real or sim)
+        function effectiveScore(j) {
+          if (j.gols_a !== null && j.gols_b !== null)
+            return { a: j.gols_a, b: j.gols_b };
+          var s = getSimEntryComplete(j);
+          return { a: s.a, b: s.b };
+        }
+        var players = Object.keys(scoreboard);
+        var acc = {};
+        players.forEach(function (n) {
+          acc[n] = { pts: 0, res: 0, ven: 0, emp: 0 };
+        });
+
+        gameHistory = done.map(function (j) {
+          var eff = effectiveScore(j);
+          var mult = getMultiplier(j);
+          var sim = getSimEntryComplete(j);
+          var realWinnerId = resolveWinnerId(
+            j,
+            eff.a,
+            eff.b,
+            sim ? sim.w : null,
+          );
+          []
+            .concat(j.apostadores_a, j.apostadores_empate, j.apostadores_b)
+            .forEach(function (a) {
+              if (!acc[a.nome]) return;
+              var sp = a.placar.split("x");
+              var bd = calcBreakdown(
+                +sp[0] || 0,
+                +sp[1] || 0,
+                eff.a,
+                eff.b,
+                a.id_time_vencedor,
+                realWinnerId,
+              );
+              var r = acc[a.nome];
+              r.pts += bd.pts * mult;
+              r.res += bd.res;
+              r.ven += bd.ven;
+              r.emp += bd.emp;
+              if (!r.gp) r.gp = {};
+              r.gp[j.id] = (r.gp[j.id] || 0) + bd.pts * mult;
+            });
+          // Build a synthetic jogo object using effective score for display
+          var jDisplay =
+            eff.a !== j.gols_a
+              ? Object.assign({}, j, { gols_a: eff.a, gols_b: eff.b })
+              : j;
+          var doneIds = done.slice(0, done.indexOf(j) + 1).map(function (x) {
+            return x.id;
+          });
+          var entries = players.map(function (n) {
+            var r = acc[n];
+            return {
+              nome: n,
+              pts: r.pts,
+              res: r.res,
+              ven: r.ven,
+              emp: r.emp,
+              gp: r.gp || {},
+            };
+          });
+          entries.sort(function (a, b) {
+            if (b.pts !== a.pts) return b.pts - a.pts;
+            if (b.res !== a.res) return b.res - a.res;
+            if (b.ven !== a.ven) return b.ven - a.ven;
+            if (b.emp !== a.emp) return b.emp - a.emp;
+            for (var k = doneIds.length - 1; k >= 0; k--) {
+              var id = doneIds[k];
+              var pa = a.gp[id] || 0,
+                pb = b.gp[id] || 0;
+              if (pb !== pa) return pb - pa;
+            }
+            return a.nome.localeCompare(b.nome, "pt-BR", {
+              sensitivity: "base",
+            });
+          });
+          var posMap = {};
+          var rank = 1;
+          entries.forEach(function (e, i) {
+            if (i > 0) {
+              var prev = entries[i - 1];
+              var diff =
+                e.pts !== prev.pts ||
+                e.res !== prev.res ||
+                e.ven !== prev.ven ||
+                e.emp !== prev.emp;
+              if (!diff) {
+                for (var k = doneIds.length - 1; k >= 0; k--) {
+                  var id = doneIds[k];
+                  if ((e.gp[id] || 0) !== (prev.gp[id] || 0)) {
+                    diff = true;
+                    break;
+                  }
+                }
+              }
+              if (diff) rank = i + 1;
+            }
+            posMap[e.nome] = rank;
+          });
+          var ptsMap = {};
+          players.forEach(function (n) {
+            ptsMap[n] = acc[n].pts;
+          });
+          return { jogo: jDisplay, posMap: posMap, ptsMap: ptsMap };
+        });
+      }
+
+      function ensureSeriesSelection(names) {
+        names.forEach(function (name) {
+          if (typeof seriesSelection[name] === "undefined")
+            seriesSelection[name] = true;
+        });
+      }
+
+      function isSeriesVisible(name) {
+        return seriesSelection[name] !== false;
+      }
+
+      function toggleSeriesVisibility(name) {
+        seriesSelection[name] = !isSeriesVisible(name);
+        renderChart();
+      }
+
+      function selectedMapFor(names) {
+        var selected = {};
+        names.forEach(function (name) {
+          selected[name] = isSeriesVisible(name);
+        });
+        return selected;
+      }
+
+      function getVisibleNames(names) {
+        return names.filter(function (name) {
+          return isSeriesVisible(name);
+        });
+      }
+
+      function getSelectedReferenceName(sorted) {
+        if (relativeReferenceName && sorted.indexOf(relativeReferenceName) !== -1) {
+          return relativeReferenceName;
+        }
+        return sorted[0] || "";
+      }
+
+      function syncReferenceOptions(sorted) {
+        var wrap = document.getElementById("ct-ref-wrap");
+        var select = document.getElementById("reference-select");
+        if (!wrap || !select) return;
+
+        if (currentChartType !== "points-leader") {
+          wrap.classList.add("hidden");
+          return;
+        }
+
+        var current = getSelectedReferenceName(sorted);
+        wrap.classList.remove("hidden");
+        select.innerHTML = sorted
+          .map(function (name) {
+            var safe = name.replace(/&/g, "&amp;").replace(/</g, "&lt;");
+            return (
+              '<option value="' +
+              safe +
+              '"' +
+              (name === current ? " selected" : "") +
+              ">" +
+              safe +
+              "</option>"
+            );
+          })
+          .join("");
+        select.value = current;
+        relativeReferenceName = current;
+      }
+
+      function getPositionsAxisMax(sorted) {
+        var visible = getVisibleNames(sorted);
+        var maxPos = 1;
+        if (!visible.length) return maxPos;
+        gameHistory.forEach(function (snap) {
+          visible.forEach(function (name) {
+            var pos = snap.posMap[name] || 1;
+            if (pos > maxPos) maxPos = pos;
+          });
+        });
+        return maxPos;
+      }
+
+      function getRelativeAxisRange(sorted, referenceName) {
+        var visible = getVisibleNames(sorted);
+        var refName = referenceName || getSelectedReferenceName(sorted);
+        var minValue = 0;
+        var maxValue = 0;
+        gameHistory.forEach(function (snap) {
+          var refValue = snap.ptsMap[refName] || 0;
+          visible.forEach(function (name) {
+            var relative = (snap.ptsMap[name] || 0) - refValue;
+            if (relative < minValue) minValue = relative;
+            if (relative > maxValue) maxValue = relative;
+          });
+        });
+        return { min: Math.min(0, minValue), max: Math.max(0, maxValue) };
+      }
+
+      // ── ECharts helpers ────────────────────────────────────────────────────────
+      function initChart() {
+        destroyChart();
+        var el = document.getElementById("echart-container");
+        eChart = echarts.init(el, null, { renderer: "canvas" });
+        return eChart;
+      }
+
+      function destroyChart() {
+        stopRace();
+        if (eChart) {
+          eChart.dispose();
+          eChart = null;
+        }
+      }
+
+      window.addEventListener("resize", function () {
+        if (eChart) eChart.resize();
       });
-    }
 
-    function updateRaceLabel(idx) {
-      var snap = gameHistory[Math.min(idx, gameHistory.length - 1)];
-      document.getElementById('race-scrubber').value = idx;
-      if (snap) {
-        var j = snap.jogo;
-        document.getElementById('race-game-label').textContent =
-          (idx + 1) + '/' + gameHistory.length + ' \u2014 ' + (j.time_a.nome || '') + ' \u00d7 ' + (j.time_b.nome || '');
+      // ── Chart type menu ────────────────────────────────────────────────────────
+      function toggleChartMenu(e) {
+        e.stopPropagation();
+        document.getElementById("ct-menu").classList.toggle("open");
       }
-    }
+      document.addEventListener("click", function () {
+        var m = document.getElementById("ct-menu");
+        if (m) m.classList.remove("open");
+      });
 
-    function toggleRace() { if (raceRunning) stopRace(); else startRace(); }
+      function setChartType(type) {
+        currentChartType = type;
+        stopRace();
+        var labels = {
+          positions: "Hist\u00f3rico de posi\u00e7\u00f5es",
+          points: "Hist\u00f3rico de pontua\u00e7\u00e3o \u2013 Acumulado",
+          "points-leader":
+            "Hist\u00f3rico de pontua\u00e7\u00e3o \u2013 Em rela\u00e7\u00e3o ao l\u00edder",
+          race: "Hist\u00f3rico de pontua\u00e7\u00e3o \u2013 Gr\u00e1fico de barras",
+        };
+        document.getElementById("ct-label").textContent = labels[type];
+        document.querySelectorAll(".ct-opt").forEach(function (el) {
+          el.classList.toggle(
+            "active",
+            el.getAttribute("onclick").indexOf("'" + type + "'") !== -1,
+          );
+        });
+        document.getElementById("ct-menu").classList.remove("open");
+        document.getElementById("race-controls").style.display =
+          type === "race" ? "" : "none";
+        document.getElementById("chart-legend").style.display =
+          type === "race" ? "none" : "";
+        syncReferenceOptions(Object.keys(scoreboard));
+        renderChart();
+      }
 
-    function startRace() {
-      if (!eChart || raceRunning) return;
-      if (raceFrameIdx >= gameHistory.length - 1) {
-        raceFrameIdx = 0;
+      // ── Master renderChart dispatcher ─────────────────────────────────────────
+      function renderChart() {
+        buildGameHistory();
+        var players = Object.keys(scoreboard);
+        var N = players.length;
+        var sorted = players.slice().sort(function (a, b) {
+          if (!gameHistory.length) return a.localeCompare(b, "pt-BR");
+          var last = gameHistory[gameHistory.length - 1];
+          return (last.posMap[a] || N + 1) - (last.posMap[b] || N + 1);
+        });
+        colorMap = {};
+        sorted.forEach(function (nome, i) {
+          colorMap[nome] = PLAYER_COLORS[i % PLAYER_COLORS.length];
+        });
+        ensureSeriesSelection(sorted);
+        syncReferenceOptions(sorted);
 
-        eChart.setOption({
-          animationDurationUpdate: 0
+        var legendEl = document.getElementById("chart-legend");
+        if (currentChartType !== "race") {
+          legendEl.innerHTML = sorted
+            .map(function (nome, i) {
+              var safe = nome.replace(/&/g, "&amp;").replace(/</g, "&lt;");
+              return (
+                '<div class="chart-legend-item' +
+                (isSeriesVisible(nome) ? "" : " inactive") +
+                '" role="button" tabindex="0" data-idx="' +
+                i +
+                '" data-nome="' +
+                safe +
+                '">' +
+                '<span class="chart-legend-dot" style="background:' +
+                colorMap[nome] +
+                '"></span>' +
+                safe +
+                "</div>"
+              );
+            })
+            .join("");
+          legendEl
+            .querySelectorAll(".chart-legend-item")
+            .forEach(function (el) {
+              el.addEventListener("click", function () {
+                toggleSeriesVisibility(this.dataset.nome);
+              });
+              el.addEventListener("mouseenter", function () {
+                var nome = this.dataset.nome;
+                if (eChart)
+                  eChart.dispatchAction({
+                    type: "highlight",
+                    seriesName: nome,
+                  });
+                this.style.opacity = "1";
+                legendEl
+                  .querySelectorAll(".chart-legend-item")
+                  .forEach(function (o) {
+                    if (o.dataset.nome !== nome) o.style.opacity = "0.25";
+                  });
+              });
+              el.addEventListener("mouseleave", function () {
+                if (eChart) {
+                  var opt = eChart.getOption();
+                  if (opt && opt.series)
+                    opt.series.forEach(function (s) {
+                      eChart.dispatchAction({
+                        type: "downplay",
+                        seriesName: s.name,
+                      });
+                    });
+                }
+                legendEl
+                  .querySelectorAll(".chart-legend-item")
+                  .forEach(function (o) {
+                    o.style.opacity = isSeriesVisible(o.dataset.nome)
+                      ? "1"
+                      : "0.35";
+                  });
+              });
+            });
+        }
+
+        if (currentChartType === "positions") renderPositionsChart(sorted, N);
+        else if (currentChartType === "points")
+          renderPointsChart(sorted, "absolute");
+        else if (currentChartType === "points-leader")
+          renderPointsChart(sorted, "leader");
+        else if (currentChartType === "race") renderRaceChart(sorted);
+      }
+
+      var refSelect = document.getElementById("reference-select");
+      if (refSelect) {
+        refSelect.addEventListener("change", function () {
+          relativeReferenceName = this.value;
+          if (currentChartType === "points-leader") renderChart();
+        });
+      }
+
+      // ── Bump chart – Histórico de posições ─────────────────────────────────────
+      function renderPositionsChart(sorted, N) {
+        var ec = initChart();
+        if (!gameHistory.length) return;
+        var visible = getVisibleNames(sorted);
+        var maxPos = 1;
+        if (visible.length) {
+          gameHistory.forEach(function (snap) {
+            visible.forEach(function (nome) {
+              var pos = snap.posMap[nome] || N;
+              if (pos > maxPos) maxPos = pos;
+            });
+          });
+        }
+        var gameLabels = gameHistory.map(function (s, i) {
+          return "J" + (i + 1);
+        });
+        var fullLabels = gameHistory.map(function (s, i) {
+          return (
+            "J" +
+            (i + 1) +
+            " " +
+            abbrevTeam(s.jogo.time_a.nome) +
+            " \u00d7 " +
+            abbrevTeam(s.jogo.time_b.nome)
+          );
+        });
+        ec.setOption({
+          legend: {
+            show: false,
+            data: sorted,
+            selected: selectedMapFor(sorted),
+          },
+          tooltip: {
+            trigger: "item",
+            appendToBody: true,
+            confine: true,
+            formatter: function (p) {
+              return (
+                "<b>" +
+                p.seriesName +
+                "</b><br>" +
+                fullLabels[p.dataIndex] +
+                ": " +
+                p.value +
+                "\u00ba"
+              );
+            },
+          },
+          grid: {
+            left: 8,
+            right: 150,
+            top: 20,
+            bottom: 32,
+            containLabel: true,
+          },
+          xAxis: {
+            type: "category",
+            data: gameLabels,
+            boundaryGap: false,
+            axisLabel: { fontSize: 10, color: "#9ca3af" },
+            axisLine: { lineStyle: { color: "#e5e7eb" } },
+            splitLine: { show: true, lineStyle: { color: "#f3f4f6" } },
+          },
+          yAxis: {
+            type: "value",
+            inverse: true,
+            min: 1,
+            max: maxPos,
+            interval: 1,
+            axisLabel: {
+              formatter: "{value}\u00ba",
+              fontSize: 10,
+              color: "#9ca3af",
+            },
+            splitLine: { lineStyle: { color: "#f3f4f6" } },
+          },
+          series: sorted.map(function (nome) {
+            return {
+              name: nome,
+              type: "line",
+              smooth: true,
+              clip: false,
+              symbol: "circle",
+              symbolSize: 9,
+              lineStyle: { width: 2, color: colorMap[nome] },
+              itemStyle: {
+                color: colorMap[nome],
+                borderColor: "#fff",
+                borderWidth: 2,
+              },
+              emphasis: {
+                focus: "series",
+                lineStyle: { width: 4, opacity: 1 },
+                itemStyle: { opacity: 1 },
+              },
+              blur: {
+                lineStyle: { opacity: 0.07 },
+                itemStyle: { opacity: 0.07 },
+                endLabel: { opacity: 0.07 },
+              },
+              endLabel: {
+                show: true,
+                formatter: "{a}",
+                color: colorMap[nome],
+                fontSize: 10,
+                fontWeight: 700,
+                distance: 8,
+              },
+              labelLayout: { moveOverlap: "shiftY" },
+              data: gameHistory.map(function (s) {
+                return s.posMap[nome] || N;
+              }),
+            };
+          }),
+        });
+      }
+
+      // ── Line race – Histórico de pontuação (linha) ─────────────────────────────
+      function renderPointsChart(sorted, mode) {
+        var ec = initChart();
+        if (!gameHistory.length) return;
+
+        mode = mode || "absolute";
+        var refName = getSelectedReferenceName(sorted);
+
+        function getReferenceValue(snap) {
+          return snap.ptsMap[refName] || 0;
+        }
+
+        function getSeriesValue(snap, nome) {
+          var pts = snap.ptsMap[nome] || 0;
+          if (mode !== "leader") return pts;
+          return pts - getReferenceValue(snap);
+        }
+
+        function getYAxisMin() {
+          if (mode !== "leader") return 0;
+          var minValue = 0;
+          gameHistory.forEach(function (snap) {
+            var referenceValue = getReferenceValue(snap);
+            getVisibleNames(sorted).forEach(function (nome) {
+              var relative = (snap.ptsMap[nome] || 0) - referenceValue;
+              if (relative < minValue) minValue = relative;
+            });
+          });
+          return Math.min(0, minValue);
+        }
+
+        function getYAxisMax() {
+          if (mode !== "leader") return undefined;
+          var maxValue = 0;
+          gameHistory.forEach(function (snap) {
+            var referenceValue = getReferenceValue(snap);
+            getVisibleNames(sorted).forEach(function (nome) {
+              var relative = (snap.ptsMap[nome] || 0) - referenceValue;
+              if (relative > maxValue) maxValue = relative;
+            });
+          });
+          return Math.max(0, maxValue);
+        }
+
+        var gameLabels = ["J0"].concat(
+          gameHistory.map(function (s, i) {
+            return "J" + (i + 1);
+          }),
+        );
+
+        var fullLabels = ["Início da Copa"].concat(
+          gameHistory.map(function (s, i) {
+            return (
+              "J" +
+              (i + 1) +
+              " " +
+              abbrevTeam(s.jogo.time_a.nome) +
+              " × " +
+              abbrevTeam(s.jogo.time_b.nome)
+            );
+          }),
+        );
+
+        ec.setOption({
+          animationDuration: 1000,
+          legend: {
+            show: false,
+            data: sorted,
+            selected: selectedMapFor(sorted),
+          },
+
+          tooltip: {
+            trigger: "axis",
+            order: "valueDesc",
+            appendToBody: true,
+            confine: true,
+            backgroundColor: "rgba(17,17,17,0.75)",
+            borderWidth: 0,
+            textStyle: {
+              color: "#fff",
+            },
+            formatter: function (params) {
+              var lines = ["<b>" + fullLabels[params[0].dataIndex] + "</b>"];
+
+              if (mode === "leader") {
+                lines.push("Referência: <b>" + refName + "</b>");
+              }
+
+              params
+                .slice()
+                .sort(function (a, b) {
+                  return b.value - a.value;
+                })
+                .forEach(function (p) {
+                  lines.push(
+                    '<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:' +
+                      p.color +
+                      ';margin-right:4px"></span>' +
+                      p.seriesName +
+                      ": <b>" +
+                      p.value +
+                      " pts" +
+                      (mode === "leader" ? " do l\u00edder" : "") +
+                      "</b>",
+                  );
+                });
+
+              return lines.join("<br>");
+            },
+          },
+
+          grid: {
+            left: 50,
+            right: 150,
+            top: 20,
+            bottom: 32,
+            containLabel: true,
+          },
+
+          xAxis: {
+            type: "category",
+            boundaryGap: false,
+            data: gameLabels,
+            axisLabel: {
+              fontSize: 10,
+              color: "#9ca3af",
+            },
+            splitLine: {
+              show: true,
+              lineStyle: {
+                color: "#f3f4f6",
+              },
+            },
+          },
+
+          yAxis: {
+            type: "value",
+            min: getYAxisMin(),
+            max: getYAxisMax(),
+            name:
+              mode === "leader"
+                ? "Diferença para " + (refName || "a referência")
+                : "Pontuação",
+            nameLocation: "middle",
+            nameGap: 45,
+            axisLabel: {
+              fontSize: 10,
+              color: "#9ca3af",
+            },
+            splitLine: {
+              lineStyle: {
+                color: "#f3f4f6",
+              },
+            },
+          },
+
+          series: sorted.map(function (nome) {
+            return {
+              name: nome,
+              type: "line",
+
+              showSymbol: false,
+              smooth: false,
+              clip: false,
+
+              lineStyle: {
+                width: 2,
+                color: colorMap[nome],
+              },
+
+              endLabel: {
+                show: true,
+                formatter: "{a}",
+                color: colorMap[nome],
+                fontSize: 10,
+                fontWeight: 700,
+              },
+
+              labelLayout: {
+                moveOverlap: "shiftY",
+              },
+
+              emphasis: {
+                focus: "series",
+              },
+
+              encode: {
+                x: 0,
+                y: 1,
+              },
+
+              data: [0].concat(
+                gameHistory.map(function (s) {
+                  return getSeriesValue(s, nome);
+                }),
+              ),
+            };
+          }),
+        });
+      }
+      // ── Bar race – Histórico de pontuação (barras) ─────────────────────────────
+      function renderRaceChart(sorted) {
+        destroyChart();
+        if (!gameHistory.length) return;
+        raceCurrentSorted = sorted;
+        // Default: show last frame (current standings)
+        var lastIdx = gameHistory.length - 1;
+        raceFrameIdx = lastIdx;
+        var scrubber = document.getElementById("race-scrubber");
+        scrubber.max = lastIdx;
+        scrubber.value = lastIdx;
+        updateRaceLabel(lastIdx);
+        document.getElementById("race-play-btn").innerHTML = "&#9654;";
+
+        var snapLast = gameHistory[lastIdx];
+        var namesLast = sorted.slice().sort(function (a, b) {
+          return (snapLast.ptsMap[b] || 0) - (snapLast.ptsMap[a] || 0);
         });
 
-        updateRaceFrame(0);
-        updateRaceLabel(0);
-
-        eChart.setOption({
-          animationDurationUpdate: Math.round(raceSpeed * 0.65)
+        var ec = initChart();
+        ec.setOption({
+          grid: {
+            top: 10,
+            bottom: 30,
+            left: 10,
+            right: 50,
+            containLabel: true,
+          },
+          xAxis: {
+            max: "dataMax",
+            axisLabel: {
+              color: "#9ca3af",
+              fontSize: 10,
+              formatter: function (v) {
+                return Math.round(v);
+              },
+            },
+            splitLine: { lineStyle: { color: "#f3f4f6" } },
+          },
+          yAxis: {
+            type: "category",
+            data: raceCurrentSorted,
+            inverse: true,
+            axisLabel: {
+              fontSize: 12,
+              color: "#374151",
+              fontWeight: 600,
+              width: 120,
+              overflow: "truncate",
+            },
+          },
+          series: [
+            {
+              realtimeSort: true,
+              type: "bar",
+              barMaxWidth: 30,
+              data: namesLast.map(function (n) {
+                return {
+                  value: snapLast.ptsMap[n] || 0,
+                  itemStyle: { color: colorMap[n] },
+                };
+              }),
+              label: {
+                show: true,
+                position: "right",
+                color: "#374151",
+                fontSize: 12,
+                fontWeight: 700,
+                valueAnimation: true,
+                formatter: function (p) {
+                  return p.value;
+                },
+              },
+            },
+          ],
+          animationDuration: 0,
+          animationDurationUpdate: raceSpeed + 50,
+          animationEasing: "linear",
+          animationEasingUpdate: "linear",
         });
       }
-      raceRunning = true;
-      document.getElementById('race-play-btn').innerHTML = '&#9646;&#9646;';
-      raceTimer = setInterval(function () {
-        if (!raceRunning) return;
-        raceFrameIdx++;
-        if (raceFrameIdx >= gameHistory.length) {
-          raceFrameIdx = gameHistory.length - 1;
+
+      function updateRaceFrame(idx) {
+        if (!eChart) return;
+
+        var snap = gameHistory[idx];
+
+        eChart.setOption({
+          series: [
+            {
+              data: raceCurrentSorted.map(function (n) {
+                return {
+                  value: snap.ptsMap[n] || 0,
+                  itemStyle: { color: colorMap[n] },
+                };
+              }),
+            },
+          ],
+        });
+      }
+
+      function updateRaceLabel(idx) {
+        var snap = gameHistory[Math.min(idx, gameHistory.length - 1)];
+        document.getElementById("race-scrubber").value = idx;
+        if (snap) {
+          var j = snap.jogo;
+          document.getElementById("race-game-label").textContent =
+            idx +
+            1 +
+            "/" +
+            gameHistory.length +
+            " \u2014 " +
+            (j.time_a.nome || "") +
+            " \u00d7 " +
+            (j.time_b.nome || "");
+        }
+      }
+
+      function toggleRace() {
+        if (raceRunning) stopRace();
+        else startRace();
+      }
+
+      function startRace() {
+        if (!eChart || raceRunning) return;
+        if (raceFrameIdx >= gameHistory.length - 1) {
+          raceFrameIdx = 0;
+
+          eChart.setOption({
+            animationDurationUpdate: 0,
+          });
+
+          updateRaceFrame(0);
+          updateRaceLabel(0);
+
+          eChart.setOption({
+            animationDurationUpdate: Math.round(raceSpeed * 0.65),
+          });
+        }
+        raceRunning = true;
+        document.getElementById("race-play-btn").innerHTML = "&#9646;&#9646;";
+        raceTimer = setInterval(function () {
+          if (!raceRunning) return;
+          raceFrameIdx++;
+          if (raceFrameIdx >= gameHistory.length) {
+            raceFrameIdx = gameHistory.length - 1;
+            updateRaceFrame(raceFrameIdx);
+            updateRaceLabel(raceFrameIdx);
+            stopRace();
+            return;
+          }
           updateRaceFrame(raceFrameIdx);
           updateRaceLabel(raceFrameIdx);
-          stopRace(); return;
+        }, raceSpeed);
+      }
+
+      function stopRace() {
+        if (raceTimer) {
+          clearInterval(raceTimer);
+          raceTimer = null;
         }
-        updateRaceFrame(raceFrameIdx);
-        updateRaceLabel(raceFrameIdx);
-      }, raceSpeed);
-    }
+        raceRunning = false;
+        var btn = document.getElementById("race-play-btn");
+        if (btn) btn.innerHTML = "&#9654;";
+      }
 
-    function stopRace() {
-      if (raceTimer) { clearInterval(raceTimer); raceTimer = null; }
-      raceRunning = false;
-      var btn = document.getElementById('race-play-btn');
-      if (btn) btn.innerHTML = '&#9654;';
-    }
+      function scrubRace(idx) {
+        stopRace();
+        idx = Math.max(0, Math.min(idx, gameHistory.length - 1));
+        raceFrameIdx = idx;
+        updateRaceFrame(idx);
+        updateRaceLabel(idx);
+      }
 
-    function scrubRace(idx) {
-      stopRace();
-      idx = Math.max(0, Math.min(idx, gameHistory.length - 1));
-      raceFrameIdx = idx;
-      updateRaceFrame(idx);
-      updateRaceLabel(idx);
-    }
+      // ── Legend highlight – no-ops, handled via legend mouseenter/leave now ───────
+      function highlightDataset() {}
+      function resetHighlight() {}
 
-    // ── Legend highlight – no-ops, handled via legend mouseenter/leave now ───────
-    function highlightDataset() { }
-    function resetHighlight() { }
+      // ── Toggle table / chart view ─────────────────────────────────────────────────
+      function switchView(view) {
+        var isTable = view === "table";
+        if (isTable) stopRace();
+        document.getElementById("view-table").style.display = isTable
+          ? ""
+          : "none";
+        document.getElementById("view-chart").style.display = isTable
+          ? "none"
+          : "";
+        document
+          .getElementById("btn-view-table")
+          .classList.toggle("active", isTable);
+        document
+          .getElementById("btn-view-chart")
+          .classList.toggle("active", !isTable);
+        if (!isTable) renderChart();
+      }
 
-    // ── Toggle table / chart view ─────────────────────────────────────────────────
-    function switchView(view) {
-      var isTable = view === 'table';
-      if (isTable) stopRace();
-      document.getElementById('view-table').style.display = isTable ? '' : 'none';
-      document.getElementById('view-chart').style.display = isTable ? 'none' : '';
-      document.getElementById('btn-view-table').classList.toggle('active', isTable);
-      document.getElementById('btn-view-chart').classList.toggle('active', !isTable);
-      if (!isTable) renderChart();
-    }
-
-    // ── Export ───────────────────────────────────────────────────────────────────
-    function exportImage() {
-      var card = document.getElementById('ranking-card');
-      html2canvas(card, { scale: 2, useCORS: false, allowTaint: false, backgroundColor: '#ffffff', logging: false })
-        .then(function (canvas) {
-          var a = document.createElement('a');
-          a.download = 'bolao_ranking.png';
-          a.href = canvas.toDataURL('image/png');
+      // ── Export ───────────────────────────────────────────────────────────────────
+      function exportImage() {
+        var card = document.getElementById("ranking-card");
+        html2canvas(card, {
+          scale: 2,
+          useCORS: false,
+          allowTaint: false,
+          backgroundColor: "#ffffff",
+          logging: false,
+        }).then(function (canvas) {
+          var a = document.createElement("a");
+          a.download = "bolao_ranking.png";
+          a.href = canvas.toDataURL("image/png");
           a.click();
         });
-    }
-
-    // ── Init ─────────────────────────────────────────────────────────────────────
-    async function init() {
-      try {
-        JOGOS = await buildJogos();
-      } catch (e) {
-        document.getElementById('loading-overlay').innerHTML =
-          '<div class="loading-text">Erro ao carregar dados. Tente recarregar a página.</div>';
-        return;
       }
 
-      try {
-        buildScoreboard();
-        renderRanking();
-        renderSidebar();
-        syncSidebarByViewport();
-      } catch (err) {
-        console.error('Erro ao renderizar ranking:', err);
-      }
-
-      window.addEventListener('resize', syncSidebarByViewport);
-
-      document.getElementById('loading-overlay').style.display = 'none';
-      updateSubtitle();
-
-      // ── Auto-refresh every 15 s (scores + live status) ───────────────────────
-      setInterval(async function () {
-        var fresh;
-        try { fresh = await buildJogos(); } catch (e) { return; }
-
-        function snapshot(list) {
-          return JSON.stringify(list.map(function (j) {
-            return [j.id, j.gols_a, j.gols_b, j.isLive, j.liveClock];
-          }));
+      // ── Init ─────────────────────────────────────────────────────────────────────
+      async function init() {
+        try {
+          JOGOS = await buildJogos();
+        } catch (e) {
+          document.getElementById("loading-overlay").innerHTML =
+            '<div class="loading-text">Erro ao carregar dados. Tente recarregar a página.</div>';
+          return;
         }
-        if (snapshot(fresh) === snapshot(JOGOS)) return;
 
-        // Detect goals in live games before swapping
-        var goalFlashes = [];
-        fresh.forEach(function (fj) {
-          if (!fj.isLive) return;
-          var oj = JOGOS.find(function (g) { return g.id === fj.id; });
-          if (!oj) return;
-          if (fj.gols_a !== null && oj.gols_a !== null && fj.gols_a > oj.gols_a) goalFlashes.push({ id: fj.id, side: 'a' });
-          if (fj.gols_b !== null && oj.gols_b !== null && fj.gols_b > oj.gols_b) goalFlashes.push({ id: fj.id, side: 'b' });
-        });
+        try {
+          buildScoreboard();
+          renderRanking();
+          renderSidebar();
+          syncSidebarByViewport();
+        } catch (err) {
+          console.error("Erro ao renderizar ranking:", err);
+        }
 
-        JOGOS = fresh;
-        buildScoreboard();
-        renderRanking();
-        renderSidebar();
+        window.addEventListener("resize", syncSidebarByViewport);
 
-        // Flash goal numbers in sidebar
-        goalFlashes.forEach(function (gf) {
-          ['', 'm'].forEach(function (pfx) {
-            var el = document.getElementById('sbn-' + gf.side + '-' + pfx + gf.id);
-            if (!el) return;
-            el.classList.remove('goal-flash');
-            void el.offsetWidth;
-            el.classList.add('goal-flash');
+        document.getElementById("loading-overlay").style.display = "none";
+        updateSubtitle();
+
+        // ── Auto-refresh every 15 s (scores + live status) ───────────────────────
+        setInterval(async function () {
+          var fresh;
+          try {
+            fresh = await buildJogos();
+          } catch (e) {
+            return;
+          }
+
+          function snapshot(list) {
+            return JSON.stringify(
+              list.map(function (j) {
+                return [j.id, j.gols_a, j.gols_b, j.isLive, j.liveClock];
+              }),
+            );
+          }
+          if (snapshot(fresh) === snapshot(JOGOS)) return;
+
+          // Detect goals in live games before swapping
+          var goalFlashes = [];
+          fresh.forEach(function (fj) {
+            if (!fj.isLive) return;
+            var oj = JOGOS.find(function (g) {
+              return g.id === fj.id;
+            });
+            if (!oj) return;
+            if (
+              fj.gols_a !== null &&
+              oj.gols_a !== null &&
+              fj.gols_a > oj.gols_a
+            )
+              goalFlashes.push({ id: fj.id, side: "a" });
+            if (
+              fj.gols_b !== null &&
+              oj.gols_b !== null &&
+              fj.gols_b > oj.gols_b
+            )
+              goalFlashes.push({ id: fj.id, side: "b" });
           });
-        });
-      }, 15000);
-    }
-    init();
 
-    // ── JS Tooltip (body-level, never clipped) ────────────────────────────────────
-    (function () {
-      var tip = document.createElement('div');
-      tip.style.cssText = [
-        'position:fixed', 'z-index:9999', 'pointer-events:none',
-        'background:#111', 'color:#fff',
-        'font-family:Inter,sans-serif', 'font-size:0.65rem', 'font-weight:400',
-        'line-height:1.55', 'padding:6px 10px', 'border-radius:6px',
-        'white-space:pre-wrap', 'box-shadow:0 4px 14px rgba(0,0,0,.3)',
-        'display:none', 'max-width:280px', 'word-break:break-word'
-      ].join(';');
-      document.body.appendChild(tip);
-      var GAP = 12;
-      document.addEventListener('mouseover', function (e) {
-        var el = e.target.closest('[data-tip]');
-        if (!el) { tip.style.display = 'none'; return; }
-        tip.textContent = el.getAttribute('data-tip');
-        tip.style.display = 'block';
-        position(e);
-      });
-      document.addEventListener('mousemove', function (e) {
-        if (tip.style.display === 'none') return;
-        position(e);
-      });
-      document.addEventListener('mouseout', function (e) {
-        var el = e.target.closest('[data-tip]');
-        if (el) tip.style.display = 'none';
-      });
-      function position(e) {
-        var tw = tip.offsetWidth, th = tip.offsetHeight;
-        var vw = window.innerWidth, vh = window.innerHeight;
-        var x = e.clientX + GAP;
-        var y = e.clientY - th - GAP;
-        if (x + tw > vw - 6) x = e.clientX - tw - GAP;
-        if (y < 6) y = e.clientY + GAP;
-        tip.style.left = x + 'px';
-        tip.style.top = y + 'px';
+          JOGOS = fresh;
+          buildScoreboard();
+          renderRanking();
+          renderSidebar();
+
+          // Flash goal numbers in sidebar
+          goalFlashes.forEach(function (gf) {
+            ["", "m"].forEach(function (pfx) {
+              var el = document.getElementById(
+                "sbn-" + gf.side + "-" + pfx + gf.id,
+              );
+              if (!el) return;
+              el.classList.remove("goal-flash");
+              void el.offsetWidth;
+              el.classList.add("goal-flash");
+            });
+          });
+        }, 15000);
       }
-    })();
-  </script>
-</body>
+      init();
 
+      // ── JS Tooltip (body-level, never clipped) ────────────────────────────────────
+      (function () {
+        var tip = document.createElement("div");
+        tip.style.cssText = [
+          "position:fixed",
+          "z-index:9999",
+          "pointer-events:none",
+          "background:#111",
+          "color:#fff",
+          "font-family:Inter,sans-serif",
+          "font-size:0.65rem",
+          "font-weight:400",
+          "line-height:1.55",
+          "padding:6px 10px",
+          "border-radius:6px",
+          "white-space:pre-wrap",
+          "box-shadow:0 4px 14px rgba(0,0,0,.3)",
+          "display:none",
+          "max-width:280px",
+          "word-break:break-word",
+        ].join(";");
+        document.body.appendChild(tip);
+        var GAP = 12;
+        document.addEventListener("mouseover", function (e) {
+          var el = e.target.closest("[data-tip]");
+          if (!el) {
+            tip.style.display = "none";
+            return;
+          }
+          tip.textContent = el.getAttribute("data-tip");
+          tip.style.display = "block";
+          position(e);
+        });
+        document.addEventListener("mousemove", function (e) {
+          if (tip.style.display === "none") return;
+          position(e);
+        });
+        document.addEventListener("mouseout", function (e) {
+          var el = e.target.closest("[data-tip]");
+          if (el) tip.style.display = "none";
+        });
+        function position(e) {
+          var tw = tip.offsetWidth,
+            th = tip.offsetHeight;
+          var vw = window.innerWidth,
+            vh = window.innerHeight;
+          var x = e.clientX + GAP;
+          var y = e.clientY - th - GAP;
+          if (x + tw > vw - 6) x = e.clientX - tw - GAP;
+          if (y < 6) y = e.clientY + GAP;
+          tip.style.left = x + "px";
+          tip.style.top = y + "px";
+        }
+      })();
+    </script>
+  </body>
 </html>

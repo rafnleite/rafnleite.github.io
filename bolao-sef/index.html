@@ -27,16 +27,8 @@
         font-family: "Segoe UI", system-ui, sans-serif;
         color: var(--text);
         background:
-          radial-gradient(
-            circle at top left,
-            rgba(37, 99, 235, 0.12),
-            transparent 32%
-          ),
-          radial-gradient(
-            circle at top right,
-            rgba(15, 118, 110, 0.1),
-            transparent 26%
-          ),
+          radial-gradient(circle at top left, rgba(37, 99, 235, 0.12), transparent 32%),
+          radial-gradient(circle at top right, rgba(15, 118, 110, 0.1), transparent 26%),
           var(--bg);
       }
 
@@ -187,6 +179,33 @@
         flex-wrap: wrap;
       }
 
+      .reference-controls {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .reference-label {
+        font-size: 0.78rem;
+        font-weight: 800;
+        color: var(--sub);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .reference-select {
+        min-width: 180px;
+        max-width: 240px;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        padding: 10px 14px;
+        background: #fff;
+        color: var(--text);
+        font-weight: 700;
+        font-size: 0.9rem;
+      }
+
       #date-display {
         font-size: 1.2rem;
         font-weight: 800;
@@ -254,6 +273,10 @@
             <button class="play-btn" id="play-btn">Play</button>
             <div id="date-display">Aguardando...</div>
           </div>
+          <div class="reference-controls hidden" id="reference-controls">
+            <span class="reference-label">Referência</span>
+            <select class="reference-select" id="reference-select"></select>
+          </div>
         </div>
         <div class="chart-legend hidden" id="chart-legend"></div>
         <div id="chart-container"></div>
@@ -265,6 +288,8 @@
       const dateDisplay = document.getElementById("date-display");
       const playBtn = document.getElementById("play-btn");
       const raceControls = document.getElementById("race-controls");
+      const referenceControls = document.getElementById("reference-controls");
+      const referenceSelect = document.getElementById("reference-select");
       const chartTitle = document.getElementById("chart-title");
       const chartSubtitle = document.getElementById("chart-subtitle");
       const chartButtons = Array.from(document.querySelectorAll(".chart-btn"));
@@ -313,6 +338,7 @@
       let colorMap = {};
       let raceCurrentSorted = [];
       let seriesSelection = {};
+      let referencePlayer = "";
 
       function initChart() {
         if (!chart) {
@@ -354,6 +380,72 @@
       function toggleSeriesVisibility(name) {
         seriesSelection[name] = !isSeriesVisible(name);
         renderChart();
+      }
+
+      function getVisibleSeriesNames() {
+        return sortedNames.filter((name) => isSeriesVisible(name));
+      }
+
+      function getSelectedReferenceName() {
+        if (referencePlayer && sortedNames.includes(referencePlayer)) {
+          return referencePlayer;
+        }
+        return sortedNames[0] || "";
+      }
+
+      function buildReferenceOptions() {
+        if (!referenceSelect) return;
+
+        const current = getSelectedReferenceName();
+        referenceSelect.innerHTML = sortedNames
+          .map((name) => `<option value="${name}"${name === current ? " selected" : ""}>${name}</option>`)
+          .join("");
+        referenceSelect.value = current;
+      }
+
+      function getPositionAxisMax() {
+        const visibleNames = getVisibleSeriesNames();
+        let maxValue = 1;
+
+        if (!visibleNames.length) return 1;
+
+        snapshots.forEach((snapshot) => {
+          visibleNames.forEach((name) => {
+            const position = snapshot.posMap[name] || 1;
+            if (position > maxValue) maxValue = position;
+          });
+        });
+
+        return maxValue;
+      }
+
+      function getRelativeAxisRange(referenceName) {
+        const visibleNames = getVisibleSeriesNames();
+        const refName = referenceName || getSelectedReferenceName();
+        let minValue = 0;
+        let maxValue = 0;
+
+        snapshots.forEach((snapshot) => {
+          const referenceValue = snapshot.ptsMap[refName] || 0;
+          visibleNames.forEach((name) => {
+            const relative = (snapshot.ptsMap[name] || 0) - referenceValue;
+            if (relative < minValue) minValue = relative;
+            if (relative > maxValue) maxValue = relative;
+          });
+        });
+
+        return { min: minValue, max: maxValue };
+      }
+
+      function updateReferenceUI() {
+        if (!referenceControls || !referenceSelect) return;
+
+        if (chartType === "points-leader") {
+          referenceControls.classList.remove("hidden");
+          buildReferenceOptions();
+        } else {
+          referenceControls.classList.add("hidden");
+        }
       }
 
       function parseCsvData(csvText) {
@@ -468,6 +560,10 @@
         });
 
         ensureSeriesSelection(sortedNames);
+        if (!referencePlayer || !sortedNames.includes(referencePlayer)) {
+          referencePlayer = sortedNames[0] || "";
+        }
+        buildReferenceOptions();
       }
 
       function syncLegend() {
@@ -544,7 +640,7 @@
               type: "value",
               inverse: true,
               min: 1,
-              max: participantsData.length,
+              max: getPositionAxisMax(),
               interval: 1,
               axisLabel: {
                 formatter: "{value}º",
@@ -594,25 +690,13 @@
         if (!snapshots.length) return;
 
         const gameLabels = ["Início"].concat(formattedDates);
+        const refName = getSelectedReferenceName();
 
         function getSeriesValue(snapshot, name) {
-          return (snapshot.ptsMap[name] || 0) - snapshot.leader;
+          return (snapshot.ptsMap[name] || 0) - (snapshot.ptsMap[refName] || 0);
         }
 
-        function getMinRelativeValue() {
-          let minValue = 0;
-
-          snapshots.forEach((snapshot) => {
-            sortedNames.forEach((name) => {
-              const relative = getSeriesValue(snapshot, name);
-              if (relative < minValue) {
-                minValue = relative;
-              }
-            });
-          });
-
-          return minValue;
-        }
+        const relativeRange = getRelativeAxisRange(refName);
 
         ec.setOption(
           {
@@ -639,7 +723,7 @@
                 const lines = [`<b>${gameLabels[params[0].dataIndex]}</b>`];
 
                 if (snapshot) {
-                  lines.push(`Líder: <b>${snapshot.leader} pts</b>`);
+                  lines.push(`Referência: <b>${refName}</b>`);
                 }
 
                 params
@@ -648,7 +732,7 @@
                   .forEach((item) => {
                     lines.push(
                       `<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${item.color};margin-right:4px"></span>` +
-                        `${item.seriesName}: <b>${item.value} pts do líder</b>`,
+                        `${item.seriesName}: <b>${item.value} pts da referência</b>`,
                     );
                   });
 
@@ -671,9 +755,9 @@
             },
             yAxis: {
               type: "value",
-              min: getMinRelativeValue(),
-              max: 0,
-              name: "Diferença para o líder",
+              min: Math.min(0, relativeRange.min),
+              max: Math.max(0, relativeRange.max),
+              name: `Diferença para ${refName || "a referência"}`,
               nameLocation: "middle",
               nameGap: 48,
               axisLabel: { fontSize: 10, color: "#9ca3af" },
@@ -706,85 +790,79 @@
         );
       }
 
-      function renderRaceChart() {
+      function renderRaceChart(sorted) {
         destroyChart();
-        if (!snapshots.length) return;
+        if (!gameHistory.length) return;
+        raceCurrentSorted = sorted;
+        // Default: show last frame (current standings)
+        var lastIdx = gameHistory.length - 1;
+        raceFrameIdx = lastIdx;
+        var scrubber = document.getElementById("race-scrubber");
+        scrubber.max = lastIdx;
+        scrubber.value = lastIdx;
+        updateRaceLabel(lastIdx);
+        document.getElementById("race-play-btn").innerHTML = "&#9654;";
 
-        raceCurrentSorted = sortedNames.slice();
-        currentIndex = snapshots.length - 1;
-        playBtn.textContent = "Play";
-        dateDisplay.textContent =
-          formattedDates[currentIndex] || "Aguardando...";
-
-        resizeChartForParticipants(true);
-
-        const ec = initChart();
-        const lastSnapshot = snapshots[currentIndex];
-        const namesLast = sortedNames.slice().sort((a, b) => {
-          const ptsA = lastSnapshot.ptsMap[a] || 0;
-          const ptsB = lastSnapshot.ptsMap[b] || 0;
-          if (ptsB !== ptsA) return ptsB - ptsA;
-          return (participantOrder[a] || 0) - (participantOrder[b] || 0);
+        var snapLast = gameHistory[lastIdx];
+        var namesLast = sorted.slice().sort(function (a, b) {
+          return (snapLast.ptsMap[b] || 0) - (snapLast.ptsMap[a] || 0);
         });
 
-        ec.setOption(
-          {
-            grid: {
-              top: 10,
-              bottom: 28,
-              left: 10,
-              right: 58,
-              containLabel: true,
-            },
-            xAxis: {
-              max: "dataMax",
-              axisLabel: {
-                color: "#9ca3af",
-                fontSize: 10,
-                formatter: (value) => Math.round(value),
-              },
-              splitLine: { lineStyle: { color: "#f3f4f6" } },
-            },
-            yAxis: {
-              type: "category",
-              data: raceCurrentSorted,
-              inverse: true,
-              axisLabel: {
-                fontSize: 12,
-                color: "#374151",
-                fontWeight: 600,
-                width: 140,
-                overflow: "truncate",
+        var ec = initChart();
+        ec.setOption({
+          grid: { top: 10, bottom: 30, left: 10, right: 50, containLabel: true },
+          xAxis: {
+            max: "dataMax",
+            axisLabel: {
+              color: "#9ca3af",
+              fontSize: 10,
+              formatter: function (v) {
+                return Math.round(v);
               },
             },
-            series: [
-              {
-                realtimeSort: true,
-                type: "bar",
-                barMaxWidth: 30,
-                data: namesLast.map((name) => ({
-                  value: lastSnapshot.ptsMap[name] || 0,
+            splitLine: { lineStyle: { color: "#f3f4f6" } },
+          },
+          yAxis: {
+            type: "category",
+            data: raceCurrentSorted,
+            inverse: true,
+            axisLabel: {
+              fontSize: 12,
+              color: "#374151",
+              fontWeight: 600,
+              width: 140,
+              overflow: "truncate",
+            },
+          },
+          series: [
+            {
+              realtimeSort: true,
+              type: "bar",
+              barMaxWidth: 30,
+              data: namesLast.map(function (name) {
+                return {
+                  value: snapLast.ptsMap[name] || 0,
                   itemStyle: { color: colorMap[name] },
-                })),
-                label: {
-                  show: true,
-                  position: "right",
-                  color: "#374151",
-                  fontSize: 12,
-                  fontWeight: 700,
-                  valueAnimation: true,
-                  formatter: (param) => param.value,
+                };
+              }),
+              label: {
+                show: true,
+                position: "right",
+                color: "#374151",
+                fontSize: 12,
+                fontWeight: 700,
+                valueAnimation: true,
+                formatter: function (p) {
+                  return p.value;
                 },
               },
-            ],
-            animationDuration: 0,
-            animationDurationUpdate: transitionDuration,
-            animationEasing: "linear",
-            animationEasingUpdate: "linear",
-          },
-          false,
-          true,
-        );
+            },
+          ],
+          animationDuration: 0,
+          animationDurationUpdate: transitionDuration,
+          animationEasing: "linear",
+          animationEasingUpdate: "linear",
+        });
 
         updateRaceLabel(currentIndex);
       }
@@ -881,9 +959,9 @@
               "Linha temporal da colocação de cada participante ao longo dos dias.",
           },
           "points-leader": {
-            title: "Pontuação em relação ao líder",
+            title: `Pontuação em relação à ${getSelectedReferenceName() || "referência"}`,
             subtitle:
-              "Cada linha mostra a distância para o primeiro colocado em cada dia.",
+              "Cada linha mostra a diferença para o apostador selecionado em cada dia.",
           },
           race: {
             title: "Gráfico de barras",
@@ -909,6 +987,8 @@
         } else {
           raceControls.classList.add("hidden");
         }
+
+        updateReferenceUI();
 
         renderChart();
       }
@@ -939,6 +1019,13 @@
           setChartType(button.dataset.type),
         );
       });
+
+      if (referenceSelect) {
+        referenceSelect.addEventListener("change", () => {
+          referencePlayer = referenceSelect.value;
+          renderChart();
+        });
+      }
 
       playBtn.addEventListener("click", () => {
         if (timer) {
