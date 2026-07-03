@@ -1229,7 +1229,8 @@
               </button>
               <div class="ct-menu" id="ct-menu">
                 <div class="ct-opt active" onclick="setChartType('positions')">Histórico de posições</div>
-                <div class="ct-opt" onclick="setChartType('points')">Histórico de pontuação – Gráfico de linha</div>
+                <div class="ct-opt" onclick="setChartType('points')">Histórico de pontuação – Acumulado</div>
+                <div class="ct-opt" onclick="setChartType('points-leader')">Histórico de pontuação – Em relação ao líder</div>
                 <div class="ct-opt" onclick="setChartType('race')">Histórico de pontuação – Gráfico de barras</div>
               </div>
             </div>
@@ -2104,7 +2105,8 @@
       stopRace();
       var labels = {
         positions: 'Hist\u00f3rico de posi\u00e7\u00f5es',
-        points: 'Hist\u00f3rico de pontua\u00e7\u00e3o \u2013 Gr\u00e1fico de linha',
+        points: 'Hist\u00f3rico de pontua\u00e7\u00e3o \u2013 Acumulado',
+        'points-leader': 'Hist\u00f3rico de pontua\u00e7\u00e3o \u2013 Em rela\u00e7\u00e3o ao l\u00edder',
         race: 'Hist\u00f3rico de pontua\u00e7\u00e3o \u2013 Gr\u00e1fico de barras'
       };
       document.getElementById('ct-label').textContent = labels[type];
@@ -2159,7 +2161,8 @@
       }
 
       if (currentChartType === 'positions') renderPositionsChart(sorted, N);
-      else if (currentChartType === 'points') renderPointsChart(sorted);
+      else if (currentChartType === 'points') renderPointsChart(sorted, 'absolute');
+      else if (currentChartType === 'points-leader') renderPointsChart(sorted, 'leader');
       else if (currentChartType === 'race') renderRaceChart(sorted);
     }
 
@@ -2221,9 +2224,39 @@
     }
 
     // ── Line race – Histórico de pontuação (linha) ─────────────────────────────
-    function renderPointsChart(sorted) {
+    function renderPointsChart(sorted, mode) {
       var ec = initChart();
       if (!gameHistory.length) return;
+
+      mode = mode || 'absolute';
+
+      function getLeaderValue(snap) {
+        var maxPts = null;
+        Object.keys(snap.ptsMap || {}).forEach(function (nome) {
+          var pts = snap.ptsMap[nome] || 0;
+          if (maxPts === null || pts > maxPts) maxPts = pts;
+        });
+        return maxPts === null ? 0 : maxPts;
+      }
+
+      function getSeriesValue(snap, nome) {
+        var pts = snap.ptsMap[nome] || 0;
+        if (mode !== 'leader') return pts;
+        return pts - getLeaderValue(snap);
+      }
+
+      function getYAxisMin() {
+        if (mode !== 'leader') return 0;
+        var minValue = 0;
+        gameHistory.forEach(function (snap) {
+          var leaderValue = getLeaderValue(snap);
+          sorted.forEach(function (nome) {
+            var relative = (snap.ptsMap[nome] || 0) - leaderValue;
+            if (relative < minValue) minValue = relative;
+          });
+        });
+        return minValue;
+      }
 
       var gameLabels = ['J0'].concat(
         gameHistory.map(function (s, i) {
@@ -2254,9 +2287,12 @@
             color: '#fff'
           },
           formatter: function (params) {
-            var lines = [
-              '<b>' + fullLabels[params[0].dataIndex] + '</b>'
-            ];
+            var lines = ['<b>' + fullLabels[params[0].dataIndex] + '</b>'];
+
+            if (mode === 'leader') {
+              var leaderValue = getLeaderValue(gameHistory[params[0].dataIndex]);
+              lines.push('L\u00edder: <b>' + leaderValue + ' pts</b>');
+            }
 
             params
               .slice()
@@ -2271,7 +2307,7 @@
                   p.seriesName +
                   ': <b>' +
                   p.value +
-                  ' pts</b>'
+                  ' pts' + (mode === 'leader' ? ' do l\u00edder' : '') + '</b>'
                 );
               });
 
@@ -2305,8 +2341,9 @@
 
         yAxis: {
           type: 'value',
-          min: 0,
-          name: 'Pontuação',
+          min: getYAxisMin(),
+          max: mode === 'leader' ? 0 : undefined,
+          name: mode === 'leader' ? 'Diferença para o líder' : 'Pontuação',
           nameLocation: 'middle',
           nameGap: 45,
           axisLabel: {
@@ -2357,7 +2394,7 @@
 
             data: [0].concat(
               gameHistory.map(function (s) {
-                return s.ptsMap[nome] || 0;
+                return getSeriesValue(s, nome);
               })
             )
           };

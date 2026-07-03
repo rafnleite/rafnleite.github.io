@@ -966,6 +966,12 @@ function findESPNMatch(espnMap, nameA, nameB, apexDateStr) {
 // 3) Se status APEX for "A" (em aberto), placar oficial e o da ESPN.
 // 4) Detalhes de gols e dados de andamento (ao vivo/relogio) sao sempre trazidos da ESPN quando houver match.
 async function applyESPNOverrides(list) {
+  function countShootoutGoals(kicks) {
+    return (kicks || []).reduce(function (acc, kick) {
+      return acc + (kick && kick.convertido === true ? 1 : 0);
+    }, 0);
+  }
+
   function resolveWinnerIdFromScore(jogo, scoreA, scoreB, shootoutA, shootoutB) {
     if (!jogo) return null;
     if (scoreA === null || scoreA === undefined || scoreB === null || scoreB === undefined) return null;
@@ -1000,8 +1006,9 @@ async function applyESPNOverrides(list) {
     j.penaltisDetalhesB = espn.shootoutDetailsB || [];
 
     // Fallback: o endpoint scoreboard costuma omitir penaltis perdidos.
-    // Quando houver disputa por penaltis, completa os detalhes via summary do evento.
-    if (j.penaltis_a !== null && j.penaltis_b !== null && espn.eventId) {
+    // Em disputa ao vivo, completa os detalhes via summary do evento mesmo antes
+    // de a ESPN expor o placar final da disputa.
+    if (espn.eventId && ((j.penaltis_a !== null && j.penaltis_b !== null) || (j.status === 'A' && espn.isLive))) {
       var summaryActive = (j.status === 'A') || !!espn.isLive;
       var sumShootout = await fetchESPNSummaryShootoutByEvent(espn.eventId, j.time_a.nome, j.time_b.nome, {
         active: summaryActive
@@ -1009,6 +1016,12 @@ async function applyESPNOverrides(list) {
       if (sumShootout && ((sumShootout.home || []).length || (sumShootout.away || []).length)) {
         j.penaltisDetalhesA = sumShootout.home || [];
         j.penaltisDetalhesB = sumShootout.away || [];
+        if (j.penaltis_a === null || j.penaltis_a === undefined) {
+          j.penaltis_a = countShootoutGoals(j.penaltisDetalhesA);
+        }
+        if (j.penaltis_b === null || j.penaltis_b === undefined) {
+          j.penaltis_b = countShootoutGoals(j.penaltisDetalhesB);
+        }
       }
     }
     j.isLive = !!espn.isLive;
