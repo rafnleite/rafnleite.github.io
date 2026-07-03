@@ -826,7 +826,18 @@ function h2hPoints(h2hPts, teamId, oppId) {
   return h2hPts[teamId][oppId] || 0;
 }
 
-function computeTeamsData(participantSet, useActualFlag) {
+function isGroupStageGame(jogo) {
+  var g = String((jogo || {}).grupo || '').toUpperCase().trim();
+  return /^[A-L]$/.test(g);
+}
+
+function getGamesForActiveView(view) {
+  if (view === 'todos') return JOGOS.filter(isGroupStageGame);
+  return JOGOS;
+}
+
+function computeTeamsData(participantSet, useActualFlag, gamesList) {
+  var games = Array.isArray(gamesList) ? gamesList : JOGOS;
   var teamsMap = {};
   var h2hPts = {};
 
@@ -846,11 +857,20 @@ function computeTeamsData(participantSet, useActualFlag) {
     return teamsMap[id];
   }
 
-  JOGOS.forEach(function(j) {
+  games.forEach(function(j) {
     var tA = getOrCreate(j.time_a.id, j.time_a.nome, j.time_a.logo, j.grupo);
     var tB = getOrCreate(j.time_b.id, j.time_b.nome, j.time_b.logo, j.grupo);
 
-    if (useActualFlag && j.gols_a !== null && j.gols_b !== null) {
+    var hasScore = j.gols_a !== null && j.gols_a !== undefined && j.gols_b !== null && j.gols_b !== undefined;
+    var canUseOfficialScore = false;
+    if (useActualFlag && hasScore) {
+      // Preferencia de fonte ja aplicada em buildJogos/applyESPNOverrides:
+      // status A usa ESPN; status F usa APEX.
+      if (j.status === 'A' || j.status === 'F') canUseOfficialScore = true;
+      else canUseOfficialScore = true;
+    }
+
+    if (canUseOfficialScore) {
       var ptsA = j.gols_a > j.gols_b ? 3 : j.gols_a === j.gols_b ? 1 : 0;
       var ptsB = j.gols_b > j.gols_a ? 3 : j.gols_b === j.gols_a ? 1 : 0;
       var vA = ptsA === 3 ? 1 : 0;
@@ -905,7 +925,8 @@ function computeTeamsData(participantSet, useActualFlag) {
 
 // ── Compute team stats from filtered apostas ──────────────────────────────────
 function computeAllTeams() {
-  allTeamsData = computeTeamsData(selectedParticipants, useActualResults);
+  var games = getGamesForActiveView(activeView);
+  allTeamsData = computeTeamsData(selectedParticipants, useActualResults, games);
   allTeams = allTeamsData.teams;
 }
 
@@ -1291,6 +1312,7 @@ function tableCardHtml(title, subtitle, teamsArr, showGroup, showInfo, showSubti
 function renderContent() {
   var container = document.getElementById('tables-container');
   var html = '';
+  var activeGames = getGamesForActiveView(activeView);
 
   if (activeView === 'total') {
     html = tableCardHtml(
@@ -1324,9 +1346,9 @@ function renderContent() {
       terceiros, true, false, true, 'terceiros'
     );
     // Comparativos simulacao vs realidade (sempre simulacao pura x resultados reais).
-    var simData = computeTeamsData(selectedParticipants, false);
+    var simData = computeTeamsData(selectedParticipants, false, activeGames);
     var simQualified = getQualifiedTeamIds(simData.teams, simData.h2hPts);
-    var realData = computeTeamsData(new Set(allParticipants), true);
+    var realData = computeTeamsData(new Set(allParticipants), true, activeGames);
     var realQualified = getQualifiedTeamIds(realData.teams, realData.h2hPts);
 
     var summaryCard = compareSummaryCardHtml(simQualified, realQualified);
@@ -1349,6 +1371,7 @@ function renderContent() {
 // ── Switch view ───────────────────────────────────────────────────────────────
 function switchView(view) {
   activeView = view;
+  computeAllTeams();
   renderTabs();
   renderContent();
 }
