@@ -2775,22 +2775,24 @@
           return;
         }
 
-        var current = getSelectedReferenceName(sorted);
+        var current = relativeReferenceName && sorted.indexOf(relativeReferenceName) !== -1 ? relativeReferenceName : "";
         wrap.classList.remove("hidden");
-        select.innerHTML = sorted
-          .map(function (name) {
-            var safe = name.replace(/&/g, "&amp;").replace(/</g, "&lt;");
-            return (
-              '<option value="' +
-              safe +
-              '"' +
-              (name === current ? " selected" : "") +
-              ">" +
-              safe +
-              "</option>"
-            );
-          })
-          .join("");
+        select.innerHTML =
+          '<option value=""' + (current === "" ? " selected" : "") + ">Líder</option>" +
+          sorted
+            .map(function (name) {
+              var safe = name.replace(/&/g, "&amp;").replace(/</g, "&lt;");
+              return (
+                '<option value="' +
+                safe +
+                '"' +
+                (name === current ? " selected" : "") +
+                ">" +
+                safe +
+                "</option>"
+              );
+            })
+            .join("");
         select.value = current;
         relativeReferenceName = current;
       }
@@ -3101,6 +3103,7 @@
 
         mode = mode || "absolute";
         var refName = getSelectedReferenceName(sorted);
+        var referenceLabel = relativeReferenceName && sorted.indexOf(relativeReferenceName) !== -1 ? relativeReferenceName : "líder";
 
         function getReferenceValue(snap) {
           return snap.ptsMap[refName] || 0;
@@ -3179,7 +3182,7 @@
               var lines = ["<b>" + fullLabels[params[0].dataIndex] + "</b>"];
 
               if (mode === "leader") {
-                lines.push("Referência: <b>" + refName + "</b>");
+                lines.push("Referência: <b>" + referenceLabel + "</b>");
               }
 
               params
@@ -3235,7 +3238,7 @@
             max: getYAxisMax(),
             name:
               mode === "leader"
-                ? "Diferença para " + (refName || "a referência")
+                ? "Diferença para " + referenceLabel
                 : "Pontuação",
             nameLocation: "middle",
             nameGap: 45,

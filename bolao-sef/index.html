@@ -396,10 +396,13 @@
       function buildReferenceOptions() {
         if (!referenceSelect) return;
 
-        const current = getSelectedReferenceName();
-        referenceSelect.innerHTML = sortedNames
-          .map((name) => `<option value="${name}"${name === current ? " selected" : ""}>${name}</option>`)
-          .join("");
+        const current = referencePlayer && sortedNames.includes(referencePlayer) ? referencePlayer : "";
+        referenceSelect.innerHTML = [
+          `<option value=""${current === "" ? " selected" : ""}>Líder</option>`,
+          ...sortedNames.map(
+            (name) => `<option value="${name}"${name === current ? " selected" : ""}>${name}</option>`,
+          ),
+        ].join("");
         referenceSelect.value = current;
       }
 
@@ -691,6 +694,7 @@
 
         const gameLabels = ["Início"].concat(formattedDates);
         const refName = getSelectedReferenceName();
+        const referenceLabel = referencePlayer && sortedNames.includes(referencePlayer) ? referencePlayer : "líder";
 
         function getSeriesValue(snapshot, name) {
           return (snapshot.ptsMap[name] || 0) - (snapshot.ptsMap[refName] || 0);
@@ -757,7 +761,7 @@
               type: "value",
               min: Math.min(0, relativeRange.min),
               max: Math.max(0, relativeRange.max),
-              name: `Diferença para ${refName || "a referência"}`,
+              name: `Diferença para ${referenceLabel}`,
               nameLocation: "middle",
               nameGap: 48,
               axisLabel: { fontSize: 10, color: "#9ca3af" },
@@ -952,6 +956,7 @@
       }
 
       function setChartMeta(type) {
+        const referenceLabel = referencePlayer && sortedNames.includes(referencePlayer) ? referencePlayer : "líder";
         const meta = {
           positions: {
             title: "Histórico de posições",
@@ -959,9 +964,9 @@
               "Linha temporal da colocação de cada participante ao longo dos dias.",
           },
           "points-leader": {
-            title: `Pontuação em relação à ${getSelectedReferenceName() || "referência"}`,
+            title: `Pontuação em relação ao ${referenceLabel}`,
             subtitle:
-              "Cada linha mostra a diferença para o apostador selecionado em cada dia.",
+              "Cada linha mostra a diferença para o líder por padrão, com opção de escolher um apostador no seletor.",
           },
           race: {
             title: "Gráfico de barras",
