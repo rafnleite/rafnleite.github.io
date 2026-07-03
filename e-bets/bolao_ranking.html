@@ -2762,7 +2762,7 @@
         if (relativeReferenceName && sorted.indexOf(relativeReferenceName) !== -1) {
           return relativeReferenceName;
         }
-        return sorted[0] || "";
+        return "";
       }
 
       function syncReferenceOptions(sorted) {
@@ -2816,7 +2816,14 @@
         var minValue = 0;
         var maxValue = 0;
         gameHistory.forEach(function (snap) {
-          var refValue = snap.ptsMap[refName] || 0;
+          var refValue = refName
+            ? snap.ptsMap[refName] || 0
+            : Math.max.apply(
+                null,
+                sorted.map(function (name) {
+                  return snap.ptsMap[name] || 0;
+                }),
+              );
           visible.forEach(function (name) {
             var relative = (snap.ptsMap[name] || 0) - refValue;
             if (relative < minValue) minValue = relative;
@@ -3103,9 +3110,17 @@
 
         mode = mode || "absolute";
         var refName = getSelectedReferenceName(sorted);
-        var referenceLabel = relativeReferenceName && sorted.indexOf(relativeReferenceName) !== -1 ? relativeReferenceName : "líder";
+        var referenceLabel = relativeReferenceName && sorted.indexOf(relativeReferenceName) !== -1 ? relativeReferenceName : "líder do dia";
 
         function getReferenceValue(snap) {
+          if (!refName) {
+            var leaderValue = 0;
+            sorted.forEach(function (nome) {
+              var pts = snap.ptsMap[nome] || 0;
+              if (pts > leaderValue) leaderValue = pts;
+            });
+            return leaderValue;
+          }
           return snap.ptsMap[refName] || 0;
         }
 

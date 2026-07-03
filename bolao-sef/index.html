@@ -390,7 +390,7 @@
         if (referencePlayer && sortedNames.includes(referencePlayer)) {
           return referencePlayer;
         }
-        return sortedNames[0] || "";
+        return "";
       }
 
       function buildReferenceOptions() {
@@ -429,7 +429,9 @@
         let maxValue = 0;
 
         snapshots.forEach((snapshot) => {
-          const referenceValue = snapshot.ptsMap[refName] || 0;
+          const referenceValue = refName
+            ? snapshot.ptsMap[refName] || 0
+            : snapshot.leader || 0;
           visibleNames.forEach((name) => {
             const relative = (snapshot.ptsMap[name] || 0) - referenceValue;
             if (relative < minValue) minValue = relative;
@@ -694,10 +696,11 @@
 
         const gameLabels = ["Início"].concat(formattedDates);
         const refName = getSelectedReferenceName();
-        const referenceLabel = referencePlayer && sortedNames.includes(referencePlayer) ? referencePlayer : "líder";
+        const referenceLabel = referencePlayer && sortedNames.includes(referencePlayer) ? referencePlayer : "líder do dia";
 
         function getSeriesValue(snapshot, name) {
-          return (snapshot.ptsMap[name] || 0) - (snapshot.ptsMap[refName] || 0);
+          const referenceValue = refName ? (snapshot.ptsMap[refName] || 0) : (snapshot.leader || 0);
+          return (snapshot.ptsMap[name] || 0) - referenceValue;
         }
 
         const relativeRange = getRelativeAxisRange(refName);
@@ -727,7 +730,7 @@
                 const lines = [`<b>${gameLabels[params[0].dataIndex]}</b>`];
 
                 if (snapshot) {
-                  lines.push(`Referência: <b>${refName}</b>`);
+                  lines.push(`Referência: <b>${refName || "líder do dia"}</b>`);
                 }
 
                 params
@@ -956,7 +959,7 @@
       }
 
       function setChartMeta(type) {
-        const referenceLabel = referencePlayer && sortedNames.includes(referencePlayer) ? referencePlayer : "líder";
+        const referenceLabel = referencePlayer && sortedNames.includes(referencePlayer) ? referencePlayer : "líder do dia";
         const meta = {
           positions: {
             title: "Histórico de posições",
@@ -966,7 +969,7 @@
           "points-leader": {
             title: `Pontuação em relação ao ${referenceLabel}`,
             subtitle:
-              "Cada linha mostra a diferença para o líder por padrão, com opção de escolher um apostador no seletor.",
+              "Cada linha mostra a diferença para o líder de cada dia por padrão, com opção de escolher um apostador no seletor.",
           },
           race: {
             title: "Gráfico de barras",
