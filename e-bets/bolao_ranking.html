@@ -767,6 +767,10 @@
       user-select: none;
     }
 
+    .chart-legend-item.inactive {
+      opacity: 0.35;
+    }
+
     .chart-legend-dot {
       width: 9px;
       height: 9px;
@@ -1998,6 +2002,7 @@
     var showSim = true;
     var sidebarVisible = true;
     var sidebarTouched = false;
+    var seriesSelection = {};
 
     function abbrevTeam(nome) {
       if (!nome) return '?';
@@ -2075,6 +2080,27 @@
       });
     }
 
+    function ensureSeriesSelection(names) {
+      names.forEach(function (name) {
+        if (typeof seriesSelection[name] === 'undefined') seriesSelection[name] = true;
+      });
+    }
+
+    function isSeriesVisible(name) {
+      return seriesSelection[name] !== false;
+    }
+
+    function toggleSeriesVisibility(name) {
+      seriesSelection[name] = !isSeriesVisible(name);
+      renderChart();
+    }
+
+    function selectedMapFor(names) {
+      var selected = {};
+      names.forEach(function (name) { selected[name] = isSeriesVisible(name); });
+      return selected;
+    }
+
     // ── ECharts helpers ────────────────────────────────────────────────────────
     function initChart() {
       destroyChart();
@@ -2131,15 +2157,19 @@
       });
       colorMap = {};
       sorted.forEach(function (nome, i) { colorMap[nome] = PLAYER_COLORS[i % PLAYER_COLORS.length]; });
+      ensureSeriesSelection(sorted);
 
       var legendEl = document.getElementById('chart-legend');
       if (currentChartType !== 'race') {
         legendEl.innerHTML = sorted.map(function (nome, i) {
           var safe = nome.replace(/&/g, '&amp;').replace(/</g, '&lt;');
-          return '<div class="chart-legend-item" data-idx="' + i + '" data-nome="' + safe + '">' +
+          return '<div class="chart-legend-item' + (isSeriesVisible(nome) ? '' : ' inactive') + '" role="button" tabindex="0" data-idx="' + i + '" data-nome="' + safe + '">' +
             '<span class="chart-legend-dot" style="background:' + colorMap[nome] + '"></span>' + safe + '</div>';
         }).join('');
         legendEl.querySelectorAll('.chart-legend-item').forEach(function (el) {
+          el.addEventListener('click', function () {
+            toggleSeriesVisibility(this.dataset.nome);
+          });
           el.addEventListener('mouseenter', function () {
             var nome = this.dataset.nome;
             if (eChart) eChart.dispatchAction({ type: 'highlight', seriesName: nome });
@@ -2155,7 +2185,9 @@
                 eChart.dispatchAction({ type: 'downplay', seriesName: s.name });
               });
             }
-            legendEl.querySelectorAll('.chart-legend-item').forEach(function (o) { o.style.opacity = '1'; });
+            legendEl.querySelectorAll('.chart-legend-item').forEach(function (o) {
+              o.style.opacity = isSeriesVisible(o.dataset.nome) ? '1' : '0.35';
+            });
           });
         });
       }
@@ -2177,6 +2209,7 @@
         return 'J' + (i + 1) + ' ' + abbrevTeam(s.jogo.time_a.nome) + ' \u00d7 ' + abbrevTeam(s.jogo.time_b.nome);
       });
       ec.setOption({
+        legend: { show: false, data: sorted, selected: selectedMapFor(sorted) },
         tooltip: {
           trigger: 'item',
           appendToBody: true,
@@ -2275,6 +2308,7 @@
 
       ec.setOption({
         animationDuration: 1000,
+        legend: { show: false, data: sorted, selected: selectedMapFor(sorted) },
 
         tooltip: {
           trigger: 'axis',

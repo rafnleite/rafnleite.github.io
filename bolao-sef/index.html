@@ -130,6 +130,44 @@
         gap: 4px;
       }
 
+      .chart-legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 0 20px 14px;
+      }
+
+      .chart-legend-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        padding: 6px 10px;
+        background: #fff;
+        color: var(--text);
+        font-size: 0.82rem;
+        font-weight: 700;
+        cursor: pointer;
+        user-select: none;
+        transition: opacity 0.12s ease, transform 0.12s ease, background 0.12s ease;
+      }
+
+      .chart-legend-item:hover {
+        transform: translateY(-1px);
+      }
+
+      .chart-legend-item.inactive {
+        opacity: 0.35;
+      }
+
+      .chart-legend-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+
       #chart-title {
         font-size: 1.05rem;
         font-weight: 800;
@@ -217,6 +255,7 @@
             <div id="date-display">Aguardando...</div>
           </div>
         </div>
+        <div class="chart-legend hidden" id="chart-legend"></div>
         <div id="chart-container"></div>
       </div>
     </div>
@@ -273,6 +312,7 @@
       let sortedNames = [];
       let colorMap = {};
       let raceCurrentSorted = [];
+      let seriesSelection = {};
 
       function initChart() {
         if (!chart) {
@@ -297,6 +337,23 @@
         if (chart) {
           chart.resize();
         }
+      }
+
+      function ensureSeriesSelection(names) {
+        names.forEach((name) => {
+          if (typeof seriesSelection[name] === "undefined") {
+            seriesSelection[name] = true;
+          }
+        });
+      }
+
+      function isSeriesVisible(name) {
+        return seriesSelection[name] !== false;
+      }
+
+      function toggleSeriesVisibility(name) {
+        seriesSelection[name] = !isSeriesVisible(name);
+        renderChart();
       }
 
       function parseCsvData(csvText) {
@@ -409,6 +466,38 @@
         sortedNames.forEach((name, index) => {
           colorMap[name] = colors[index % colors.length];
         });
+
+        ensureSeriesSelection(sortedNames);
+      }
+
+      function syncLegend() {
+        const legendEl = document.getElementById("chart-legend");
+        if (!legendEl) return;
+
+        if (chartType === "race") {
+          legendEl.classList.add("hidden");
+          legendEl.innerHTML = "";
+          return;
+        }
+
+        legendEl.classList.remove("hidden");
+        legendEl.innerHTML = sortedNames
+          .map((name) => {
+            const active = isSeriesVisible(name);
+            return `
+              <button type="button" class="chart-legend-item ${active ? "" : "inactive"}" data-name="${name}">
+                <span class="chart-legend-dot" style="background:${colorMap[name]}"></span>
+                <span>${name}</span>
+              </button>
+            `;
+          })
+          .join("");
+
+        legendEl.querySelectorAll(".chart-legend-item").forEach((item) => {
+          item.addEventListener("click", () => {
+            toggleSeriesVisibility(item.dataset.name);
+          });
+        });
       }
 
       function renderPositionsChart() {
@@ -419,6 +508,14 @@
           {
             animationDuration: transitionDuration,
             animationDurationUpdate: transitionDuration,
+            legend: {
+              show: false,
+              data: sortedNames,
+              selected: sortedNames.reduce((acc, name) => {
+                acc[name] = isSeriesVisible(name);
+                return acc;
+              }, {}),
+            },
             tooltip: {
               trigger: "item",
               appendToBody: true,
@@ -521,6 +618,14 @@
           {
             animationDuration: transitionDuration,
             animationDurationUpdate: transitionDuration,
+            legend: {
+              show: false,
+              data: sortedNames,
+              selected: sortedNames.reduce((acc, name) => {
+                acc[name] = isSeriesVisible(name);
+                return acc;
+              }, {}),
+            },
             tooltip: {
               trigger: "axis",
               order: "valueDesc",
@@ -812,6 +917,8 @@
         destroyChart();
 
         if (!snapshots.length) return;
+
+        syncLegend();
 
         if (chartType === "race") {
           renderRaceChart();
