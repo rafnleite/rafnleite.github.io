@@ -1,399 +1,877 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Bolão SEF - Histórico</title>
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
     <style>
-            :root {
-                --bg: #f4f7fb;
-                --card: #ffffff;
-                --border: #dbe2ea;
-                --text: #1f2937;
-                --sub: #667085;
-                --accent: #2563eb;
-                --accent-2: #0f766e;
-                --danger: #c2410c;
-                --shadow: 0 18px 50px rgba(15, 23, 42, 0.08);
-            }
+      :root {
+        --bg: #f4f7fb;
+        --card: #ffffff;
+        --border: #dbe2ea;
+        --text: #1f2937;
+        --sub: #667085;
+        --accent: #2563eb;
+        --accent-2: #0f766e;
+        --danger: #c2410c;
+        --shadow: 0 18px 50px rgba(15, 23, 42, 0.08);
+      }
 
-            * {
-                box-sizing: border-box;
-            }
+      * {
+        box-sizing: border-box;
+      }
 
-            body {
-                margin: 0;
-                font-family: "Segoe UI", system-ui, sans-serif;
-                color: var(--text);
-                background:
-                    radial-gradient(circle at top left, rgba(37, 99, 235, 0.12), transparent 32%),
-                    radial-gradient(circle at top right, rgba(15, 118, 110, 0.10), transparent 26%),
-                    var(--bg);
-            }
+      body {
+        margin: 0;
+        font-family: "Segoe UI", system-ui, sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(
+            circle at top left,
+            rgba(37, 99, 235, 0.12),
+            transparent 32%
+          ),
+          radial-gradient(
+            circle at top right,
+            rgba(15, 118, 110, 0.1),
+            transparent 26%
+          ),
+          var(--bg);
+      }
 
-            .page {
-                max-width: 1320px;
-                margin: 0 auto;
-                padding: 24px;
-            }
+      .page {
+        max-width: 1320px;
+        margin: 0 auto;
+        padding: 24px;
+      }
 
-            .hero {
-                display: flex;
-                align-items: flex-end;
-                justify-content: space-between;
-                gap: 16px;
-                margin-bottom: 16px;
-                flex-wrap: wrap;
-            }
+      .hero {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 16px;
+        flex-wrap: wrap;
+      }
 
-            .hero h1 {
-                margin: 0;
-                font-size: clamp(2rem, 3vw, 3rem);
-                line-height: 1;
-                letter-spacing: -0.04em;
-            }
+      .hero h1 {
+        margin: 0;
+        font-size: clamp(2rem, 3vw, 3rem);
+        line-height: 1;
+        letter-spacing: -0.04em;
+      }
 
-            .hero p {
-                margin: 8px 0 0;
-                max-width: 820px;
-                color: var(--sub);
-                font-size: 0.98rem;
-            }
+      .hero p {
+        margin: 8px 0 0;
+        max-width: 820px;
+        color: var(--sub);
+        font-size: 0.98rem;
+      }
 
-            .toolbar {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 10px;
-                margin: 18px 0 16px;
-            }
+      .toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin: 18px 0 16px;
+      }
 
-            .chart-btn,
-            .play-btn {
-                border: 1px solid var(--border);
-                background: rgba(255, 255, 255, 0.92);
-                color: var(--text);
-                border-radius: 999px;
-                padding: 10px 16px;
-                font-size: 0.92rem;
-                font-weight: 700;
-                cursor: pointer;
-                transition: transform .12s ease, background .12s ease, border-color .12s ease, color .12s ease;
-                box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
-            }
+      .chart-btn,
+      .play-btn {
+        border: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.92);
+        color: var(--text);
+        border-radius: 999px;
+        padding: 10px 16px;
+        font-size: 0.92rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition:
+          transform 0.12s ease,
+          background 0.12s ease,
+          border-color 0.12s ease,
+          color 0.12s ease;
+        box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+      }
 
-            .chart-btn:hover,
-            .play-btn:hover {
-                transform: translateY(-1px);
-                border-color: rgba(37, 99, 235, 0.35);
-            }
+      .chart-btn:hover,
+      .play-btn:hover {
+        transform: translateY(-1px);
+        border-color: rgba(37, 99, 235, 0.35);
+      }
 
-            .chart-btn.active {
-                background: linear-gradient(135deg, var(--accent), #1d4ed8);
-                color: #fff;
-                border-color: transparent;
-            }
+      .chart-btn.active {
+        background: linear-gradient(135deg, var(--accent), #1d4ed8);
+        color: #fff;
+        border-color: transparent;
+      }
 
-            .chart-card {
-                background: var(--card);
-                border: 1px solid rgba(219, 226, 234, 0.9);
-                border-radius: 24px;
-                box-shadow: var(--shadow);
-                overflow: hidden;
-            }
+      .chart-card {
+        background: var(--card);
+        border: 1px solid rgba(219, 226, 234, 0.9);
+        border-radius: 24px;
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
 
-            .chart-head {
-                padding: 18px 20px 14px;
-                border-bottom: 1px solid rgba(219, 226, 234, 0.75);
-                display: flex;
-                flex-wrap: wrap;
-                gap: 14px;
-                align-items: center;
-                justify-content: space-between;
-            }
+      .chart-head {
+        padding: 18px 20px 14px;
+        border-bottom: 1px solid rgba(219, 226, 234, 0.75);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        align-items: center;
+        justify-content: space-between;
+      }
 
-            .chart-title {
-                display: flex;
-                flex-direction: column;
-                gap: 4px;
-            }
+      .chart-title {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
 
-            #chart-title {
-                font-size: 1.05rem;
-                font-weight: 800;
-                margin: 0;
-            }
+      #chart-title {
+        font-size: 1.05rem;
+        font-weight: 800;
+        margin: 0;
+      }
 
-            #chart-subtitle {
-                margin: 0;
-                color: var(--sub);
-                font-size: 0.92rem;
-            }
+      #chart-subtitle {
+        margin: 0;
+        color: var(--sub);
+        font-size: 0.92rem;
+      }
 
-            .race-controls {
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                flex-wrap: wrap;
-            }
+      .race-controls {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
 
-            #date-display {
-                font-size: 1.2rem;
-                font-weight: 800;
-                color: var(--danger);
-                letter-spacing: -0.02em;
-            }
+      #date-display {
+        font-size: 1.2rem;
+        font-weight: 800;
+        color: var(--danger);
+        letter-spacing: -0.02em;
+      }
 
-            #chart-container {
-                width: 100%;
-                height: 640px;
-            }
+      #chart-container {
+        width: 100%;
+        height: 640px;
+      }
 
-            .hidden {
-                display: none !important;
-            }
+      .hidden {
+        display: none !important;
+      }
 
-            @media (max-width: 768px) {
-                .page {
-                    padding: 16px;
-                }
+      @media (max-width: 768px) {
+        .page {
+          padding: 16px;
+        }
 
-                .chart-head {
-                    align-items: flex-start;
-                }
+        .chart-head {
+          align-items: flex-start;
+        }
 
-                #chart-container {
-                    height: 540px;
-                }
-            }
-        </style>
-    <div class="controls">
-        <button id="play-btn">Play</button>
+        #chart-container {
+          height: 540px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <div class="hero">
+        <div>
+          <h1>Bolão SEF</h1>
+          <p>
+            Visualização histórica da disputa, com leitura por posições e por
+            pontos em relação ao líder, no mesmo espírito do ranking do e-bets.
+          </p>
+        </div>
+      </div>
+
+      <div class="toolbar" id="chart-type-toolbar">
+        <button class="chart-btn active" data-type="positions">
+          Histórico de posições
+        </button>
+        <button class="chart-btn" data-type="points-leader">
+          Pontuação em relação ao líder
+        </button>
+        <button class="chart-btn" data-type="race">Gráfico de barras</button>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-head">
+          <div class="chart-title">
+            <h2 id="chart-title">Histórico de posições</h2>
+            <p id="chart-subtitle">
+              Linha temporal da colocação de cada participante ao longo dos
+              dias.
+            </p>
+          </div>
+
+          <div class="race-controls hidden" id="race-controls">
+            <button class="play-btn" id="play-btn">Play</button>
+            <div id="date-display">Aguardando...</div>
+          </div>
+        </div>
+        <div id="chart-container"></div>
+      </div>
     </div>
-    <div id="date-display">Aguardando...</div>
-    <div id="chart-container"></div>
 
     <script>
-        const chartDom = document.getElementById('chart-container');
-        const myChart = echarts.init(chartDom);
-        const dateDisplay = document.getElementById('date-display');
-        const playBtn = document.getElementById('play-btn');
+      const chartDom = document.getElementById("chart-container");
+      const dateDisplay = document.getElementById("date-display");
+      const playBtn = document.getElementById("play-btn");
+      const raceControls = document.getElementById("race-controls");
+      const chartTitle = document.getElementById("chart-title");
+      const chartSubtitle = document.getElementById("chart-subtitle");
+      const chartButtons = Array.from(document.querySelectorAll(".chart-btn"));
 
-        const monthNames = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
-        const colors = ['#5470c6', '#91cc75', '#fac858', '#ee6666', '#73c0de', '#3ba272', '#fc8452', '#9a60b4'];
+      const monthNames = [
+        "Jan",
+        "Fev",
+        "Mar",
+        "Abr",
+        "Mai",
+        "Jun",
+        "Jul",
+        "Ago",
+        "Set",
+        "Out",
+        "Nov",
+        "Dez",
+      ];
+      const colors = [
+        "#2563eb",
+        "#dc2626",
+        "#16a34a",
+        "#ca8a04",
+        "#9333ea",
+        "#ea580c",
+        "#0891b2",
+        "#db2777",
+        "#84cc16",
+        "#0284c7",
+      ];
 
-        let formattedDates = [];
-        let participantsData = [];
-        let currentIndex = 0;
-        let timer = null;
-        const transitionDuration = 1600;
-        const dayPause = 500;
-        const maxVisibleBars = 30;
-        const visibleValueLabels = 44;
-        const minChartHeight = 600;
-        const pixelsPerParticipant = 28;
+      const transitionDuration = 1400;
+      const dayPause = 500;
+      const minChartHeight = 640;
+      const pixelsPerParticipant = 28;
 
-        function parseCsvData(csvText) {
-            const lines = csvText
-                .split(/\r?\n/)
-                .map(line => line.trim())
-                .filter(Boolean);
+      let chartType = "positions";
+      let chart = null;
+      let timer = null;
+      let currentIndex = 0;
+      let formattedDates = [];
+      let participantsData = [];
+      let participantOrder = {};
+      let snapshots = [];
+      let sortedNames = [];
+      let colorMap = {};
+      let raceCurrentSorted = [];
 
-            if (!lines.length) {
-                throw new Error('CSV vazio.');
-            }
+      function initChart() {
+        if (!chart) {
+          chart = echarts.init(chartDom, null, { renderer: "canvas" });
+        }
+        return chart;
+      }
 
-            const headers = lines[0].split(';').map(h => h.trim());
-            const participantIndex = headers.indexOf('Participante');
-            const dateColumnIndexes = headers
-                .map((h, idx) => ({ header: h, idx }))
-                .filter(({ header }) => /^\d{4}-\d{2}-\d{2}$/.test(header));
+      function destroyChart() {
+        stopRace();
+        if (chart) {
+          chart.dispose();
+          chart = null;
+        }
+      }
 
-            if (participantIndex < 0 || !dateColumnIndexes.length) {
-                throw new Error('CSV sem colunas esperadas (Participante e datas).');
-            }
+      function resizeChartForParticipants(isRace) {
+        chartDom.style.height = isRace
+          ? `${Math.max(minChartHeight, participantsData.length * pixelsPerParticipant)}px`
+          : "640px";
 
-            formattedDates = dateColumnIndexes.map(({ header }) => {
-                const [, month, day] = header.split('-');
-                return `${day}/${monthNames[parseInt(month, 10) - 1]}`;
-            });
+        if (chart) {
+          chart.resize();
+        }
+      }
 
-            participantsData = lines.slice(1).map((line, index) => {
-                const parts = line.split(';');
-                const name = (parts[participantIndex] || '').trim();
-                let cumulative = 0;
-                const cumulativeScores = dateColumnIndexes.map(({ idx }) => {
-                    const value = parseInt((parts[idx] || '0').trim(), 10);
-                    cumulative += Number.isNaN(value) ? 0 : value;
-                    return cumulative;
-                });
+      function parseCsvData(csvText) {
+        const lines = csvText
+          .split(/\r?\n/)
+          .map((line) => line.trim())
+          .filter(Boolean);
 
-                return {
-                    name,
-                    scores: cumulativeScores,
-                    order: index,
-                    color: colors[index % colors.length]
-                };
-            }).filter(p => p.name.length > 0);
+        if (!lines.length) {
+          throw new Error("CSV vazio.");
         }
 
-        function updateChart(index, animate = true) {
-            const dataForDate = participantsData.map(p => ({
-                value: [
-                    (p.scores[index] || 0) + (p.order * 0.000001),
-                    p.name
-                ],
-                itemStyle: { color: p.color }
-            }));
+        const headers = lines[0].split(";").map((h) => h.trim());
+        const participantIndex = headers.indexOf("Participante");
+        const dateColumns = headers
+          .map((header, idx) => ({ header, idx }))
+          .filter(({ header }) => /^\d{4}-\d{2}-\d{2}$/.test(header));
 
-            myChart.setOption({
-                series: [{
-                    data: dataForDate
-                }],
-                animationDuration: animate ? transitionDuration : 0,
-                animationDurationUpdate: animate ? transitionDuration : 0
-            }, false, true);
-
-            dateDisplay.innerText = formattedDates[index];
+        if (participantIndex < 0 || !dateColumns.length) {
+          throw new Error("CSV sem colunas esperadas (Participante e datas).");
         }
 
-        function resizeChartForParticipants() {
-            const targetHeight = Math.max(minChartHeight, participantsData.length * pixelsPerParticipant);
-            chartDom.style.height = `${targetHeight}px`;
-            myChart.resize();
-        }
-
-        const option = {
-            grid: { top: 40, bottom: 30, left: 300, right: 100 },
-            xAxis: {
-                type: 'value',
-                max: 'dataMax',
-                splitLine: { show: true }
-            },
-            yAxis: {
-                type: 'category',
-                inverse: true,
-                max: maxVisibleBars - 1,
-                axisLabel: {
-                    show: true,
-                    fontSize: 14,
-                    fontWeight: 'bold',
-                    margin: 20,
-                    width: 250,
-                    overflow: 'truncate'
-                },
-                axisTick: { show: false },
-                axisLine: { show: false },
-                animationDuration: 300,
-                animationDurationUpdate: 300
-            },
-            series: [{
-                realtimeSort: true,
-                type: 'bar',
-                encode: { x: 0, y: 1 },
-                barMaxWidth: 38,
-                label: {
-                    show: true,
-                    position: 'right',
-                    valueAnimation: false,
-                    fontFamily: 'monospace',
-                    fontSize: 15,
-                    fontWeight: 'bold',
-                    formatter: (param) => param.dataIndex < visibleValueLabels ? Math.round(param.value[0]) : ''
-                }
-            }],
-            animationDuration: transitionDuration,
-            animationDurationUpdate: transitionDuration,
-            animationEasing: 'linear',
-            animationEasingUpdate: 'linear'
-        };
-
-        myChart.setOption(option);
-
-        function play() {
-            if (currentIndex >= formattedDates.length - 1) {
-                currentIndex = 0;
-                myChart.setOption({
-                    animationDuration: 0,
-                    animationDurationUpdate: 0,
-                    yAxis: {
-                        animationDuration: 0,
-                        animationDurationUpdate: 0
-                    }
-                });
-                updateChart(currentIndex, false);
-
-                setTimeout(() => {
-                    myChart.setOption({
-                        animationDuration: transitionDuration,
-                        animationDurationUpdate: transitionDuration,
-                        yAxis: {
-                            animationDuration: 300,
-                            animationDurationUpdate: 300
-                        }
-                    });
-                    startTimer();
-                }, 100);
-            } else {
-                startTimer();
-            }
-            playBtn.innerText = 'Pause';
-        }
-
-        function stop() {
-            clearTimeout(timer);
-            timer = null;
-            playBtn.innerText = 'Play';
-        }
-
-        function startTimer() {
-            if (timer) return;
-            const advanceDay = () => {
-                if (!timer) return;
-
-                currentIndex++;
-                if (currentIndex >= formattedDates.length) {
-                    stop();
-                } else {
-                    updateChart(currentIndex, true);
-                    timer = setTimeout(advanceDay, transitionDuration + dayPause);
-                }
-            };
-
-            timer = setTimeout(advanceDay, 0);
-        }
-
-        playBtn.addEventListener('click', () => {
-            timer ? stop() : play();
+        formattedDates = dateColumns.map(({ header }) => {
+          const [, month, day] = header.split("-");
+          return `${day}/${monthNames[parseInt(month, 10) - 1]}`;
         });
 
-        async function init() {
-            try {
-                const response = await fetch('pontuacao-por-dia-grupo-3484.csv');
-                if (!response.ok) {
-                    throw new Error(`Falha ao carregar CSV (${response.status}).`);
-                }
+        participantsData = lines
+          .slice(1)
+          .map((line, index) => {
+            const parts = line.split(";");
+            const name = (parts[participantIndex] || "").trim();
+            let cumulative = 0;
 
-                const csvText = await response.text();
-                parseCsvData(csvText);
+            const scores = dateColumns.map(({ idx }) => {
+              const value = parseInt((parts[idx] || "0").trim(), 10);
+              cumulative += Number.isNaN(value) ? 0 : value;
+              return cumulative;
+            });
 
-                if (!participantsData.length || !formattedDates.length) {
-                    throw new Error('CSV sem dados válidos para exibição.');
-                }
+            participantOrder[name] = index;
 
-                resizeChartForParticipants();
-                updateChart(0, false);
-                dateDisplay.innerText = formattedDates[0];
-            } catch (error) {
-                dateDisplay.innerText = 'Erro ao carregar CSV';
-                playBtn.disabled = true;
-                playBtn.innerText = 'Indisponível';
-                console.error(error);
+            return {
+              name,
+              scores,
+              order: index,
+              color: colors[index % colors.length],
+            };
+          })
+          .filter((participant) => participant.name.length > 0);
+
+        buildSnapshots();
+      }
+
+      function buildSnapshots() {
+        snapshots = formattedDates.map((_, dateIndex) => {
+          const ptsMap = {};
+
+          participantsData.forEach((participant) => {
+            ptsMap[participant.name] = participant.scores[dateIndex] || 0;
+          });
+
+          const entries = participantsData
+            .map((participant) => ({
+              name: participant.name,
+              pts: ptsMap[participant.name] || 0,
+              order: participant.order,
+            }))
+            .sort((a, b) => {
+              if (b.pts !== a.pts) return b.pts - a.pts;
+              return a.order - b.order;
+            });
+
+          const posMap = {};
+          let rank = 1;
+
+          entries.forEach((entry, idx) => {
+            if (idx > 0) {
+              const prev = entries[idx - 1];
+              if (entry.pts !== prev.pts) {
+                rank = idx + 1;
+              }
             }
+
+            posMap[entry.name] = rank;
+          });
+
+          return {
+            ptsMap,
+            posMap,
+            leader: entries.length ? entries[0].pts : 0,
+          };
+        });
+
+        const lastSnapshot = snapshots[snapshots.length - 1];
+        sortedNames = participantsData
+          .map((participant) => participant.name)
+          .sort((a, b) => {
+            const posA = lastSnapshot
+              ? lastSnapshot.posMap[a] || participantsData.length + 1
+              : participantsData.length + 1;
+            const posB = lastSnapshot
+              ? lastSnapshot.posMap[b] || participantsData.length + 1
+              : participantsData.length + 1;
+            if (posA !== posB) return posA - posB;
+            return (participantOrder[a] || 0) - (participantOrder[b] || 0);
+          });
+
+        colorMap = {};
+        sortedNames.forEach((name, index) => {
+          colorMap[name] = colors[index % colors.length];
+        });
+      }
+
+      function renderPositionsChart() {
+        const ec = initChart();
+        if (!snapshots.length) return;
+
+        ec.setOption(
+          {
+            animationDuration: transitionDuration,
+            animationDurationUpdate: transitionDuration,
+            tooltip: {
+              trigger: "item",
+              appendToBody: true,
+              confine: true,
+              formatter: (params) => {
+                const label = formattedDates[params.dataIndex] || "";
+                return `<b>${params.seriesName}</b><br>${label}: ${params.value}º`;
+              },
+            },
+            grid: {
+              left: 52,
+              right: 150,
+              top: 24,
+              bottom: 34,
+              containLabel: true,
+            },
+            xAxis: {
+              type: "category",
+              data: formattedDates,
+              boundaryGap: false,
+              axisLabel: { fontSize: 10, color: "#9ca3af" },
+              axisLine: { lineStyle: { color: "#e5e7eb" } },
+              splitLine: { show: true, lineStyle: { color: "#f3f4f6" } },
+            },
+            yAxis: {
+              type: "value",
+              inverse: true,
+              min: 1,
+              max: participantsData.length,
+              interval: 1,
+              axisLabel: {
+                formatter: "{value}º",
+                fontSize: 10,
+                color: "#9ca3af",
+              },
+              splitLine: { lineStyle: { color: "#f3f4f6" } },
+            },
+            series: sortedNames.map((name) => ({
+              name,
+              type: "line",
+              smooth: true,
+              clip: false,
+              symbol: "circle",
+              symbolSize: 8,
+              lineStyle: { width: 2, color: colorMap[name] },
+              itemStyle: {
+                color: colorMap[name],
+                borderColor: "#fff",
+                borderWidth: 2,
+              },
+              emphasis: {
+                focus: "series",
+                lineStyle: { width: 4 },
+              },
+              endLabel: {
+                show: true,
+                formatter: "{a}",
+                color: colorMap[name],
+                fontSize: 10,
+                fontWeight: 700,
+                distance: 8,
+              },
+              labelLayout: { moveOverlap: "shiftY" },
+              data: snapshots.map(
+                (snapshot) => snapshot.posMap[name] || participantsData.length,
+              ),
+            })),
+          },
+          false,
+          true,
+        );
+      }
+
+      function renderPointsLeaderChart() {
+        const ec = initChart();
+        if (!snapshots.length) return;
+
+        const gameLabels = ["Início"].concat(formattedDates);
+
+        function getSeriesValue(snapshot, name) {
+          return (snapshot.ptsMap[name] || 0) - snapshot.leader;
         }
 
-        init();
-        window.addEventListener('resize', () => myChart.resize());
+        function getMinRelativeValue() {
+          let minValue = 0;
+
+          snapshots.forEach((snapshot) => {
+            sortedNames.forEach((name) => {
+              const relative = getSeriesValue(snapshot, name);
+              if (relative < minValue) {
+                minValue = relative;
+              }
+            });
+          });
+
+          return minValue;
+        }
+
+        ec.setOption(
+          {
+            animationDuration: transitionDuration,
+            animationDurationUpdate: transitionDuration,
+            tooltip: {
+              trigger: "axis",
+              order: "valueDesc",
+              appendToBody: true,
+              confine: true,
+              backgroundColor: "rgba(17, 24, 39, 0.84)",
+              borderWidth: 0,
+              textStyle: { color: "#fff" },
+              formatter: (params) => {
+                const snapshot = snapshots[params[0].dataIndex - 1];
+                const lines = [`<b>${gameLabels[params[0].dataIndex]}</b>`];
+
+                if (snapshot) {
+                  lines.push(`Líder: <b>${snapshot.leader} pts</b>`);
+                }
+
+                params
+                  .slice()
+                  .sort((a, b) => b.value - a.value)
+                  .forEach((item) => {
+                    lines.push(
+                      `<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${item.color};margin-right:4px"></span>` +
+                        `${item.seriesName}: <b>${item.value} pts do líder</b>`,
+                    );
+                  });
+
+                return lines.join("<br>");
+              },
+            },
+            grid: {
+              left: 52,
+              right: 150,
+              top: 24,
+              bottom: 34,
+              containLabel: true,
+            },
+            xAxis: {
+              type: "category",
+              boundaryGap: false,
+              data: gameLabels,
+              axisLabel: { fontSize: 10, color: "#9ca3af" },
+              splitLine: { show: true, lineStyle: { color: "#f3f4f6" } },
+            },
+            yAxis: {
+              type: "value",
+              min: getMinRelativeValue(),
+              max: 0,
+              name: "Diferença para o líder",
+              nameLocation: "middle",
+              nameGap: 48,
+              axisLabel: { fontSize: 10, color: "#9ca3af" },
+              splitLine: { lineStyle: { color: "#f3f4f6" } },
+            },
+            series: sortedNames.map((name) => ({
+              name,
+              type: "line",
+              showSymbol: false,
+              smooth: false,
+              clip: false,
+              lineStyle: { width: 2, color: colorMap[name] },
+              endLabel: {
+                show: true,
+                formatter: "{a}",
+                color: colorMap[name],
+                fontSize: 10,
+                fontWeight: 700,
+              },
+              labelLayout: { moveOverlap: "shiftY" },
+              emphasis: { focus: "series" },
+              encode: { x: 0, y: 1 },
+              data: [0].concat(
+                snapshots.map((snapshot) => getSeriesValue(snapshot, name)),
+              ),
+            })),
+          },
+          false,
+          true,
+        );
+      }
+
+      function renderRaceChart() {
+        destroyChart();
+        if (!snapshots.length) return;
+
+        raceCurrentSorted = sortedNames.slice();
+        currentIndex = snapshots.length - 1;
+        playBtn.textContent = "Play";
+        dateDisplay.textContent =
+          formattedDates[currentIndex] || "Aguardando...";
+
+        resizeChartForParticipants(true);
+
+        const ec = initChart();
+        const lastSnapshot = snapshots[currentIndex];
+        const namesLast = sortedNames.slice().sort((a, b) => {
+          const ptsA = lastSnapshot.ptsMap[a] || 0;
+          const ptsB = lastSnapshot.ptsMap[b] || 0;
+          if (ptsB !== ptsA) return ptsB - ptsA;
+          return (participantOrder[a] || 0) - (participantOrder[b] || 0);
+        });
+
+        ec.setOption(
+          {
+            grid: {
+              top: 10,
+              bottom: 28,
+              left: 10,
+              right: 58,
+              containLabel: true,
+            },
+            xAxis: {
+              max: "dataMax",
+              axisLabel: {
+                color: "#9ca3af",
+                fontSize: 10,
+                formatter: (value) => Math.round(value),
+              },
+              splitLine: { lineStyle: { color: "#f3f4f6" } },
+            },
+            yAxis: {
+              type: "category",
+              data: raceCurrentSorted,
+              inverse: true,
+              axisLabel: {
+                fontSize: 12,
+                color: "#374151",
+                fontWeight: 600,
+                width: 140,
+                overflow: "truncate",
+              },
+            },
+            series: [
+              {
+                realtimeSort: true,
+                type: "bar",
+                barMaxWidth: 30,
+                data: namesLast.map((name) => ({
+                  value: lastSnapshot.ptsMap[name] || 0,
+                  itemStyle: { color: colorMap[name] },
+                })),
+                label: {
+                  show: true,
+                  position: "right",
+                  color: "#374151",
+                  fontSize: 12,
+                  fontWeight: 700,
+                  valueAnimation: true,
+                  formatter: (param) => param.value,
+                },
+              },
+            ],
+            animationDuration: 0,
+            animationDurationUpdate: transitionDuration,
+            animationEasing: "linear",
+            animationEasingUpdate: "linear",
+          },
+          false,
+          true,
+        );
+
+        updateRaceLabel(currentIndex);
+      }
+
+      function updateRaceFrame(index) {
+        if (!chart) return;
+
+        const snapshot = snapshots[index];
+        if (!snapshot) return;
+
+        chart.setOption({
+          series: [
+            {
+              data: raceCurrentSorted.map((name) => ({
+                value: snapshot.ptsMap[name] || 0,
+                itemStyle: { color: colorMap[name] },
+              })),
+            },
+          ],
+        });
+      }
+
+      function updateRaceLabel(index) {
+        dateDisplay.textContent = formattedDates[index] || "Aguardando...";
+
+        if (snapshots[index]) {
+          currentIndex = index;
+        }
+      }
+
+      function stopRace() {
+        clearTimeout(timer);
+        timer = null;
+        playBtn.textContent = "Play";
+      }
+
+      function startTimer() {
+        if (timer) return;
+
+        const advanceDay = () => {
+          if (!timer) return;
+
+          currentIndex += 1;
+          if (currentIndex >= snapshots.length) {
+            stopRace();
+            return;
+          }
+
+          updateRaceFrame(currentIndex);
+          updateRaceLabel(currentIndex);
+          timer = setTimeout(advanceDay, transitionDuration + dayPause);
+        };
+
+        timer = setTimeout(advanceDay, 0);
+      }
+
+      function play() {
+        if (currentIndex >= snapshots.length - 1) {
+          currentIndex = 0;
+          chart.setOption({
+            animationDuration: 0,
+            animationDurationUpdate: 0,
+            yAxis: {
+              animationDuration: 0,
+              animationDurationUpdate: 0,
+            },
+          });
+          updateRaceFrame(currentIndex);
+          updateRaceLabel(currentIndex);
+
+          setTimeout(() => {
+            chart.setOption({
+              animationDuration: transitionDuration,
+              animationDurationUpdate: transitionDuration,
+              yAxis: {
+                animationDuration: 300,
+                animationDurationUpdate: 300,
+              },
+            });
+            startTimer();
+          }, 100);
+        } else {
+          startTimer();
+        }
+
+        playBtn.textContent = "Pause";
+      }
+
+      function setChartMeta(type) {
+        const meta = {
+          positions: {
+            title: "Histórico de posições",
+            subtitle:
+              "Linha temporal da colocação de cada participante ao longo dos dias.",
+          },
+          "points-leader": {
+            title: "Pontuação em relação ao líder",
+            subtitle:
+              "Cada linha mostra a distância para o primeiro colocado em cada dia.",
+          },
+          race: {
+            title: "Gráfico de barras",
+            subtitle: "Bar race com a pontuação acumulada em cada dia.",
+          },
+        };
+
+        chartTitle.textContent = meta[type].title;
+        chartSubtitle.textContent = meta[type].subtitle;
+      }
+
+      function setChartType(type) {
+        chartType = type;
+        chartButtons.forEach((button) => {
+          button.classList.toggle("active", button.dataset.type === type);
+        });
+
+        setChartMeta(type);
+        stopRace();
+
+        if (type === "race") {
+          raceControls.classList.remove("hidden");
+        } else {
+          raceControls.classList.add("hidden");
+        }
+
+        renderChart();
+      }
+
+      function renderChart() {
+        destroyChart();
+
+        if (!snapshots.length) return;
+
+        if (chartType === "race") {
+          renderRaceChart();
+          return;
+        }
+
+        resizeChartForParticipants(false);
+
+        if (chartType === "positions") {
+          renderPositionsChart();
+        } else if (chartType === "points-leader") {
+          renderPointsLeaderChart();
+        }
+      }
+
+      chartButtons.forEach((button) => {
+        button.addEventListener("click", () =>
+          setChartType(button.dataset.type),
+        );
+      });
+
+      playBtn.addEventListener("click", () => {
+        if (timer) {
+          stopRace();
+        } else {
+          play();
+        }
+      });
+
+      async function init() {
+        try {
+          const response = await fetch("pontuacao-por-dia-grupo-3484.csv");
+          if (!response.ok) {
+            throw new Error(`Falha ao carregar CSV (${response.status}).`);
+          }
+
+          const csvText = await response.text();
+          parseCsvData(csvText);
+
+          if (!participantsData.length || !formattedDates.length) {
+            throw new Error("CSV sem dados válidos para exibição.");
+          }
+
+          setChartType("positions");
+
+          window.addEventListener("resize", () => {
+            if (chart) {
+              chart.resize();
+            }
+          });
+        } catch (error) {
+          chartSubtitle.textContent = "Erro ao carregar o CSV de pontuação.";
+          dateDisplay.textContent = "Erro ao carregar CSV";
+          playBtn.disabled = true;
+          playBtn.textContent = "Indisponível";
+          console.error(error);
+        }
+      }
+
+      init();
     </script>
-</body>
+  </body>
 </html>
