@@ -43,8 +43,8 @@ const transitionDuration = 1400;
 const raceUpdateFrequency = 900;
 const raceDayPause = 500;
 const raceAxisAnimationDuration = 300;
-const minRaceChartHeight = 900;
-const racePixelsPerParticipant = 42;
+const minRaceChartHeight = 440;
+const racePixelsPerParticipant = 44;
 
 let chartType = "positions";
 let chart = null;

@@ -64,7 +64,7 @@
         {
           realtimeSort: true,
           type: "bar",
-          barMaxWidth: 34,
+          barMaxWidth: 40,
           data: sorted.map(function (name) {
             return {
               value: snapLast.ptsMap[name] || 0,
