@@ -421,9 +421,8 @@
 
       const transitionDuration = 1400;
       const dayPause = 500;
-      const raceAnimationDuration = 1700;
-      const raceFramePause = 650;
-      const raceFrameBuffer = 140;
+      const raceUpdateFrequency = 2000;
+      const raceAxisAnimationDuration = 300;
       const minChartHeight = 640;
       const pixelsPerParticipant = 28;
       const minRaceChartHeight = 900;
@@ -970,6 +969,8 @@
             type: "category",
             data: raceCurrentSorted,
             inverse: true,
+            animationDuration: raceAxisAnimationDuration,
+            animationDurationUpdate: raceAxisAnimationDuration,
             axisLabel: {
               fontSize: 12,
               color: "#374151",
@@ -1004,7 +1005,7 @@
             },
           ],
           animationDuration: 0,
-          animationDurationUpdate: raceAnimationDuration,
+          animationDurationUpdate: raceUpdateFrequency,
           animationEasing: "linear",
           animationEasingUpdate: "linear",
         });
@@ -1047,8 +1048,6 @@
       function startTimer() {
         if (timer) return;
 
-        const nextDelay = raceAnimationDuration + raceFramePause + raceFrameBuffer;
-
         const advanceDay = () => {
           if (!timer) return;
 
@@ -1060,10 +1059,10 @@
 
           updateRaceFrame(currentIndex);
           updateRaceLabel(currentIndex);
-          timer = setTimeout(advanceDay, nextDelay);
+          timer = setTimeout(advanceDay, raceUpdateFrequency);
         };
 
-        timer = setTimeout(advanceDay, raceFramePause);
+        timer = setTimeout(advanceDay, 0);
       }
 
       function play() {
@@ -1071,13 +1070,21 @@
           currentIndex = 0;
           chart.setOption({
             animationDurationUpdate: 0,
+            yAxis: {
+              animationDuration: 0,
+              animationDurationUpdate: 0,
+            },
           });
           updateRaceFrame(currentIndex);
           updateRaceLabel(currentIndex);
 
           setTimeout(() => {
             chart.setOption({
-              animationDurationUpdate: raceAnimationDuration,
+              animationDurationUpdate: raceUpdateFrequency,
+              yAxis: {
+                animationDuration: raceAxisAnimationDuration,
+                animationDurationUpdate: raceAxisAnimationDuration,
+              },
             });
             startTimer();
           }, 100);
