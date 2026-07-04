@@ -836,10 +836,15 @@
         var lastIdx = snapshots.length - 1;
         raceFrameIdx = lastIdx;
         var scrubber = document.getElementById("race-scrubber");
-        scrubber.max = lastIdx;
-        scrubber.value = lastIdx;
+        if (scrubber) {
+          scrubber.max = lastIdx;
+          scrubber.value = lastIdx;
+        }
         updateRaceLabel(lastIdx);
-        document.getElementById("race-play-btn").innerHTML = "&#9654;";
+        var racePlayBtn = document.getElementById("race-play-btn");
+        if (racePlayBtn) {
+          racePlayBtn.innerHTML = "&#9654;";
+        }
 
         var snapLast = snapshots[lastIdx];
         var namesLast = sorted.slice().sort(function (a, b) {

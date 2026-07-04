@@ -792,6 +792,7 @@
         border: 1.5px solid var(--border);
         border-radius: 7px;
         padding: 5px 10px;
+        position: relative;
       }
 
       .ct-ref-label {
@@ -803,7 +804,7 @@
         color: var(--sub);
       }
 
-      .ct-ref-select {
+      .ct-ref-btn {
         min-width: 170px;
         border: 1px solid var(--border);
         border-radius: 6px;
@@ -814,10 +815,37 @@
         font-weight: 600;
         color: var(--text);
         padding: 4px 8px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        cursor: pointer;
+      }
+
+      .ct-ref-btn:hover {
+        border-color: var(--accent);
+      }
+
+      .ct-ref-menu {
+        position: absolute;
+        top: calc(100% + 6px);
+        left: 0;
+        min-width: 300px;
+        background: var(--white);
+        border: 1.5px solid var(--border);
+        border-radius: 9px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        z-index: 220;
+        padding: 8px;
+        display: none;
+      }
+
+      .ct-ref-menu.open {
+        display: block;
       }
 
       .ct-ref-filter {
-        min-width: 140px;
+        width: 100%;
         border: 1px solid var(--border);
         border-radius: 6px;
         outline: none;
@@ -827,6 +855,47 @@
         font-weight: 500;
         color: var(--text);
         padding: 4px 8px;
+        margin-bottom: 6px;
+      }
+
+      .ct-ref-options {
+        max-height: 220px;
+        overflow: auto;
+        border: 1px solid var(--border);
+        border-radius: 6px;
+      }
+
+      .ct-ref-opt {
+        width: 100%;
+        border: 0;
+        border-bottom: 1px solid var(--border);
+        background: var(--white);
+        text-align: left;
+        padding: 7px 9px;
+        font-family: "Inter", sans-serif;
+        font-size: 0.76rem;
+        color: var(--text);
+        cursor: pointer;
+      }
+
+      .ct-ref-opt:last-child {
+        border-bottom: 0;
+      }
+
+      .ct-ref-opt:hover {
+        background: var(--accent-light);
+      }
+
+      .ct-ref-opt.active {
+        font-weight: 700;
+        color: var(--accent);
+      }
+
+      .ct-ref-empty {
+        padding: 8px 9px;
+        font-family: "Inter", sans-serif;
+        font-size: 0.74rem;
+        color: var(--sub);
       }
 
       .ct-dropdown {
@@ -1372,14 +1441,20 @@
               </div>
               <div class="ct-ref-wrap hidden" id="ct-ref-wrap">
                 <span class="ct-ref-label">Referência</span>
-                <input
-                  class="ct-ref-filter"
-                  id="reference-filter"
-                  type="text"
-                  placeholder="Filtrar nome"
-                  autocomplete="off"
-                />
-                <select class="ct-ref-select" id="reference-select"></select>
+                <button class="ct-ref-btn" id="reference-picker-btn" type="button">
+                  <span id="reference-picker-label">Líder do dia</span>
+                  <span aria-hidden="true">▾</span>
+                </button>
+                <div class="ct-ref-menu" id="reference-menu">
+                  <input
+                    class="ct-ref-filter"
+                    id="reference-filter"
+                    type="text"
+                    placeholder="Filtrar nome"
+                    autocomplete="off"
+                  />
+                  <div class="ct-ref-options" id="reference-options"></div>
+                </div>
               </div>
             </div>
             <div id="echart-container" class="chart-wrap"></div>
@@ -2832,12 +2907,15 @@
 
       function syncReferenceOptions(sorted) {
         var wrap = document.getElementById("ct-ref-wrap");
-        var select = document.getElementById("reference-select");
+        var pickerLabel = document.getElementById("reference-picker-label");
+        var optionsList = document.getElementById("reference-options");
         var filterInput = document.getElementById("reference-filter");
-        if (!wrap || !select || !filterInput) return;
+        if (!wrap || !pickerLabel || !optionsList || !filterInput) return;
 
         if (currentChartType !== "points-leader") {
           wrap.classList.add("hidden");
+          var menuToClose = document.getElementById("reference-menu");
+          if (menuToClose) menuToClose.classList.remove("open");
           return;
         }
 
@@ -2848,27 +2926,41 @@
         var filteredNames = getFilteredReferenceNames(sorted);
         wrap.classList.remove("hidden");
         filterInput.value = referenceFilterText;
-        select.innerHTML =
-          '<option value="">Líder do dia</option>' +
-          filteredNames
-            .map(function (name) {
-              var safe = name
-                .replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/"/g, "&quot;");
-              return (
-                '<option value="' +
-                safe +
-                '">' +
-                safe +
-                "</option>"
-              );
-            })
-            .join("");
-        select.value = current;
-        if (select.value !== current) {
-          select.value = "";
-        }
+        optionsList.innerHTML =
+          '<button class="ct-ref-opt' +
+          (current === "" ? " active" : "") +
+          '" type="button" data-value="">Líder do dia</button>' +
+          (filteredNames.length
+            ? filteredNames
+                .map(function (name) {
+                  var safe = name
+                    .replace(/&/g, "&amp;")
+                    .replace(/</g, "&lt;")
+                    .replace(/"/g, "&quot;");
+                  return (
+                    '<button class="ct-ref-opt' +
+                    (name === current ? " active" : "") +
+                    '" type="button" data-value="' +
+                    safe +
+                    '">' +
+                    safe +
+                    "</button>"
+                  );
+                })
+                .join("")
+            : '<div class="ct-ref-empty">Nenhum apostador encontrado para o filtro.</div>');
+
+        pickerLabel.textContent = current || "Líder do dia";
+
+        optionsList.querySelectorAll(".ct-ref-opt").forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            relativeReferenceName = this.dataset.value || "";
+            var menu = document.getElementById("reference-menu");
+            if (menu) menu.classList.remove("open");
+            renderChart();
+          });
+        });
+
         relativeReferenceName = current;
       }
 
@@ -2936,6 +3028,8 @@
       document.addEventListener("click", function () {
         var m = document.getElementById("ct-menu");
         if (m) m.classList.remove("open");
+        var rm = document.getElementById("reference-menu");
+        if (rm) rm.classList.remove("open");
       });
 
       function setChartType(type) {
@@ -3052,11 +3146,19 @@
         else if (currentChartType === "race") renderRaceChart(sorted);
       }
 
-      var refSelect = document.getElementById("reference-select");
-      if (refSelect) {
-        refSelect.addEventListener("change", function () {
-          relativeReferenceName = this.value || "";
-          if (currentChartType === "points-leader") renderChart();
+      var refPickerBtn = document.getElementById("reference-picker-btn");
+      if (refPickerBtn) {
+        refPickerBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          var menu = document.getElementById("reference-menu");
+          if (menu) menu.classList.toggle("open");
+        });
+      }
+
+      var refMenu = document.getElementById("reference-menu");
+      if (refMenu) {
+        refMenu.addEventListener("click", function (e) {
+          e.stopPropagation();
         });
       }
 
@@ -3065,7 +3167,7 @@
         refFilter.addEventListener("input", function () {
           referenceFilterText = this.value || "";
           if (currentChartType === "points-leader") {
-            syncReferenceOptions(Object.keys(scoreboard));
+            renderChart();
           }
         });
       }
