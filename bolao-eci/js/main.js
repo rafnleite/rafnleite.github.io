@@ -146,14 +146,19 @@ function syncReferenceOptions() {
       : `<div class="reference-empty">Nenhum apostador encontrado para o filtro.</div>`);
 
   referenceOptions.querySelectorAll(".reference-option").forEach((button) => {
-    button.addEventListener("click", () => {
+    const handleReferenceSelect = (event) => {
+      event.preventDefault();
+      event.stopPropagation();
       referencePlayer = button.dataset.value
         ? decodeURIComponent(button.dataset.value)
         : "";
       if (referenceMenu) referenceMenu.classList.remove("open");
       setChartMeta(chartType);
       renderChart();
-    });
+    };
+
+    button.addEventListener("click", handleReferenceSelect);
+    button.addEventListener("touchend", handleReferenceSelect, { passive: false });
   });
 }
 
