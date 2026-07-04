@@ -898,6 +898,10 @@
         color: var(--sub);
       }
 
+      .hidden {
+        display: none !important;
+      }
+
       .ct-dropdown {
         position: relative;
         display: inline-block;
@@ -3181,7 +3185,7 @@
         refFilter.addEventListener("input", function () {
           referenceFilterText = this.value || "";
           if (currentChartType === "points-leader") {
-            renderChart();
+            syncReferenceOptions(Object.keys(scoreboard));
           }
         });
       }
