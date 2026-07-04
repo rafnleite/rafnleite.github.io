@@ -61,7 +61,8 @@
       },
       series: [
         {
-          realtimeSort: true,
+          // Keep vertical axis stable: only values animate, categories do not reorder.
+          realtimeSort: false,
           type: "bar",
           barMaxWidth: 34,
           data: sorted.map(function (name) {
