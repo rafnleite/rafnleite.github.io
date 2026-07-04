@@ -69,10 +69,6 @@
         margin: 18px 0 16px;
       }
 
-      .toolbar .reference-controls {
-        margin-right: 4px;
-      }
-
       .chart-btn,
       .play-btn {
         border: 1px solid var(--border);
@@ -185,10 +181,16 @@
       }
 
       .reference-controls {
-        display: flex;
+        display: inline-flex;
         align-items: center;
         gap: 8px;
         flex-wrap: wrap;
+        position: relative;
+        background: rgba(255, 255, 255, 0.92);
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        padding: 8px 10px;
+        box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
       }
 
       .reference-label {
@@ -204,12 +206,85 @@
         max-width: 260px;
         border: 1px solid var(--border);
         border-radius: 999px;
-        padding: 10px 14px;
+        padding: 8px 12px;
         background: rgba(255, 255, 255, 0.92);
         color: var(--text);
         font-weight: 700;
         font-size: 0.9rem;
         box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+        display: inline-flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        cursor: pointer;
+      }
+
+      .reference-menu {
+        position: absolute;
+        top: calc(100% + 8px);
+        right: 0;
+        min-width: 320px;
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        box-shadow: var(--shadow);
+        z-index: 240;
+        padding: 10px;
+        display: none;
+      }
+
+      .reference-menu.open {
+        display: block;
+      }
+
+      .reference-filter {
+        width: 100%;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        outline: none;
+        background: #fff;
+        color: var(--text);
+        font-size: 0.88rem;
+        padding: 8px 10px;
+        margin-bottom: 8px;
+      }
+
+      .reference-options {
+        max-height: 240px;
+        overflow: auto;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+      }
+
+      .reference-option {
+        width: 100%;
+        border: 0;
+        border-bottom: 1px solid var(--border);
+        background: #fff;
+        text-align: left;
+        padding: 8px 10px;
+        color: var(--text);
+        font-size: 0.86rem;
+        cursor: pointer;
+      }
+
+      .reference-option:last-child {
+        border-bottom: 0;
+      }
+
+      .reference-option:hover {
+        background: #eff6ff;
+      }
+
+      .reference-option.active {
+        font-weight: 800;
+        color: var(--accent);
+      }
+
+      .reference-empty {
+        padding: 9px 10px;
+        color: var(--sub);
+        font-size: 0.84rem;
       }
 
       #date-display {
@@ -256,17 +331,6 @@
       </div>
 
       <div class="toolbar" id="chart-type-toolbar">
-        <div class="reference-controls hidden" id="reference-controls">
-          <span class="reference-label">Referência</span>
-          <input
-            class="reference-select"
-            id="reference-select"
-            list="reference-options"
-            placeholder="Líder do dia"
-            autocomplete="off"
-          />
-          <datalist id="reference-options"></datalist>
-        </div>
         <button class="chart-btn active" data-type="positions">
           Histórico de posições
         </button>
@@ -290,6 +354,23 @@
             <button class="play-btn" id="play-btn">Play</button>
             <div id="date-display">Aguardando...</div>
           </div>
+          <div class="reference-controls hidden" id="reference-controls">
+            <span class="reference-label">Referência</span>
+            <button class="reference-select" id="reference-picker-btn" type="button">
+              <span id="reference-picker-label">Líder do dia</span>
+              <span aria-hidden="true">▾</span>
+            </button>
+            <div class="reference-menu" id="reference-menu">
+              <input
+                class="reference-filter"
+                id="reference-filter"
+                type="text"
+                placeholder="Filtrar nome"
+                autocomplete="off"
+              />
+              <div class="reference-options" id="reference-options"></div>
+            </div>
+          </div>
         </div>
         <div class="chart-legend hidden" id="chart-legend"></div>
         <div id="chart-container"></div>
@@ -302,7 +383,11 @@
       const playBtn = document.getElementById("play-btn");
       const raceControls = document.getElementById("race-controls");
       const referenceControls = document.getElementById("reference-controls");
-      const referenceSelect = document.getElementById("reference-select");
+      const referencePickerBtn = document.getElementById("reference-picker-btn");
+      const referencePickerLabel = document.getElementById("reference-picker-label");
+      const referenceMenu = document.getElementById("reference-menu");
+      const referenceFilter = document.getElementById("reference-filter");
+      const referenceOptions = document.getElementById("reference-options");
       const chartTitle = document.getElementById("chart-title");
       const chartSubtitle = document.getElementById("chart-subtitle");
       const chartButtons = Array.from(document.querySelectorAll(".chart-btn"));
@@ -352,6 +437,7 @@
       let raceCurrentSorted = [];
       let seriesSelection = {};
       let referencePlayer = "";
+      let referenceFilterText = "";
 
       function initChart() {
         if (!chart) {
@@ -406,34 +492,43 @@
         return "";
       }
 
-      function resolveReferenceNameFromInput(rawValue) {
-        const value = (rawValue || "").trim();
-        if (!value) return "";
-        if (value.toLowerCase() === "lider do dia" || value.toLowerCase() === "líder do dia") {
-          return "";
-        }
-        return (
-          sortedNames.find((name) => name.toLowerCase() === value.toLowerCase()) || ""
-        );
+      function getFilteredReferenceNames() {
+        const filter = (referenceFilterText || "").trim().toLowerCase();
+        if (!filter) return sortedNames.slice();
+        return sortedNames.filter((name) => name.toLowerCase().includes(filter));
       }
 
-      function buildReferenceOptions() {
-        if (!referenceSelect) return;
-        const options = document.getElementById("reference-options");
-        if (!options) return;
+      function syncReferenceOptions() {
+        if (!referencePickerLabel || !referenceFilter || !referenceOptions) return;
 
         const current = referencePlayer && sortedNames.includes(referencePlayer) ? referencePlayer : "";
-        options.innerHTML = [
-          `<option value="Líder do dia"></option>`,
-          ...sortedNames.map(
-            (name) =>
-              `<option value="${name
-                .replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/"/g, "&quot;")}"></option>`,
-          ),
-        ].join("");
-        referenceSelect.value = current || "Líder do dia";
+        const filteredNames = getFilteredReferenceNames();
+
+        referenceFilter.value = referenceFilterText;
+        referencePickerLabel.textContent = current || "Líder do dia";
+
+        referenceOptions.innerHTML =
+          `<button type="button" class="reference-option${current === "" ? " active" : ""}" data-value="">Líder do dia</button>` +
+          (filteredNames.length
+            ? filteredNames
+                .map((name) => {
+                  const safe = name
+                    .replace(/&/g, "&amp;")
+                    .replace(/</g, "&lt;")
+                    .replace(/\"/g, "&quot;");
+                  return `<button type="button" class="reference-option${name === current ? " active" : ""}" data-value="${safe}">${safe}</button>`;
+                })
+                .join("")
+            : `<div class="reference-empty">Nenhum apostador encontrado para o filtro.</div>`);
+
+        referenceOptions.querySelectorAll(".reference-option").forEach((button) => {
+          button.addEventListener("click", () => {
+            referencePlayer = button.dataset.value || "";
+            if (referenceMenu) referenceMenu.classList.remove("open");
+            setChartMeta(chartType);
+            renderChart();
+          });
+        });
       }
 
       function getPositionAxisMax() {
@@ -473,13 +568,14 @@
       }
 
       function updateReferenceUI() {
-        if (!referenceControls || !referenceSelect) return;
+        if (!referenceControls || !referencePickerBtn) return;
 
         if (chartType === "points-leader") {
           referenceControls.classList.remove("hidden");
-          buildReferenceOptions();
+          syncReferenceOptions();
         } else {
           referenceControls.classList.add("hidden");
+          if (referenceMenu) referenceMenu.classList.remove("open");
         }
       }
 
@@ -595,10 +691,10 @@
         });
 
         ensureSeriesSelection(sortedNames);
-        if (!referencePlayer || !sortedNames.includes(referencePlayer)) {
-          referencePlayer = sortedNames[0] || "";
+        if (referencePlayer && !sortedNames.includes(referencePlayer)) {
+          referencePlayer = "";
         }
-        buildReferenceOptions();
+        syncReferenceOptions();
       }
 
       function syncLegend() {
@@ -1064,13 +1160,39 @@
         );
       });
 
-      if (referenceSelect) {
-        referenceSelect.addEventListener("change", () => {
-          referencePlayer = resolveReferenceNameFromInput(referenceSelect.value);
-          setChartMeta(chartType);
-          renderChart();
+      if (referencePickerBtn) {
+        referencePickerBtn.addEventListener("click", (event) => {
+          event.stopPropagation();
+          if (!referenceMenu) return;
+          const shouldOpen = !referenceMenu.classList.contains("open");
+          referenceMenu.classList.toggle("open");
+          if (shouldOpen && referenceFilter) {
+            setTimeout(() => {
+              referenceFilter.focus();
+              referenceFilter.select();
+            }, 0);
+          }
         });
       }
+
+      if (referenceMenu) {
+        referenceMenu.addEventListener("click", (event) => {
+          event.stopPropagation();
+        });
+      }
+
+      if (referenceFilter) {
+        referenceFilter.addEventListener("input", () => {
+          referenceFilterText = referenceFilter.value || "";
+          if (chartType === "points-leader") {
+            syncReferenceOptions();
+          }
+        });
+      }
+
+      document.addEventListener("click", () => {
+        if (referenceMenu) referenceMenu.classList.remove("open");
+      });
 
       playBtn.addEventListener("click", () => {
         if (timer) {

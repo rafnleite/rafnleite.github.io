@@ -3054,6 +3054,10 @@
           type === "race" ? "" : "none";
         document.getElementById("chart-legend").style.display =
           type === "race" ? "none" : "";
+        var refWrap = document.getElementById("ct-ref-wrap");
+        if (refWrap && type !== "points-leader") {
+          refWrap.classList.add("hidden");
+        }
         syncReferenceOptions(Object.keys(scoreboard));
         renderChart();
       }
@@ -3151,7 +3155,17 @@
         refPickerBtn.addEventListener("click", function (e) {
           e.stopPropagation();
           var menu = document.getElementById("reference-menu");
+          var shouldOpen = menu && !menu.classList.contains("open");
           if (menu) menu.classList.toggle("open");
+          if (shouldOpen) {
+            var filterInput = document.getElementById("reference-filter");
+            if (filterInput) {
+              setTimeout(function () {
+                filterInput.focus();
+                filterInput.select();
+              }, 0);
+            }
+          }
         });
       }
 
