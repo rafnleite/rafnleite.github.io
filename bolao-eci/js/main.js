@@ -152,6 +152,7 @@ function syncReferenceOptions() {
       referencePlayer = button.dataset.value
         ? decodeURIComponent(button.dataset.value)
         : "";
+      syncReferenceOptions();
       if (referenceMenu) referenceMenu.classList.remove("open");
       setChartMeta(chartType);
       renderChart();
