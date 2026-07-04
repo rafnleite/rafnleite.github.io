@@ -40,7 +40,8 @@ const colors = [
 ];
 
 const transitionDuration = 1400;
-const raceUpdateFrequency = 2000;
+const raceUpdateFrequency = 900;
+const raceDayPause = 500;
 const raceAxisAnimationDuration = 300;
 const minRaceChartHeight = 900;
 const racePixelsPerParticipant = 42;
@@ -455,7 +456,7 @@ function startTimer() {
 
     updateRaceFrame(currentIndex);
     updateRaceLabel(currentIndex);
-    timer = setTimeout(advanceDay, raceUpdateFrequency);
+    timer = setTimeout(advanceDay, raceUpdateFrequency + raceDayPause);
   };
 
   timer = setTimeout(advanceDay, 0);
