@@ -829,10 +829,11 @@
 
       function renderRaceChart(sorted) {
         destroyChart();
-        if (!gameHistory.length) return;
+        if (!snapshots.length) return;
+        sorted = Array.isArray(sorted) && sorted.length ? sorted : sortedNames;
         raceCurrentSorted = sorted;
         // Default: show last frame (current standings)
-        var lastIdx = gameHistory.length - 1;
+        var lastIdx = snapshots.length - 1;
         raceFrameIdx = lastIdx;
         var scrubber = document.getElementById("race-scrubber");
         scrubber.max = lastIdx;
@@ -840,7 +841,7 @@
         updateRaceLabel(lastIdx);
         document.getElementById("race-play-btn").innerHTML = "&#9654;";
 
-        var snapLast = gameHistory[lastIdx];
+        var snapLast = snapshots[lastIdx];
         var namesLast = sorted.slice().sort(function (a, b) {
           return (snapLast.ptsMap[b] || 0) - (snapLast.ptsMap[a] || 0);
         });
