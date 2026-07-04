@@ -64,8 +64,13 @@
       .toolbar {
         display: flex;
         flex-wrap: wrap;
+        align-items: center;
         gap: 10px;
         margin: 18px 0 16px;
+      }
+
+      .toolbar .reference-controls {
+        margin-right: 4px;
       }
 
       .chart-btn,
@@ -195,15 +200,16 @@
       }
 
       .reference-select {
-        min-width: 180px;
-        max-width: 240px;
+        min-width: 220px;
+        max-width: 260px;
         border: 1px solid var(--border);
         border-radius: 999px;
         padding: 10px 14px;
-        background: #fff;
+        background: rgba(255, 255, 255, 0.92);
         color: var(--text);
         font-weight: 700;
         font-size: 0.9rem;
+        box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
       }
 
       #date-display {
@@ -250,11 +256,22 @@
       </div>
 
       <div class="toolbar" id="chart-type-toolbar">
+        <div class="reference-controls hidden" id="reference-controls">
+          <span class="reference-label">Referência</span>
+          <input
+            class="reference-select"
+            id="reference-select"
+            list="reference-options"
+            placeholder="Líder do dia"
+            autocomplete="off"
+          />
+          <datalist id="reference-options"></datalist>
+        </div>
         <button class="chart-btn active" data-type="positions">
           Histórico de posições
         </button>
         <button class="chart-btn" data-type="points-leader">
-          Pontuação em relação ao líder
+          Pontuação relativa
         </button>
         <button class="chart-btn" data-type="race">Gráfico de barras</button>
       </div>
@@ -272,10 +289,6 @@
           <div class="race-controls hidden" id="race-controls">
             <button class="play-btn" id="play-btn">Play</button>
             <div id="date-display">Aguardando...</div>
-          </div>
-          <div class="reference-controls hidden" id="reference-controls">
-            <span class="reference-label">Referência</span>
-            <select class="reference-select" id="reference-select"></select>
           </div>
         </div>
         <div class="chart-legend hidden" id="chart-legend"></div>
@@ -393,17 +406,34 @@
         return "";
       }
 
+      function resolveReferenceNameFromInput(rawValue) {
+        const value = (rawValue || "").trim();
+        if (!value) return "";
+        if (value.toLowerCase() === "lider do dia" || value.toLowerCase() === "líder do dia") {
+          return "";
+        }
+        return (
+          sortedNames.find((name) => name.toLowerCase() === value.toLowerCase()) || ""
+        );
+      }
+
       function buildReferenceOptions() {
         if (!referenceSelect) return;
+        const options = document.getElementById("reference-options");
+        if (!options) return;
 
         const current = referencePlayer && sortedNames.includes(referencePlayer) ? referencePlayer : "";
-        referenceSelect.innerHTML = [
-          `<option value=""${current === "" ? " selected" : ""}>Líder</option>`,
+        options.innerHTML = [
+          `<option value="Líder do dia"></option>`,
           ...sortedNames.map(
-            (name) => `<option value="${name}"${name === current ? " selected" : ""}>${name}</option>`,
+            (name) =>
+              `<option value="${name
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/"/g, "&quot;")}"></option>`,
           ),
         ].join("");
-        referenceSelect.value = current;
+        referenceSelect.value = current || "Líder do dia";
       }
 
       function getPositionAxisMax() {
@@ -967,7 +997,7 @@
               "Linha temporal da colocação de cada participante ao longo dos dias.",
           },
           "points-leader": {
-            title: `Pontuação em relação ao ${referenceLabel}`,
+            title: `Pontuação relativa ao ${referenceLabel}`,
             subtitle:
               "Cada linha mostra a diferença para o líder de cada dia por padrão, com opção de escolher um apostador no seletor.",
           },
@@ -1030,7 +1060,8 @@
 
       if (referenceSelect) {
         referenceSelect.addEventListener("change", () => {
-          referencePlayer = referenceSelect.value;
+          referencePlayer = resolveReferenceNameFromInput(referenceSelect.value);
+          setChartMeta(chartType);
           renderChart();
         });
       }

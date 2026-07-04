@@ -778,6 +778,40 @@
       /* ── CHART TYPE DROPDOWN ────────────────────── */
       .chart-type-bar {
         padding: 10px 16px 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .ct-ref-wrap {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: var(--bg);
+        border: 1.5px solid var(--border);
+        border-radius: 7px;
+        padding: 5px 10px;
+      }
+
+      .ct-ref-label {
+        font-family: "Inter", sans-serif;
+        font-size: 0.68rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+        color: var(--sub);
+      }
+
+      .ct-ref-select {
+        min-width: 170px;
+        border: 0;
+        outline: none;
+        background: transparent;
+        font-family: "Inter", sans-serif;
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: var(--text);
       }
 
       .ct-dropdown {
@@ -1285,6 +1319,17 @@
           </div>
           <div id="view-chart" style="display: none">
             <div class="chart-type-bar">
+              <div class="ct-ref-wrap hidden" id="ct-ref-wrap">
+                <span class="ct-ref-label">Referência</span>
+                <input
+                  class="ct-ref-select"
+                  id="reference-select"
+                  list="reference-options"
+                  placeholder="Líder do dia"
+                  autocomplete="off"
+                />
+                <datalist id="reference-options"></datalist>
+              </div>
               <div class="ct-dropdown" id="ct-dropdown">
                 <button
                   class="ct-btn"
@@ -1314,16 +1359,12 @@
                     Histórico de pontuação – Acumulado
                   </div>
                   <div class="ct-opt" onclick="setChartType('points-leader')">
-                    Histórico de pontuação – Em relação ao líder
+                    Histórico de pontuação – Relativo
                   </div>
                   <div class="ct-opt" onclick="setChartType('race')">
                     Histórico de pontuação – Gráfico de barras
                   </div>
                 </div>
-              </div>
-              <div class="ct-ref-wrap hidden" id="ct-ref-wrap">
-                <span class="ct-ref-label">Referência</span>
-                <select class="ct-ref-select" id="reference-select"></select>
               </div>
             </div>
             <div id="echart-container" class="chart-wrap"></div>
@@ -2765,10 +2806,23 @@
         return "";
       }
 
+      function resolveReferenceNameFromInput(sorted, rawValue) {
+        var value = (rawValue || "").trim();
+        if (!value) return "";
+        if (value.toLowerCase() === "lider do dia" || value.toLowerCase() === "líder do dia") {
+          return "";
+        }
+        for (var i = 0; i < sorted.length; i++) {
+          if (sorted[i].toLowerCase() === value.toLowerCase()) return sorted[i];
+        }
+        return "";
+      }
+
       function syncReferenceOptions(sorted) {
         var wrap = document.getElementById("ct-ref-wrap");
         var select = document.getElementById("reference-select");
-        if (!wrap || !select) return;
+        var options = document.getElementById("reference-options");
+        if (!wrap || !select || !options) return;
 
         if (currentChartType !== "points-leader") {
           wrap.classList.add("hidden");
@@ -2777,23 +2831,21 @@
 
         var current = relativeReferenceName && sorted.indexOf(relativeReferenceName) !== -1 ? relativeReferenceName : "";
         wrap.classList.remove("hidden");
-        select.innerHTML =
-          '<option value=""' + (current === "" ? " selected" : "") + ">Líder</option>" +
+        options.innerHTML =
+          '<option value="Líder do dia"></option>' +
           sorted
             .map(function (name) {
-              var safe = name.replace(/&/g, "&amp;").replace(/</g, "&lt;");
               return (
                 '<option value="' +
-                safe +
-                '"' +
-                (name === current ? " selected" : "") +
-                ">" +
-                safe +
-                "</option>"
+                name
+                  .replace(/&/g, "&amp;")
+                  .replace(/</g, "&lt;")
+                  .replace(/"/g, "&quot;") +
+                '"></option>'
               );
             })
             .join("");
-        select.value = current;
+        select.value = current || "Líder do dia";
         relativeReferenceName = current;
       }
 
@@ -2870,7 +2922,7 @@
           positions: "Hist\u00f3rico de posi\u00e7\u00f5es",
           points: "Hist\u00f3rico de pontua\u00e7\u00e3o \u2013 Acumulado",
           "points-leader":
-            "Hist\u00f3rico de pontua\u00e7\u00e3o \u2013 Em rela\u00e7\u00e3o ao l\u00edder",
+            "Hist\u00f3rico de pontua\u00e7\u00e3o \u2013 Relativo",
           race: "Hist\u00f3rico de pontua\u00e7\u00e3o \u2013 Gr\u00e1fico de barras",
         };
         document.getElementById("ct-label").textContent = labels[type];
@@ -2980,7 +3032,8 @@
       var refSelect = document.getElementById("reference-select");
       if (refSelect) {
         refSelect.addEventListener("change", function () {
-          relativeReferenceName = this.value;
+          var sorted = Object.keys(scoreboard);
+          relativeReferenceName = resolveReferenceNameFromInput(sorted, this.value);
           if (currentChartType === "points-leader") renderChart();
         });
       }
