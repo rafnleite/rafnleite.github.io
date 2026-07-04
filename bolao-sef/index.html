@@ -1071,24 +1071,14 @@
         if (currentIndex >= snapshots.length - 1) {
           currentIndex = 0;
           chart.setOption({
-            animationDuration: 0,
             animationDurationUpdate: 0,
-            yAxis: {
-              animationDuration: 0,
-              animationDurationUpdate: 0,
-            },
           });
           updateRaceFrame(currentIndex);
           updateRaceLabel(currentIndex);
 
           setTimeout(() => {
             chart.setOption({
-              animationDuration: transitionDuration,
               animationDurationUpdate: transitionDuration,
-              yAxis: {
-                animationDuration: 300,
-                animationDurationUpdate: 300,
-              },
             });
             startTimer();
           }, 100);
