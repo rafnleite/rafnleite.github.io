@@ -423,6 +423,8 @@
       const dayPause = 500;
       const minChartHeight = 640;
       const pixelsPerParticipant = 28;
+      const minRaceChartHeight = 900;
+      const racePixelsPerParticipant = 42;
 
       let chartType = "positions";
       let chart = null;
@@ -435,6 +437,7 @@
       let sortedNames = [];
       let colorMap = {};
       let raceCurrentSorted = [];
+      let raceAxisMax = 0;
       let seriesSelection = {};
       let referencePlayer = "";
       let referenceFilterText = "";
@@ -456,7 +459,7 @@
 
       function resizeChartForParticipants(isRace) {
         chartDom.style.height = isRace
-          ? `${Math.max(minChartHeight, participantsData.length * pixelsPerParticipant)}px`
+          ? `${Math.max(minRaceChartHeight, participantsData.length * racePixelsPerParticipant)}px`
           : "640px";
 
         if (chart) {
@@ -926,8 +929,15 @@
       function renderRaceChart(sorted) {
         destroyChart();
         if (!snapshots.length) return;
+        resizeChartForParticipants(true);
         sorted = Array.isArray(sorted) && sorted.length ? sorted : sortedNames;
-        raceCurrentSorted = sorted;
+        raceAxisMax = snapshots.reduce((acc, snapshot) => {
+          const currentMax = Math.max(
+            0,
+            ...sorted.map((name) => snapshot.ptsMap[name] || 0),
+          );
+          return Math.max(acc, currentMax);
+        }, 0);
         // Default: show last frame (current standings)
         var lastIdx = snapshots.length - 1;
         raceFrameIdx = lastIdx;
@@ -946,12 +956,22 @@
         var namesLast = sorted.slice().sort(function (a, b) {
           return (snapLast.ptsMap[b] || 0) - (snapLast.ptsMap[a] || 0);
         });
+        raceCurrentSorted = namesLast;
+
+        var longestNameSize = namesLast.reduce(
+          function (acc, name) {
+            return Math.max(acc, name.length);
+          },
+          10,
+        );
+        var leftGrid = Math.min(360, Math.max(170, longestNameSize * 8 + 20));
 
         var ec = initChart();
         ec.setOption({
-          grid: { top: 10, bottom: 30, left: 10, right: 50, containLabel: true },
+          grid: { top: 10, bottom: 30, left: leftGrid, right: 50, containLabel: true },
           xAxis: {
-            max: "dataMax",
+            min: 0,
+            max: raceAxisMax,
             axisLabel: {
               color: "#9ca3af",
               fontSize: 10,
@@ -969,15 +989,13 @@
               fontSize: 12,
               color: "#374151",
               fontWeight: 600,
-              width: 140,
-              overflow: "truncate",
+              interval: 0,
             },
           },
           series: [
             {
-              realtimeSort: true,
               type: "bar",
-              barMaxWidth: 30,
+              barMaxWidth: 34,
               data: namesLast.map(function (name) {
                 return {
                   value: snapLast.ptsMap[name] || 0,
@@ -1011,11 +1029,18 @@
 
         const snapshot = snapshots[index];
         if (!snapshot) return;
+        const namesAtFrame = raceCurrentSorted
+          .slice()
+          .sort((a, b) => (snapshot.ptsMap[b] || 0) - (snapshot.ptsMap[a] || 0));
+        raceCurrentSorted = namesAtFrame;
 
         chart.setOption({
+          yAxis: {
+            data: namesAtFrame,
+          },
           series: [
             {
-              data: raceCurrentSorted.map((name) => ({
+              data: namesAtFrame.map((name) => ({
                 value: snapshot.ptsMap[name] || 0,
                 itemStyle: { color: colorMap[name] },
               })),
