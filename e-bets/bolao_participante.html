@@ -513,6 +513,16 @@
     </div>
   </div>
 
+  <div class="card">
+    <div class="card-head">
+      <span class="card-head-title">Pontuação relativa ao participante</span>
+      <span class="card-head-sub" id="rel-chart-sub">jogo a jogo</span>
+    </div>
+    <div class="chart-area">
+      <canvas id="rel-points-chart"></canvas>
+    </div>
+  </div>
+
     </div>
     <div class="player-slot" id="player-slot-next"></div>
   </div>
@@ -540,6 +550,7 @@ var sortedPlayers = []; // sorted by final rank
 var colorMap    = {};
 var currentNome = null;
 var posChart    = null;
+var relPtsChart = null;
 var CARD_GAP = 32;
 var isSwipeAnimating = false;
 var playerStage = null;
@@ -663,7 +674,9 @@ function buildGameHistory() {
       }
       posMap[e.nome] = rank;
     });
-    return { jogo: j, posMap: posMap };
+    var ptsMap = {};
+    entries.forEach(function(e) { ptsMap[e.nome] = e.pts; });
+    return { jogo: j, posMap: posMap, ptsMap: ptsMap };
   });
 }
 
@@ -1250,6 +1263,122 @@ function renderChart(nome) {
   });
 }
 
+function fmtDelta(v) {
+  if (v > 0) return '+' + v;
+  if (v < 0) return String(v);
+  return '0';
+}
+
+function renderRelativePointsChart(nome) {
+  var canvas = document.getElementById('rel-points-chart');
+
+  if (relPtsChart) { relPtsChart.destroy(); relPtsChart = null; }
+
+  if (!gameHistory.length) {
+    canvas.style.display = 'none';
+    document.getElementById('rel-chart-sub').textContent = 'Nenhum jogo realizado ainda';
+    return;
+  }
+
+  canvas.style.display = '';
+  document.getElementById('rel-chart-sub').textContent = gameHistory.length + ' jogos realizados';
+
+  var labels = gameHistory.map(function(s) {
+    return s.jogo.time_a.nome.split(' ')[0] + ' × ' + s.jogo.time_b.nome.split(' ')[0];
+  });
+
+  var yValues = [];
+  var datasets = sortedPlayers.map(function(player) {
+    var baseColor = colorMap[player] || '#94a3b8';
+    var isSelected = player === nome;
+    var data = gameHistory.map(function(s) {
+      var playerPts = (s.ptsMap && s.ptsMap[player]) || 0;
+      var refPts = (s.ptsMap && s.ptsMap[nome]) || 0;
+      return playerPts - refPts;
+    });
+    data.forEach(function(v) { yValues.push(v); });
+
+    return {
+      label: player,
+      data: data,
+      borderColor: baseColor,
+      backgroundColor: isSelected ? (baseColor + '24') : (baseColor + '12'),
+      fill: false,
+      borderWidth: isSelected ? 3 : 1.6,
+      tension: 0.28,
+      pointRadius: isSelected ? 3 : 1.8,
+      pointHoverRadius: isSelected ? 5 : 3,
+      pointBackgroundColor: baseColor,
+      pointBorderColor: '#fff',
+      pointBorderWidth: isSelected ? 1.4 : 1,
+      order: isSelected ? 0 : 1
+    };
+  });
+
+  yValues.push(0);
+  var minY = Math.min.apply(null, yValues);
+  var maxY = Math.max.apply(null, yValues);
+  var maxAbs = Math.max(Math.abs(minY), Math.abs(maxY), 1);
+  var yBound = Math.ceil(maxAbs / 2) * 2;
+
+  relPtsChart = new Chart(canvas.getContext('2d'), {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: datasets
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+          min: -yBound,
+          max: yBound,
+          ticks: {
+            color: '#9ca3af',
+            font: { size: 10 },
+            callback: function(value) { return fmtDelta(value); }
+          },
+          grid: {
+            color: function(ctx) {
+              return Number(ctx.tick.value) === 0 ? '#cbd5e1' : '#f3f4f6';
+            },
+            lineWidth: function(ctx) {
+              return Number(ctx.tick.value) === 0 ? 1.6 : 1;
+            }
+          }
+        },
+        x: {
+          ticks: { maxRotation: 45, minRotation: 45, font: { size: 9 }, color: '#9ca3af' },
+          grid: { color: '#f3f4f6' }
+        }
+      },
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: {
+            boxWidth: 10,
+            usePointStyle: true,
+            font: { size: 10 },
+            filter: function(item) { return item.text === nome; }
+          }
+        },
+        tooltip: {
+          callbacks: {
+            title: function(items) { return items[0].label; },
+            label: function(item) {
+              var name = item.dataset.label;
+              var delta = item.raw;
+              if (name === nome) return name + ': referência (0)';
+              return name + ': ' + fmtDelta(delta) + ' pontos';
+            }
+          }
+        }
+      }
+    }
+  });
+}
+
 // ── Paginated bets ────────────────────────────────────────────────────────────
 var BETS_PER_PAGE = 5;
 var pastPage = 0, nextPage = 0, pastRows = [], nextRows = [];
@@ -1374,6 +1503,7 @@ function selectPlayer(nome, fromSwipe) {
 
   renderProfile(nome);
   renderChart(nome);
+  renderRelativePointsChart(nome);
   renderPastBets(nome);
   renderNextBets(nome);
   renderHeatmap(nome);
