@@ -437,6 +437,7 @@
       let sortedNames = [];
       let colorMap = {};
       let raceCurrentSorted = [];
+      let raceAxisMax = 0;
       let seriesSelection = {};
       let referencePlayer = "";
       let referenceFilterText = "";
@@ -930,7 +931,13 @@
         if (!snapshots.length) return;
         resizeChartForParticipants(true);
         sorted = Array.isArray(sorted) && sorted.length ? sorted : sortedNames;
-        raceCurrentSorted = sorted;
+        raceAxisMax = snapshots.reduce((acc, snapshot) => {
+          const currentMax = Math.max(
+            0,
+            ...sorted.map((name) => snapshot.ptsMap[name] || 0),
+          );
+          return Math.max(acc, currentMax);
+        }, 0);
         // Default: show last frame (current standings)
         var lastIdx = snapshots.length - 1;
         raceFrameIdx = lastIdx;
@@ -946,6 +953,7 @@
         }
 
         var snapLast = snapshots[lastIdx];
+        raceCurrentSorted = sorted.slice();
 
         var longestNameSize = raceCurrentSorted.reduce(
           function (acc, name) {
@@ -960,7 +968,7 @@
           grid: { top: 10, bottom: 30, left: leftGrid, right: 50, containLabel: true },
           xAxis: {
             min: 0,
-            max: "dataMax",
+            max: raceAxisMax,
             scale: false,
             axisLabel: {
               color: "#9ca3af",
@@ -989,6 +997,7 @@
               barMaxWidth: 34,
               data: raceCurrentSorted.map(function (name) {
                 return {
+                  name: name,
                   value: snapLast.ptsMap[name] || 0,
                   itemStyle: { color: colorMap[name] },
                 };
@@ -1022,9 +1031,15 @@
         if (!snapshot) return;
 
         chart.setOption({
+          xAxis: {
+            min: 0,
+            max: raceAxisMax,
+            scale: false,
+          },
           series: [
             {
               data: raceCurrentSorted.map((name) => ({
+                name,
                 value: snapshot.ptsMap[name] || 0,
                 itemStyle: { color: colorMap[name] },
               })),
