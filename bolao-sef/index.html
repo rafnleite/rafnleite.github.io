@@ -421,6 +421,9 @@
 
       const transitionDuration = 1400;
       const dayPause = 500;
+      const raceAnimationDuration = 1700;
+      const raceFramePause = 650;
+      const raceFrameBuffer = 140;
       const minChartHeight = 640;
       const pixelsPerParticipant = 28;
       const minRaceChartHeight = 900;
@@ -1001,7 +1004,7 @@
             },
           ],
           animationDuration: 0,
-          animationDurationUpdate: transitionDuration,
+          animationDurationUpdate: raceAnimationDuration,
           animationEasing: "linear",
           animationEasingUpdate: "linear",
         });
@@ -1044,6 +1047,8 @@
       function startTimer() {
         if (timer) return;
 
+        const nextDelay = raceAnimationDuration + raceFramePause + raceFrameBuffer;
+
         const advanceDay = () => {
           if (!timer) return;
 
@@ -1055,10 +1060,10 @@
 
           updateRaceFrame(currentIndex);
           updateRaceLabel(currentIndex);
-          timer = setTimeout(advanceDay, transitionDuration + dayPause);
+          timer = setTimeout(advanceDay, nextDelay);
         };
 
-        timer = setTimeout(advanceDay, 0);
+        timer = setTimeout(advanceDay, raceFramePause);
       }
 
       function play() {
@@ -1072,7 +1077,7 @@
 
           setTimeout(() => {
             chart.setOption({
-              animationDurationUpdate: transitionDuration,
+              animationDurationUpdate: raceAnimationDuration,
             });
             startTimer();
           }, 100);
