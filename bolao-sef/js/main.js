@@ -139,14 +139,17 @@ function syncReferenceOptions() {
               .replace(/&/g, "&amp;")
               .replace(/</g, "&lt;")
               .replace(/\"/g, "&quot;");
-            return `<button type="button" class="reference-option${name === current ? " active" : ""}" data-value="${safe}">${safe}</button>`;
+            const encodedName = encodeURIComponent(name);
+            return `<button type="button" class="reference-option${name === current ? " active" : ""}" data-value="${encodedName}">${safe}</button>`;
           })
           .join("")
       : `<div class="reference-empty">Nenhum apostador encontrado para o filtro.</div>`);
 
   referenceOptions.querySelectorAll(".reference-option").forEach((button) => {
     button.addEventListener("click", () => {
-      referencePlayer = button.dataset.value || "";
+      referencePlayer = button.dataset.value
+        ? decodeURIComponent(button.dataset.value)
+        : "";
       if (referenceMenu) referenceMenu.classList.remove("open");
       setChartMeta(chartType);
       renderChart();
@@ -506,7 +509,7 @@ function setChartMeta(type) {
     "points-leader": {
       title: `Pontuação relativa ao ${referenceLabel}`,
       subtitle:
-        "Cada linha mostra a diferença para o líder de cada dia por padrão, com opção de escolher um apostador no seletor.",
+        "As linhas mostram a diferença de pontos de cada apostador para uma referência selecionada (líder do dia ou algum apostador específico)",
     },
     race: {
       title: "Gráfico de barras",
