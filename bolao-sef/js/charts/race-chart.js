@@ -30,7 +30,8 @@
 
     const ec = ctx.initChart();
     ec.setOption({
-      grid: { top: 10, bottom: 30, left: 10, right: 50, containLabel: true },
+      // Use fixed plot paddings so the y-axis anchor never shifts horizontally.
+      grid: { top: 10, bottom: 30, left: 180, right: 50, containLabel: false },
       xAxis: {
         min: 0,
         max: "dataMax",
@@ -61,8 +62,7 @@
       },
       series: [
         {
-          // Keep vertical axis stable: only values animate, categories do not reorder.
-          realtimeSort: false,
+          realtimeSort: true,
           type: "bar",
           barMaxWidth: 34,
           data: sorted.map(function (name) {
