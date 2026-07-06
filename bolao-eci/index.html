@@ -62,6 +62,33 @@
         font-size: 0.98rem;
       }
 
+      .hero-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .tutorial-open-btn {
+        border: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.92);
+        color: var(--text);
+        border-radius: 999px;
+        padding: 8px 14px;
+        font-size: 0.82rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition:
+          transform 0.12s ease,
+          background 0.12s ease,
+          border-color 0.12s ease;
+        box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+      }
+
+      .tutorial-open-btn:hover {
+        transform: translateY(-1px);
+        border-color: rgba(37, 99, 235, 0.35);
+      }
+
       .toolbar {
         display: flex;
         flex-wrap: wrap;
@@ -346,6 +373,9 @@
           <p>
             Visualização histórica da disputa.
           </p>
+        </div>
+        <div class="hero-actions">
+          <button class="tutorial-open-btn" type="button" onclick="openTutorial()">Ver tutorial</button>
         </div>
       </div>
 

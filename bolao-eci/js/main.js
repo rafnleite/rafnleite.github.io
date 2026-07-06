@@ -609,8 +609,13 @@ function ensureTutorialStyle() {
     .tour-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(15, 23, 42, 0.58);
       z-index: 9998;
+      pointer-events: none;
+    }
+
+    .tour-overlay-pane {
+      position: absolute;
+      background: rgba(15, 23, 42, 0.58);
       backdrop-filter: blur(2px);
     }
 
@@ -618,7 +623,6 @@ function ensureTutorialStyle() {
       position: fixed;
       border: 2px solid #22c55e;
       border-radius: 12px;
-      box-shadow: 0 0 0 9999px rgba(15, 23, 42, 0.58);
       z-index: 9999;
       pointer-events: none;
       transition: all 0.18s ease;
@@ -683,6 +687,20 @@ function createTutorialStepElements() {
   const overlay = document.createElement("div");
   overlay.className = "tour-overlay";
 
+  const paneTop = document.createElement("div");
+  paneTop.className = "tour-overlay-pane";
+  const paneRight = document.createElement("div");
+  paneRight.className = "tour-overlay-pane";
+  const paneBottom = document.createElement("div");
+  paneBottom.className = "tour-overlay-pane";
+  const paneLeft = document.createElement("div");
+  paneLeft.className = "tour-overlay-pane";
+
+  overlay.appendChild(paneTop);
+  overlay.appendChild(paneRight);
+  overlay.appendChild(paneBottom);
+  overlay.appendChild(paneLeft);
+
   const highlight = document.createElement("div");
   highlight.className = "tour-highlight";
 
@@ -733,6 +751,10 @@ function createTutorialStepElements() {
   tutorialState = {
     index: 0,
     overlay,
+    paneTop,
+    paneRight,
+    paneBottom,
+    paneLeft,
     highlight,
     card,
     titleEl,
@@ -839,11 +861,40 @@ function renderTutorialStep() {
 
     const rect = target.getBoundingClientRect();
     const pad = 6;
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
 
-    tutorialState.highlight.style.left = `${Math.round(rect.left - pad)}px`;
-    tutorialState.highlight.style.top = `${Math.round(rect.top - pad)}px`;
-    tutorialState.highlight.style.width = `${Math.round(rect.width + pad * 2)}px`;
-    tutorialState.highlight.style.height = `${Math.round(rect.height + pad * 2)}px`;
+    const left = Math.max(0, Math.round(rect.left - pad));
+    const top = Math.max(0, Math.round(rect.top - pad));
+    const right = Math.min(vw, Math.round(rect.right + pad));
+    const bottom = Math.min(vh, Math.round(rect.bottom + pad));
+    const width = Math.max(0, right - left);
+    const height = Math.max(0, bottom - top);
+
+    tutorialState.paneTop.style.left = "0px";
+    tutorialState.paneTop.style.top = "0px";
+    tutorialState.paneTop.style.width = `${vw}px`;
+    tutorialState.paneTop.style.height = `${top}px`;
+
+    tutorialState.paneRight.style.left = `${right}px`;
+    tutorialState.paneRight.style.top = `${top}px`;
+    tutorialState.paneRight.style.width = `${Math.max(0, vw - right)}px`;
+    tutorialState.paneRight.style.height = `${height}px`;
+
+    tutorialState.paneBottom.style.left = "0px";
+    tutorialState.paneBottom.style.top = `${bottom}px`;
+    tutorialState.paneBottom.style.width = `${vw}px`;
+    tutorialState.paneBottom.style.height = `${Math.max(0, vh - bottom)}px`;
+
+    tutorialState.paneLeft.style.left = "0px";
+    tutorialState.paneLeft.style.top = `${top}px`;
+    tutorialState.paneLeft.style.width = `${left}px`;
+    tutorialState.paneLeft.style.height = `${height}px`;
+
+    tutorialState.highlight.style.left = `${left}px`;
+    tutorialState.highlight.style.top = `${top}px`;
+    tutorialState.highlight.style.width = `${width}px`;
+    tutorialState.highlight.style.height = `${height}px`;
 
     tutorialState.titleEl.textContent = step.title;
     tutorialState.textEl.textContent = step.text;
@@ -868,18 +919,25 @@ function finishTutorial() {
 
 function maybeStartTutorial() {
   if (localStorage.getItem(tutorialStorageKey) === "done") return;
+  openTutorial();
+}
+
+function openTutorial() {
   if (!participantsData.length) return;
 
-  createTutorialStepElements();
-  renderTutorialStep();
+  if (!tutorialState) {
+    createTutorialStepElements();
+    window.addEventListener(
+      "resize",
+      () => {
+        if (tutorialState) renderTutorialStep();
+      },
+      { passive: true },
+    );
+  }
 
-  window.addEventListener(
-    "resize",
-    () => {
-      if (tutorialState) renderTutorialStep();
-    },
-    { passive: true },
-  );
+  tutorialState.index = 0;
+  renderTutorialStep();
 }
 
 chartButtons.forEach((button) => {
