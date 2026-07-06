@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Bolão ECI - Histórico</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
     <style>
       :root {
@@ -303,6 +304,25 @@
         display: none !important;
       }
 
+      .btn-img {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0, 0, 0, 0.07);
+        border: none;
+        color: var(--sub);
+        padding: 5px 6px;
+        border-radius: 6px;
+        cursor: pointer;
+        flex-shrink: 0;
+        transition: background 0.15s, color 0.15s;
+      }
+
+      .btn-img:hover {
+        background: var(--accent);
+        color: #fff;
+      }
+
       @media (max-width: 768px) {
         .page {
           padding: 16px;
@@ -339,7 +359,7 @@
         <button class="chart-btn" data-type="race">Gráfico de barras</button>
       </div>
 
-      <div class="chart-card">
+      <div class="chart-card" id="ranking-card">
         <div class="chart-head">
           <div class="chart-title">
             <h2 id="chart-title">Histórico de posições</h2>
@@ -370,6 +390,21 @@
               <div class="reference-options" id="reference-options"></div>
             </div>
           </div>
+
+          <button class="btn-img" onclick="exportImage()" title="Salvar imagem">
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+            >
+              <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+              <polyline points="7,10 12,15 17,10" />
+              <line x1="12" y1="15" x2="12" y2="3" />
+            </svg>
+          </button>
         </div>
         <div class="chart-legend hidden" id="chart-legend"></div>
         <div id="chart-container"></div>

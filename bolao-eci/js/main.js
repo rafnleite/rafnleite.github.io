@@ -60,6 +60,7 @@ let raceCurrentSorted = [];
 let seriesSelection = {};
 let referencePlayer = "";
 let referenceFilterText = "";
+let resizeRenderTimer = null;
 
 function initChart() {
   if (!chart) {
@@ -568,6 +569,35 @@ function renderChart() {
   }
 }
 
+function exportImage() {
+  const card = document.getElementById("ranking-card");
+  if (!card || typeof html2canvas !== "function") return;
+
+  html2canvas(card, {
+    scale: 2,
+    useCORS: false,
+    allowTaint: false,
+    backgroundColor: "#ffffff",
+    logging: false,
+  }).then((canvas) => {
+    const a = document.createElement("a");
+    a.download = "bolao_eci_ranking.png";
+    a.href = canvas.toDataURL("image/png");
+    a.click();
+  });
+}
+
+function scheduleChartRerender() {
+  if (!snapshots.length) return;
+  if (resizeRenderTimer) {
+    clearTimeout(resizeRenderTimer);
+  }
+  resizeRenderTimer = setTimeout(() => {
+    resizeRenderTimer = null;
+    renderChart();
+  }, 160);
+}
+
 chartButtons.forEach((button) => {
   button.addEventListener("click", () => setChartType(button.dataset.type));
 });
@@ -630,11 +660,8 @@ async function init() {
 
     setChartType("positions");
 
-    window.addEventListener("resize", () => {
-      if (chart) {
-        chart.resize();
-      }
-    });
+    window.addEventListener("resize", scheduleChartRerender);
+    window.addEventListener("orientationchange", scheduleChartRerender);
   } catch (error) {
     chartSubtitle.textContent = "Erro ao carregar o CSV de pontuação.";
     dateDisplay.textContent = "Erro ao carregar CSV";

@@ -2733,6 +2733,7 @@
       var seriesSelection = {};
       var relativeReferenceName = "";
       var referenceFilterText = "";
+      var chartResizeTimer = null;
 
       function abbrevTeam(nome) {
         if (!nome) return "?";
@@ -3020,9 +3021,24 @@
         }
       }
 
-      window.addEventListener("resize", function () {
-        if (eChart) eChart.resize();
-      });
+      function scheduleChartRerender() {
+        if (chartResizeTimer) {
+          clearTimeout(chartResizeTimer);
+        }
+        chartResizeTimer = setTimeout(function () {
+          chartResizeTimer = null;
+          var chartVisible =
+            document.getElementById("view-chart").style.display !== "none";
+          if (chartVisible) {
+            renderChart();
+          } else if (eChart) {
+            eChart.resize();
+          }
+        }, 160);
+      }
+
+      window.addEventListener("resize", scheduleChartRerender);
+      window.addEventListener("orientationchange", scheduleChartRerender);
 
       // ── Chart type menu ────────────────────────────────────────────────────────
       function toggleChartMenu(e) {
