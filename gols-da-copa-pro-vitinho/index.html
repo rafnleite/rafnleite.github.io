@@ -18,6 +18,7 @@
       --desempate: #ef8a17;
       --virada: #d7263d;
       --empate: #1c8c5e;
+      --diminuindo: #ea4f95;
       --ampliando: #1e5bb5;
       --axis: #bbc8d6;
       --shadow: 0 14px 40px rgba(18, 37, 64, 0.14);
@@ -344,6 +345,8 @@
           style="background: var(--virada)"></span>Desempate - Virada</button>
       <button class="legend-item" data-classificacao="Empate" type="button"><span class="dot-preview"
           style="background: var(--empate)"></span>Empate</button>
+        <button class="legend-item" data-classificacao="Diminuindo o placar" type="button"><span class="dot-preview"
+          style="background: var(--diminuindo)"></span>Diminuindo o placar</button>
       <button class="legend-item" data-classificacao="Ampliando o placar" type="button"><span class="dot-preview"
           style="background: var(--ampliando)"></span>Ampliando o placar</button>
     </div>
@@ -374,6 +377,7 @@
       'Desempate': 'var(--desempate)',
       'Desempate - Virada': 'var(--virada)',
       'Empate': 'var(--empate)',
+      'Diminuindo o placar': 'var(--diminuindo)',
       'Ampliando o placar': 'var(--ampliando)'
     };
 
@@ -425,6 +429,10 @@
 
       if (scorerWasLeading) {
         return 'Ampliando o placar';
+      }
+
+      if (scorerWasTrailing) {
+        return 'Diminuindo o placar';
       }
 
       if (scorerNowLeading) {
