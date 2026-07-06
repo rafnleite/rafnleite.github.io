@@ -765,7 +765,7 @@ function createTutorialStepElements() {
     steps: [
       {
         title: "Tipo de gráfico",
-        text: "Troque aqui entre posições, pontuação relativa e race chart.",
+        text: "Escolha entre os tipos de gráfico disponíveis: Histórico de posições, Pontuação relativa e Gráfico de corrida de barras.",
         target: "#chart-type-toolbar",
         prepare() {
           setChartType("positions");
@@ -773,7 +773,7 @@ function createTutorialStepElements() {
       },
       {
         title: "Filtro pela legenda",
-        text: "Clique nos nomes para mostrar ou esconder participantes no gráfico.",
+        text: "Clique nos nomes dos apostadores para mostrar ou esconder participantes no gráfico.",
         target: "#chart-legend",
         prepare() {
           setChartType("positions");
@@ -781,14 +781,14 @@ function createTutorialStepElements() {
       },
       {
         title: "Referência da pontuação",
-        text: "Escolha o líder do dia ou um apostador como referência do comparativo.",
+        text: "Escolha o líder do dia ou um apostador específico como referência para o gráfico de pontuação comparativa.",
         target: "#reference-controls",
         prepare() {
           setChartType("points-leader");
         },
       },
       {
-        title: "Play no race",
+        title: "Play no gráfico de corrida de barras",
         text: "Use Play para animar a evolução diária no gráfico de barras.",
         target: "#race-controls",
         prepare() {
