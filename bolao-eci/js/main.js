@@ -61,6 +61,8 @@ let seriesSelection = {};
 let referencePlayer = "";
 let referenceFilterText = "";
 let resizeRenderTimer = null;
+const tutorialStorageKey = "bolao-eci-tour-v1";
+let tutorialState = null;
 
 function initChart() {
   if (!chart) {
@@ -598,6 +600,288 @@ function scheduleChartRerender() {
   }, 160);
 }
 
+function ensureTutorialStyle() {
+  if (document.getElementById("onboarding-tour-style")) return;
+
+  const style = document.createElement("style");
+  style.id = "onboarding-tour-style";
+  style.textContent = `
+    .tour-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.58);
+      z-index: 9998;
+      backdrop-filter: blur(2px);
+    }
+
+    .tour-highlight {
+      position: fixed;
+      border: 2px solid #22c55e;
+      border-radius: 12px;
+      box-shadow: 0 0 0 9999px rgba(15, 23, 42, 0.58);
+      z-index: 9999;
+      pointer-events: none;
+      transition: all 0.18s ease;
+    }
+
+    .tour-card {
+      position: fixed;
+      width: min(320px, calc(100vw - 24px));
+      background: #ffffff;
+      border-radius: 14px;
+      border: 1px solid #dbe2ea;
+      box-shadow: 0 20px 48px rgba(15, 23, 42, 0.22);
+      z-index: 10000;
+      padding: 12px;
+      color: #1f2937;
+    }
+
+    .tour-title {
+      margin: 0 0 4px;
+      font-size: 0.92rem;
+      font-weight: 800;
+    }
+
+    .tour-text {
+      margin: 0;
+      font-size: 0.82rem;
+      color: #4b5563;
+      line-height: 1.35;
+    }
+
+    .tour-actions {
+      margin-top: 10px;
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .tour-btn {
+      border: 1px solid #dbe2ea;
+      background: #ffffff;
+      color: #374151;
+      border-radius: 8px;
+      padding: 6px 10px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .tour-btn.primary {
+      background: #166534;
+      border-color: #166534;
+      color: #ffffff;
+    }
+  `;
+
+  document.head.appendChild(style);
+}
+
+function createTutorialStepElements() {
+  ensureTutorialStyle();
+
+  const overlay = document.createElement("div");
+  overlay.className = "tour-overlay";
+
+  const highlight = document.createElement("div");
+  highlight.className = "tour-highlight";
+
+  const card = document.createElement("div");
+  card.className = "tour-card";
+
+  const titleEl = document.createElement("h3");
+  titleEl.className = "tour-title";
+
+  const textEl = document.createElement("p");
+  textEl.className = "tour-text";
+
+  const actions = document.createElement("div");
+  actions.className = "tour-actions";
+
+  const leftWrap = document.createElement("div");
+  const rightWrap = document.createElement("div");
+
+  const skipBtn = document.createElement("button");
+  skipBtn.type = "button";
+  skipBtn.className = "tour-btn";
+  skipBtn.textContent = "Pular";
+
+  const prevBtn = document.createElement("button");
+  prevBtn.type = "button";
+  prevBtn.className = "tour-btn";
+  prevBtn.textContent = "Voltar";
+
+  const nextBtn = document.createElement("button");
+  nextBtn.type = "button";
+  nextBtn.className = "tour-btn primary";
+  nextBtn.textContent = "Próximo";
+
+  leftWrap.appendChild(skipBtn);
+  rightWrap.appendChild(prevBtn);
+  rightWrap.appendChild(nextBtn);
+  actions.appendChild(leftWrap);
+  actions.appendChild(rightWrap);
+
+  card.appendChild(titleEl);
+  card.appendChild(textEl);
+  card.appendChild(actions);
+
+  document.body.appendChild(overlay);
+  document.body.appendChild(highlight);
+  document.body.appendChild(card);
+
+  tutorialState = {
+    index: 0,
+    overlay,
+    highlight,
+    card,
+    titleEl,
+    textEl,
+    prevBtn,
+    nextBtn,
+    skipBtn,
+    steps: [
+      {
+        title: "Tipo de gráfico",
+        text: "Troque aqui entre posições, pontuação relativa e race chart.",
+        target: "#chart-type-toolbar",
+        prepare() {
+          setChartType("positions");
+        },
+      },
+      {
+        title: "Filtro pela legenda",
+        text: "Clique nos nomes para mostrar ou esconder participantes no gráfico.",
+        target: "#chart-legend",
+        prepare() {
+          setChartType("positions");
+        },
+      },
+      {
+        title: "Referência da pontuação",
+        text: "Escolha o líder do dia ou um apostador como referência do comparativo.",
+        target: "#reference-controls",
+        prepare() {
+          setChartType("points-leader");
+        },
+      },
+      {
+        title: "Play no race",
+        text: "Use Play para animar a evolução diária no gráfico de barras.",
+        target: "#race-controls",
+        prepare() {
+          setChartType("race");
+        },
+      },
+    ],
+  };
+
+  tutorialState.prevBtn.addEventListener("click", () => {
+    if (!tutorialState) return;
+    tutorialState.index = Math.max(0, tutorialState.index - 1);
+    renderTutorialStep();
+  });
+
+  tutorialState.nextBtn.addEventListener("click", () => {
+    if (!tutorialState) return;
+    const isLast = tutorialState.index >= tutorialState.steps.length - 1;
+    if (isLast) {
+      finishTutorial();
+      return;
+    }
+    tutorialState.index += 1;
+    renderTutorialStep();
+  });
+
+  tutorialState.skipBtn.addEventListener("click", finishTutorial);
+}
+
+function positionTutorialCard(targetRect) {
+  if (!tutorialState) return;
+
+  const card = tutorialState.card;
+  const margin = 12;
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
+
+  card.style.left = "12px";
+  card.style.top = "12px";
+
+  const cardRect = card.getBoundingClientRect();
+  const canPlaceBelow = targetRect.bottom + margin + cardRect.height < vh;
+  const top = canPlaceBelow
+    ? targetRect.bottom + margin
+    : Math.max(12, targetRect.top - cardRect.height - margin);
+
+  const centeredLeft = targetRect.left + targetRect.width / 2 - cardRect.width / 2;
+  const left = Math.min(
+    vw - cardRect.width - 12,
+    Math.max(12, centeredLeft),
+  );
+
+  card.style.left = `${Math.round(left)}px`;
+  card.style.top = `${Math.round(top)}px`;
+}
+
+function renderTutorialStep() {
+  if (!tutorialState) return;
+
+  const step = tutorialState.steps[tutorialState.index];
+  if (!step) return;
+
+  if (typeof step.prepare === "function") {
+    step.prepare();
+  }
+
+  window.requestAnimationFrame(() => {
+    const target = document.querySelector(step.target);
+    if (!target) return;
+
+    const rect = target.getBoundingClientRect();
+    const pad = 6;
+
+    tutorialState.highlight.style.left = `${Math.round(rect.left - pad)}px`;
+    tutorialState.highlight.style.top = `${Math.round(rect.top - pad)}px`;
+    tutorialState.highlight.style.width = `${Math.round(rect.width + pad * 2)}px`;
+    tutorialState.highlight.style.height = `${Math.round(rect.height + pad * 2)}px`;
+
+    tutorialState.titleEl.textContent = step.title;
+    tutorialState.textEl.textContent = step.text;
+    tutorialState.prevBtn.style.visibility = tutorialState.index === 0 ? "hidden" : "visible";
+    tutorialState.nextBtn.textContent =
+      tutorialState.index === tutorialState.steps.length - 1 ? "Concluir" : "Próximo";
+
+    positionTutorialCard(rect);
+  });
+}
+
+function finishTutorial() {
+  localStorage.setItem(tutorialStorageKey, "done");
+  if (!tutorialState) return;
+
+  tutorialState.overlay.remove();
+  tutorialState.highlight.remove();
+  tutorialState.card.remove();
+  tutorialState = null;
+  setChartType("positions");
+}
+
+function maybeStartTutorial() {
+  if (localStorage.getItem(tutorialStorageKey) === "done") return;
+  if (!participantsData.length) return;
+
+  createTutorialStepElements();
+  renderTutorialStep();
+
+  window.addEventListener(
+    "resize",
+    () => {
+      if (tutorialState) renderTutorialStep();
+    },
+    { passive: true },
+  );
+}
+
 chartButtons.forEach((button) => {
   button.addEventListener("click", () => setChartType(button.dataset.type));
 });
@@ -659,6 +943,7 @@ async function init() {
     }
 
     setChartType("positions");
+    maybeStartTutorial();
 
     window.addEventListener("resize", scheduleChartRerender);
     window.addEventListener("orientationchange", scheduleChartRerender);
