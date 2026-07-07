@@ -272,6 +272,12 @@
 </div>
 
 <script>
+    const PONTUACAO_TENDENCIA = 8;
+    const BONUS_EXATO = 3;
+    const MAXIMA_PROXIMIDADE = 7;
+    const PENALIZACAO_DIST = 1.5;
+    const PONTUACAO_MAXIMA_MODELO_1 = PONTUACAO_TENDENCIA + MAXIMA_PROXIMIDADE + BONUS_EXATO;
+
     const inputA = document.getElementById('realA');
     const inputB = document.getElementById('realB');
     const matrixBody1 = document.getElementById('matrix-body-1');
@@ -283,16 +289,17 @@
         const realOutcome = Math.sign(realA - realB);
         const betOutcome = Math.sign(betA - betB);
         
-        if (realOutcome === betOutcome) trendPoints = 5;
+        if (realOutcome === betOutcome) trendPoints = PONTUACAO_TENDENCIA;
 
         const diffA = Math.abs(betA - realA);
         const diffB = Math.abs(betB - realB);
         const diffSaldo = Math.abs((betA - betB) - (realA - realB));
         
-        let proximityPoints = 5 - diffA - diffB - diffSaldo;
+        const totalDistance = diffA + diffB + diffSaldo;
+        let proximityPoints = MAXIMA_PROXIMIDADE - (totalDistance * PENALIZACAO_DIST);
         if (proximityPoints < 0) proximityPoints = 0;
 
-        let exactBonus = (realA === betA && realB === betB) ? 3 : 0;
+        let exactBonus = (realA === betA && realB === betB) ? BONUS_EXATO : 0;
 
         return trendPoints + proximityPoints + exactBonus;
     }
@@ -369,7 +376,7 @@
     }
 
     function updateAll() {
-        renderTable(matrixBody1, 13, calculateModel1);
+        renderTable(matrixBody1, PONTUACAO_MAXIMA_MODELO_1, calculateModel1);
         renderTable(matrixBody2, 18, calculateModel2);
     }
 
