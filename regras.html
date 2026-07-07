@@ -174,20 +174,18 @@
             <p>A pontuação de cada jogo é calculada somando três componentes: <strong>Resultado Principal</strong>, <strong>Proximidade</strong> e <strong>Bônus de Placar Exato</strong>.</p>
             
             <ul class="rules-list">
-                <li><strong>Acerto de Tendência (+5 pontos):</strong> Se você acertar o vencedor do jogo (Time A ou Time B) ou acertar que o jogo terminará em empate, você garante 5 pontos iniciais.</li>
-                <li><strong>Bônus de Placar Exato (+3 pontos):</strong> Se você acertar cirurgicamente o placar do jogo, ganha 3 pontos extras além de todas as outras pontuações.</li>
-                <li><strong>Pontuação de Proximidade (Até 5 pontos):</strong> Baseado no quão perto sua aposta chegou do placar real. Ela começa em 5 pontos e sofre subtrações de acordo com os erros.</li>
+                <li><strong>Acerto de Tendência (+<span data-model1-var="PONTUACAO_TENDENCIA"></span> pontos):</strong> Se você acertar o vencedor do jogo (Time A ou Time B) ou acertar que o jogo terminará em empate, você garante <span data-model1-var="PONTUACAO_TENDENCIA"></span> pontos iniciais.</li>
+                <li><strong>Bônus de Placar Exato (+<span data-model1-var="BONUS_EXATO"></span> pontos):</strong> Se você acertar cirurgicamente o placar do jogo, ganha <span data-model1-var="BONUS_EXATO"></span> pontos extras além de todas as outras pontuações.</li>
+                <li><strong>Pontuação de Proximidade (Até <span data-model1-var="MAXIMA_PROXIMIDADE"></span> pontos):</strong> Baseado no quão perto sua aposta chegou do placar real. Ela começa em <span data-model1-var="MAXIMA_PROXIMIDADE"></span> pontos e sofre subtrações de acordo com os erros.</li>
             </ul>
 
             <h3>Cálculo Detalhado da Proximidade</h3>
-            <p>A pontuação de proximidade decresce a partir de 5 pontos seguindo a regra abaixo (nunca ficando negativa):</p>
+            <p>A pontuação de proximidade decresce a partir de <span data-model1-var="MAXIMA_PROXIMIDADE"></span> pontos, perdendo <span data-model1-var="PENALIZACAO_DIST"></span> por passo de distância total (nunca ficando negativa):</p>
             <div class="formula">
-                Pontos de Proximidade = 5 <br>
-                - [Diferença de gols do Time A]<br>
-                - [Diferença de gols do Time B]<br>
-                - [Diferença do saldo de gols]
+                Pontos de Proximidade = <span data-model1-var="MAXIMA_PROXIMIDADE"></span> <br>
+                - [<span data-model1-var="PENALIZACAO_DIST"></span> × (Diferença de gols do Time A + Diferença de gols do Time B + Diferença do saldo de gols)]
             </div>
-            <p><small style="display:block; margin-top:10px;">*Pontuação Máxima Absoluta: <strong>13 pontos</strong></small></p>
+            <p><small style="display:block; margin-top:10px;">*Pontuação Máxima Absoluta: <strong><span data-model1-var="PONTUACAO_MAXIMA_MODELO_1"></span> pontos</strong></small></p>
         </div>
 
         <!-- Detalhamento do Modelo 2 -->
@@ -224,7 +222,7 @@
 
     <!-- SIMULADOR 1 -->
     <section class="card">
-        <h3>Grade do Modelo 1: Proximidade Dinâmica (Teto: 13 pts)</h3>
+        <h3>Grade do Modelo 1: Proximidade Dinâmica (Teto: <span data-model1-var="PONTUACAO_MAXIMA_MODELO_1"></span> pts)</h3>
         <p>As linhas indicam os gols apostados para o <strong>Time A</strong> e as colunas os gols para o <strong>Time B</strong>.</p>
         
         <div class="table-container">
@@ -302,6 +300,28 @@
         let exactBonus = (realA === betA && realB === betB) ? BONUS_EXATO : 0;
 
         return trendPoints + proximityPoints + exactBonus;
+    }
+
+    function syncModel1RuleTexts() {
+        const formatValue = (value) => Number.isInteger(value)
+            ? String(value)
+            : value.toLocaleString('pt-BR', { maximumFractionDigits: 2 });
+
+        const model1Vars = {
+            PONTUACAO_TENDENCIA,
+            BONUS_EXATO,
+            MAXIMA_PROXIMIDADE,
+            PENALIZACAO_DIST,
+            PONTUACAO_MAXIMA_MODELO_1
+        };
+
+        document.querySelectorAll('[data-model1-var]').forEach((element) => {
+            const variableName = element.dataset.model1Var;
+            const value = model1Vars[variableName];
+            if (value !== undefined) {
+                element.textContent = formatValue(value);
+            }
+        });
     }
 
     // CÁLCULO MODELO 2: FAIXAS FIXAS (CORRIGIDO)
@@ -393,6 +413,7 @@
     });
 
     // Estado Inicial
+    syncModel1RuleTexts();
     updateAll();
 </script>
 
