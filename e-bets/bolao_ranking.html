@@ -492,6 +492,51 @@
         line-height: 1.7;
       }
 
+      .rank-phase-bar {
+        padding: 10px 16px 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .rank-phase-wrap {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: var(--bg);
+        border: 1.5px solid var(--border);
+        border-radius: 7px;
+        padding: 5px 10px;
+      }
+
+      .rank-phase-label {
+        font-family: "Inter", sans-serif;
+        font-size: 0.68rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+        color: var(--sub);
+      }
+
+      .rank-phase-select {
+        min-width: 250px;
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        outline: none;
+        background: var(--white);
+        font-family: "Inter", sans-serif;
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: var(--text);
+        padding: 4px 8px;
+      }
+
+      .rank-phase-select:focus,
+      .rank-phase-select:hover {
+        border-color: var(--accent);
+      }
+
       /* ── RANKING TABLE ──────────────────────── */
       .rank-table {
         width: 100%;
@@ -1245,6 +1290,15 @@
           grid-template-columns: 1fr 1fr;
         }
 
+        .rank-phase-wrap {
+          width: 100%;
+        }
+
+        .rank-phase-select {
+          min-width: 0;
+          width: 100%;
+        }
+
         .rank-table th,
         .rank-table td {
           padding: 7px 7px;
@@ -1324,6 +1378,36 @@
                 <line x1="12" y1="15" x2="12" y2="3" />
               </svg>
             </button>
+          </div>
+          <div class="rank-phase-bar">
+            <div class="rank-phase-wrap">
+              <span class="rank-phase-label">Fase</span>
+              <select
+                class="rank-phase-select"
+                id="phase-filter"
+                onchange="setPhaseFilter(this.value)"
+              >
+                <option value="all">Copa inteira</option>
+                <option value="group-round-1">
+                  Primeira rodada da fase de grupos (J1-J24)
+                </option>
+                <option value="group-round-2">
+                  Segunda rodada da fase de grupos (J25-J48)
+                </option>
+                <option value="group-round-3">
+                  Terceira rodada da fase de grupos (J49-J72)
+                </option>
+                <option value="group-all">Fase de grupos (J1-J72)</option>
+                <option value="knockout-all">Mata-mata (J73-J104)</option>
+                <option value="round-of-32">16-avos (J73-J88)</option>
+                <option value="round-of-16">Oitavas (J89-J96)</option>
+                <option value="quarterfinals">Quartas (J97-J100)</option>
+                <option value="semifinals">Semi (J101-J102)</option>
+                <option value="finals">
+                  Final e decisão de 3º lugar (J103-J104)
+                </option>
+              </select>
+            </div>
           </div>
           <div id="view-table">
             <div class="info-strip">
@@ -1732,6 +1816,43 @@
       // { nome: { real_pts, sim_pts, real_res, sim_res, real_ven, sim_ven, real_emp, sim_emp } }
       var simScores = {};
       // { id: { a, b } | null }
+      var PHASE_FILTERS = {
+        all: { label: "Copa inteira", start: 1, end: null },
+        "group-round-1": {
+          label: "Primeira rodada da fase de grupos",
+          start: 1,
+          end: 24,
+        },
+        "group-round-2": {
+          label: "Segunda rodada da fase de grupos",
+          start: 25,
+          end: 48,
+        },
+        "group-round-3": {
+          label: "Terceira rodada da fase de grupos",
+          start: 49,
+          end: 72,
+        },
+        "group-all": {
+          label: "Fase de grupos",
+          start: 1,
+          end: 72,
+        },
+        "knockout-all": {
+          label: "Mata-mata",
+          start: 73,
+          end: 104,
+        },
+        "round-of-32": { label: "16-avos", start: 73, end: 88 },
+        "round-of-16": { label: "Oitavas", start: 89, end: 96 },
+        quarterfinals: { label: "Quartas", start: 97, end: 100 },
+        semifinals: { label: "Semi", start: 101, end: 102 },
+        finals: {
+          label: "Final e decisão de 3º lugar",
+          start: 103,
+          end: 104,
+        },
+      };
 
       function emptyEntry() {
         return {
@@ -1754,17 +1875,51 @@
         };
       }
 
+      function getCurrentPhaseFilter() {
+        return PHASE_FILTERS[currentPhaseFilterKey] || PHASE_FILTERS.all;
+      }
+
+      function getActiveGames() {
+        var phase = getCurrentPhaseFilter();
+        return JOGOS.filter(function (j, idx) {
+          var gameNumber = idx + 1;
+          return (
+            gameNumber >= phase.start &&
+            (phase.end === null || gameNumber <= phase.end)
+          );
+        });
+      }
+
+      function getAllPlayerNames() {
+        var seen = {};
+        JOGOS.forEach(function (j) {
+          [].concat(j.apostadores_a, j.apostadores_empate, j.apostadores_b).forEach(
+            function (a) {
+              seen[a.nome] = true;
+            },
+          );
+        });
+        return Object.keys(seen).sort(function (a, b) {
+          return a.localeCompare(b, "pt-BR", { sensitivity: "base" });
+        });
+      }
+
+      function refreshScoreboard() {
+        buildScoreboard();
+        recomputeSim();
+      }
+
       function buildScoreboard() {
         scoreboard = {};
-        JOGOS.forEach(function (j) {
+        getAllPlayerNames().forEach(function (nome) {
+          scoreboard[nome] = emptyEntry();
+        });
+        getActiveGames().forEach(function (j) {
           var all = [].concat(
             j.apostadores_a,
             j.apostadores_empate,
             j.apostadores_b,
           );
-          all.forEach(function (a) {
-            if (!scoreboard[a.nome]) scoreboard[a.nome] = emptyEntry();
-          });
           if (j.gols_a === null || j.gols_b === null) return;
           var mult = getMultiplier(j);
           var realWinnerId = resolveWinnerId(j, j.gols_a, j.gols_b);
@@ -1804,7 +1959,7 @@
           s.sim_exa = 0;
           s.sim_game_pts = {};
         });
-        JOGOS.forEach(function (j) {
+        getActiveGames().forEach(function (j) {
           if (j.gols_a !== null && j.gols_b !== null) return;
           var s = getSimEntryComplete(j);
           if (!s) return;
@@ -1842,6 +1997,11 @@
           renderChart();
       }
 
+      function setPhaseFilter(key) {
+        currentPhaseFilterKey = PHASE_FILTERS[key] ? key : "all";
+        refreshScoreboard();
+      }
+
       function toggleShowSim(checked) {
         showSim = checked;
         // keep both toggles in sync
@@ -1873,6 +2033,7 @@
 
       // ── Render ranking ───────────────────────────────────────────────────────────
       function renderRanking() {
+        var activeGames = getActiveGames();
         var entries = Object.keys(scoreboard).map(function (nome) {
           var s = scoreboard[nome];
           var simPts = showSim ? s.sim_pts : 0;
@@ -1884,7 +2045,7 @@
           var simExa = showSim ? s.sim_exa : 0;
           var simGP = showSim ? s.sim_game_pts : {};
           var tgp = {};
-          JOGOS.forEach(function (j) {
+          activeGames.forEach(function (j) {
             tgp[j.id] = (s.real_game_pts[j.id] || 0) + (simGP[j.id] || 0);
           });
           return {
@@ -1911,8 +2072,8 @@
             if (getRes(b) !== getRes(a)) return getRes(b) - getRes(a);
             if (getVen(b) !== getVen(a)) return getVen(b) - getVen(a);
             if (getEmp(b) !== getEmp(a)) return getEmp(b) - getEmp(a);
-            for (var i = JOGOS.length - 1; i >= 0; i--) {
-              var id = JOGOS[i].id;
+            for (var i = activeGames.length - 1; i >= 0; i--) {
+              var id = activeGames[i].id;
               var pa = getGP(a, id),
                 pb = getGP(b, id);
               if (pb !== pa) return pb - pa;
@@ -1966,8 +2127,8 @@
           if (a.total !== b.total || a.total_res !== b.total_res) return false;
           if (a.total_ven !== b.total_ven || a.total_emp !== b.total_emp)
             return false;
-          for (var i = JOGOS.length - 1; i >= 0; i--) {
-            var id = JOGOS[i].id;
+          for (var i = activeGames.length - 1; i >= 0; i--) {
+            var id = activeGames[i].id;
             if ((a.total_game_pts[id] || 0) !== (b.total_game_pts[id] || 0))
               return false;
           }
@@ -1978,8 +2139,8 @@
             return false;
           if (a.real_ven !== b.real_ven || a.real_emp !== b.real_emp)
             return false;
-          for (var i = JOGOS.length - 1; i >= 0; i--) {
-            var id = JOGOS[i].id;
+          for (var i = activeGames.length - 1; i >= 0; i--) {
+            var id = activeGames[i].id;
             if ((a.real_game_pts[id] || 0) !== (b.real_game_pts[id] || 0))
               return false;
           }
@@ -2017,7 +2178,7 @@
         });
         var maxPts = sorted.length ? Math.max(sorted[0].total, 1) : 1;
 
-        var recentGames = JOGOS.filter(function (j) {
+        var recentGames = activeGames.filter(function (j) {
           if (j.gols_a !== null && j.gols_b !== null) return true;
           if (!showSim) return false;
           return !!getSimEntryComplete(j);
@@ -2182,12 +2343,13 @@
       function updateSubtitle() {
         var el = document.getElementById("rank-sub");
         if (!el) return;
+        var phaseLabel = getCurrentPhaseFilter().label;
         var hasSim = Object.keys(scoreboard).some(function (k) {
           return scoreboard[k].sim_pts > 0;
         });
         el.textContent = hasSim
-          ? "Pontos reais + simulados"
-          : "Pontos dos jogos já realizados";
+          ? phaseLabel + " · pontos reais + simulados"
+          : phaseLabel + " · pontos dos jogos já realizados";
       }
 
       function isMobileLayout() {
@@ -2727,6 +2889,7 @@
       var raceSpeed = 750;
       var raceCurrentSorted = [];
       var currentChartType = "positions";
+      var currentPhaseFilterKey = "all";
       var showSim = true;
       var sidebarVisible = true;
       var sidebarTouched = false;
@@ -2751,7 +2914,8 @@
 
       function buildGameHistory() {
         // Include simulated games when showSim is on
-        var done = JOGOS.filter(function (j) {
+        var activeGames = getActiveGames();
+        var done = activeGames.filter(function (j) {
           if (j.gols_a !== null && j.gols_b !== null) return true;
           if (!showSim) return false;
           return !!getSimEntryComplete(j);
@@ -3758,8 +3922,7 @@
         }
 
         try {
-          buildScoreboard();
-          renderRanking();
+          refreshScoreboard();
           renderSidebar();
           syncSidebarByViewport();
         } catch (err) {
@@ -3812,8 +3975,7 @@
           });
 
           JOGOS = fresh;
-          buildScoreboard();
-          renderRanking();
+          refreshScoreboard();
           renderSidebar();
 
           // Flash goal numbers in sidebar
