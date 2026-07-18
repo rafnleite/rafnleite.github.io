@@ -86,6 +86,10 @@ function bolaoCalcBreakdown(betA, betB, realA, realB) {
 }
 
 function bolaoGetMultiplier(jogo) {
+  var faseId = Number((jogo || {}).id_fase);
+  if (faseId === 6) return 2;
+  if (faseId === 7) return 4;
+
   var g = ((jogo || {}).grupo || '').toUpperCase().trim();
   if (!g || /^[A-L]$/.test(g)) return 1;
   if (/^3/.test(g) || g === 'TER') return 2;
