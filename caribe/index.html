@@ -1,514 +1,96 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ranking de viagens ao Caribe</title>
 <style>
-  :root {
-    --bg: #f4f7fb;
-    --card: #ffffff;
-    --ink: #172033;
-    --muted: #657087;
-    --line: #dfe5ee;
-    --accent: #0b6efd;
-    --accent2: #0a58ca;
-    --ok: #137333;
-    --warn: #9a6700;
-    --danger: #b42318;
-    --shadow: 0 10px 30px rgba(23,32,51,.08);
-  }
-  * { box-sizing: border-box; }
-  body { margin: 0; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: var(--ink); background: var(--bg); }
-  header { background: linear-gradient(135deg,#0b6efd,#3d9df5); color: white; padding: 28px 22px; }
-  .wrap { max-width: 1380px; margin: 0 auto; }
-  h1 { margin: 0 0 6px; font-size: clamp(26px,4vw,42px); }
-  header p { margin: 0; opacity: .92; }
-  main { padding: 22px; }
-  .grid { display: grid; grid-template-columns: 360px 1fr; gap: 20px; align-items: start; }
-  .card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; box-shadow: var(--shadow); }
-  .panel { padding: 18px; position: sticky; top: 16px; }
-  .panel h2, .results h2 { margin: 0 0 14px; font-size: 18px; }
-  .section { padding: 14px 0; border-top: 1px solid var(--line); }
-  .section:first-of-type { border-top: 0; padding-top: 0; }
-  label.title { display:block; font-weight: 700; margin-bottom: 8px; }
-  .filebox { display: grid; gap: 8px; }
-  input[type=file], select, button { font: inherit; }
-  input[type=file] { width:100%; font-size: 12px; }
-  .inline { display:flex; flex-wrap:wrap; gap:8px; }
-  .chip { display:flex; align-items:center; gap:7px; border:1px solid var(--line); border-radius:999px; padding:7px 10px; background:#fbfcfe; cursor:pointer; user-select:none; }
-  .chip input { margin:0; }
-  button { border:0; border-radius:10px; padding:10px 13px; cursor:pointer; font-weight:700; }
-  .primary { background:var(--accent); color:white; }
-  .primary:hover { background:var(--accent2); }
-  .secondary { background:#edf3ff; color:#164b91; }
-  button:disabled { opacity:.5; cursor:not-allowed; }
-  .small { font-size:12px; color:var(--muted); line-height:1.45; }
-  .status { border-radius:10px; padding:10px 12px; margin-top:10px; font-size:13px; background:#eef5ff; color:#174a8b; }
-  .status.ok { background:#ecf8ef; color:var(--ok); }
-  .status.warn { background:#fff7df; color:var(--warn); }
-  .status.err { background:#fff0ee; color:var(--danger); }
-  .stats { display:grid; grid-template-columns:repeat(4,minmax(120px,1fr)); gap:10px; margin-bottom:14px; }
-  .stat { padding:14px; border:1px solid var(--line); border-radius:12px; background:#fbfcfe; }
-  .stat .n { font-size:22px; font-weight:800; }
-  .stat .l { font-size:12px; color:var(--muted); margin-top:4px; }
-  .results { padding:18px; min-width:0; }
-  .toolbar { display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:12px; }
-  .toolbar select { border:1px solid var(--line); border-radius:9px; padding:8px; background:white; }
-  .tablewrap { overflow:auto; border:1px solid var(--line); border-radius:12px; }
-  table { border-collapse:collapse; width:100%; min-width:1050px; background:white; }
-  th,td { padding:10px 11px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; }
-  th { position:sticky; top:0; background:#f7f9fc; z-index:1; font-size:12px; color:#4b5870; text-transform:uppercase; letter-spacing:.03em; }
-  td { font-size:13px; }
-  tr:last-child td { border-bottom:0; }
-  tbody tr:hover { background:#f8fbff; }
-  .rank { font-size:16px; font-weight:800; width:55px; }
-  .route { font-weight:700; white-space:nowrap; }
-  .money { white-space:nowrap; font-variant-numeric:tabular-nums; }
-  .total { font-weight:800; color:#0b5ed7; }
-  .muted { color:var(--muted); }
-  .badge { display:inline-block; border-radius:999px; padding:3px 7px; font-size:11px; font-weight:700; background:#eef3fb; color:#42516c; }
-  .empty { padding:38px; text-align:center; color:var(--muted); }
-  .footnote { margin-top:12px; font-size:12px; color:var(--muted); }
-  .editor-toolbar { display:grid; grid-template-columns: 1fr auto auto; gap:8px; margin-bottom:10px; }
-  .editor-toolbar input, .editor-toolbar select, .price-input { border:1px solid var(--line); border-radius:9px; padding:8px 9px; background:white; font:inherit; }
-  .editor-wrap { max-height:360px; overflow:auto; border:1px solid var(--line); border-radius:10px; }
-  .editor-table { min-width:0; width:100%; }
-  .editor-table th, .editor-table td { padding:8px; font-size:12px; }
-  .price-input { width:105px; text-align:right; }
-  .changed { background:#fff8dd !important; }
-  .session-badge { display:inline-block; margin-left:6px; padding:2px 6px; border-radius:999px; background:#fff1bf; color:#7a5600; font-size:10px; font-weight:800; }
-  @media (max-width: 920px) {
-    .grid { grid-template-columns:1fr; }
-    .panel { position:static; }
-    .stats { grid-template-columns:repeat(2,1fr); }
-  }
+:root{--bg:#f4f7fb;--card:#fff;--ink:#172033;--muted:#657087;--line:#dfe5ee;--accent:#0b6efd;--accent2:#0a58ca;--danger:#b42318;--warn:#9a6700;--shadow:0 10px 30px rgba(23,32,51,.08)}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--bg)}
+header{background:linear-gradient(135deg,#0b6efd,#3d9df5);color:#fff;padding:26px 22px}.wrap{max-width:1500px;margin:auto}h1{margin:0 0 6px;font-size:clamp(26px,4vw,40px)}header p{margin:0;opacity:.93}
+main{padding:22px}.grid{display:grid;grid-template-columns:300px 1fr;gap:20px;align-items:start}.card{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow)}.panel{padding:18px;position:sticky;top:16px}.results{padding:18px;min-width:0}.panel h2,.results h2{margin:0 0 14px;font-size:18px}.section{padding:14px 0;border-top:1px solid var(--line)}.section:first-of-type{border-top:0;padding-top:0}.title{display:block;font-weight:700;margin-bottom:8px}
+.inline{display:flex;flex-wrap:wrap;gap:8px}.chip{display:flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:999px;padding:7px 10px;background:#fbfcfe;cursor:pointer;user-select:none}.chip input{margin:0}
+button,input,select{font:inherit}button{border:0;border-radius:10px;padding:10px 13px;cursor:pointer;font-weight:700}.primary{background:var(--accent);color:#fff}.primary:hover{background:var(--accent2)}.secondary{background:#edf3ff;color:#164b91}.danger{background:#fff0ee;color:var(--danger)}button:disabled{opacity:.5;cursor:not-allowed}.small{font-size:12px;color:var(--muted);line-height:1.45}.status{border-radius:10px;padding:10px 12px;font-size:13px;background:#eef5ff;color:#174a8b}.status.ok{background:#ecf8ef;color:#137333}.status.err{background:#fff0ee;color:var(--danger)}
+.toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px}.toolbar-actions{display:flex;gap:8px;flex-wrap:wrap}.toolbar select{border:1px solid var(--line);border-radius:9px;padding:8px;background:#fff}.tablewrap{overflow:auto;border:1px solid var(--line);border-radius:12px}table{border-collapse:collapse;width:100%;min-width:1230px;background:#fff}th,td{padding:10px 11px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{position:sticky;top:0;background:#f7f9fc;z-index:1;font-size:12px;color:#4b5870;text-transform:uppercase;letter-spacing:.03em}td{font-size:13px}tr:last-child td{border-bottom:0}tbody tr:hover{background:#f8fbff}.rank{font-size:16px;font-weight:800;width:52px}.route{font-weight:700;white-space:nowrap}.money{white-space:nowrap;font-variant-numeric:tabular-nums}.total{font-weight:800;color:#0b5ed7}.muted{color:var(--muted)}.badge{display:inline-block;border-radius:999px;padding:3px 7px;font-size:11px;font-weight:700;background:#eef3fb;color:#42516c}.spfee{display:inline-block;padding:4px 7px;border-radius:8px;background:#fff1bf;color:#7a5600;font-weight:800;white-space:nowrap}.empty{padding:38px;text-align:center;color:var(--muted)}.footnote{margin-top:12px;font-size:12px;color:var(--muted)}
+.modal-backdrop{position:fixed;inset:0;background:rgba(18,27,44,.45);display:none;align-items:center;justify-content:center;padding:20px;z-index:1000}.modal-backdrop.open{display:flex}.modal{width:min(1100px,96vw);max-height:90vh;background:#fff;border-radius:16px;box-shadow:0 24px 70px rgba(0,0,0,.28);display:flex;flex-direction:column}.modal-head{display:flex;justify-content:space-between;align-items:center;padding:18px 20px;border-bottom:1px solid var(--line)}.modal-head h3{margin:0}.close{background:#f2f4f8;color:#465168;font-size:18px;line-height:1;padding:8px 11px}.modal-body{padding:18px 20px;overflow:auto}.filters{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:12px}.filters.two{grid-template-columns:2fr 1fr}.field label{display:block;font-size:12px;font-weight:700;color:#556079;margin-bottom:5px}.field input,.field select{width:100%;border:1px solid var(--line);border-radius:9px;padding:9px;background:#fff}.modal-table{min-width:720px}.modal-table input{width:110px;border:1px solid var(--line);border-radius:8px;padding:7px 8px;text-align:right}.changed{background:#fff8dd!important}.session-badge{display:inline-block;margin-left:6px;padding:2px 6px;border-radius:999px;background:#fff1bf;color:#7a5600;font-size:10px;font-weight:800}.modal-summary{display:flex;justify-content:space-between;gap:10px;align-items:center;margin:8px 0 12px}.modal-actions{display:flex;gap:8px;flex-wrap:wrap}
+@media(max-width:950px){.grid{grid-template-columns:1fr}.panel{position:static}.filters{grid-template-columns:1fr 1fr}}
+@media(max-width:620px){main{padding:12px}.filters,.filters.two{grid-template-columns:1fr}.modal-backdrop{padding:8px}.modal-body{padding:14px}.toolbar-actions{width:100%}.toolbar-actions button{flex:1}}
+@media print{body{background:#fff}header,.panel,.toolbar-actions,#maxRows,.footnote{display:none!important}main{padding:0}.grid{display:block}.results{box-shadow:none;border:0;padding:0}.tablewrap{overflow:visible;border:0}table{min-width:0;font-size:9px}th,td{padding:5px;font-size:9px}.results h2{font-size:18px}.toolbar{margin-bottom:8px}}
 </style>
 </head>
 <body>
-<header>
-  <div class="wrap">
-    <h1>Ranking de viagens ao Caribe</h1>
-    <p>Combina voos + hospedagem, permite ajustes temporários de preços e acrescenta R$ 350 por ponta utilizada via São Paulo (GRU).</p>
-  </div>
-</header>
+<header><div class="wrap"><h1>Ranking de viagens ao Caribe</h1><p>Voos + hospedagem, com acréscimo de R$ 350 em cada ponta utilizada via São Paulo (GRU).</p></div></header>
 <main class="wrap">
-  <div class="grid">
-    <aside class="card panel">
-      <h2>Arquivos e filtros</h2>
-      <div class="section">
-        <label class="title">Arquivos de entrada</label>
-        <div class="filebox">
-          <div class="small"><strong>Voos:</strong> voos_dezembro_2026_precos.csv</div>
-          <input id="flightFile" type="file" accept=".csv,text/csv" />
-          <div class="small"><strong>Hospedagem:</strong> hospedagem.csv</div>
-          <input id="hotelFile" type="file" accept=".csv,text/csv" />
-          <div class="inline">
-            <button id="loadDefault" class="secondary">Ler arquivos do diretório</button>
-            <button id="loadSelected" class="secondary">Ler selecionados</button>
-          </div>
-        </div>
-        <div id="status" class="status">Carregando os CSV do mesmo diretório…</div>
-      </div>
-
-      <div class="section">
-        <label class="title">Tipo de viagem</label>
-        <div class="inline">
-          <label class="chip"><input type="checkbox" name="tripType" value="1" checked /> 1 destino · 7 dias</label>
-          <label class="chip"><input type="checkbox" name="tripType" value="2" checked /> 2 destinos · 4 + 4 dias</label>
-        </div>
-      </div>
-
-      <div class="section">
-        <label class="title">Destinos permitidos</label>
-        <div id="destinations" class="inline"><span class="small">Carregue os arquivos.</span></div>
-        <div class="inline" style="margin-top:8px">
-          <button id="allDest" class="secondary">Todos</button>
-          <button id="noneDest" class="secondary">Nenhum</button>
-        </div>
-      </div>
-
-      <div class="section">
-        <label class="title">Editar preços nesta sessão</label>
-        <div class="editor-toolbar">
-          <input id="editSearch" type="search" placeholder="Filtrar rota, destino ou data…" />
-          <select id="editType"><option value="flights">Voos</option><option value="hotels">Hospedagem</option></select>
-          <button id="resetOverrides" class="secondary" title="Apagar todas as alterações temporárias">Restaurar</button>
-        </div>
-        <div id="editSummary" class="small" style="margin-bottom:8px">Carregue os arquivos.</div>
-        <div class="editor-wrap">
-          <table class="editor-table">
-            <thead id="editHead"></thead>
-            <tbody id="editBody"></tbody>
-          </table>
-        </div>
-        <div class="small" style="margin-top:8px">As alterações valem somente nesta sessão do navegador e não modificam os arquivos CSV.</div>
-      </div>
-
-      <div class="section">
-        <label class="title" for="maxRows">Resultados exibidos</label>
-        <select id="maxRows">
-          <option value="25">25</option>
-          <option value="50" selected>50</option>
-          <option value="100">100</option>
-          <option value="250">250</option>
-          <option value="999999">Todos</option>
-        </select>
-      </div>
-
-      <div class="section">
-        <button id="calculate" class="primary" style="width:100%" disabled>Calcular ranking</button>
-        <button id="exportCsv" class="secondary" style="width:100%;margin-top:8px" disabled>Exportar ranking em CSV</button>
-      </div>
-      <div class="small">
-        Regras: 1 destino = retorno exatamente 7 dias após a ida. 2 destinos = troca exatamente 4 dias após a ida e retorno exatamente 4 dias depois da troca. Hospedagem é calculada por pessoa/dia.
-      </div>
-    </aside>
-
-    <section class="card results">
-      <div class="toolbar">
-        <h2>Viagens mais baratas</h2>
-        <span id="summary" class="small">Aguardando os arquivos.</span>
-      </div>
-      <div class="stats">
-        <div class="stat"><div id="statCount" class="n">—</div><div class="l">combinações encontradas</div></div>
-        <div class="stat"><div id="statMin" class="n">—</div><div class="l">menor preço</div></div>
-        <div class="stat"><div id="statFlight" class="n">—</div><div class="l">voos da mais barata</div></div>
-        <div class="stat"><div id="statHotel" class="n">—</div><div class="l">hospedagem da mais barata</div></div>
-      </div>
-      <div class="tablewrap">
-        <table>
-          <thead>
-            <tr>
-              <th>#</th><th>Tipo</th><th>Roteiro</th><th>Datas</th><th>Voos</th><th>Hospedagem</th><th>Acréscimo SP</th><th>Total</th><th>Detalhes dos voos</th>
-            </tr>
-          </thead>
-          <tbody id="tbody"></tbody>
-        </table>
-        <div id="empty" class="empty">Carregue os arquivos para gerar o ranking.</div>
-      </div>
-      <div class="footnote">Os preços são somados por pessoa conforme os valores informados nos CSV. “SP” corresponde a GRU.</div>
-    </section>
-  </div>
+<div class="grid">
+<aside class="card panel">
+<h2>Filtros</h2>
+<div class="section"><div id="status" class="status">Carregando dados automaticamente…</div></div>
+<div class="section"><label class="title">Tipo de viagem</label><div class="inline"><label class="chip"><input type="checkbox" name="tripType" value="1" checked> 1 destino · 7 dias</label><label class="chip"><input type="checkbox" name="tripType" value="2" checked> 2 destinos · 4 + 4 dias</label></div></div>
+<div class="section"><label class="title">Destinos permitidos</label><div id="destinations" class="inline"><span class="small">Carregando…</span></div><div class="inline" style="margin-top:8px"><button id="allDest" class="secondary">Todos</button><button id="noneDest" class="secondary">Nenhum</button></div></div>
+<div class="section"><label class="title">Editar preços</label><div class="inline"><button id="openFlights" class="secondary" disabled>Voos</button><button id="openHotels" class="secondary" disabled>Hospedagem</button></div><div id="overrideCount" class="small" style="margin-top:8px">Nenhuma alteração nesta sessão.</div><button id="resetOverrides" class="danger" style="width:100%;margin-top:8px" disabled>Restaurar preços originais</button></div>
+<div class="section"><label class="title" for="maxRows">Resultados exibidos</label><select id="maxRows"><option value="25">25</option><option value="50" selected>50</option><option value="100">100</option><option value="250">250</option><option value="999999">Todos</option></select></div>
+<div class="small">1 destino: volta exatamente 7 dias após a ida. 2 destinos: troca após 4 dias e retorno 4 dias depois. As alterações de preços ficam somente nesta sessão do navegador.</div>
+</aside>
+<section class="card results">
+<div class="toolbar"><div><h2>Viagens mais baratas</h2><div id="summary" class="small">Carregando dados…</div></div><div class="toolbar-actions"><button id="exportCsv" class="secondary" disabled>Exportar CSV</button><button id="exportPdf" class="primary" disabled>Exportar PDF</button></div></div>
+<div class="tablewrap"><table><thead><tr><th>#</th><th>Tipo</th><th>Roteiro</th><th>Datas</th><th>Ida</th><th>Trecho entre destinos</th><th>Volta</th><th>Hospedagem</th><th>Acréscimo SP</th><th>Total</th></tr></thead><tbody id="tbody"></tbody></table><div id="empty" class="empty">Carregando dados…</div></div>
+<div class="footnote">“SP” corresponde a GRU. O acréscimo de R$ 350 é aplicado separadamente na ida e/ou na volta quando a respectiva ponta utiliza GRU.</div>
+</section>
+</div>
 </main>
+
+<div id="flightModal" class="modal-backdrop" aria-hidden="true"><div class="modal"><div class="modal-head"><h3>Editar preços de voos</h3><button class="close" data-close="flightModal">×</button></div><div class="modal-body"><div class="filters"><div class="field"><label>Origem</label><select id="flightOrigin"><option value="">Todas</option></select></div><div class="field"><label>Destino</label><select id="flightDest"><option value="">Todos</option></select></div><div class="field"><label>Data</label><input id="flightDate" type="date"></div><div class="field"><label>Busca livre</label><input id="flightSearch" type="search" placeholder="Ex.: Aruba ou 12/12"></div></div><div class="modal-summary"><span id="flightEditSummary" class="small"></span><div class="modal-actions"><button id="clearFlightFilters" class="secondary">Limpar filtros</button></div></div><div class="tablewrap"><table class="modal-table"><thead><tr><th>Data</th><th>Origem</th><th>Destino</th><th>Preço original</th><th>Preço na sessão</th></tr></thead><tbody id="flightEditBody"></tbody></table></div></div></div></div>
+
+<div id="hotelModal" class="modal-backdrop" aria-hidden="true"><div class="modal"><div class="modal-head"><h3>Editar preços de hospedagem</h3><button class="close" data-close="hotelModal">×</button></div><div class="modal-body"><div class="filters two"><div class="field"><label>Buscar destino</label><input id="hotelSearch" type="search" placeholder="Ex.: Curaçao"></div><div class="field"><label>Destino</label><select id="hotelDest"><option value="">Todos</option></select></div></div><div class="modal-summary"><span id="hotelEditSummary" class="small"></span><div class="modal-actions"><button id="clearHotelFilters" class="secondary">Limpar filtros</button></div></div><div class="tablewrap"><table class="modal-table"><thead><tr><th>Destino</th><th>Diária original</th><th>Diária na sessão</th></tr></thead><tbody id="hotelEditBody"></tbody></table></div></div></div></div>
+
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.4/dist/jspdf.plugin.autotable.min.js"></script>
 <script>
-(() => {
-  const DEFAULT_FLIGHTS = 'voos_dezembro_2026_precos.csv';
-  const DEFAULT_HOTELS = 'hospedagem.csv';
-  const SP_FEE = 350;
-  let flightRows = [];
-  let hotelRates = new Map();
-  let ranking = [];
-  const SESSION_KEY = 'caribe-ranking-overrides-v1';
-  let overrides = { flights: {}, hotels: {} };
-
-  const $ = s => document.querySelector(s);
-  const $$ = s => [...document.querySelectorAll(s)];
-  const status = $('#status');
-
-  const alias = new Map([
-    ['bh','BH'], ['belo horizonte','BH'], ['cnf','BH'],
-    ['gru','GRU'], ['sao paulo','GRU'], ['são paulo','GRU'],
-    ['aruba','Aruba'], ['cancun','Cancun'], ['cancún','Cancun'],
-    ['cartagena','Cartagena'], ['curacao','Curacao'], ['curaçao','Curacao'], ['curaÃ§ao','Curacao'],
-    ['san andres','San Andres'], ['san andrés','San Andres'], ['santo andre','San Andres'],
-    ['punta cana','Punta Cana']
-  ]);
-
-  function normalizePlace(v) {
-    const s = String(v ?? '').trim();
-    const key = s.toLocaleLowerCase('pt-BR').normalize('NFD').replace(/[\u0300-\u036f]/g,'');
-    return alias.get(key) || s;
-  }
-  function keyText(v) {
-    return String(v ?? '').trim().toLocaleLowerCase('pt-BR').normalize('NFD').replace(/[\u0300-\u036f]/g,'');
-  }
-  function fmtMoney(v) { return Number(v).toLocaleString('pt-BR',{style:'currency',currency:'BRL',minimumFractionDigits:0,maximumFractionDigits:0}); }
-  function pad(n){return String(n).padStart(2,'0');}
-  function dateKey(v) {
-    if (v instanceof Date && !isNaN(v)) return `${v.getFullYear()}-${pad(v.getMonth()+1)}-${pad(v.getDate())}`;
-    const s=String(v??'').trim();
-    let m=s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/); if(m) return `${m[1]}-${pad(m[2])}-${pad(m[3])}`;
-    m=s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/); if(m) return `${m[3]}-${pad(m[2])}-${pad(m[1])}`;
-    const d=new Date(s); return isNaN(d)?'':`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
-  }
-  function addDays(iso,n) { const [y,m,d]=iso.split('-').map(Number); const dt=new Date(Date.UTC(y,m-1,d)); dt.setUTCDate(dt.getUTCDate()+n); return `${dt.getUTCFullYear()}-${pad(dt.getUTCMonth()+1)}-${pad(dt.getUTCDate())}`; }
-  function fmtDate(iso) { if(!iso) return ''; const [y,m,d]=iso.split('-'); return `${d}/${m}/${y}`; }
-  function valBy(obj, candidates) {
-    const entries = Object.entries(obj);
-    for (const c of candidates) {
-      const found=entries.find(([k])=>keyText(k)===keyText(c));
-      if(found) return found[1];
-    }
-    return undefined;
-  }
-  function parseMoney(v) {
-    if(typeof v==='number') return v;
-    const s=String(v??'').replace(/R\$|\s/g,'');
-    if(!s) return NaN;
-    if(s.includes(',') && s.includes('.')) return Number(s.replace(/\./g,'').replace(',','.'));
-    if(s.includes(',')) return Number(s.replace(',','.'));
-    return Number(s);
-  }
-  function setStatus(text, cls='') { status.className='status'+(cls?' '+cls:''); status.textContent=text; }
-  function flightKey(f){ return `${f.date}|${f.origin}|${f.dest}`; }
-  function loadOverrides(){
-    try { overrides = JSON.parse(sessionStorage.getItem(SESSION_KEY) || '{"flights":{},"hotels":{}}'); }
-    catch { overrides = {flights:{},hotels:{}}; }
-    overrides.flights ||= {}; overrides.hotels ||= {};
-  }
-  function saveOverrides(){ sessionStorage.setItem(SESSION_KEY, JSON.stringify(overrides)); }
-  function effectiveFlightPrice(f){ const v=overrides.flights[flightKey(f)]; return Number.isFinite(Number(v)) ? Number(v) : f.basePrice; }
-  function effectiveHotelPrice(d){ const v=overrides.hotels[d]; return Number.isFinite(Number(v)) ? Number(v) : hotelRates.get(d); }
-  function countOverrides(){ return Object.keys(overrides.flights).length + Object.keys(overrides.hotels).length; }
-
-  function parseCsv(text) {
-    text = String(text ?? '').replace(/^\uFEFF/, '');
-    const firstLine = text.split(/\r?\n/, 1)[0] || '';
-    const delimiter = (firstLine.match(/;/g) || []).length >= (firstLine.match(/,/g) || []).length ? ';' : ',';
-    const rows = [];
-    let row = [], field = '', quoted = false;
-    for (let i = 0; i < text.length; i++) {
-      const ch = text[i];
-      if (quoted) {
-        if (ch === '"' && text[i + 1] === '"') { field += '"'; i++; }
-        else if (ch === '"') quoted = false;
-        else field += ch;
-      } else {
-        if (ch === '"') quoted = true;
-        else if (ch === delimiter) { row.push(field); field = ''; }
-        else if (ch === '\n') { row.push(field.replace(/\r$/, '')); rows.push(row); row = []; field = ''; }
-        else field += ch;
-      }
-    }
-    if (field.length || row.length) { row.push(field.replace(/\r$/, '')); rows.push(row); }
-    if (!rows.length) return [];
-    const headers = rows[0].map(h => h.trim());
-    return rows.slice(1).filter(r => r.some(v => String(v ?? '').trim() !== '')).map(r => {
-      const obj = {};
-      headers.forEach((h, i) => obj[h] = r[i] ?? '');
-      return obj;
-    });
-  }
-  async function fetchCsv(name) {
-    const r = await fetch(encodeURI(name), { cache: 'no-store' });
-    if (!r.ok) throw new Error(`${name}: HTTP ${r.status}`);
-    return parseCsv(await r.text());
-  }
-  async function readFileInput(el) {
-    const f = el.files[0]; if (!f) throw new Error('Selecione os dois arquivos CSV.');
-    return parseCsv(await f.text());
-  }
-
-  function consumeData(flightsRaw, hotelsRaw) {
-    flightRows = flightsRaw.map(r => ({
-      date: dateKey(valBy(r,['data','date'])),
-      origin: normalizePlace(valBy(r,['origem','origin'])),
-      dest: normalizePlace(valBy(r,['destino','destination'])),
-      basePrice: parseMoney(valBy(r,['preco','preço','price']))
-    })).filter(r => r.date && r.origin && r.dest && Number.isFinite(r.basePrice));
-
-    hotelRates = new Map();
-    for(const r of hotelsRaw) {
-      const d=normalizePlace(valBy(r,['Destino','destino']));
-      const p=parseMoney(valBy(r,['Preço médio da hospedagem diária por pessoa','Preco medio da hospedagem diaria por pessoa','preco','preço','price']));
-      if(d && Number.isFinite(p)) hotelRates.set(d,p);
-    }
-    if(!flightRows.length) throw new Error('Nenhuma linha válida de voo encontrada.');
-    if(!hotelRates.size) throw new Error('Nenhum preço válido de hospedagem encontrado.');
-    buildDestinationFilters();
-    renderEditor();
-    $('#calculate').disabled=false;
-    setStatus(`${flightRows.length} voos e ${hotelRates.size} destinos de hospedagem carregados.`, 'ok');
-    calculate();
-  }
-
-  function buildDestinationFilters() {
-    const nodes=$('#destinations'); nodes.innerHTML='';
-    [...hotelRates.keys()].sort((a,b)=>a.localeCompare(b,'pt-BR')).forEach(d=>{
-      const lab=document.createElement('label'); lab.className='chip';
-      const inp=document.createElement('input'); inp.type='checkbox'; inp.name='dest'; inp.value=d; inp.checked=true;
-      inp.addEventListener('change',calculate);
-      lab.append(inp,document.createTextNode(' '+d)); nodes.appendChild(lab);
-    });
-  }
-
-  function selectedDestinations(){ return new Set($$('input[name=dest]:checked').map(x=>x.value)); }
-  function selectedTripTypes(){ return new Set($$('input[name=tripType]:checked').map(x=>x.value)); }
-
-  function makeIndex() {
-    const idx=new Map();
-    for(const f of flightRows){
-      const k=flightKey(f);
-      const candidate={...f, price:effectiveFlightPrice(f)};
-      if(!idx.has(k) || candidate.price < idx.get(k).price) idx.set(k,candidate);
-    }
-    return idx;
-  }
-  function getFlight(idx,date,origin,dest){ return idx.get(`${date}|${origin}|${dest}`); }
-
-  function calculate() {
-    if(!flightRows.length || !hotelRates.size) return;
-    const allowed=selectedDestinations();
-    const types=selectedTripTypes();
-    const idx=makeIndex();
-    const out=[];
-    const origins=['BH','GRU'], returns=['BH','GRU'];
-
-    if(types.has('1')) {
-      for(const raw1 of flightRows){
-        const f1={...raw1,price:effectiveFlightPrice(raw1)};
-        if(!origins.includes(f1.origin) || !allowed.has(f1.dest) || !hotelRates.has(f1.dest)) continue;
-        const backDate=addDays(f1.date,7);
-        for(const end of returns){
-          const f2=getFlight(idx,backDate,f1.dest,end); if(!f2) continue;
-          const hotel=effectiveHotelPrice(f1.dest)*7;
-          const fee=(f1.origin==='GRU'?SP_FEE:0)+(end==='GRU'?SP_FEE:0);
-          const flights=f1.price+f2.price;
-          out.push({type:1, origin:f1.origin, dest1:f1.dest, dest2:null, end, d1:f1.date, d2:null, d3:backDate, flights, hotel, fee, total:flights+hotel+fee, legs:[f1,f2]});
-        }
-      }
-    }
-
-    if(types.has('2')) {
-      for(const raw1 of flightRows){
-        const f1={...raw1,price:effectiveFlightPrice(raw1)};
-        if(!origins.includes(f1.origin) || !allowed.has(f1.dest) || !hotelRates.has(f1.dest)) continue;
-        const middleDate=addDays(f1.date,4);
-        for(const d2 of allowed){
-          if(d2===f1.dest || !hotelRates.has(d2)) continue;
-          const fm=getFlight(idx,middleDate,f1.dest,d2); if(!fm) continue;
-          const backDate=addDays(middleDate,4);
-          for(const end of returns){
-            const f3=getFlight(idx,backDate,d2,end); if(!f3) continue;
-            const hotel=effectiveHotelPrice(f1.dest)*4+effectiveHotelPrice(d2)*4;
-            const fee=(f1.origin==='GRU'?SP_FEE:0)+(end==='GRU'?SP_FEE:0);
-            const flights=f1.price+fm.price+f3.price;
-            out.push({type:2, origin:f1.origin, dest1:f1.dest, dest2:d2, end, d1:f1.date, d2:middleDate, d3:backDate, flights, hotel, fee, total:flights+hotel+fee, legs:[f1,fm,f3]});
-          }
-        }
-      }
-    }
-
-    // Remove combinações idênticas caso a planilha contenha linhas repetidas e ordena pelo custo total.
-    const unique=new Map();
-    for(const r of out){
-      const k=[r.type,r.origin,r.dest1,r.dest2||'',r.end,r.d1,r.d2||'',r.d3].join('|');
-      if(!unique.has(k) || r.total<unique.get(k).total) unique.set(k,r);
-    }
-    ranking=[...unique.values()].sort((a,b)=>a.total-b.total || a.d1.localeCompare(b.d1));
-    render();
-  }
-
-  function render() {
-    const limit=Number($('#maxRows').value); const rows=ranking.slice(0,limit);
-    const tb=$('#tbody'); tb.innerHTML='';
-    $('#empty').style.display=rows.length?'none':'block';
-    rows.forEach((r,i)=>{
-      const tr=document.createElement('tr');
-      const route=r.type===1 ? `${r.origin} → ${r.dest1} → ${r.end}` : `${r.origin} → ${r.dest1} → ${r.dest2} → ${r.end}`;
-      const dates=r.type===1 ? `${fmtDate(r.d1)} → ${fmtDate(r.d3)}` : `${fmtDate(r.d1)} → ${fmtDate(r.d2)} → ${fmtDate(r.d3)}`;
-      const legs=r.legs.map(f=>`${fmtDate(f.date)}: ${f.origin}→${f.dest} (${fmtMoney(f.price)})`).join('<br>');
-      tr.innerHTML=`<td class="rank">${i+1}</td><td><span class="badge">${r.type} destino${r.type>1?'s':''}</span></td><td class="route">${route}</td><td>${dates}</td><td class="money">${fmtMoney(r.flights)}</td><td class="money">${fmtMoney(r.hotel)}</td><td class="money">${fmtMoney(r.fee)}</td><td class="money total">${fmtMoney(r.total)}</td><td class="muted">${legs}</td>`;
-      tb.appendChild(tr);
-    });
-    $('#statCount').textContent=ranking.length.toLocaleString('pt-BR');
-    if(ranking.length){
-      const b=ranking[0]; $('#statMin').textContent=fmtMoney(b.total); $('#statFlight').textContent=fmtMoney(b.flights); $('#statHotel').textContent=fmtMoney(b.hotel);
-      $('#summary').textContent=`Exibindo ${Math.min(limit,ranking.length).toLocaleString('pt-BR')} de ${ranking.length.toLocaleString('pt-BR')} combinações.`;
-      $('#exportCsv').disabled=false;
-    } else {
-      $('#statMin').textContent=$('#statFlight').textContent=$('#statHotel').textContent='—';
-      $('#summary').textContent='Nenhuma combinação atende aos filtros e às datas exatas.'; $('#exportCsv').disabled=true;
-    }
-  }
-
-  function renderEditor(){
-    const body=$('#editBody'), head=$('#editHead'), summary=$('#editSummary');
-    if(!body || !head) return;
-    body.innerHTML=''; head.innerHTML='';
-    const type=$('#editType').value;
-    const q=keyText($('#editSearch').value);
-    if(type==='flights'){
-      head.innerHTML='<tr><th>Data</th><th>Trecho</th><th>Preço</th></tr>';
-      const seen=new Map();
-      for(const f of flightRows){
-        const k=flightKey(f);
-        if(!seen.has(k) || f.basePrice<seen.get(k).basePrice) seen.set(k,f);
-      }
-      const rows=[...seen.values()].filter(f=>!q || keyText(`${fmtDate(f.date)} ${f.origin} ${f.dest}`).includes(q)).sort((a,b)=>a.date.localeCompare(b.date)||a.origin.localeCompare(b.origin)||a.dest.localeCompare(b.dest));
-      rows.forEach(f=>{
-        const k=flightKey(f), changed=Object.prototype.hasOwnProperty.call(overrides.flights,k);
-        const tr=document.createElement('tr'); if(changed) tr.className='changed';
-        tr.innerHTML=`<td>${fmtDate(f.date)}</td><td>${f.origin} → ${f.dest}${changed?'<span class="session-badge">alterado</span>':''}</td><td></td>`;
-        const inp=document.createElement('input'); inp.className='price-input'; inp.type='number'; inp.min='0'; inp.step='1'; inp.value=effectiveFlightPrice(f);
-        inp.dataset.key=k; inp.dataset.kind='flight'; inp.dataset.base=String(f.basePrice);
-        tr.lastElementChild.appendChild(inp); body.appendChild(tr);
-      });
-      summary.textContent=`${rows.length.toLocaleString('pt-BR')} voos exibidos · ${countOverrides()} alterações na sessão.`;
-    } else {
-      head.innerHTML='<tr><th>Destino</th><th>Diária/pessoa</th></tr>';
-      const rows=[...hotelRates.entries()].filter(([d])=>!q || keyText(d).includes(q)).sort((a,b)=>a[0].localeCompare(b[0],'pt-BR'));
-      rows.forEach(([d,base])=>{
-        const changed=Object.prototype.hasOwnProperty.call(overrides.hotels,d);
-        const tr=document.createElement('tr'); if(changed) tr.className='changed';
-        tr.innerHTML=`<td>${d}${changed?'<span class="session-badge">alterado</span>':''}</td><td></td>`;
-        const inp=document.createElement('input'); inp.className='price-input'; inp.type='number'; inp.min='0'; inp.step='1'; inp.value=effectiveHotelPrice(d);
-        inp.dataset.key=d; inp.dataset.kind='hotel'; inp.dataset.base=String(base);
-        tr.lastElementChild.appendChild(inp); body.appendChild(tr);
-      });
-      summary.textContent=`${rows.length.toLocaleString('pt-BR')} hospedagens exibidas · ${countOverrides()} alterações na sessão.`;
-    }
-  }
-
-  function applyEditorChange(inp){
-    const value=Number(inp.value), base=Number(inp.dataset.base), key=inp.dataset.key;
-    if(!Number.isFinite(value) || value<0){ inp.value=base; return; }
-    if(inp.dataset.kind==='flight'){
-      if(value===base) delete overrides.flights[key]; else overrides.flights[key]=value;
-    } else {
-      if(value===base) delete overrides.hotels[key]; else overrides.hotels[key]=value;
-    }
-    saveOverrides(); renderEditor(); calculate();
-  }
-
-  function resetOverrides(){
-    overrides={flights:{},hotels:{}}; saveOverrides(); renderEditor(); calculate();
-  }
-
-  function exportCsv(){
-    if(!ranking.length) return;
-    const hdr=['ranking','tipo','origem','destino_1','destino_2','retorno','data_ida','data_troca','data_retorno','voos','hospedagem','acrescimo_sp','total'];
-    const esc=v=>'"'+String(v??'').replace(/"/g,'""')+'"';
-    const lines=[hdr.join(';')];
-    ranking.forEach((r,i)=>lines.push([i+1,r.type,r.origin,r.dest1,r.dest2||'',r.end,r.d1,r.d2||'',r.d3,r.flights,r.hotel,r.fee,r.total].map(esc).join(';')));
-    const blob=new Blob(['\ufeff'+lines.join('\n')],{type:'text/csv;charset=utf-8'});
-    const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='ranking_viagens_caribe.csv'; a.click(); URL.revokeObjectURL(a.href);
-  }
-
-  async function loadDefaults(){
-    try { setStatus('Carregando arquivos do mesmo diretório…'); consumeData(await fetchCsv(DEFAULT_FLIGHTS), await fetchCsv(DEFAULT_HOTELS)); }
-    catch(e){ setStatus('Não foi possível carregar automaticamente. No GitHub Pages, confirme que os dois CSV estão na mesma pasta do HTML e com estes nomes exatos. Se estiver testando via file://, use a seleção manual. Detalhe: '+e.message,'warn'); }
-  }
-  async function loadSelected(){
-    try { setStatus('Lendo arquivos selecionados…'); consumeData(await readFileInput($('#flightFile')), await readFileInput($('#hotelFile'))); }
-    catch(e){ setStatus(e.message,'err'); }
-  }
-
-  $('#loadDefault').addEventListener('click',loadDefaults);
-  $('#loadSelected').addEventListener('click',loadSelected);
-  $('#calculate').addEventListener('click',calculate);
-  $('#exportCsv').addEventListener('click',exportCsv);
-  $('#maxRows').addEventListener('change',render);
-  $('#editType').addEventListener('change',renderEditor);
-  $('#editSearch').addEventListener('input',renderEditor);
-  $('#editBody').addEventListener('change',e=>{ if(e.target.classList.contains('price-input')) applyEditorChange(e.target); });
-  $('#resetOverrides').addEventListener('click',resetOverrides);
-  $$('input[name=tripType]').forEach(x=>x.addEventListener('change',calculate));
-  $('#allDest').addEventListener('click',()=>{$$('input[name=dest]').forEach(x=>x.checked=true);calculate();});
-  $('#noneDest').addEventListener('click',()=>{$$('input[name=dest]').forEach(x=>x.checked=false);calculate();});
-  loadOverrides();
-  loadDefaults();
+(()=>{
+const DEFAULT_FLIGHTS='voos_dezembro_2026_precos.csv',DEFAULT_HOTELS='hospedagem.csv',SP_FEE=350,SESSION_KEY='caribe-ranking-overrides-v2';
+let flightRows=[],hotelRates=new Map(),ranking=[],overrides={flights:{},hotels:{}};
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const keyText=v=>String(v??'').trim().toLocaleLowerCase('pt-BR').normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+const aliases=new Map([['bh','BH'],['belo horizonte','BH'],['cnf','BH'],['gru','GRU'],['sao paulo','GRU'],['aruba','Aruba'],['cancun','Cancun'],['cartagena','Cartagena'],['curacao','Curacao'],['san andres','San Andres'],['punta cana','Punta Cana']]);
+function normalizePlace(v){const s=String(v??'').trim(),k=keyText(s);return aliases.get(k)||s}
+function fmtMoney(v){return Number(v).toLocaleString('pt-BR',{style:'currency',currency:'BRL',minimumFractionDigits:0,maximumFractionDigits:0})}
+const pad=n=>String(n).padStart(2,'0');
+function dateKey(v){const s=String(v??'').trim();let m=s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);if(m)return `${m[1]}-${pad(m[2])}-${pad(m[3])}`;m=s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);if(m)return `${m[3]}-${pad(m[2])}-${pad(m[1])}`;const d=new Date(s);return isNaN(d)?'':`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`}
+function addDays(iso,n){const[y,m,d]=iso.split('-').map(Number),dt=new Date(Date.UTC(y,m-1,d));dt.setUTCDate(dt.getUTCDate()+n);return `${dt.getUTCFullYear()}-${pad(dt.getUTCMonth()+1)}-${pad(dt.getUTCDate())}`}
+function fmtDate(iso){if(!iso)return'';const[y,m,d]=iso.split('-');return `${d}/${m}/${y}`}
+function valBy(obj,cands){for(const c of cands){const e=Object.entries(obj).find(([k])=>keyText(k)===keyText(c));if(e)return e[1]}}
+function parseMoney(v){if(typeof v==='number')return v;let s=String(v??'').replace(/R\$|\s/g,'');if(!s)return NaN;if(s.includes(',')&&s.includes('.'))return Number(s.replace(/\./g,'').replace(',','.'));if(s.includes(','))return Number(s.replace(',','.'));return Number(s)}
+function parseCsv(text){text=String(text??'').replace(/^\uFEFF/,'');const first=text.split(/\r?\n/,1)[0]||'',delim=(first.match(/;/g)||[]).length>=(first.match(/,/g)||[]).length?';':',';const rows=[];let row=[],field='',quoted=false;for(let i=0;i<text.length;i++){const ch=text[i];if(quoted){if(ch==='"'&&text[i+1]==='"'){field+='"';i++}else if(ch==='"')quoted=false;else field+=ch}else{if(ch==='"')quoted=true;else if(ch===delim){row.push(field);field=''}else if(ch==='\n'){row.push(field.replace(/\r$/,''));rows.push(row);row=[];field=''}else field+=ch}}if(field.length||row.length){row.push(field.replace(/\r$/,''));rows.push(row)}if(!rows.length)return[];const h=rows[0].map(x=>x.trim());return rows.slice(1).filter(r=>r.some(v=>String(v??'').trim()!=='')).map(r=>Object.fromEntries(h.map((x,i)=>[x,r[i]??''])))}
+async function fetchCsv(name){const r=await fetch('./'+encodeURI(name),{cache:'no-store'});if(!r.ok)throw new Error(`${name}: HTTP ${r.status}`);return parseCsv(await r.text())}
+function setStatus(t,c=''){const el=$('#status');el.className='status'+(c?' '+c:'');el.textContent=t}
+function flightKey(f){return `${f.date}|${f.origin}|${f.dest}`}
+function loadOverrides(){try{overrides=JSON.parse(sessionStorage.getItem(SESSION_KEY)||'{"flights":{},"hotels":{}}')}catch{overrides={flights:{},hotels:{}}}overrides.flights||={};overrides.hotels||={}}
+function saveOverrides(){sessionStorage.setItem(SESSION_KEY,JSON.stringify(overrides));updateOverrideCount()}
+function effectiveFlightPrice(f){const v=overrides.flights[flightKey(f)];return Number.isFinite(Number(v))?Number(v):f.basePrice}
+function effectiveHotelPrice(d){const v=overrides.hotels[d];return Number.isFinite(Number(v))?Number(v):hotelRates.get(d)}
+function countOverrides(){return Object.keys(overrides.flights).length+Object.keys(overrides.hotels).length}
+function updateOverrideCount(){const n=countOverrides();$('#overrideCount').textContent=n?`${n} preço${n>1?'s':''} alterado${n>1?'s':''} nesta sessão.`:'Nenhuma alteração nesta sessão.';$('#resetOverrides').disabled=!n}
+function consumeData(fr,hr){flightRows=fr.map(r=>({date:dateKey(valBy(r,['data','date'])),origin:normalizePlace(valBy(r,['origem','origin'])),dest:normalizePlace(valBy(r,['destino','destination'])),basePrice:parseMoney(valBy(r,['preco','preço','price']))})).filter(r=>r.date&&r.origin&&r.dest&&Number.isFinite(r.basePrice));hotelRates=new Map();for(const r of hr){const d=normalizePlace(valBy(r,['Destino','destino'])),p=parseMoney(valBy(r,['Preço médio da hospedagem diária por pessoa','Preco medio da hospedagem diaria por pessoa','preco','preço','price']));if(d&&Number.isFinite(p))hotelRates.set(d,p)}if(!flightRows.length||!hotelRates.size)throw new Error('Os CSV não contêm dados válidos.');buildDestinations();populateEditors();$('#openFlights').disabled=$('#openHotels').disabled=false;setStatus(`${flightRows.length} voos e ${hotelRates.size} destinos carregados automaticamente.`,'ok');calculate()}
+function buildDestinations(){const box=$('#destinations');box.innerHTML='';[...hotelRates.keys()].sort((a,b)=>a.localeCompare(b,'pt-BR')).forEach(d=>{const l=document.createElement('label');l.className='chip';l.innerHTML=`<input type="checkbox" name="dest" value="${d}" checked> ${d}`;l.querySelector('input').addEventListener('change',calculate);box.appendChild(l)})}
+const selectedDestinations=()=>new Set($$('input[name=dest]:checked').map(x=>x.value));const selectedTripTypes=()=>new Set($$('input[name=tripType]:checked').map(x=>x.value));
+function makeIndex(){const idx=new Map();for(const f of flightRows){const k=flightKey(f),c={...f,price:effectiveFlightPrice(f)};if(!idx.has(k)||c.price<idx.get(k).price)idx.set(k,c)}return idx}
+const getFlight=(idx,date,origin,dest)=>idx.get(`${date}|${origin}|${dest}`);
+function calculate(){if(!flightRows.length||!hotelRates.size)return;const allowed=selectedDestinations(),types=selectedTripTypes(),idx=makeIndex(),out=[],origins=['BH','GRU'],returns=['BH','GRU'];if(types.has('1'))for(const raw1 of flightRows){const f1={...raw1,price:effectiveFlightPrice(raw1)};if(!origins.includes(f1.origin)||!allowed.has(f1.dest)||!hotelRates.has(f1.dest))continue;const backDate=addDays(f1.date,7);for(const end of returns){const f2=getFlight(idx,backDate,f1.dest,end);if(!f2)continue;const hotel=effectiveHotelPrice(f1.dest)*7,feeOut=f1.origin==='GRU'?SP_FEE:0,feeBack=end==='GRU'?SP_FEE:0;out.push({type:1,origin:f1.origin,dest1:f1.dest,dest2:null,end,d1:f1.date,d2:null,d3:backDate,ida:f1.price,middle:0,volta:f2.price,hotel,feeOut,feeBack,total:f1.price+f2.price+hotel+feeOut+feeBack})}}if(types.has('2'))for(const raw1 of flightRows){const f1={...raw1,price:effectiveFlightPrice(raw1)};if(!origins.includes(f1.origin)||!allowed.has(f1.dest)||!hotelRates.has(f1.dest))continue;const middleDate=addDays(f1.date,4);for(const d2 of allowed){if(d2===f1.dest||!hotelRates.has(d2))continue;const fm=getFlight(idx,middleDate,f1.dest,d2);if(!fm)continue;const backDate=addDays(middleDate,4);for(const end of returns){const f3=getFlight(idx,backDate,d2,end);if(!f3)continue;const hotel=effectiveHotelPrice(f1.dest)*4+effectiveHotelPrice(d2)*4,feeOut=f1.origin==='GRU'?SP_FEE:0,feeBack=end==='GRU'?SP_FEE:0;out.push({type:2,origin:f1.origin,dest1:f1.dest,dest2:d2,end,d1:f1.date,d2:middleDate,d3:backDate,ida:f1.price,middle:fm.price,volta:f3.price,hotel,feeOut,feeBack,total:f1.price+fm.price+f3.price+hotel+feeOut+feeBack})}}}const u=new Map();for(const r of out){const k=[r.type,r.origin,r.dest1,r.dest2||'',r.end,r.d1,r.d2||'',r.d3].join('|');if(!u.has(k)||r.total<u.get(k).total)u.set(k,r)}ranking=[...u.values()].sort((a,b)=>a.total-b.total||a.d1.localeCompare(b.d1));render()}
+function feeHtml(r){const parts=[];if(r.feeOut)parts.push('<span class="spfee">+ R$ 350 ida</span>');if(r.feeBack)parts.push('<span class="spfee">+ R$ 350 volta</span>');return parts.length?parts.join('<br>'):'—'}
+function render(){const limit=Number($('#maxRows').value),rows=ranking.slice(0,limit),tb=$('#tbody');tb.innerHTML='';$('#empty').style.display=rows.length?'none':'block';rows.forEach((r,i)=>{const tr=document.createElement('tr'),route=r.type===1?`${r.origin} → ${r.dest1} → ${r.end}`:`${r.origin} → ${r.dest1} → ${r.dest2} → ${r.end}`,dates=r.type===1?`${fmtDate(r.d1)} → ${fmtDate(r.d3)}`:`${fmtDate(r.d1)} → ${fmtDate(r.d2)} → ${fmtDate(r.d3)}`;tr.innerHTML=`<td class="rank">${i+1}</td><td><span class="badge">${r.type} destino${r.type>1?'s':''}</span></td><td class="route">${route}</td><td>${dates}</td><td class="money">${fmtMoney(r.ida)}</td><td class="money">${r.type===2?fmtMoney(r.middle):'—'}</td><td class="money">${fmtMoney(r.volta)}</td><td class="money">${fmtMoney(r.hotel)}</td><td>${feeHtml(r)}</td><td class="money total">${fmtMoney(r.total)}</td>`;tb.appendChild(tr)});$('#summary').textContent=ranking.length?`Exibindo ${Math.min(limit,ranking.length).toLocaleString('pt-BR')} de ${ranking.length.toLocaleString('pt-BR')} combinações.`:'Nenhuma combinação atende aos filtros.';$('#exportCsv').disabled=$('#exportPdf').disabled=!ranking.length}
+function uniqueFlights(){const m=new Map();for(const f of flightRows){const k=flightKey(f);if(!m.has(k)||f.basePrice<m.get(k).basePrice)m.set(k,f)}return[...m.values()]}
+function fillSelect(el,vals){const current=el.value;el.innerHTML='<option value="">Todos</option>'+vals.map(v=>`<option value="${v}">${v}</option>`).join('');if(vals.includes(current))el.value=current}
+function populateEditors(){const uf=uniqueFlights();fillSelect($('#flightOrigin'),[...new Set(uf.map(f=>f.origin))].sort());fillSelect($('#flightDest'),[...new Set(uf.map(f=>f.dest))].sort((a,b)=>a.localeCompare(b,'pt-BR')));fillSelect($('#hotelDest'),[...hotelRates.keys()].sort((a,b)=>a.localeCompare(b,'pt-BR')));renderFlightEditor();renderHotelEditor();updateOverrideCount()}
+function renderFlightEditor(){const origin=$('#flightOrigin').value,dest=$('#flightDest').value,date=$('#flightDate').value,q=keyText($('#flightSearch').value);let rows=uniqueFlights().filter(f=>(!origin||f.origin===origin)&&(!dest||f.dest===dest)&&(!date||f.date===date)&&(!q||keyText(`${fmtDate(f.date)} ${f.origin} ${f.dest}`).includes(q))).sort((a,b)=>a.date.localeCompare(b.date)||a.origin.localeCompare(b.origin)||a.dest.localeCompare(b.dest));const total=rows.length,limit=150;rows=rows.slice(0,limit);const body=$('#flightEditBody');body.innerHTML='';rows.forEach(f=>{const k=flightKey(f),changed=Object.prototype.hasOwnProperty.call(overrides.flights,k),tr=document.createElement('tr');if(changed)tr.className='changed';tr.innerHTML=`<td>${fmtDate(f.date)}</td><td>${f.origin}</td><td>${f.dest}${changed?'<span class="session-badge">alterado</span>':''}</td><td>${fmtMoney(f.basePrice)}</td><td></td>`;const inp=document.createElement('input');inp.type='number';inp.min='0';inp.step='1';inp.value=effectiveFlightPrice(f);inp.dataset.kind='flight';inp.dataset.key=k;inp.dataset.base=f.basePrice;tr.lastElementChild.appendChild(inp);body.appendChild(tr)});$('#flightEditSummary').textContent=total>limit?`${total} resultados. Mostrando os primeiros ${limit}; refine os filtros.`:`${total} voo${total!==1?'s':''} encontrado${total!==1?'s':''}.`}
+function renderHotelEditor(){const dest=$('#hotelDest').value,q=keyText($('#hotelSearch').value),rows=[...hotelRates.entries()].filter(([d])=>(!dest||d===dest)&&(!q||keyText(d).includes(q))).sort((a,b)=>a[0].localeCompare(b[0],'pt-BR')),body=$('#hotelEditBody');body.innerHTML='';rows.forEach(([d,base])=>{const changed=Object.prototype.hasOwnProperty.call(overrides.hotels,d),tr=document.createElement('tr');if(changed)tr.className='changed';tr.innerHTML=`<td>${d}${changed?'<span class="session-badge">alterado</span>':''}</td><td>${fmtMoney(base)}</td><td></td>`;const inp=document.createElement('input');inp.type='number';inp.min='0';inp.step='1';inp.value=effectiveHotelPrice(d);inp.dataset.kind='hotel';inp.dataset.key=d;inp.dataset.base=base;tr.lastElementChild.appendChild(inp);body.appendChild(tr)});$('#hotelEditSummary').textContent=`${rows.length} destino${rows.length!==1?'s':''} encontrado${rows.length!==1?'s':''}.`}
+function applyEdit(inp){const value=Number(inp.value),base=Number(inp.dataset.base),key=inp.dataset.key;if(!Number.isFinite(value)||value<0){inp.value=base;return}const bag=inp.dataset.kind==='flight'?overrides.flights:overrides.hotels;if(value===base)delete bag[key];else bag[key]=value;saveOverrides();calculate();inp.dataset.kind==='flight'?renderFlightEditor():renderHotelEditor()}
+function resetOverrides(){overrides={flights:{},hotels:{}};saveOverrides();renderFlightEditor();renderHotelEditor();calculate()}
+function openModal(id){$('#'+id).classList.add('open');$('#'+id).setAttribute('aria-hidden','false')}
+function closeModal(id){$('#'+id).classList.remove('open');$('#'+id).setAttribute('aria-hidden','true')}
+function exportCsv(){const h=['ranking','tipo','origem','destino_1','destino_2','retorno','data_ida','data_troca','data_retorno','ida','trecho_entre_destinos','volta','hospedagem','acrescimo_ida_sp','acrescimo_volta_sp','total'],esc=v=>'"'+String(v??'').replace(/"/g,'""')+'"',lines=[h.join(';')];ranking.forEach((r,i)=>lines.push([i+1,r.type,r.origin,r.dest1,r.dest2||'',r.end,r.d1,r.d2||'',r.d3,r.ida,r.middle,r.volta,r.hotel,r.feeOut,r.feeBack,r.total].map(esc).join(';')));const b=new Blob(['\ufeff'+lines.join('\n')],{type:'text/csv;charset=utf-8'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='ranking_viagens_caribe.csv';a.click();URL.revokeObjectURL(a.href)}
+function exportPdf(){if(!ranking.length)return;if(!window.jspdf?.jsPDF){window.print();return}const {jsPDF}=window.jspdf,doc=new jsPDF({orientation:'landscape',unit:'mm',format:'a4'}),limit=Number($('#maxRows').value),rows=ranking.slice(0,limit);doc.setFontSize(16);doc.text('Ranking de viagens ao Caribe',14,14);doc.setFontSize(9);doc.text(`Gerado a partir de ${DEFAULT_FLIGHTS} e ${DEFAULT_HOTELS}.`,14,20);const body=rows.map((r,i)=>[i+1,r.type===1?'1 destino':'2 destinos',r.type===1?`${r.origin} > ${r.dest1} > ${r.end}`:`${r.origin} > ${r.dest1} > ${r.dest2} > ${r.end}`,r.type===1?`${fmtDate(r.d1)} > ${fmtDate(r.d3)}`:`${fmtDate(r.d1)} > ${fmtDate(r.d2)} > ${fmtDate(r.d3)}`,fmtMoney(r.ida),r.type===2?fmtMoney(r.middle):'-',fmtMoney(r.volta),fmtMoney(r.hotel),(r.feeOut?'+R$350 ida ':'')+(r.feeBack?'+R$350 volta':''),fmtMoney(r.total)]);doc.autoTable({startY:25,head:[['#','Tipo','Roteiro','Datas','Ida','Entre destinos','Volta','Hospedagem','Acréscimo SP','Total']],body,styles:{fontSize:7,cellPadding:1.5},headStyles:{fontStyle:'bold'},columnStyles:{2:{cellWidth:48},3:{cellWidth:42},8:{cellWidth:25}}});doc.save('ranking_viagens_caribe.pdf')}
+async function init(){loadOverrides();updateOverrideCount();try{const[fr,hr]=await Promise.all([fetchCsv(DEFAULT_FLIGHTS),fetchCsv(DEFAULT_HOTELS)]);consumeData(fr,hr)}catch(e){setStatus(`Erro ao carregar automaticamente os CSV. Confirme que ${DEFAULT_FLIGHTS} e ${DEFAULT_HOTELS} estão na mesma pasta do HTML no GitHub Pages. ${e.message}`,'err');$('#summary').textContent='Falha ao carregar os dados.';$('#empty').textContent='Não foi possível carregar os arquivos CSV.'}}
+$$('input[name=tripType]').forEach(x=>x.addEventListener('change',calculate));$('#allDest').addEventListener('click',()=>{$$('input[name=dest]').forEach(x=>x.checked=true);calculate()});$('#noneDest').addEventListener('click',()=>{$$('input[name=dest]').forEach(x=>x.checked=false);calculate()});$('#maxRows').addEventListener('change',render);$('#exportCsv').addEventListener('click',exportCsv);$('#exportPdf').addEventListener('click',exportPdf);$('#openFlights').addEventListener('click',()=>openModal('flightModal'));$('#openHotels').addEventListener('click',()=>openModal('hotelModal'));$('#resetOverrides').addEventListener('click',resetOverrides);$$('[data-close]').forEach(b=>b.addEventListener('click',()=>closeModal(b.dataset.close)));$$('.modal-backdrop').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)closeModal(m.id)}));document.addEventListener('keydown',e=>{if(e.key==='Escape')$$('.modal-backdrop.open').forEach(m=>closeModal(m.id))});['flightOrigin','flightDest','flightDate','flightSearch'].forEach(id=>$('#'+id).addEventListener(id==='flightSearch'?'input':'change',renderFlightEditor));['hotelSearch'].forEach(id=>$('#'+id).addEventListener('input',renderHotelEditor));$('#hotelDest').addEventListener('change',renderHotelEditor);$('#clearFlightFilters').addEventListener('click',()=>{$('#flightOrigin').value='';$('#flightDest').value='';$('#flightDate').value='';$('#flightSearch').value='';renderFlightEditor()});$('#clearHotelFilters').addEventListener('click',()=>{$('#hotelDest').value='';$('#hotelSearch').value='';renderHotelEditor()});$('#flightEditBody').addEventListener('change',e=>{if(e.target.matches('input[type=number]'))applyEdit(e.target)});$('#hotelEditBody').addEventListener('change',e=>{if(e.target.matches('input[type=number]'))applyEdit(e.target)});init();
 })();
 </script>
 </body>
