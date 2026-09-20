@@ -1,0 +1,479 @@
+﻿data;origem;destino;preco
+2026-12-14;Aruba;BH;1530
+2026-12-15;Aruba;BH;1530
+2026-12-16;Aruba;BH;1530
+2026-12-17;Aruba;BH;1530
+2026-12-18;Aruba;BH;1640
+2026-12-19;Aruba;BH;1640
+2026-12-20;Aruba;BH;1640
+2026-12-21;Aruba;BH;1530
+2026-12-22;Aruba;BH;1530
+2026-12-10;Aruba;Cancun;1860
+2026-12-11;Aruba;Cancun;1860
+2026-12-12;Aruba;Cancun;1940
+2026-12-13;Aruba;Cancun;1650
+2026-12-14;Aruba;Cancun;1860
+2026-12-15;Aruba;Cancun;1860
+2026-12-16;Aruba;Cancun;1860
+2026-12-17;Aruba;Cancun;1860
+2026-12-18;Aruba;Cancun;1860
+2026-12-10;Aruba;Cartagena;1420
+2026-12-11;Aruba;Cartagena;1420
+2026-12-12;Aruba;Cartagena;1420
+2026-12-13;Aruba;Cartagena;1420
+2026-12-14;Aruba;Cartagena;1380
+2026-12-15;Aruba;Cartagena;1420
+2026-12-16;Aruba;Cartagena;1420
+2026-12-17;Aruba;Cartagena;1940
+2026-12-18;Aruba;Cartagena;1940
+2026-12-10;Aruba;Curacao;852
+2026-12-11;Aruba;Curacao;1030
+2026-12-12;Aruba;Curacao;1030
+2026-12-13;Aruba;Curacao;1030
+2026-12-14;Aruba;Curacao;852
+2026-12-15;Aruba;Curacao;852
+2026-12-16;Aruba;Curacao;852
+2026-12-17;Aruba;Curacao;852
+2026-12-18;Aruba;Curacao;878
+2026-12-14;Aruba;GRU;1380
+2026-12-15;Aruba;GRU;1380
+2026-12-16;Aruba;GRU;1380
+2026-12-17;Aruba;GRU;1380
+2026-12-18;Aruba;GRU;1380
+2026-12-19;Aruba;GRU;1380
+2026-12-20;Aruba;GRU;1380
+2026-12-21;Aruba;GRU;1380
+2026-12-22;Aruba;GRU;1380
+2026-12-10;Aruba;Punta Cana;1170
+2026-12-11;Aruba;Punta Cana;966
+2026-12-12;Aruba;Punta Cana;966
+2026-12-13;Aruba;Punta Cana;740
+2026-12-14;Aruba;Punta Cana;966
+2026-12-15;Aruba;Punta Cana;966
+2026-12-16;Aruba;Punta Cana;740
+2026-12-17;Aruba;Punta Cana;966
+2026-12-18;Aruba;Punta Cana;966
+2026-12-10;Aruba;San Andres;1580
+2026-12-11;Aruba;San Andres;1620
+2026-12-12;Aruba;San Andres;1580
+2026-12-13;Aruba;San Andres;1580
+2026-12-14;Aruba;San Andres;1580
+2026-12-15;Aruba;San Andres;1580
+2026-12-16;Aruba;San Andres;1580
+2026-12-17;Aruba;San Andres;1580
+2026-12-18;Aruba;San Andres;2830
+2026-12-07;BH;Aruba;1410
+2026-12-08;BH;Aruba;1310
+2026-12-09;BH;Aruba;1310
+2026-12-10;BH;Aruba;1920
+2026-12-11;BH;Aruba;2150
+2026-12-12;BH;Aruba;1780
+2026-12-13;BH;Aruba;1780
+2026-12-07;BH;Cancun;1860
+2026-12-08;BH;Cancun;1860
+2026-12-09;BH;Cancun;1890
+2026-12-10;BH;Cancun;2090
+2026-12-11;BH;Cancun;2120
+2026-12-12;BH;Cancun;1890
+2026-12-13;BH;Cancun;1890
+2026-12-07;BH;Cartagena;1490
+2026-12-08;BH;Cartagena;1490
+2026-12-09;BH;Cartagena;1520
+2026-12-10;BH;Cartagena;1560
+2026-12-11;BH;Cartagena;1560
+2026-12-12;BH;Cartagena;1560
+2026-12-13;BH;Cartagena;1560
+2026-12-07;BH;Curacao;1850
+2026-12-08;BH;Curacao;1860
+2026-12-09;BH;Curacao;1860
+2026-12-10;BH;Curacao;1860
+2026-12-11;BH;Curacao;1960
+2026-12-12;BH;Curacao;2620
+2026-12-13;BH;Curacao;1960
+2026-12-07;BH;GRU;350
+2026-12-08;BH;GRU;350
+2026-12-09;BH;GRU;350
+2026-12-10;BH;GRU;350
+2026-12-11;BH;GRU;350
+2026-12-12;BH;GRU;350
+2026-12-13;BH;GRU;350
+2026-12-07;BH;Punta Cana;1830
+2026-12-08;BH;Punta Cana;2110
+2026-12-09;BH;Punta Cana;2110
+2026-12-10;BH;Punta Cana;2110
+2026-12-11;BH;Punta Cana;2810
+2026-12-12;BH;Punta Cana;2110
+2026-12-13;BH;Punta Cana;2260
+2026-12-07;BH;San Andres;1530
+2026-12-08;BH;San Andres;1430
+2026-12-09;BH;San Andres;1530
+2026-12-10;BH;San Andres;1430
+2026-12-11;BH;San Andres;1530
+2026-12-12;BH;San Andres;1530
+2026-12-13;BH;San Andres;1530
+2026-12-10;Cancun;Aruba;1580
+2026-12-11;Cancun;Aruba;1790
+2026-12-12;Cancun;Aruba;1790
+2026-12-13;Cancun;Aruba;1580
+2026-12-14;Cancun;Aruba;1790
+2026-12-15;Cancun;Aruba;1840
+2026-12-16;Cancun;Aruba;1790
+2026-12-17;Cancun;Aruba;1790
+2026-12-18;Cancun;Aruba;1790
+2026-12-14;Cancun;BH;1980
+2026-12-15;Cancun;BH;1980
+2026-12-16;Cancun;BH;1780
+2026-12-17;Cancun;BH;1780
+2026-12-18;Cancun;BH;1890
+2026-12-19;Cancun;BH;2090
+2026-12-20;Cancun;BH;1890
+2026-12-21;Cancun;BH;1980
+2026-12-22;Cancun;BH;1780
+2026-12-10;Cancun;Cartagena;945
+2026-12-11;Cancun;Cartagena;945
+2026-12-12;Cancun;Cartagena;1270
+2026-12-13;Cancun;Cartagena;1230
+2026-12-14;Cancun;Cartagena;1110
+2026-12-15;Cancun;Cartagena;945
+2026-12-16;Cancun;Cartagena;1900
+2026-12-17;Cancun;Cartagena;1900
+2026-12-18;Cancun;Cartagena;1900
+2026-12-10;Cancun;Curacao;2010
+2026-12-11;Cancun;Curacao;2010
+2026-12-12;Cancun;Curacao;1590
+2026-12-13;Cancun;Curacao;1390
+2026-12-14;Cancun;Curacao;3130
+2026-12-15;Cancun;Curacao;2010
+2026-12-16;Cancun;Curacao;2010
+2026-12-17;Cancun;Curacao;2010
+2026-12-18;Cancun;Curacao;3430
+2026-12-14;Cancun;GRU;1460
+2026-12-15;Cancun;GRU;1460
+2026-12-16;Cancun;GRU;1460
+2026-12-17;Cancun;GRU;1460
+2026-12-18;Cancun;GRU;1460
+2026-12-19;Cancun;GRU;1460
+2026-12-20;Cancun;GRU;1880
+2026-12-21;Cancun;GRU;1460
+2026-12-22;Cancun;GRU;1460
+2026-12-10;Cancun;Punta Cana;963
+2026-12-11;Cancun;Punta Cana;862
+2026-12-12;Cancun;Punta Cana;1020
+2026-12-13;Cancun;Punta Cana;920
+2026-12-14;Cancun;Punta Cana;862
+2026-12-15;Cancun;Punta Cana;894
+2026-12-16;Cancun;Punta Cana;862
+2026-12-17;Cancun;Punta Cana;963
+2026-12-18;Cancun;Punta Cana;862
+2026-12-10;Cancun;San Andres;1540
+2026-12-11;Cancun;San Andres;1540
+2026-12-12;Cancun;San Andres;1540
+2026-12-13;Cancun;San Andres;1540
+2026-12-14;Cancun;San Andres;1540
+2026-12-15;Cancun;San Andres;1540
+2026-12-16;Cancun;San Andres;1540
+2026-12-17;Cancun;San Andres;1540
+2026-12-18;Cancun;San Andres;1540
+2026-12-10;Cartagena;Aruba;1780
+2026-12-11;Cartagena;Aruba;1760
+2026-12-12;Cartagena;Aruba;1760
+2026-12-13;Cartagena;Aruba;1760
+2026-12-14;Cartagena;Aruba;1760
+2026-12-15;Cartagena;Aruba;1760
+2026-12-16;Cartagena;Aruba;1760
+2026-12-17;Cartagena;Aruba;1760
+2026-12-18;Cartagena;Aruba;1760
+2026-12-14;Cartagena;BH;2240
+2026-12-15;Cartagena;BH;2240
+2026-12-16;Cartagena;BH;2240
+2026-12-17;Cartagena;BH;2240
+2026-12-18;Cartagena;BH;2360
+2026-12-19;Cartagena;BH;2360
+2026-12-20;Cartagena;BH;2320
+2026-12-21;Cartagena;BH;2240
+2026-12-22;Cartagena;BH;2240
+2026-12-10;Cartagena;Cancun;1520
+2026-12-11;Cartagena;Cancun;1520
+2026-12-12;Cartagena;Cancun;1520
+2026-12-13;Cartagena;Cancun;1690
+2026-12-14;Cartagena;Cancun;1690
+2026-12-15;Cartagena;Cancun;1690
+2026-12-16;Cartagena;Cancun;1690
+2026-12-17;Cartagena;Cancun;1700
+2026-12-18;Cartagena;Cancun;1700
+2026-12-10;Cartagena;Curacao;1490
+2026-12-11;Cartagena;Curacao;1470
+2026-12-12;Cartagena;Curacao;1490
+2026-12-13;Cartagena;Curacao;1490
+2026-12-14;Cartagena;Curacao;1470
+2026-12-15;Cartagena;Curacao;1470
+2026-12-16;Cartagena;Curacao;1470
+2026-12-17;Cartagena;Curacao;1470
+2026-12-18;Cartagena;Curacao;1470
+2026-12-14;Cartagena;GRU;1790
+2026-12-15;Cartagena;GRU;1790
+2026-12-16;Cartagena;GRU;1940
+2026-12-17;Cartagena;GRU;1940
+2026-12-18;Cartagena;GRU;1940
+2026-12-19;Cartagena;GRU;1940
+2026-12-20;Cartagena;GRU;2190
+2026-12-21;Cartagena;GRU;1940
+2026-12-22;Cartagena;GRU;1940
+2026-12-10;Cartagena;Punta Cana;1520
+2026-12-11;Cartagena;Punta Cana;1230
+2026-12-12;Cartagena;Punta Cana;1420
+2026-12-13;Cartagena;Punta Cana;1290
+2026-12-14;Cartagena;Punta Cana;1420
+2026-12-15;Cartagena;Punta Cana;1420
+2026-12-16;Cartagena;Punta Cana;1420
+2026-12-17;Cartagena;Punta Cana;1420
+2026-12-18;Cartagena;Punta Cana;1420
+2026-12-10;Cartagena;San Andres;451
+2026-12-11;Cartagena;San Andres;152
+2026-12-12;Cartagena;San Andres;152
+2026-12-13;Cartagena;San Andres;152
+2026-12-14;Cartagena;San Andres;152
+2026-12-15;Cartagena;San Andres;226
+2026-12-16;Cartagena;San Andres;226
+2026-12-17;Cartagena;San Andres;414
+2026-12-18;Cartagena;San Andres;414
+2026-12-10;Curacao;Aruba;787
+2026-12-11;Curacao;Aruba;787
+2026-12-12;Curacao;Aruba;812
+2026-12-13;Curacao;Aruba;787
+2026-12-14;Curacao;Aruba;787
+2026-12-15;Curacao;Aruba;787
+2026-12-16;Curacao;Aruba;787
+2026-12-17;Curacao;Aruba;787
+2026-12-18;Curacao;Aruba;787
+2026-12-14;Curacao;BH;2130
+2026-12-15;Curacao;BH;2030
+2026-12-16;Curacao;BH;2030
+2026-12-17;Curacao;BH;2030
+2026-12-18;Curacao;BH;2130
+2026-12-19;Curacao;BH;2130
+2026-12-20;Curacao;BH;2130
+2026-12-21;Curacao;BH;2130
+2026-12-22;Curacao;BH;2480
+2026-12-10;Curacao;Cancun;1940
+2026-12-11;Curacao;Cancun;1940
+2026-12-12;Curacao;Cancun;2020
+2026-12-13;Curacao;Cancun;2020
+2026-12-14;Curacao;Cancun;1940
+2026-12-15;Curacao;Cancun;1940
+2026-12-16;Curacao;Cancun;1940
+2026-12-17;Curacao;Cancun;1940
+2026-12-18;Curacao;Cancun;1940
+2026-12-10;Curacao;Cartagena;1170
+2026-12-11;Curacao;Cartagena;1210
+2026-12-12;Curacao;Cartagena;1210
+2026-12-13;Curacao;Cartagena;1170
+2026-12-14;Curacao;Cartagena;1210
+2026-12-15;Curacao;Cartagena;1170
+2026-12-16;Curacao;Cartagena;1210
+2026-12-17;Curacao;Cartagena;1750
+2026-12-18;Curacao;Cartagena;1750
+2026-12-14;Curacao;GRU;1830
+2026-12-15;Curacao;GRU;1830
+2026-12-16;Curacao;GRU;1830
+2026-12-17;Curacao;GRU;1830
+2026-12-18;Curacao;GRU;1930
+2026-12-19;Curacao;GRU;1930
+2026-12-20;Curacao;GRU;2150
+2026-12-21;Curacao;GRU;1830
+2026-12-22;Curacao;GRU;1830
+2026-12-10;Curacao;Punta Cana;1280
+2026-12-11;Curacao;Punta Cana;1280
+2026-12-12;Curacao;Punta Cana;1280
+2026-12-13;Curacao;Punta Cana;910
+2026-12-14;Curacao;Punta Cana;3050
+2026-12-15;Curacao;Punta Cana;1280
+2026-12-16;Curacao;Punta Cana;3000
+2026-12-17;Curacao;Punta Cana;1280
+2026-12-18;Curacao;Punta Cana;1280
+2026-12-10;Curacao;San Andres;1300
+2026-12-11;Curacao;San Andres;1340
+2026-12-12;Curacao;San Andres;1300
+2026-12-13;Curacao;San Andres;1340
+2026-12-14;Curacao;San Andres;1300
+2026-12-15;Curacao;San Andres;1340
+2026-12-16;Curacao;San Andres;1300
+2026-12-17;Curacao;San Andres;1300
+2026-12-18;Curacao;San Andres;2750
+2026-12-07;GRU;Aruba;1290
+2026-12-08;GRU;Aruba;1300
+2026-12-09;GRU;Aruba;1290
+2026-12-10;GRU;Aruba;1300
+2026-12-11;GRU;Aruba;1410
+2026-12-12;GRU;Aruba;1410
+2026-12-13;GRU;Aruba;1240
+2026-12-14;GRU;BH;350
+2026-12-15;GRU;BH;350
+2026-12-16;GRU;BH;350
+2026-12-17;GRU;BH;350
+2026-12-18;GRU;BH;350
+2026-12-19;GRU;BH;350
+2026-12-20;GRU;BH;350
+2026-12-21;GRU;BH;350
+2026-12-22;GRU;BH;350
+2026-12-07;GRU;Cancun;956
+2026-12-08;GRU;Cancun;956
+2026-12-09;GRU;Cancun;1390
+2026-12-10;GRU;Cancun;1480
+2026-12-11;GRU;Cancun;1620
+2026-12-12;GRU;Cancun;1860
+2026-12-13;GRU;Cancun;1860
+2026-12-07;GRU;Cartagena;1170
+2026-12-08;GRU;Cartagena;1210
+2026-12-09;GRU;Cartagena;1210
+2026-12-10;GRU;Cartagena;1210
+2026-12-11;GRU;Cartagena;1210
+2026-12-12;GRU;Cartagena;1210
+2026-12-13;GRU;Cartagena;1210
+2026-12-07;GRU;Curacao;1730
+2026-12-08;GRU;Curacao;1510
+2026-12-09;GRU;Curacao;1510
+2026-12-10;GRU;Curacao;1510
+2026-12-11;GRU;Curacao;1610
+2026-12-12;GRU;Curacao;1990
+2026-12-13;GRU;Curacao;1980
+2026-12-07;GRU;Punta Cana;1310
+2026-12-08;GRU;Punta Cana;1140
+2026-12-09;GRU;Punta Cana;1420
+2026-12-10;GRU;Punta Cana;1420
+2026-12-11;GRU;Punta Cana;1600
+2026-12-12;GRU;Punta Cana;1750
+2026-12-13;GRU;Punta Cana;1750
+2026-12-07;GRU;San Andres;1450
+2026-12-08;GRU;San Andres;1390
+2026-12-09;GRU;San Andres;1450
+2026-12-10;GRU;San Andres;1390
+2026-12-11;GRU;San Andres;1450
+2026-12-12;GRU;San Andres;1450
+2026-12-13;GRU;San Andres;1450
+2026-12-10;Punta Cana;aruba;2560
+2026-12-11;Punta Cana;Aruba;1190
+2026-12-12;Punta Cana;Aruba;916
+2026-12-13;Punta Cana;Aruba;810
+2026-12-14;Punta Cana;Aruba;2160
+2026-12-15;Punta Cana;Aruba;2160
+2026-12-16;Punta Cana;Aruba;811
+2026-12-17;Punta Cana;Aruba;2410
+2026-12-18;Punta Cana;Aruba;3770
+2026-12-14;Punta Cana;BH;2480
+2026-12-15;Punta Cana;BH;2210
+2026-12-16;Punta Cana;BH;2210
+2026-12-17;Punta Cana;BH;2480
+2026-12-18;Punta Cana;BH;2520
+2026-12-19;Punta Cana;BH;2330
+2026-12-20;Punta Cana;BH;2330
+2026-12-21;Punta Cana;BH;2330
+2026-12-22;Punta Cana;BH;2480
+2026-12-10;Punta Cana;Cancun;948
+2026-12-11;Punta Cana;Cancun;948
+2026-12-12;Punta Cana;Cancun;1060
+2026-12-13;Punta Cana;Cancun;1200
+2026-12-14;Punta Cana;Cancun;1200
+2026-12-15;Punta Cana;Cancun;985
+2026-12-16;Punta Cana;Cancun;1020
+2026-12-17;Punta Cana;Cancun;948
+2026-12-18;Punta Cana;Cancun;1120
+2026-12-10;Punta Cana;Cartagena;1310
+2026-12-11;Punta Cana;Cartagena;1250
+2026-12-12;Punta Cana;Cartagena;1130
+2026-12-13;Punta Cana;Cartagena;1190
+2026-12-14;Punta Cana;Cartagena;1310
+2026-12-15;Punta Cana;Cartagena;1250
+2026-12-16;Punta Cana;Cartagena;1310
+2026-12-17;Punta Cana;Cartagena;2030
+2026-12-18;Punta Cana;Cartagena;2030
+2026-12-10;Punta Cana;Curacao;1410
+2026-12-11;Punta Cana;Curacao;3220
+2026-12-12;Punta Cana;Curacao;1370
+2026-12-13;Punta Cana;Curacao;1370
+2026-12-14;Punta Cana;Curacao;3270
+2026-12-15;Punta Cana;Curacao;1280
+2026-12-16;Punta Cana;Curacao;1280
+2026-12-17;Punta Cana;Curacao;1280
+2026-12-18;Punta Cana;Curacao;4530
+2026-12-14;Punta Cana;GRU;1770
+2026-12-15;Punta Cana;GRU;1470
+2026-12-16;Punta Cana;GRU;1470
+2026-12-17;Punta Cana;GRU;1610
+2026-12-18;Punta Cana;GRU;1770
+2026-12-19;Punta Cana;GRU;1470
+2026-12-20;Punta Cana;GRU;1770
+2026-12-21;Punta Cana;GRU;2000
+2026-12-22;Punta Cana;GRU;1770
+2026-12-10;Punta Cana;San Andres;2650
+2026-12-11;Punta Cana;San Andres;1730
+2026-12-12;Punta Cana;San Andres;2950
+2026-12-13;Punta Cana;San Andres;1690
+2026-12-14;Punta Cana;San Andres;1730
+2026-12-15;Punta Cana;San Andres;1730
+2026-12-16;Punta Cana;San Andres;1730
+2026-12-17;Punta Cana;San Andres;1800
+2026-12-18;Punta Cana;San Andres;3310
+2026-12-10;San Andres;Aruba;1730
+2026-12-11;San Andres;Aruba;1760
+2026-12-12;San Andres;Aruba;1760
+2026-12-13;San Andres;Aruba;1760
+2026-12-14;San Andres;Aruba;1760
+2026-12-15;San Andres;Aruba;1760
+2026-12-16;San Andres;Aruba;1760
+2026-12-17;San Andres;Aruba;1730
+2026-12-18;San Andres;Aruba;1730
+2026-12-14;San Andres;BH;2040
+2026-12-15;San Andres;BH;2010
+2026-12-16;San Andres;BH;2680
+2026-12-17;San Andres;BH;2060
+2026-12-18;San Andres;BH;2060
+2026-12-19;San Andres;BH;2680
+2026-12-20;San Andres;BH;2570
+2026-12-21;San Andres;BH;2680
+2026-12-22;San Andres;BH;2680
+2026-12-10;San Andres;Cancun;1860
+2026-12-11;San Andres;Cancun;2180
+2026-12-12;San Andres;Cancun;1860
+2026-12-13;San Andres;Cancun;1860
+2026-12-14;San Andres;Cancun;1860
+2026-12-15;San Andres;Cancun;1860
+2026-12-16;San Andres;Cancun;1860
+2026-12-17;San Andres;Cancun;1860
+2026-12-18;San Andres;Cancun;2100
+2026-12-10;San Andres;Cartagena;323
+2026-12-11;San Andres;Cartagena;415
+2026-12-12;San Andres;Cartagena;584
+2026-12-13;San Andres;Cartagena;328
+2026-12-14;San Andres;Cartagena;227
+2026-12-15;San Andres;Cartagena;152
+2026-12-16;San Andres;Cartagena;155
+2026-12-17;San Andres;Cartagena;152
+2026-12-18;San Andres;Cartagena;415
+2026-12-10;San Andres;Curacao;1630
+2026-12-11;San Andres;Curacao;1660
+2026-12-12;San Andres;Curacao;1660
+2026-12-13;San Andres;Curacao;1660
+2026-12-14;San Andres;Curacao;1660
+2026-12-15;San Andres;Curacao;1660
+2026-12-16;San Andres;Curacao;1660
+2026-12-17;San Andres;Curacao;1630
+2026-12-18;San Andres;Curacao;1700
+2026-12-14;San Andres;GRU;1680
+2026-12-15;San Andres;GRU;1680
+2026-12-16;San Andres;GRU;2050
+2026-12-17;San Andres;GRU;2050
+2026-12-18;San Andres;GRU;2050
+2026-12-19;San Andres;GRU;2050
+2026-12-20;San Andres;GRU;2050
+2026-12-21;San Andres;GRU;2050
+2026-12-22;San Andres;GRU;2050
+2026-12-10;San Andres;Punta Cana;1830
+2026-12-11;San Andres;Punta Cana;1830
+2026-12-12;San Andres;Punta Cana;1830
+2026-12-13;San Andres;Punta Cana;1830
+2026-12-14;San Andres;Punta Cana;1830
+2026-12-15;San Andres;Punta Cana;1830
+2026-12-16;San Andres;Punta Cana;1830
+2026-12-17;San Andres;Punta Cana;1830
+2026-12-18;San Andres;Punta Cana;1830

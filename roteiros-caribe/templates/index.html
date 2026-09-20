@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rota Caribe | comparação de voos</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/">ROTA <span>CARIBE</span></a>
+    <div class="status"><i></i> planejador de viagens</div>
+  </header>
+  <main>
+    <section class="hero">
+      <div class="eyebrow">CNF + GRU · dezembro <span id="hero-year">2026</span></div>
+      <h1>Três pousos.<br><em>Uma só viagem.</em></h1>
+      <p>Compare combinações por Aruba, Curaçao, Cancún, Cartagena, San Andrés e Punta Cana, incluindo o posicionamento Belo Horizonte–São Paulo quando ele reduzir o custo.</p>
+      <div class="searchbar">
+        <label>Ano da viagem <input id="year" type="number" min="2026" max="2035" value="2026"></label>
+        <button id="search" type="button">Buscar opções <span>→</span></button>
+      </div>
+      <div class="lodging-panel">
+        <div class="lodging-head">
+          <div><b>Hospedagem manual</b><span>R$ por pessoa / noite</span></div>
+          <label class="check-label"><input id="include-lodging" type="checkbox"> incluir no ranking</label>
+        </div>
+        <div class="lodging-grid">
+          <label>Aruba <input class="lodging-rate" data-destination="Aruba" type="number" min="0" step="10" placeholder="0"></label>
+          <label>Curaçao <input class="lodging-rate" data-destination="Curaçao" type="number" min="0" step="10" placeholder="0"></label>
+          <label>Cancún <input class="lodging-rate" data-destination="Cancún" type="number" min="0" step="10" placeholder="0"></label>
+          <label>Cartagena <input class="lodging-rate" data-destination="Cartagena" type="number" min="0" step="10" placeholder="0"></label>
+          <label>San Andrés <input class="lodging-rate" data-destination="San Andrés" type="number" min="0" step="10" placeholder="0"></label>
+          <label>Punta Cana <input class="lodging-rate" data-destination="Punta Cana" type="number" min="0" step="10" placeholder="0"></label>
+        </div>
+      </div>
+    </section>
+
+    <section class="rules">
+      <div><b>01</b><span>BH → Caribe<br><strong>07 a 13 dez</strong></span></div>
+      <div><b>02</b><span>Entre destinos<br><strong>10 a 15 dez</strong></span></div>
+      <div><b>03</b><span>Caribe → BH<br><strong>14 a 20 dez</strong></span></div>
+      <div class="rule-note">90h mín. em cada destino<br><strong>20h máx. por voo · conexão SP 3–10h</strong></div>
+    </section>
+
+    <section id="results" class="results" aria-live="polite">
+      <div class="loading"><span></span> montando combinações...</div>
+    </section>
+  </main>
+  <script src="/static/app.js"></script>
+</body>
+</html>
