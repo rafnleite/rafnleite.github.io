@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#10253a">
+  <title>Mapa de condomínios de Belo Horizonte</title>
+  <link rel="stylesheet" href="vendor/leaflet.css">
+  <link rel="stylesheet" href="vendor/MarkerCluster.css">
+  <link rel="stylesheet" href="vendor/MarkerCluster.Default.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar" id="sidebar">
+      <header class="brand"><strong>CAMADAS DO MAPA</strong><button class="sidebar-close" id="sidebar-close" aria-label="Fechar camadas">×</button></header>
+      <div class="sidebar-scroll">
+        <div class="search-block"><label for="search">Buscar elemento</label><div class="search-field"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="Nome ou endereço" autocomplete="off"><kbd>Ctrl K</kbd></div><div class="search-results" id="search-results" hidden></div></div>
+        <div class="section-head"><span>CAMADAS</span><button id="reset-layers" type="button">Restaurar</button></div>
+        <div id="layer-list" class="layer-list"></div>
+      </div>
+      <footer class="sidebar-footer">Fontes: QuintoAndar · QGIS/PBH</footer>
+    </aside>
+    <main class="map-area"><div id="map" role="application" aria-label="Mapa interativo de Belo Horizonte"></div>
+      <button class="mobile-layers" id="mobile-layers" type="button">☷ &nbsp; Camadas</button>
+      <div class="map-top"><span>BELO HORIZONTE</span><span class="map-top-divider"></span><span id="visible-count">Carregando dados…</span></div>
+      <div class="map-actions"><button id="home-map" title="Voltar a Belo Horizonte" aria-label="Voltar a Belo Horizonte">⌖</button><button id="zoom-in" title="Aproximar" aria-label="Aproximar">+</button><button id="zoom-out" title="Afastar" aria-label="Afastar">−</button></div>
+      <section class="details" id="details" hidden><button class="details-close" id="details-close" aria-label="Fechar detalhes">×</button><div class="details-eyebrow" id="details-category"></div><h2 id="details-title"></h2><p id="details-subtitle"></p><div id="details-fields"></div><a id="details-link" target="_blank" rel="noopener noreferrer" hidden>Ver no QuintoAndar ↗</a></section>
+    </main>
+    <aside class="filter-palette" id="condo-filters" aria-label="Filtrar condomínios">
+      <header class="filter-palette-header"><div><strong>Filtrar condomínios</strong><span id="filter-count">Carregando…</span></div><p>Resultados atualizados automaticamente</p></header>
+      <div class="filter-palette-body">
+        <section class="filter-section"><h2>Texto</h2><div id="filter-text-fields"></div></section>
+        <section class="filter-section"><h2>Intervalos</h2><p class="filter-help">O “+” inclui valores acima do limite.</p><div id="filter-number-fields"></div></section>
+        <section class="filter-section"><h2>Comodidades</h2><p class="filter-help">Selecione as que o condomínio deve ter.</p><div id="filter-amenities" class="filter-amenities"></div></section>
+      </div>
+      <footer class="filter-palette-footer"><p id="filter-error" role="alert" hidden></p><button type="button" id="clear-filter">Limpar filtros</button></footer>
+    </aside>
+  </div>
+  <script src="vendor/leaflet.js"></script>
+  <script src="vendor/leaflet.markercluster.js"></script>
+  <script src="data/Ocupaesirregulares_4.js"></script>
+  <script src="data/Favelasevilas_5.js"></script>
+  <script src="data/RiscodeInundao_6.js"></script>
+  <script src="data/Riscodeescorregamento_7.js"></script>
+  <script src="data/Riscodeerosoeassoreamento_8.js"></script>
+  <script src="data/ParquesMunicipais_9.js"></script>
+  <script src="data/Supermercados_10.js"></script>
+  <script src="data/verdemar.js"></script>
+  <script src="data/Shoppings_11.js"></script>
+  <script src="data/Linhasdenibus_13.js"></script>
+  <script src="data/Estaesdenibus_14.js"></script>
+  <script src="data/Linhademetr_15.js"></script>
+  <script src="data/EstaesdeMetr_16.js"></script>
+  <script src="data/condominios.js"></script>
+  <script src="filtros.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
