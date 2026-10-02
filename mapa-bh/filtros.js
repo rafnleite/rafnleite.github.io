@@ -7,7 +7,7 @@
     { key: 'descricao', label: 'Descrição', type: 'text' },
     { key: 'tamanho_minimo_imoveis', label: 'Área mínima (m²)', type: 'number', sliderMax: 300 },
     { key: 'quartos', label: 'Quartos', type: 'interval', minKey: 'min_quartos', maxKey: 'max_quartos', sliderMax: 5 },
-    { key: 'distancia_verdemar_km', label: 'Distância até Verdemar (km)', type: 'number', sliderMax: 10, step: 0.5 },
+    { key: 'distancia_verdemar_km', label: 'Distância até Verdemar (km)', type: 'number', sliderMax: 10, step: 0.05 },
     { key: 'garagem_maximo', label: 'Vagas máximas', type: 'number', sliderMax: 3 },
     { key: 'comodidades', label: 'Comodidade', type: 'list' }
   ];
