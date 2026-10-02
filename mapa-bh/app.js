@@ -129,7 +129,7 @@ function renderCondoFilters() {
     label.append(input); textHost.append(label);
   }
 
-  for (const field of GEOFilters.fields.filter(item => item.type === 'number')) {
+  for (const field of GEOFilters.fields.filter(item => item.type === 'number' || item.type === 'interval')) {
     const min = 0, max = field.sliderMax;
     const item = document.createElement('div'); item.className = 'filter-range'; item.dataset.field = field.key; item.dataset.min = min; item.dataset.max = max;
     const heading = document.createElement('div'); heading.className = 'filter-range-heading';
@@ -137,11 +137,11 @@ function renderCondoFilters() {
     const valuesLabel = document.createElement('span');
     heading.append(label, valuesLabel);
     const track = document.createElement('div'); track.className = 'filter-range-track';
-    const lower = document.createElement('input'); lower.type = 'range'; lower.min = min; lower.max = max; lower.value = min; lower.className = 'filter-range-lower'; lower.setAttribute('aria-label', `${field.label}: valor mínimo`);
-    const upper = document.createElement('input'); upper.type = 'range'; upper.min = min; upper.max = max; upper.value = max; upper.className = 'filter-range-upper'; upper.setAttribute('aria-label', `${field.label}: valor máximo`);
+    const lower = document.createElement('input'); lower.type = 'range'; lower.min = min; lower.max = max; lower.step = field.step || 1; lower.value = min; lower.className = 'filter-range-lower'; lower.setAttribute('aria-label', `${field.label}: valor mínimo`);
+    const upper = document.createElement('input'); upper.type = 'range'; upper.min = min; upper.max = max; upper.step = field.step || 1; upper.value = max; upper.className = 'filter-range-upper'; upper.setAttribute('aria-label', `${field.label}: valor máximo`);
     const update = changed => {
       if (Number(lower.value) > Number(upper.value)) changed === lower ? lower.value = upper.value : upper.value = lower.value;
-      const labelValue = value => Number(value) === max ? `${max.toLocaleString('pt-BR')}+` : Number(value).toLocaleString('pt-BR');
+      const labelValue = value => Number(value) === max ? `${max.toLocaleString('pt-BR')}+` : Number(value).toLocaleString('pt-BR', { maximumFractionDigits: 1 });
       valuesLabel.textContent = lower.value === upper.value ? labelValue(lower.value) : `${labelValue(lower.value)} – ${labelValue(upper.value)}`;
       const start = (Number(lower.value) - min) / (max - min || 1) * 100;
       const end = (Number(upper.value) - min) / (max - min || 1) * 100;
@@ -169,8 +169,12 @@ function applyCondoFilter() {
     const lower = Number(range.querySelector('.filter-range-lower').value);
     const upper = Number(range.querySelector('.filter-range-upper').value);
     if (lower > Number(range.dataset.min) || upper < Number(range.dataset.max)) {
-      conditions.push({ field: range.dataset.field, operator: 'gte', value: lower });
-      if (upper < Number(range.dataset.max)) conditions.push({ field: range.dataset.field, operator: 'lte', value: upper });
+      const field = GEOFilters.fields.find(item => item.key === range.dataset.field);
+      if (field.type === 'interval') conditions.push({ field: field.key, operator: 'overlaps', value: [lower, upper] });
+      else {
+        conditions.push({ field: field.key, operator: 'gte', value: lower });
+        if (upper < Number(range.dataset.max)) conditions.push({ field: field.key, operator: 'lte', value: upper });
+      }
     }
   }
   for (const input of document.querySelectorAll('#filter-amenities input:checked')) {
@@ -258,7 +262,7 @@ function showDetails(feature, definition) {
   document.getElementById('details-title').textContent = title;
   document.getElementById('details-subtitle').textContent = properties.endereco || properties.APELIDO_LOCALIDADE || '';
   const host = document.getElementById('details-fields'); host.replaceChildren();
-  const skip = new Set(['fid', 'id', 'latitude', 'longitude', 'imagem', 'url', 'nome_condominio', 'nome', 'NOME', 'endereco', 'updated_at', 'comodidades']);
+  const skip = new Set(['fid', 'id', 'latitude', 'longitude', 'imagem', 'url', 'nome_condominio', 'nome', 'NOME', 'endereco', 'updated_at', 'comodidades', 'distancia_verdemar_km']);
   const entries = Object.entries(properties).filter(([key, value]) => !skip.has(key) && value !== null && value !== '' && value !== 'false' && value !== false);
   const preferred = ['descricao', 'atualizado_em', 'tamanho_minimo_imoveis', 'min_quartos', 'max_quartos', 'garagem_maximo'];
   entries.sort((a, b) => (preferred.indexOf(a[0]) < 0 ? 100 : preferred.indexOf(a[0])) - (preferred.indexOf(b[0]) < 0 ? 100 : preferred.indexOf(b[0])));
@@ -329,6 +333,20 @@ try {
   const data = json_condominios;
   if (!Array.isArray(data.features)) throw new Error('GeoJSON inválido');
   condoFeatures = data.features;
+  const verdemarCoordinates = json_verdemar.features.map(feature => feature.geometry.coordinates);
+  const distanceKm = (first, second) => {
+    const radians = degrees => degrees * Math.PI / 180;
+    const [longitudeA, latitudeA] = first;
+    const [longitudeB, latitudeB] = second;
+    const latitudeDelta = radians(latitudeB - latitudeA);
+    const longitudeDelta = radians(longitudeB - longitudeA);
+    const a = Math.sin(latitudeDelta / 2) ** 2 + Math.cos(radians(latitudeA)) * Math.cos(radians(latitudeB)) * Math.sin(longitudeDelta / 2) ** 2;
+    return 6371 * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  };
+  for (const feature of condoFeatures) {
+    const coordinates = feature.geometry.coordinates;
+    feature.properties.distancia_verdemar_km = Math.min(...verdemarCoordinates.map(store => distanceKm(coordinates, store)));
+  }
   condoMarkers = condoFeatures.map(feature => {
     const [lng, lat] = feature.geometry.coordinates;
     const marker = L.marker([lat, lng], { icon: L.divIcon({ className: 'condo-point', iconSize: [8, 8], iconAnchor: [4, 4] }) });

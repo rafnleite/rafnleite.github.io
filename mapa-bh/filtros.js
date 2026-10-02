@@ -6,8 +6,8 @@
     { key: 'endereco', label: 'Endereço / bairro', type: 'text' },
     { key: 'descricao', label: 'Descrição', type: 'text' },
     { key: 'tamanho_minimo_imoveis', label: 'Área mínima (m²)', type: 'number', sliderMax: 300 },
-    { key: 'min_quartos', label: 'Quartos mínimos', type: 'number', sliderMax: 5 },
-    { key: 'max_quartos', label: 'Quartos máximos', type: 'number', sliderMax: 5 },
+    { key: 'quartos', label: 'Quartos', type: 'interval', minKey: 'min_quartos', maxKey: 'max_quartos', sliderMax: 5 },
+    { key: 'distancia_verdemar_km', label: 'Distância até Verdemar (km)', type: 'number', sliderMax: 10, step: 0.5 },
     { key: 'garagem_maximo', label: 'Vagas máximas', type: 'number', sliderMax: 3 },
     { key: 'comodidades', label: 'Comodidade', type: 'list' }
   ];
@@ -26,6 +26,12 @@
     const current = properties[condition.field];
     if (condition.operator === 'empty') return empty(current);
     if (condition.operator === 'not_empty') return !empty(current);
+    if (field.type === 'interval' && condition.operator === 'overlaps') {
+      const currentMin = Number(properties[field.minKey]);
+      const currentMax = Number(properties[field.maxKey]);
+      const [filterMin, filterMax] = condition.value.map(Number);
+      return [currentMin, currentMax, filterMin, filterMax].every(Number.isFinite) && currentMin <= filterMax && currentMax >= filterMin;
+    }
     if (empty(current)) return false;
     if (field.type === 'list') {
       const values = Array.isArray(current) ? current : String(current).split(';');
