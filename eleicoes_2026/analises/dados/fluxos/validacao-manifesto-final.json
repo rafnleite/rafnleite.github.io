@@ -1,0 +1,9 @@
+{
+  "validacao": "aprovada",
+  "modelo": "ecological-turnover-5pct-1",
+  "manifesto_sha256": "da89935b18bc92960e8b2f8e8b71af82c78c2259b8e1ffd979b1203887f7f097",
+  "auditoria_sha256": "b5a47f543bac4bd08a3d6e355cab8eb64de50b3ac7f67fd5f2bb049695bdb848",
+  "modelo_sha256": "aee9d0cec863d526884dea5f426e35007c179a2d61b9e6590e14dfb949cb8c8e",
+  "validacao_hierarquica_sha256": "251257079283897a4845e446dcb8106fcccd15352a03767e70e2bd06689fff37",
+  "urnas": 499207
+}

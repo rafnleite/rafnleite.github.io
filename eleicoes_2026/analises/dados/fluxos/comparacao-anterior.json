@@ -1,0 +1,20 @@
+{
+  "escopo": "Brasil sem exterior",
+  "anterior": {
+    "brancos_nulos_lula": 3703098.4638730674,
+    "brancos_nulos_lula_pct": 62.14253409732218,
+    "abstencao_lula": 3328898.384748931,
+    "abstencao_lula_pct": 10.119801203064739,
+    "flavio_abstencao": 628810.6158600998,
+    "flavio_abstencao_pct": 1.1236666192823186
+  },
+  "hipotese_atual": {
+    "brancos_nulos_lula": 3777564.7649560533,
+    "brancos_nulos_lula_pct": 63.39216996288082,
+    "abstencao_lula": 5398041.439821965,
+    "abstencao_lula_pct": 16.409965082494903,
+    "flavio_abstencao": 2473693.3286152757,
+    "flavio_abstencao_pct": 4.4204193593397765
+  },
+  "nota": "Compara dois ajustes condicionais diferentes. A taxa de 5% é uma hipótese, não uma medição nacional. Os fluxos por candidato foram reestimados."
+}

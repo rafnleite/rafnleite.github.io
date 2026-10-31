@@ -1,0 +1,269 @@
+{
+  "status": "aprovado",
+  "gerado_em": "2026-10-31T03:28:10+00:00",
+  "modelo": "ecological-turnover-5pct-1",
+  "urnas": 499207,
+  "urnas_limitadas": 732,
+  "trocas_solicitadas": 6263791.75,
+  "trocas_viaveis": 6262377.2,
+  "erro_maximo_margem_csv": 4.00000001832268e-06,
+  "erro_maximo_cota_csv": 5.000000001587068e-06,
+  "erro_maximo_agregado_csv": 0.0002808257704600692,
+  "maior_residuo_kkt_recalculado": 1.7661266681495486e-09,
+  "arquivos": [
+    {
+      "uf": "AC",
+      "urnas": 2270,
+      "sha256_csv": "9653c6c9456c3332c0349e817f63f3763d40108ddc62e9528523cdb635d8129f",
+      "sha256_zonas": "7812f49aad54ccb1fc27f51d85e1a6a604f3e65af7e5b31b7ebfa4f54f3e8bdc",
+      "erro_margens_csv": 3.0000000208474376e-06,
+      "erro_cotas_csv": 2.9999999995311555e-06,
+      "erro_agregado_csv": 3.016803748323582e-05
+    },
+    {
+      "uf": "AL",
+      "urnas": 7101,
+      "sha256_csv": "7443da7e567ba2acafffedb1a37f5e155c43352b87f7d8632ebaaf689641a074",
+      "sha256_zonas": "b018def59f020149655b912fdecb8ba61e79fe0e27cf67fe6750badfda012720",
+      "erro_margens_csv": 3.000000049269147e-06,
+      "erro_cotas_csv": 3.000000003083869e-06,
+      "erro_agregado_csv": 5.433154365164228e-05
+    },
+    {
+      "uf": "AM",
+      "urnas": 8157,
+      "sha256_csv": "ff36ed3199cf8c93e6e8f38ecb4f1a7625d1e05a5aa7cff10e3c263d42bc53cd",
+      "sha256_zonas": "cf5e6ac4af7fecd68f682c88a4127a307d25811d158a052cde30f46b09b22de2",
+      "erro_margens_csv": 3.000000049269147e-06,
+      "erro_cotas_csv": 3.0000000101892965e-06,
+      "erro_agregado_csv": 6.948627924430184e-05
+    },
+    {
+      "uf": "AP",
+      "urnas": 1914,
+      "sha256_csv": "c6a50179d41becfb82159ff0126c0eb340a35a1ccda77d8b3b35e58bf3703da3",
+      "sha256_zonas": "76a92f718b5f1b3e2e77827b5e9d06e13206f1179e72173656a753c02cadf4f0",
+      "erro_margens_csv": 3.0000000208474376e-06,
+      "erro_cotas_csv": 3.999999997006398e-06,
+      "erro_agregado_csv": 2.810854304868826e-05
+    },
+    {
+      "uf": "BA",
+      "urnas": 35476,
+      "sha256_csv": "5abb9528195bc185f1f4077729e1ec400e40a0c3947bb624c6ead6b2f3d4e038",
+      "sha256_zonas": "eb3614dec90df0e761e7542671cdc3a10dbf80826aca2a7b7a766da81c4eba70",
+      "erro_margens_csv": 3.000000049269147e-06,
+      "erro_cotas_csv": 4.000000000559112e-06,
+      "erro_agregado_csv": 0.00011199858363397652
+    },
+    {
+      "uf": "CE",
+      "urnas": 23765,
+      "sha256_csv": "43bfc4916dc3f3fd99583e3689c0c9094eb6bb62e88b72f25335ada67a3da916",
+      "sha256_zonas": "3bd1895d7af0e7c4d282d3689b8bdcc8339c986e0bdf2fea1eed9bb6b908caeb",
+      "erro_margens_csv": 3.0000000208474376e-06,
+      "erro_cotas_csv": 4.000000002335469e-06,
+      "erro_agregado_csv": 8.891469042282552e-05
+    },
+    {
+      "uf": "DF",
+      "urnas": 6969,
+      "sha256_csv": "923669c0528d319f1a9d33fa1c939bea321e95d0d3a1b62c9054efbb0223bb34",
+      "sha256_zonas": "aa7bc89a2f859e88abd396af8384a28cffaeaaf84772aff8ea68c933551bc406",
+      "erro_margens_csv": 3.999999989900971e-06,
+      "erro_cotas_csv": 4.000000000559112e-06,
+      "erro_agregado_csv": 5.616721821866122e-05
+    },
+    {
+      "uf": "ES",
+      "urnas": 9844,
+      "sha256_csv": "a4573b6047a40d438fe1a4e48d3e0c1747f57f8dbc25f34e7dd02335ffbdf2e3",
+      "sha256_zonas": "f7df14b5a0ce644b7ad065ba6e25bf00ee1429c26866247ddbd5f529a8cde3c1",
+      "erro_margens_csv": 3.000000049269147e-06,
+      "erro_cotas_csv": 4.000000002335469e-06,
+      "erro_agregado_csv": 7.051532156765461e-05
+    },
+    {
+      "uf": "GO",
+      "urnas": 15686,
+      "sha256_csv": "4c850824bd4b6f306c415a067736a6e6d58513edcf593ba4eb76ac279ec2c395",
+      "sha256_zonas": "7d899b0bbf52b21e2d90367145b75749312ecb9b4c13cfb48b50fcfde3dad61e",
+      "erro_margens_csv": 3.000000049269147e-06,
+      "erro_cotas_csv": 3.000000003083869e-06,
+      "erro_agregado_csv": 7.883998068791698e-05
+    },
+    {
+      "uf": "MA",
+      "urnas": 18093,
+      "sha256_csv": "18899c61a7fe55cffd6f6e3d7aaaf5f0215deedd768b4d6a292e12e91653f434",
+      "sha256_zonas": "d7a1b5b9c198d75f02f2732d5eb70c0afbf68399d011bbf6e1c428286539f55b",
+      "erro_margens_csv": 3.0000000208474376e-06,
+      "erro_cotas_csv": 4.0000000041118255e-06,
+      "erro_agregado_csv": 7.087251651682891e-05
+    },
+    {
+      "uf": "MG",
+      "urnas": 52062,
+      "sha256_csv": "caa5ed1dc05f7b55155fd0be5607fbc182b2151cc4af5d309bde8548f88a312f",
+      "sha256_zonas": "6c3d1099e09e260e45b00dba50f7b82f3cea45bb88c9ec774506e89392a0ecf2",
+      "erro_margens_csv": 4.000000000559112e-06,
+      "erro_cotas_csv": 4.000000000559112e-06,
+      "erro_agregado_csv": 0.00013871359988115728
+    },
+    {
+      "uf": "MS",
+      "urnas": 7106,
+      "sha256_csv": "9cf42210079b6f0ff08410cbed70970b679f18fb7cbfa5fd97c3e0b3643bb8a2",
+      "sha256_zonas": "7bfa42c9097a76be453702af19067b740994528ca05420a6e0cc6e3a6049862d",
+      "erro_margens_csv": 3.0000000208474376e-06,
+      "erro_cotas_csv": 3.000000003083869e-06,
+      "erro_agregado_csv": 5.987894599002175e-05
+    },
+    {
+      "uf": "MT",
+      "urnas": 8287,
+      "sha256_csv": "feee780dcc4e5839181cb9dee5d1e9b32ee79a9939606a7ec06d4abc5d51c37a",
+      "sha256_zonas": "4eb42e0bcb78f8379323c656070636b14a531a225773270fe3b1debf90b61319",
+      "erro_margens_csv": 4.00000001832268e-06,
+      "erro_cotas_csv": 4.000000000559112e-06,
+      "erro_agregado_csv": 5.4132089871927747e-05
+    },
+    {
+      "uf": "PA",
+      "urnas": 20827,
+      "sha256_csv": "48b2b437dfbeb72d9482f2fcf0e5b7f61809edcef0161e103c3c8fdd41b6ef16",
+      "sha256_zonas": "0be0e3fbed0bd2dd5fdfc15ea7fc7ee0f0d90fbcbfa5415840ec61be99ed9596",
+      "erro_margens_csv": 3.000000049269147e-06,
+      "erro_cotas_csv": 3.000000003083869e-06,
+      "erro_agregado_csv": 9.67162850429304e-05
+    },
+    {
+      "uf": "PB",
+      "urnas": 10712,
+      "sha256_csv": "93a50a3e9b6ccb03d6b944381b15f81da4e64232d46fe9f0fbe8b3478f2d3380",
+      "sha256_zonas": "2297438e396c253657b9ef5cefe5f2bd7926b9d8327266108ae3165e94eda3f2",
+      "erro_margens_csv": 3.999999997006398e-06,
+      "erro_cotas_csv": 4.000000000559112e-06,
+      "erro_agregado_csv": 7.953611202538013e-05
+    },
+    {
+      "uf": "PE",
+      "urnas": 21418,
+      "sha256_csv": "ab209ce99bcdbd69ea2af51bd3ef92de9790ab9ade29ba16e85ae85e244b7fb4",
+      "sha256_zonas": "1f36b0d567950f7d3578e781a1c3f10fd619638c017771ffe059ec4acd0b1079",
+      "erro_margens_csv": 3.000000049269147e-06,
+      "erro_cotas_csv": 4.000000000559112e-06,
+      "erro_agregado_csv": 0.00011541143248905428
+    },
+    {
+      "uf": "PI",
+      "urnas": 10225,
+      "sha256_csv": "63c287d228a74d400f02d283e950293aa389c2b11b9ca80fb92055e7d6a7a0eb",
+      "sha256_zonas": "bd7056ffafd1f4548558dd1f8a96176e86735dee5badaeb156ee31132adb4826",
+      "erro_margens_csv": 3.000000049269147e-06,
+      "erro_cotas_csv": 3.000000003083869e-06,
+      "erro_agregado_csv": 9.537484413613129e-05
+    },
+    {
+      "uf": "PR",
+      "urnas": 27142,
+      "sha256_csv": "fb851b660c11a1177ee552b34aca6b09f2d1f54a9a46bcf73b8dceefee3438af",
+      "sha256_zonas": "340b8d3d029014aab04097b65d4d23f8c443930f62bcac93a2791b970964b2a6",
+      "erro_margens_csv": 4.000000000559112e-06,
+      "erro_cotas_csv": 4.000000000559112e-06,
+      "erro_agregado_csv": 0.00010740772631834261
+    },
+    {
+      "uf": "RJ",
+      "urnas": 37675,
+      "sha256_csv": "30651f0acbe83a3235c7ffed5f9d6bb713fdecbb8410b827c6bcfe617146bfd9",
+      "sha256_zonas": "453bcd60b9be0f647f414926088af1c3bd42c7a816eb020b9cf4ad34a9ae0896",
+      "erro_margens_csv": 3.000000049269147e-06,
+      "erro_cotas_csv": 4.0000000041118255e-06,
+      "erro_agregado_csv": 0.00013568970280175563
+    },
+    {
+      "uf": "RN",
+      "urnas": 8115,
+      "sha256_csv": "a0499e2a791cc03aa343601bbc2e4658845a39d298adfaf161b694cad703779a",
+      "sha256_zonas": "4e6b885a35dbecde8e3530c7793b38ee8e7b514d5df35283b772fa10f99c3b34",
+      "erro_margens_csv": 3.0000000208474376e-06,
+      "erro_cotas_csv": 3.000000003083869e-06,
+      "erro_agregado_csv": 5.1811221055686474e-05
+    },
+    {
+      "uf": "RO",
+      "urnas": 4698,
+      "sha256_csv": "b59ac3ac1d3359fd2f6047662ee7cfc2a46b8dc0a32aa5a21b93fbc77b5663a2",
+      "sha256_zonas": "78b5b06e19dbd8a23b401b9c5bb3fc1f670783d39b187362edcdfb09e9bfcf51",
+      "erro_margens_csv": 3.000000006636583e-06,
+      "erro_cotas_csv": 3.000000003083869e-06,
+      "erro_agregado_csv": 3.994369632209782e-05
+    },
+    {
+      "uf": "RR",
+      "urnas": 1519,
+      "sha256_csv": "84807b1313b9f5f03079fb191b723b333382f76f2815818442316d668c0d10fc",
+      "sha256_zonas": "725911d0967c6f570589c0856ba9758cf4c9a403ca1d55d4dc492a6fd16ba3cd",
+      "erro_margens_csv": 3.0000000208474376e-06,
+      "erro_cotas_csv": 2.9999999995311555e-06,
+      "erro_agregado_csv": 2.7954360120929778e-05
+    },
+    {
+      "uf": "RS",
+      "urnas": 27547,
+      "sha256_csv": "04c1b4b12cf6d000857470dcfc1bf0eaae7e586840b4e70e7dfefb46b88691f5",
+      "sha256_zonas": "b69f81ad2d7c955fff2b197e31b53d452cac739e65c4e4d5ba859318eb68cc07",
+      "erro_margens_csv": 4.000000000115023e-06,
+      "erro_cotas_csv": 4.000000002335469e-06,
+      "erro_agregado_csv": 7.80167174525559e-05
+    },
+    {
+      "uf": "SC",
+      "urnas": 17326,
+      "sha256_csv": "c578845059f6bcc9e604f11e2ae184b361c667003f0a41a34f00649c048fafb9",
+      "sha256_zonas": "da1b799232b1eb12b9b17b7318f21531c9b1eb2ecc259a5f260353d229331b97",
+      "erro_margens_csv": 3.999999933057552e-06,
+      "erro_cotas_csv": 5.000000001587068e-06,
+      "erro_agregado_csv": 0.00010655380674506887
+    },
+    {
+      "uf": "SE",
+      "urnas": 5923,
+      "sha256_csv": "8887d47a9491cddea319c682311c4f97b326d804a23993ff3c1e23524fa48ae2",
+      "sha256_zonas": "874f6475183b5bcb91bce39f95f105c39e396951d52d1b5faf502625ff9189d6",
+      "erro_margens_csv": 3.0000000208474376e-06,
+      "erro_cotas_csv": 3.0000000013075123e-06,
+      "erro_agregado_csv": 7.455706014525276e-05
+    },
+    {
+      "uf": "SP",
+      "urnas": 103656,
+      "sha256_csv": "acc8e10b453ebffe8bacd840ae3af5e433b58400bf038f80cba0b7bc10af8713",
+      "sha256_zonas": "7ac29cd21ab78e1252b8e92d3d686d1633f42db42dfd192a39ef40fa31e89bf3",
+      "erro_margens_csv": 3.999999998782755e-06,
+      "erro_cotas_csv": 4.0000000041118255e-06,
+      "erro_agregado_csv": 0.0002808257704600692
+    },
+    {
+      "uf": "TO",
+      "urnas": 4384,
+      "sha256_csv": "5ef08e3d62f6acf0b307b695b3c9fb58eb366b67763afe848807af5e33a02640",
+      "sha256_zonas": "b3fbbb7e1b3c86f547a6d4c1b6a00b72cff7eb983e9bd9279fd7b619fb97ad67",
+      "erro_margens_csv": 3.0000000208474376e-06,
+      "erro_cotas_csv": 3.0000000013075123e-06,
+      "erro_agregado_csv": 4.097873534192331e-05
+    },
+    {
+      "uf": "ZZ",
+      "urnas": 1310,
+      "sha256_csv": "f135fb60a26bc81da7be98f3df0d1ead778b4c3aa237a40b8d5323ae252e4994",
+      "sha256_zonas": "11ae4dcc4cf811e4eff5d8ca74bfd9c33fa9ba1c00ef402ab4077a4e45d24c88",
+      "erro_margens_csv": 3.000000049269147e-06,
+      "erro_cotas_csv": 3.000000003083869e-06,
+      "erro_agregado_csv": 2.475274311564135e-05
+    }
+  ],
+  "escopo": "Todos os CSVs por urna confrontados com os BUs de entrada; cotas de participação e agregados conferidos. Gradientes do ajuste recalculados independentemente.",
+  "ressalva": "Confere a implementação da hipótese de 5%; não comprova que essa taxa ocorreu na eleição."
+}
