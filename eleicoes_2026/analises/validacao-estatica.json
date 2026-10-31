@@ -1,14 +1,154 @@
 {
-  "ok": true,
+  "ok": false,
   "scope": "Pulso static package; no network access",
   "htmlPages": 10,
-  "referenceChecks": 589,
-  "javascriptSyntaxChecks": 50,
-  "gzipFiles": 60,
+  "referenceChecks": 597,
+  "javascriptSyntaxChecks": 58,
+  "gzipFiles": 88,
   "gzipDetails": [
     {
       "file": "atraso-data.json.gz",
       "unpackedBytes": 33217187,
+      "plainCounterpart": false
+    },
+    {
+      "file": "biometria/scatter-AC.bin.gz",
+      "unpackedBytes": 90800,
+      "plainCounterpart": false
+    },
+    {
+      "file": "biometria/scatter-AL.bin.gz",
+      "unpackedBytes": 284040,
+      "plainCounterpart": false
+    },
+    {
+      "file": "biometria/scatter-AM.bin.gz",
+      "unpackedBytes": 326280,
+      "plainCounterpart": false
+    },
+    {
+      "file": "biometria/scatter-AP.bin.gz",
+      "unpackedBytes": 76560,
+      "plainCounterpart": false
+    },
+    {
+      "file": "biometria/scatter-BA.bin.gz",
+      "unpackedBytes": 1419040,
+      "plainCounterpart": false
+    },
+    {
+      "file": "biometria/scatter-CE.bin.gz",
+      "unpackedBytes": 950600,
+      "plainCounterpart": false
+    },
+    {
+      "file": "biometria/scatter-DF.bin.gz",
+      "unpackedBytes": 278760,
+      "plainCounterpart": false
+    },
+    {
+      "file": "biometria/scatter-ES.bin.gz",
+      "unpackedBytes": 393760,
+      "plainCounterpart": false
+    },
+    {
+      "file": "biometria/scatter-GO.bin.gz",
+      "unpackedBytes": 627440,
+      "plainCounterpart": false
+    },
+    {
+      "file": "biometria/scatter-MA.bin.gz",
+      "unpackedBytes": 723720,
+      "plainCounterpart": false
+    },
+    {
+      "file": "biometria/scatter-MG.bin.gz",
+      "unpackedBytes": 2082480,
+      "plainCounterpart": false
+    },
+    {
+      "file": "biometria/scatter-MS.bin.gz",
+      "unpackedBytes": 284240,
+      "plainCounterpart": false
+    },
+    {
+      "file": "biometria/scatter-MT.bin.gz",
+      "unpackedBytes": 331480,
+      "plainCounterpart": false
+    },
+    {
+      "file": "biometria/scatter-PA.bin.gz",
+      "unpackedBytes": 833080,
+      "plainCounterpart": false
+    },
+    {
+      "file": "biometria/scatter-PB.bin.gz",
+      "unpackedBytes": 428480,
+      "plainCounterpart": false
+    },
+    {
+      "file": "biometria/scatter-PE.bin.gz",
+      "unpackedBytes": 856720,
+      "plainCounterpart": false
+    },
+    {
+      "file": "biometria/scatter-PI.bin.gz",
+      "unpackedBytes": 409000,
+      "plainCounterpart": false
+    },
+    {
+      "file": "biometria/scatter-PR.bin.gz",
+      "unpackedBytes": 1085680,
+      "plainCounterpart": false
+    },
+    {
+      "file": "biometria/scatter-RJ.bin.gz",
+      "unpackedBytes": 1507000,
+      "plainCounterpart": false
+    },
+    {
+      "file": "biometria/scatter-RN.bin.gz",
+      "unpackedBytes": 324600,
+      "plainCounterpart": false
+    },
+    {
+      "file": "biometria/scatter-RO.bin.gz",
+      "unpackedBytes": 187920,
+      "plainCounterpart": false
+    },
+    {
+      "file": "biometria/scatter-RR.bin.gz",
+      "unpackedBytes": 60760,
+      "plainCounterpart": false
+    },
+    {
+      "file": "biometria/scatter-RS.bin.gz",
+      "unpackedBytes": 1101880,
+      "plainCounterpart": false
+    },
+    {
+      "file": "biometria/scatter-SC.bin.gz",
+      "unpackedBytes": 693040,
+      "plainCounterpart": false
+    },
+    {
+      "file": "biometria/scatter-SE.bin.gz",
+      "unpackedBytes": 236920,
+      "plainCounterpart": false
+    },
+    {
+      "file": "biometria/scatter-SP.bin.gz",
+      "unpackedBytes": 4146200,
+      "plainCounterpart": false
+    },
+    {
+      "file": "biometria/scatter-TO.bin.gz",
+      "unpackedBytes": 175360,
+      "plainCounterpart": false
+    },
+    {
+      "file": "biometria/scatter-ZZ.bin.gz",
+      "unpackedBytes": 51240,
       "plainCounterpart": false
     },
     {
@@ -17557,7 +17697,27 @@
     "https://www.census.gov/content/dam/Census/library/working-papers/1988/adrm/rr88-01.pdf",
     "https://www.tse.jus.br/legislacao/compilada/res/2026/resolucao-no-23-751-de-26-de-fevereiro-de-2026"
   ],
-  "errors": [],
+  "errors": [
+    {
+      "source": "consulta.mjs",
+      "reference": "./api/database/query",
+      "error": "Missing local target"
+    },
+    {
+      "source": "consulta.mjs",
+      "reference": "./api/database/cancel",
+      "error": "Missing local target"
+    },
+    {
+      "source": "consulta.mjs",
+      "reference": "./api/database/schema",
+      "error": "Missing local target"
+    },
+    {
+      "source": "consulta.mjs",
+      "error": "Server API dependency remains"
+    }
+  ],
   "warnings": [],
   "limits": [
     "Dynamic paths explicitly checked for every UF in voting/results/biometry/flows manifests.",
