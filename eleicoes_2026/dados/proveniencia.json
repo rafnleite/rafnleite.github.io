@@ -13,14 +13,19 @@
       "bytes": 18825
     },
     {
-      "arquivo": "dados/evidencia-local-disponibilidade.json",
-      "sha256": "d759fadc3b05be69362a232de15f15b787bf58e55de56b518d47ed6e647e7ad6",
-      "bytes": 3149
-    },
-    {
       "arquivo": "analises/apuracao-encerramento.json",
       "sha256": "62b177b29a59f82419f6e1b84ef6ac02ca03a4a03be289346eaf0a7a8a69f64f",
       "bytes": 727609
+    },
+    {
+      "arquivo": "dados/unanimidades-contexto.json",
+      "sha256": "c3275c4538e1457577fee6b3bbe33af6d921c3690a3f4bdb22b63c1bd5f75f97",
+      "bytes": 17536
+    },
+    {
+      "arquivo": "dados/unanimidades-contexto.json",
+      "sha256": "c3275c4538e1457577fee6b3bbe33af6d921c3690a3f4bdb22b63c1bd5f75f97",
+      "bytes": 17536
     }
   ],
   "fontes_locais": [
@@ -70,12 +75,6 @@
       "unidade": "Taxa de habilitação após falha por confirmação presidencial; filtro elegível original Pulso",
       "universo": 496327,
       "observacao": "Não confundir com universo 497.897 do histogramaBU completo."
-    },
-    {
-      "arquivo_de_origem": "eleições apuração/logs-urnas/relatorios/secoes_parciais_inicial.json",
-      "incluido_como": "dados/evidencia-local-disponibilidade.json (somente amostras e contagem)",
-      "unidade": "Registros locais de consultas; URLs oficiais e SHA256 dos arquivos",
-      "limite": "Não são carimbos independentes e não comprovam disponibilização de todos os arquivosBU, RDV e logs durante apuração."
     }
   ],
   "fontes_externas": [
@@ -98,6 +97,30 @@
       ],
       "incluido_como": "dados/oficial-pos17.json",
       "escopo": "Território nacional, grupos de seções por corte de encerramento; os grupos se sobrepõem."
+    },
+    {
+      "tipo": "Terras Indígenas poligonais (shapefile)",
+      "instituicao": "FUNAI",
+      "pagina_fonte": "https://www.gov.br/funai/pt-br/atuacao/terras-indigenas/geoprocessamento-e-mapas",
+      "url": "https://geoserver.funai.gov.br/geoserver/Funai/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=Funai%3Atis_poligonais&maxFeatures=10000&outputFormat=SHAPE-ZIP",
+      "consultado_em": "2026-10-31",
+      "camada": "Funai:tis_poligonais",
+      "crs": "EPSG:4674 (SIRGAS 2000)",
+      "sha256_shapefile_zip": "1a15ce709744b9917b0890b000505da15a96eebf333dcb4d514633a5c5fc19a0",
+      "incluido_como": "dados/unanimidades-contexto.json",
+      "metodo": "Ponto-em-polígono das coordenadas dos locais de votação publicadas no cadastro TSE."
+    },
+    {
+      "tipo": "Terras Indígenas poligonais (shapefile)",
+      "instituicao": "FUNAI",
+      "pagina_fonte": "https://www.gov.br/funai/pt-br/atuacao/terras-indigenas/geoprocessamento-e-mapas",
+      "url": "https://geoserver.funai.gov.br/geoserver/Funai/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=Funai%3Atis_poligonais&maxFeatures=10000&outputFormat=SHAPE-ZIP",
+      "consultado_em": "2026-10-31",
+      "camada": "Funai:tis_poligonais",
+      "crs": "EPSG:4674 (SIRGAS 2000)",
+      "sha256_shapefile_zip": "1a15ce709744b9917b0890b000505da15a96eebf333dcb4d514633a5c5fc19a0",
+      "incluido_como": "dados/unanimidades-contexto.json",
+      "metodo": "Ponto-em-polígono das coordenadas dos locais de votação publicadas no cadastro TSE."
     }
   ],
   "limites_e_diferencas": [
@@ -107,11 +130,13 @@
     "Quatro das 110 unanimidades não possuem coordenadas na cópia local: mapa deve conter 106 pontos e tabela CSV todos os 110 registros.",
     "Comparação 2024/2026 é descritiva: eleição municipal e geral; segundo turno municipal cobre somente parte dos municípios.",
     "Histograma BU usa 497.897 seções do Brasil; histograma de logs usa 496.327 urnas elegíveis; média simples por urna difere da taxa ponderada geral.",
-    "Hash de arquivo garante identificação da cópia, não certifica autenticidade originária nem data histórica da publicação."
+    "Hash de arquivo garante identificação da cópia, não certifica autenticidade originária nem data histórica da publicação.",
+    "Coordenadas de locais de votação não representam a posição dos eleitores; interseção com polígono FUNAI classifica o local cadastrado, não residência ou voto individual."
   ],
   "reproducao": {
     "validacao": "python3 scripts/verificar_dados.py",
     "extracao": "python3 scripts/extrair_base.py --banco eleicoes_2026.sqlite3 --pulso public-pulso --evolucao evolucao-biometria.json.gz --saida resumo-reextraido.json",
+    "classificacao_unanimidades": "python3 scripts/classificar_unanimidades.py --shapefile /caminho/tis_poligonais.zip",
     "requisitos": "Python 3; biblioteca padrão. Extração requer baseSQLite e arquivos de origem, não incluídos. Validação usa os arquivos distribuídos no site.",
     "verificacao_extracao": {
       "executada_em": "2026-10-31",

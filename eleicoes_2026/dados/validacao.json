@@ -1,8 +1,8 @@
 {
-  "gerado_em_utc": "2026-10-31T13:39:24.081033+00:00",
+  "gerado_em_utc": "2026-10-31T20:33:16.645233+00:00",
   "ok": true,
-  "verificacoes": 109,
-  "aprovadas": 109,
+  "verificacoes": 108,
+  "aprovadas": 108,
   "falhas": [],
   "divergencias_entre_fontes": [
     {
@@ -2586,10 +2586,6 @@
     },
     {
       "verificacao": "hash da fonte publicada: dados/oficial-pos17.json",
-      "ok": true
-    },
-    {
-      "verificacao": "hash da fonte publicada: dados/evidencia-local-disponibilidade.json",
       "ok": true
     },
     {

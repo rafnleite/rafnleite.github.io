@@ -70,7 +70,7 @@ async function load(){try{
  $('threshold').max=String(Math.floor(max));$('rangeEnd').textContent=closingLabel(Math.floor(max)*60);
  map=L.map('delayMap',{preferCanvas:true,scrollWheelZoom:true}).setView([-14.5,-52.5],4);
  tooltip=createMapTooltip();popup=createMapTooltip({interactive:true});map.on('movestart zoomstart',hideMapOverlays);
- L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18,attribution:'&copy; OpenStreetMap contributors'}).addTo(map);layer=L.layerGroup().addTo(map);
+ layer=L.layerGroup().addTo(map);
  addStateBoundaries(map);
  chart=echarts.init($('ufChart'));map.on('moveend zoomend',renderMap);window.addEventListener('resize',()=>{chart.resize();map.invalidateSize({pan:false});});
  $('snapshot').textContent='Base gerada em '+new Date(data.generatedAt).toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo'})+' · Brasília';render();

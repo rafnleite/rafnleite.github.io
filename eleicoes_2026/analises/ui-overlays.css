@@ -24,3 +24,21 @@ nav,.page-navigation{flex-wrap:wrap;row-gap:0}nav a{min-width:0}.state-actions .
 @media(min-width:761px) and (max-width:1050px){.stats article strong{font-size:23px;overflow-wrap:anywhere}}
 @media(max-width:760px){.heading,.title-line{min-width:0}.heading>div:first-child,.title-line>div:first-child{min-width:0}nav a{font-size:11px;line-height:1.5}.map-panel .map-foot{display:flex;gap:18px}.map-panel .map-foot>p{margin:0}.map-panel .map-legend{width:100%;gap:12px}.ui-map-tooltip{font-size:11px}.ui-map-tooltip>strong{font-size:12px}.source-actions{max-width:100%}.source-actions button,.source-actions a{white-space:normal}.results-head>*{min-width:0}.results-head span{overflow-wrap:anywhere}.editor-actions{row-gap:12px}.election-scale-labels{font-size:10px;gap:4px}}
 @media(max-width:420px){.heading{flex-wrap:wrap}.heading .header-meta{max-width:none;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;width:100%;text-align:left;font-size:10px}.heading h1{font-size:34px}.clock{white-space:normal;text-align:right}.brand{min-width:0}.section-stats strong,.metrics b{font-size:22px}.ranking-actions{flex-wrap:wrap}.ranking-actions label{width:155px}.histogram-controls{flex-wrap:wrap}.histogram-controls>label{min-width:130px}}
+
+.ui-map-tooltip .bio-map-detail,.ui-map-popover .bio-map-detail{width:290px;max-width:70vw;white-space:normal;font:12px/1.5 "Segoe UI",Arial,sans-serif;color:#173f48}
+.ui-map-tooltip .bio-map-detail>strong,.ui-map-popover .bio-map-detail>strong{font-size:14px}
+.ui-map-tooltip .bio-map-detail h4,.ui-map-popover .bio-map-detail h4{margin:12px 0 6px}
+.bio-distribution{display:flex;width:100%;height:18px;overflow:hidden;border-radius:4px;background:#edf2e9}
+.bio-distribution-labels{margin:8px 0}
+.bio-distribution-labels>div{display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center;margin:5px 0}
+.bio-distribution-labels i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:5px}
+.ui-map-tooltip .bio-map-detail small,.ui-map-popover .bio-map-detail small{color:#65746c}
+.bio-map-detail .election-candidates{gap:12px}
+.ui-map-tooltip .place-election,.ui-map-popover .place-election{margin-top:12px;padding-top:11px;border-top:1px solid #dfe5d9;min-width:0;width:100%}
+.ui-map-tooltip .place-election>small,.ui-map-popover .place-election>small{display:block;font-size:9px;color:#839078;line-height:1.6}
+.ui-map-tooltip .election-candidates,.ui-map-popover .election-candidates{display:flex;justify-content:space-between;gap:12px;margin:9px 0 7px;font-size:11px;font-variant-numeric:tabular-nums}
+.ui-map-tooltip .election-candidates .lula,.ui-map-popover .election-candidates .lula{color:#bd3440}
+.ui-map-tooltip .election-candidates .flavio,.ui-map-popover .election-candidates .flavio{color:#2865ae;text-align:right}
+.ui-map-tooltip .election-bar,.ui-map-popover .election-bar{display:flex;width:100%;height:9px;border-radius:3px;overflow:hidden;background:#e5e9e0;margin:7px 0}
+.ui-map-tooltip .election-bar .lula,.ui-map-popover .election-bar .lula{background:#d73027}
+.ui-map-tooltip .election-bar .flavio,.ui-map-popover .election-bar .flavio{background:#2166ac}

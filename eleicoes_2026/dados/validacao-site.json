@@ -1,11 +1,11 @@
 {
   "ok": true,
-  "paginas_html": 12,
-  "referencias_locais": 423,
-  "modulos_verificados": 62,
+  "paginas_html": 10,
+  "referencias_locais": 329,
+  "modulos_verificados": 57,
   "javascript_verificado": true,
-  "arquivos": 496,
-  "bytes_descompactados": 435382107,
+  "arquivos": 483,
+  "bytes_descompactados": 430779699,
   "arquivos_maiores_ou_iguais_100mb": [],
   "erros": []
 }

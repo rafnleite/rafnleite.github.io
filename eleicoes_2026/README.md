@@ -1,6 +1,6 @@
 # Relatório das eleições de 2026
 
-Site estático em português, com o padrão editorial do relatório de Rafael Leite de 2022. O relatório e as dez páginas de análise formam um único site para o GitHub Pages, com navegação lateral, identidade visual e arquivos locais compartilhados. A entrada para publicação é `index.html`.
+Site estático em português, com o padrão editorial do relatório de Rafael Leite de 2022. O relatório e as nove páginas de análise formam um único site para o GitHub Pages, com navegação lateral, identidade visual e arquivos locais compartilhados. A entrada para publicação é `index.html`.
 
 Para uma leitura direta do artigo no computador, abra `leitura-offline.html`: os gráficos e o mapa principais estão incorporados nesse arquivo. Essa cópia é uma alternativa de leitura do relatório principal; o site completo, com todas as análises, é acessado pelo GitHub Pages ou pela visualização local abaixo.
 
@@ -14,7 +14,7 @@ Como alternativa, abra o Terminal nesta pasta e execute:
 python3 -m http.server 8000 --bind 127.0.0.1
 ```
 
-Depois acesse `http://127.0.0.1:8000/`. Não é necessário instalar pacotes ou executar uma compilação. As bibliotecas, os dados das visualizações, os mapas vetoriais e os simuladores estão incluídos. Algumas páginas podem buscar o mapa-base OpenStreetMap pela internet; o mapa de unanimidades do relatório usa a malha local do IBGE. A consulta SQLite exige que o visitante escolha sua própria cópia do banco; o banco integral não integra este pacote.
+Depois acesse `http://127.0.0.1:8000/`. Não é necessário instalar pacotes ou executar uma compilação. As bibliotecas, os dados das visualizações, as malhas vetoriais e os simuladores estão incluídos. Os mapas usam tiles OSM.de baseados em OpenStreetMap, com atribuição visível e limites estaduais do IBGE. O mapa precisa de conexão; as imagens OSM.de são publicadas sob CC BY-SA 2.0. O site não inclui uma interface de consulta SQLite nem um banco de dados.
 
 As análises funcionam como páginas do próprio site. Não há dependência de outro site de análises, serviço de aplicação ou API privada. Os dados são uma fotografia publicada; as consultas às fontes oficiais permanecem como referências para conferir e obter novas versões dos arquivos.
 
@@ -39,7 +39,6 @@ O pacote preserva as bases e os downloads detalhados das análises e tem aproxim
 - `analises/simulacao.html`: simulador de apuração e conjuntos de cenários.
 - `analises/fluxos.html`: estimativas dos fluxos entre turnos.
 - `analises/auditoria.html`: cobertura e auditoria dos arquivos disponíveis.
-- `analises/consulta.html`: consulta de uma cópia local da base SQLite.
 
 Documentação: [fonte de publicação](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site) e [limites do GitHub Pages](https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits).
 
@@ -50,6 +49,10 @@ python3 scripts/verificar_dados.py
 ```
 
 O comando confere somas, cortes temporais, categorias, histogramas e cobertura das coordenadas e gera os CSVs e `dados/validacao.json`. Sua aprovação não significa validação criptográfica de todos os arquivos originais nem certificação da eleição.
+
+`scripts/consolidar_horarios_votos.py` atualiza `dados/horarios-votos.json` a partir dos fragmentos locais de votação, conferindo os totais por UF. O relatório carrega esse agregado compacto, sem baixar os dados detalhados por local.
+
+`scripts/classificar_unanimidades.py --shapefile /caminho/tis_poligonais.zip` reproduz `dados/unanimidades-contexto.json`. Use o shapefile “Terras Indígenas no Brasil” disponível na [página de geoprocessamento da FUNAI](https://www.gov.br/funai/pt-br/atuacao/terras-indigenas/geoprocessamento-e-mapas). O script confere que a camada está em SIRGAS 2000, cruza os pontos do cadastro TSE e registra o SHA-256 do ZIP utilizado. As interseções descrevem as coordenadas cadastradas dos locais, não a localização de eleitores.
 
 `scripts/extrair_base.py` reproduz os agregados a partir do banco e dos arquivos de origem. As opções são descritas por `python3 scripts/extrair_base.py --help`. O SQLite de aproximadamente 8,9 GB não foi incorporado ao site. Os insumos e os critérios estão em `dados/proveniencia.json`. Os hashes dos arquivos de dados publicados ficam em `dados/SHA256SUMS.txt`.
 

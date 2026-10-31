@@ -97,7 +97,7 @@ for p in ROOT.glob('*.mjs') if args.node else []:
  r=subprocess.run([args.node,'--check',str(p)],capture_output=True,text=True)
  if r.returncode:errors.append({'source':p.name,'error':'JavaScript syntax: '+r.stderr.strip()})
  syntax+=1
-report={'ok':not errors,'scope':'Pulso static package; no network access','htmlPages':len(html),'referenceChecks':len(checked),'javascriptSyntaxChecks':syntax,'gzipFiles':len(gz_checked),'gzipDetails':gz_checked,'externalUrls':sorted(externals),'errors':errors,'warnings':warnings,'limits':['Dynamic paths explicitly checked for every UF in voting/results/biometry/flows manifests.','External URLs and map tiles are recorded but not fetched.','This does not replace browser interaction checks.','The SQLite database is intentionally supplied by the visitor, not bundled.']}
+report={'ok':not errors,'scope':'Pulso static package; no network access','htmlPages':len(html),'referenceChecks':len(checked),'javascriptSyntaxChecks':syntax,'gzipFiles':len(gz_checked),'gzipDetails':gz_checked,'externalUrls':sorted(externals),'errors':errors,'warnings':warnings,'limits':['Dynamic paths explicitly checked for every UF in voting/results/biometry/flows manifests.','External URLs and map tiles are recorded but not fetched.','This does not replace browser interaction checks.','The static site does not include a database or SQLite query interface.']}
 (ROOT/'validacao-estatica.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
 print(json.dumps({k:report[k] for k in ('ok','htmlPages','referenceChecks','javascriptSyntaxChecks','gzipFiles','errors','warnings')},ensure_ascii=False,indent=2))
 sys.exit(0 if report['ok'] else 1)

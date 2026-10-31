@@ -1,0 +1,161 @@
+.report-voting-controls {
+  display: flex;
+  align-items: center;
+  min-height: 36px;
+  margin: 8px 0;
+}
+
+.report-voting-controls label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.report-voting-controls input {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  accent-color: var(--blue);
+}
+
+.report-voting-exterior-note {
+  margin: 8px 0 14px;
+  padding-left: 12px;
+  border-left: 3px solid var(--red);
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.report-voting-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px 18px;
+  margin: 12px 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.report-voting-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.report-voting-legend i {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.report-voting-legend .biometry { background: #4c8061; }
+.report-voting-legend .no-biometry { background: #4f7da0; }
+.report-voting-legend .failure { background: #bf914a; }
+.report-voting-legend .indeterminate { background: #929b99; }
+
+.report-voting-chart {
+  width: 100%;
+  height: 380px;
+}
+
+.report-bio-map-controls {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 18px;
+  margin: 16px 0 10px;
+}
+
+.report-bio-map-controls label {
+  display: grid;
+  gap: 6px;
+  min-width: 220px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.report-bio-map-controls select {
+  min-height: 38px;
+  padding: 6px 10px;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  background: #fff;
+  color: var(--ink);
+}
+
+.report-bio-map-controls h4 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.report-biometry-map {
+  width: 100%;
+  height: 520px;
+  background: #dfe8eb;
+}
+
+.report-bio-map-scale {
+  max-width: 520px;
+  margin: 12px 0 4px;
+}
+
+.report-bio-map-scale .bio-color-bar {
+  height: 12px;
+  background: linear-gradient(90deg, #fff4db 0%, #b13e23 100%);
+}
+
+.report-bio-map-scale-labels {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 5px;
+  font-size: 11px;
+}
+
+.report-bio-map-scale small,
+.report-bio-map-status {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.report-bio-map-status {
+  min-height: 18px;
+  margin: 7px 0 0;
+}
+
+.leaflet-container {
+  background: #dfe8eb;
+  font: inherit;
+}
+
+.leaflet-control-attribution {
+  font-size: 10px;
+}
+
+.unanimity-context-label {
+  display: inline-block;
+  margin: 3px 4px 2px 0;
+  padding: 2px 5px;
+  border-left: 2px solid #687b52;
+  background: #f0f3e8;
+  color: #43523c;
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.context-none {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+@media (max-width: 760px) {
+  .report-voting-chart { height: 320px; }
+  .report-bio-map-controls { align-items: stretch; flex-direction: column; gap: 10px; }
+  .report-bio-map-controls label { min-width: 0; }
+  .report-biometry-map { height: 420px; }
+  .report-bio-map-scale-labels { font-size: 10px; }
+}

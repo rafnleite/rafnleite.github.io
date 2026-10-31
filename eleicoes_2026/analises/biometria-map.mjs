@@ -10,6 +10,9 @@ export function distributionHTML(item,local=false){
 }
 export function createBiometryMap({map,layer,data,selectedZones,method,choose,json}){
  let level='zones',generation=0,index,cache=new Map();
+ const markerPane=map.getPane('biometry-markers')||map.createPane('biometry-markers');
+ markerPane.style.zIndex='450';
+ const markerRenderer=L.canvas({pane:'biometry-markers'});
  const tooltip=createMapTooltip(),popup=createMapTooltip({interactive:true});
  const reference=point=>({contextElement:document.getElementById('map'),getBoundingClientRect(){const rect=map.getContainer().getBoundingClientRect(),p=map.latLngToContainerPoint(point.getLatLng());return new DOMRect(rect.left+p.x,rect.top+p.y,1,1);}});
  const $=id=>document.getElementById(id);
@@ -18,7 +21,7 @@ export function createBiometryMap({map,layer,data,selectedZones,method,choose,js
  function marker(item,local,scale,m){
   const n=item.counts.reduce((a,b)=>a+b,0);if(!positions(item)||!n)return false;
   const rate=Math.min(1,item.counts[m]*100/n/scale),rgb=[255+(177-255)*rate,244+(62-244)*rate,219+(35-219)*rate].map(Math.round);
-  const point=L.circleMarker([item.lat,item.lon],{radius:local?5:7,color:'#775d40',weight:1,fillColor:`rgb(${rgb})`,fillOpacity:.9}).addTo(layer);
+    const point=L.circleMarker([item.lat,item.lon],{pane:'biometry-markers',renderer:markerRenderer,radius:local?6:8,color:'#47392f',weight:1.5,fillColor:`rgb(${rgb})`,fillOpacity:1}).addTo(layer);
   const content=distributionHTML(item,local);
   point.on('mouseover',e=>{if(e.originalEvent?.pointerType!=='touch'&&!popup.isOpen())tooltip.show(reference(point),content+(local?'':'<small>Clique para aproximar esta zona.</small>'));});
   point.on('mouseout',()=>tooltip.remove());

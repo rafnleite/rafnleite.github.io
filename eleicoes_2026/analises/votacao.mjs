@@ -94,8 +94,6 @@ function initializeVisuals(){
   state.chartZoom={start:0,end:100};
   state.chart.on('datazoom',()=>{const zoom=state.chart.getOption().dataZoom?.[0];if(zoom)state.chartZoom={start:zoom.start,end:zoom.end};if(state.result)updateHistogramAxes();updateTimeGuides();updateHistogramZoomButton();});
   state.map=L.map('map',{preferCanvas:true,scrollWheelZoom:true,zoomSnap:.5,wheelPxPerZoomLevel:80}).setView([-14.5,-52.5],4);
-  const tiles=L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}).addTo(state.map);
-  tiles.on('tileerror',()=>{$('unmapped').textContent='O mapa-base pode estar indisponível; os pontos de votação continuam visíveis.';});
   addStateBoundaries(state.map);
   state.layer=L.layerGroup().addTo(state.map);
   state.tooltip=createMapTooltip();state.popup=createMapTooltip({interactive:true});

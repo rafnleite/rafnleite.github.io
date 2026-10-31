@@ -1,9 +1,9 @@
 {
-  "ok": false,
+  "ok": true,
   "scope": "Pulso static package; no network access",
-  "htmlPages": 10,
-  "referenceChecks": 597,
-  "javascriptSyntaxChecks": 58,
+  "htmlPages": 9,
+  "referenceChecks": 565,
+  "javascriptSyntaxChecks": 56,
   "gzipFiles": 88,
   "gzipDetails": [
     {
@@ -17697,32 +17697,12 @@
     "https://www.census.gov/content/dam/Census/library/working-papers/1988/adrm/rr88-01.pdf",
     "https://www.tse.jus.br/legislacao/compilada/res/2026/resolucao-no-23-751-de-26-de-fevereiro-de-2026"
   ],
-  "errors": [
-    {
-      "source": "consulta.mjs",
-      "reference": "./api/database/query",
-      "error": "Missing local target"
-    },
-    {
-      "source": "consulta.mjs",
-      "reference": "./api/database/cancel",
-      "error": "Missing local target"
-    },
-    {
-      "source": "consulta.mjs",
-      "reference": "./api/database/schema",
-      "error": "Missing local target"
-    },
-    {
-      "source": "consulta.mjs",
-      "error": "Server API dependency remains"
-    }
-  ],
+  "errors": [],
   "warnings": [],
   "limits": [
     "Dynamic paths explicitly checked for every UF in voting/results/biometry/flows manifests.",
     "External URLs and map tiles are recorded but not fetched.",
     "This does not replace browser interaction checks.",
-    "The SQLite database is intentionally supplied by the visitor, not bundled."
+    "The static site does not include a database or SQLite query interface."
   ]
 }
