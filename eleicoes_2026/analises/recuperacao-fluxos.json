@@ -1,0 +1,145 @@
+{
+  "files": [
+    {
+      "uf": "AC",
+      "source": "pulso-fluxos-publicacao/public/dados/fluxos/AC-secoes.csv.gz",
+      "bytes": 401742
+    },
+    {
+      "uf": "AL",
+      "source": "pulso-fluxos-publicacao/public/dados/fluxos/AL-secoes.csv.gz",
+      "bytes": 1280239
+    },
+    {
+      "uf": "AM",
+      "source": "pulso-fluxos-publicacao/public/dados/fluxos/AM-secoes.csv.gz",
+      "bytes": 1466556
+    },
+    {
+      "uf": "AP",
+      "source": "pulso-fluxos-publicacao/public/dados/fluxos/AP-secoes.csv.gz",
+      "bytes": 335609
+    },
+    {
+      "uf": "BA",
+      "source": "pulso-fluxos-publicacao/public/dados/fluxos/BA-secoes.csv.gz",
+      "bytes": 6309728
+    },
+    {
+      "uf": "CE",
+      "source": "pulso-fluxos-publicacao/public/dados/fluxos/CE-secoes.csv.gz",
+      "bytes": 4177153
+    },
+    {
+      "uf": "DF",
+      "source": "pulso-fluxos-publicacao/public/dados/fluxos/DF-secoes.csv.gz",
+      "bytes": 1432973
+    },
+    {
+      "uf": "ES",
+      "source": "pulso-fluxos-publicacao/public/dados/fluxos/ES-secoes.csv.gz",
+      "bytes": 1893913
+    },
+    {
+      "uf": "GO",
+      "source": "pulso-fluxos-publicacao/public/dados/fluxos/GO-secoes.csv.gz",
+      "bytes": 2851427
+    },
+    {
+      "uf": "MA",
+      "source": "pulso-fluxos-publicacao/public/dados/fluxos/MA-secoes.csv.gz",
+      "bytes": 3018041
+    },
+    {
+      "uf": "MG",
+      "source": "pulso-fluxos-publicacao/public/dados/fluxos/MG-secoes.csv.gz",
+      "bytes": 10281284
+    },
+    {
+      "uf": "MS",
+      "source": "pulso-fluxos-publicacao/public/dados/fluxos/MS-secoes.csv.gz",
+      "bytes": 1282717
+    },
+    {
+      "uf": "MT",
+      "source": "pulso-fluxos-publicacao/public/dados/fluxos/MT-secoes.csv.gz",
+      "bytes": 1482565
+    },
+    {
+      "uf": "PA",
+      "source": "pulso-fluxos-publicacao/public/dados/fluxos/PA-secoes.csv.gz",
+      "bytes": 3458532
+    },
+    {
+      "uf": "PB",
+      "source": "pulso-fluxos-publicacao/public/dados/fluxos/PB-secoes.csv.gz",
+      "bytes": 1920405
+    },
+    {
+      "uf": "PE",
+      "source": "pulso-fluxos-publicacao/public/dados/fluxos/PE-secoes.csv.gz",
+      "bytes": 3926989
+    },
+    {
+      "uf": "PI",
+      "source": "pulso-fluxos-publicacao/public/dados/fluxos/PI-secoes.csv.gz",
+      "bytes": 1693923
+    },
+    {
+      "uf": "PR",
+      "source": "pulso-fluxos-publicacao/public/dados/fluxos/PR-secoes.csv.gz",
+      "bytes": 5269665
+    },
+    {
+      "uf": "RJ",
+      "source": "pulso-fluxos-publicacao/public/dados/fluxos/RJ-secoes.csv.gz",
+      "bytes": 7519716
+    },
+    {
+      "uf": "RN",
+      "source": "pulso-fluxos-publicacao/public/dados/fluxos/RN-secoes.csv.gz",
+      "bytes": 1484887
+    },
+    {
+      "uf": "RO",
+      "source": "pulso-fluxos-publicacao/public/dados/fluxos/RO-secoes.csv.gz",
+      "bytes": 814156
+    },
+    {
+      "uf": "RR",
+      "source": "pulso-fluxos-publicacao/public/dados/fluxos/RR-secoes.csv.gz",
+      "bytes": 247781
+    },
+    {
+      "uf": "RS",
+      "source": "pulso-fluxos-publicacao/public/dados/fluxos/RS-secoes.csv.gz",
+      "bytes": 5297609
+    },
+    {
+      "uf": "SC",
+      "source": "pulso-fluxos-publicacao/public/dados/fluxos/SC-secoes.csv.gz",
+      "bytes": 3387858
+    },
+    {
+      "uf": "SE",
+      "source": "pulso-fluxos-publicacao/public/dados/fluxos/SE-secoes.csv.gz",
+      "bytes": 1097574
+    },
+    {
+      "uf": "SP",
+      "source": "pulso-fluxos-publicacao/public/dados/fluxos/SP-secoes.csv.gz",
+      "bytes": 21090990
+    },
+    {
+      "uf": "TO",
+      "source": "pulso-fluxos-publicacao/public/dados/fluxos/TO-secoes.csv.gz",
+      "bytes": 752684
+    },
+    {
+      "uf": "ZZ",
+      "source": "pulso-fluxos-publicacao/public/dados/fluxos/ZZ-secoes.csv.gz",
+      "bytes": 288193
+    }
+  ],
+  "verification": "Matched SHA-256 recorded in packaged manifest before copying."
+}

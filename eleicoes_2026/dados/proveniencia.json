@@ -1,0 +1,121 @@
+{
+  "gerado_em_utc": "2026-10-31T04:34:35.894028+00:00",
+  "escopo": "Relatório presidencial 2026/2T; dados agregados públicos. Não contém identificação individual de eleitores nem ligação voto-candidato nos logs.",
+  "entradas_publicadas": [
+    {
+      "arquivo": "dados/resumo-dados.json",
+      "sha256": "bb1d20f5bdb3e7710ec00155a32307a19533c5afc83d689f643a179e8c706742",
+      "bytes": 157756
+    },
+    {
+      "arquivo": "dados/oficial-pos17.json",
+      "sha256": "0c29c2b973944dd3f39743cdafa78685739b3f6fa7da59773f4270ed88dd35ce",
+      "bytes": 18825
+    },
+    {
+      "arquivo": "dados/evidencia-local-disponibilidade.json",
+      "sha256": "d759fadc3b05be69362a232de15f15b787bf58e55de56b518d47ed6e647e7ad6",
+      "bytes": 3149
+    },
+    {
+      "arquivo": "analises/apuracao-encerramento.json",
+      "sha256": "62b177b29a59f82419f6e1b84ef6ac02ca03a4a03be289346eaf0a7a8a69f64f",
+      "bytes": 727609
+    }
+  ],
+  "fontes_locais": [
+    {
+      "arquivo_de_origem": "eleições apuração/encerramento-urnas/dados-consolidados/eleicoes_2026.sqlite3",
+      "incluido_no_pacote": false,
+      "bytes": 8893841408,
+      "snapshot_utc": "2026-10-27T13:06:05+00:00",
+      "tabelas": [
+        "boletins",
+        "secoes",
+        "locais",
+        "resumo_logs",
+        "habilitacao_bus"
+      ],
+      "escopo": "BUs 2026/1T e 2T; horários individuais de confirmação presidencial 2026/2T; detalhes gerais biométricos 2024/2026",
+      "hash": "Não calculado nesta execução para evitar uma leitura integral adicional de8,9 GB; os agregados publicados têm SHA256."
+    },
+    {
+      "arquivo_de_origem": "pulso-biometria-barras-empilhadas.tar.gz",
+      "incluido_no_pacote": false,
+      "bytes": 257993747,
+      "sha256": "964f472c91994a90b7e83cebef4bf30df8e492472b5d77f95fbaa8fe629392b2",
+      "membro_biometria": "dist/client/evolucao-biometria.json.gz",
+      "snapshot_biometria_utc": "2026-10-31T02:19:04+00:00",
+      "estado_biometria": "completo",
+      "escopo": "Fonte da versão visual Pulso e comparação biométrica com coleta concluída; cópias soltas anteriores eram parciais."
+    },
+    {
+      "arquivo_de_origem": "pulso-votos-validos/public/apuracao-encerramento.json",
+      "incluido_como": "analises/apuracao-encerramento.json",
+      "gerado_em_utc": "2026-10-30T13:50:10.605012+00:00",
+      "snapshot_utc": "2026-10-27T13:06:05+00:00",
+      "unidade": "BU inteiro por segundo de encerramento em Brasília",
+      "observacao": "Curva contrafactual; não representa transmissão ou totalização real. Exterior integral como saldo inicial na curva publicada."
+    },
+    {
+      "arquivo_de_origem": "pulso-votos-validos/public/voting/manifest.json e fragmentos por UF",
+      "snapshot_utc": "2026-10-27T23:48:17+00:00",
+      "unidade": "Confirmações presidenciais nos logs, por minuto, sem candidato. Filtro Brasil exclui ZZ.",
+      "codificacao": "u32-minute4096-method3-count16, dadosgzip/base64/u32le",
+      "criterio17": "minuto >= 1020 (a partir 17:00:00)",
+      "criterio19": "minuto >= 1140 (a partir 19:00:00)"
+    },
+    {
+      "arquivo_de_origem": "pulso-votos-validos/public/biometria/??.json",
+      "unidade": "Taxa de habilitação após falha por confirmação presidencial; filtro elegível original Pulso",
+      "universo": 496327,
+      "observacao": "Não confundir com universo 497.897 do histogramaBU completo."
+    },
+    {
+      "arquivo_de_origem": "eleições apuração/logs-urnas/relatorios/secoes_parciais_inicial.json",
+      "incluido_como": "dados/evidencia-local-disponibilidade.json (somente amostras e contagem)",
+      "unidade": "Registros locais de consultas; URLs oficiais e SHA256 dos arquivos",
+      "limite": "Não são carimbos independentes e não comprovam disponibilização de todos os arquivosBU, RDV e logs durante apuração."
+    }
+  ],
+  "fontes_externas": [
+    {
+      "tipo": "resultado nacional JSON TSE",
+      "url": "https://resultados.tse.jus.br/oficial/ele2026/6258/dados/br/br-c0001-e006258-u.json",
+      "consultado_em": "2026-10-31",
+      "gerado": "2026-10-25 23:27:02",
+      "totalizacao": "2026-10-25 23:26:38",
+      "escopo": "Brasil e exterior; BUs instalados 499.207, seções não instaladas 41."
+    },
+    {
+      "tipo": "notícia e tabelas TSE",
+      "url": "https://www.tse.jus.br/comunicacao/noticias/2026/Outubro/eleicoes-2026-mais-de-34-mil-votos-foram-registrados-apos-as-17h-no-2o-turno",
+      "consultado_em": "2026-10-31",
+      "tabelas": [
+        "https://www.tse.jus.br/comunicacao/noticias/arquivos/total-de-votos-apos-17h",
+        "https://www.tse.jus.br/comunicacao/noticias/arquivos/votos-computados-apos-17h10",
+        "https://www.tse.jus.br/comunicacao/noticias/arquivos/votos-computados-apos-19h"
+      ],
+      "incluido_como": "dados/oficial-pos17.json",
+      "escopo": "Território nacional, grupos de seções por corte de encerramento; os grupos se sobrepõem."
+    }
+  ],
+  "limites_e_diferencas": [
+    "O extrato local contém 34.126 confirmações>=17h e 11 >=19h. A tabela externa contém 34.393 e 13. Diferenças não reconciliadas por seção; não presumir mesma cobertura.",
+    "O extrato local contém 6.352 BUs Brasil com encerramento>=19h; a tabela externa aponta 6.766 seções. Critérios não tratados como equivalentes nem diferença atribuída a uma causa não demonstrada.",
+    "Encerramento de urna não é horário de cada voto. Os BUs contêm contagens agregadas e logs horários sem candidato.",
+    "Quatro das 110 unanimidades não possuem coordenadas na cópia local: mapa deve conter 106 pontos e tabela CSV todos os 110 registros.",
+    "Comparação 2024/2026 é descritiva: eleição municipal e geral; segundo turno municipal cobre somente parte dos municípios.",
+    "Histograma BU usa 497.897 seções do Brasil; histograma de logs usa 496.327 urnas elegíveis; média simples por urna difere da taxa ponderada geral.",
+    "Hash de arquivo garante identificação da cópia, não certifica autenticidade originária nem data histórica da publicação."
+  ],
+  "reproducao": {
+    "validacao": "python3 scripts/verificar_dados.py",
+    "extracao": "python3 scripts/extrair_base.py --banco eleicoes_2026.sqlite3 --pulso public-pulso --evolucao evolucao-biometria.json.gz --saida resumo-reextraido.json",
+    "requisitos": "Python 3; biblioteca padrão. Extração requer baseSQLite e arquivos de origem, não incluídos. Validação usa os arquivos distribuídos no site.",
+    "verificacao_extracao": {
+      "executada_em": "2026-10-31",
+      "resultado": "Todos os 13 campos extraídos coincidem exatamente com o resumo publicado. Os campos adicionais dominancia_90 e divergencias são anotações editoriais externas ao fluxo de extração."
+    }
+  }
+}

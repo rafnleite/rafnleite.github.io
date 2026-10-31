@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Inferência ecológica exploratória dos fluxos de votos entre os turnos presidenciais de 2026, sob a hipótese explícita de 5% de trocas de participação, com filtros por urna.">
+  <title>Fluxos entre turnos · Eleições 2026</title>
+  <link rel="stylesheet" href="./site-shell.css?v=5">
+  <link rel="stylesheet" href="./site-ui.css?v=regional-draw-1">
+  <link rel="stylesheet" href="./fluxos.css?v=4">
+  <script src="./vendor/echarts.min.js" defer></script>
+  <script type="module" src="./fluxos.mjs?v=8"></script>
+
+<link rel="stylesheet" href="./relatorio-analises.css">
+</head>
+<body class="site-page report-analise-shell" data-site-page="fluxos"><div class="report-mobile-bar"><a href="../index.html">Eleições 2026</a><button class="report-index-toggle" id="reportIndexToggle" type="button" aria-controls="reportSidebar" aria-expanded="false">Índice ☰</button></div><aside class="report-sidebar" id="reportSidebar"><a class="report-identity" href="../index.html"><img src="../assets/perfil.jpg" alt="Ilustração de Rafael Leite" width="104" height="104"><strong>Rafael Leite</strong><small>Análises das eleições de 2026</small></a><nav aria-label="Páginas do relatório"><a class="report-home" href="../index.html">← Relatório principal</a><div class="report-nav-label">ANÁLISES</div><a href="./index.html">Encerramento das urnas</a><a href="./votacao.html">Horários dos votos</a><a href="./secoes.html">Votação por seção</a><a href="./atraso.html">Urnas após as 17h</a><a href="./biometria.html">Identificação biométrica</a><a href="./apuracao-encerramento.html">Soma dos BUs por horário</a><a href="./simulacao.html">Simulador de apuração</a><a href="./fluxos.html" aria-current="page">Fluxos entre turnos</a><a href="./auditoria.html">Auditoria dos arquivos</a><a href="./consulta.html">Consulta da base de dados</a><div class="report-nav-label">DOCUMENTAÇÃO</div><a href="../index.html#fontes">Fontes e metodologia</a><a href="../index.html#reproducao">Dados e reprodução</a><a href="https://rafnleite.github.io/relatorio_eleicoes.html">Relatório de 2022 ↗</a></nav></aside><div class="shell">
+  <header class="site-header report-page-header"><div class="report-page-context"><a href="../index.html">Relatório das eleições de 2026</a><span>Horário de Brasília</span></div></header><p class="report-dataset-note">Base desta análise: estimativas: 31/10/2026 às 00h26, horário de Brasília.</p>
+  <main>
+    <section class="site-intro">
+      <div class="site-intro-copy"><p class="eyebrow">PRESIDÊNCIA · PRIMEIRO E SEGUNDO TURNOS · 2026</p><h1>Fluxos entre turnos</h1><p class="site-intro-description">Uma estimativa de como os votos e as abstenções se redistribuíram entre os dois turnos.</p></div>
+      <div class="site-intro-actions"><a href="#metodo">Entenda a estimativa</a></div>
+    </section>
+    <p class="flow-caution"><strong>Cenário: 5% de trocas de participação.</strong> Uma troca é um par: um eleitor sai do grupo de votantes e outro entra. A taxa usa os votantes do 1º turno e é reduzida quando não cabe na urna. É uma hipótese, não uma taxa observada nos BUs.</p>
+    <section class="flow-filters" aria-label="Recorte territorial">
+      <label class="field">Estado<select id="flowState" disabled><option value="ALL">Brasil</option></select></label>
+      <label class="field municipality-field">Município<select id="flowMunicipality" disabled><option value="ALL">Todos os municípios</option></select></label>
+      <label class="field">Zona eleitoral<select id="flowZone" disabled><option value="ALL">Todas as zonas</option></select></label>
+      <label class="field">Urna / seção<select id="flowUrna" aria-describedby="flowUrnaHint" disabled><option value="ALL">Todas as urnas</option></select></label>
+      <label class="flow-exterior"><input id="flowExterior" type="checkbox" disabled> Incluir exterior</label>
+      <div class="flow-urna-hint muted small"><span id="flowUrnaHint" aria-live="polite">Escolha município e zona para selecionar uma urna.</span><button id="flowUrnaRetry" class="button secondary" type="button" hidden>Tentar carregar urnas</button></div>
+    </section>
+    <div class="flow-statebar"><p id="flowStatus" class="status" role="status" aria-live="polite">Carregando a base de comparação entre turnos…</p><button id="flowRetry" class="button secondary" type="button" hidden>Tentar novamente</button></div>
+    <div id="flowResults" hidden>
+      <div class="metrics flow-metrics" aria-label="Cobertura do recorte">
+        <article><span>Urnas na análise</span><strong id="flowSections">—</strong><small>Boletins presentes nos dois turnos</small></article>
+        <article><span>Urnas no treino do modelo</span><strong id="flowTraining">—</strong><small id="flowOutsideTraining">—</small></article>
+        <article><span>Eleitorado · 1º turno</span><strong id="flowElectorate">—</strong><small id="flowElectorate2">—</small></article>
+        <article><span>Trocas de participação · pares</span><strong id="flowSwaps">—</strong><small id="flowParticipation">—</small></article>
+      </div>
+      <section class="panel flow-chart-panel" aria-labelledby="flowChartTitle">
+        <div class="chart-heading flow-chart-heading"><div><h2 id="flowChartTitle">De onde vieram, para onde foram</h2><p class="muted">A largura de cada faixa representa o número estimado de eleitores.</p></div><label class="field flow-detail-control">Detalhamento do gráfico e da tabela<select id="flowDetail"><option value="grouped">Agrupar demais candidatos</option><option value="all">Todos os candidatos</option></select></label></div>
+        <div class="flow-turn-labels" aria-hidden="true"><span>1º TURNO · ORIGEM</span><span>2º TURNO · DESTINO</span></div>
+        <div id="flowChart" class="flow-chart" role="img" aria-label="Diagrama dos fluxos estimados entre os dois turnos. A tabela abaixo apresenta os mesmos valores."></div>
+        <p class="flow-chart-note muted small">Os rótulos mostram origem → destino e volume absoluto abreviado sobre a respectiva faixa. <span id="flowLabelSummary"></span> Brancos e nulos ficam juntos nos dois lados. Gráfico, tabela e CSV seguem o detalhamento escolhido; o modelo e os arquivos por urna preservam todas as categorias separadas.</p>
+        <p class="flow-register-note muted small">Ajustes de entrada e saída representam diferenças no eleitorado apto das seções entre turnos, compatíveis com movimentação ou voto em trânsito. A soma dos ajustes não conta eleitores únicos.</p>
+      </section>
+      <section class="panel" aria-labelledby="flowTableTitle">
+        <div class="chart-heading flow-table-heading"><div><h2 id="flowTableTitle">Matriz de transferência estimada</h2><p class="muted">Cada linha com eleitores soma 100%. O percentual usa o total da origem, incluindo o ajuste de entrada no eleitorado da seção.</p></div><button id="flowDownload" class="button secondary" type="button">Baixar matriz em CSV</button></div>
+        <div class="table-scroll flow-table-scroll" tabindex="0" role="region" aria-label="Tabela de fluxos estimados, com rolagem horizontal"><table class="flow-table"><caption class="sr-only">Número estimado de eleitores e percentual em relação à origem. Agrupamentos iguais aos do diagrama.</caption><thead id="flowTableHead"></thead><tbody id="flowTableBody"></tbody><tfoot id="flowTableFoot"></tfoot></table></div>
+        <p id="flowPrecisionNote" class="muted small">Os cálculos preservam as frações originais do modelo.</p>
+        <details id="flowUrnaDownloads" class="flow-urna-downloads" hidden><summary>Baixar resultados por urna</summary><p class="muted small">Arquivos pré-calculados por estado, com identificadores da seção e as 17 origens e 6 destinos do modelo separados. Cada arquivo contém o estado inteiro. A <a href="./dados/fluxos/legenda-colunas.csv" download>legenda das colunas</a> identifica a origem e o destino de cada fluxo.</p><div id="flowUrnaLinks" class="flow-urna-links"></div></details>
+      </section>
+      <div class="page-meta"><p id="flowCoverage"></p><p id="flowDiagnostics"></p><p id="flowSnapshot"></p></div>
+    </div>
+    <section id="flowUnavailable" class="flow-unavailable" hidden><h2 id="flowUnavailableTitle">Nenhum resultado disponível neste recorte</h2><p id="flowUnavailableMessage"></p><p class="muted">Selecione outro município, zona ou estado para consultar os resultados pré-calculados.</p></section>
+    <details class="flow-comparison"><summary>Comparação nacional com o ajuste anterior</summary><p class="muted small">Brasil sem exterior. Percentuais em relação à origem. O cenário de 5% reestima os fluxos por candidato; os resultados dependem dessa hipótese.</p><table><thead><tr><th>Transferência</th><th>Ajuste anterior</th><th>Hipótese de 5%</th></tr></thead><tbody id="flowComparisonBody"></tbody></table><a href="./dados/fluxos/comparacao-anterior.json" download>Baixar comparação</a></details>
+    <details class="method-notes methodology" id="metodo">
+      <summary>Como o cenário de 5% foi calculado</summary>
+      <p><strong>A taxa de 5% é uma hipótese explícita de participação.</strong> Uma troca é um par: um eleitor que votou no 1º turno deixa de votar no 2º, e outro faz o caminho inverso. A quantidade de pares parte de 5% dos votantes do 1º turno em cada urna, limitada pela quantidade disponível nos grupos. O modelo reestima os fluxos por candidato sob essa hipótese.</p>
+      <div class="flow-method-grid">
+        <div><h3>1. O que entra no modelo</h3>
+          <p>São usados os BUs de cada urna nos dois turnos: os 13 candidatos do primeiro, Lula e Flávio no segundo, brancos e nulos separados e as abstenções. Os resultados disponíveis geram 499.207 matrizes individuais; 41 urnas sem dados suficientes em algum turno ficam fora da inferência.</p>
+          <p>Brancos e nulos são agrupados apenas na apresentação. A opção “Todos os candidatos” mantém as candidaturas separadas no gráfico e na tabela.</p>
+        </div>
+        <div><h3>2. Trocas e diferença de comparecimento</h3>
+          <p>Se uma urna teve 369 votantes no 1º turno e 379 no 2º, a hipótese pede 0,05 × 369 = 18,45 pares. Assim, são estimadas 18,45 saídas do grupo de votantes e 28,45 entradas: os pares mais os dez votantes do aumento líquido.</p>
+          <p>Quando o comparecimento diminui, a diferença é acrescentada às saídas. Uma troca envolve duas pessoas; o número de pares não é a soma dos dois sentidos.</p>
+        </div>
+        <div><h3>3. Quando os 5% não cabem</h3>
+          <p>A urna precisa ter pessoas disponíveis para os dois caminhos. Os pares são limitados pelos totais de votantes e não votantes de ambos os turnos, já conciliados com as diferenças de eleitorado da seção.</p>
+          <p>Em <span id="flowCappedTotal">—</span> das 499.207 urnas a hipótese de 5% é reduzida por esse limite. A taxa não é aumentada para compensar a redução de outra urna. O cartão de trocas soma os pares calculados individualmente.</p>
+        </div>
+        <div><h3>4. Quem participa do treinamento</h3>
+          <p>O treino usa a mesma composição de seções agregadas e uma variação de eleitorado de no máximo 5% do primeiro turno e no máximo dez eleitores. Exceder qualquer limite exclui a urna do treino.</p>
+          <p>São 498.931 urnas elegíveis ao treino. Outras 276 recebem projeções do modelo e participam dos resultados, com indicação nos arquivos por urna.</p>
+        </div>
+        <div><h3>5. Como os destinos são aprendidos</h3>
+          <p>A regressão ecológica ajusta probabilidades de transferência no conjunto de urnas. Além das cinco margens de destino, entram dois alvos de participação derivados da hipótese: saída de votantes e retorno de abstentes. Esses dois alvos são suposições do cenário, não contagens individuais observadas.</p>
+          <p>O ajuste tem um nível nacional e um por UF, com probabilidades positivas e soma um em cada origem. A referência suave de retenção de Lula e Flávio é de 90%, e a regularização KL reversa estabiliza origens raras. O modelo continua podendo estimar votos no adversário ou abstenção. Ele não distribui automaticamente 5% de saída para cada candidato.</p>
+        </div>
+        <div><h3>6. Escolha dos parâmetros e validação</h3>
+          <p>A penalização é escolhida em cinco grupos inteiros de municípios, sem dividir urnas do mesmo município entre treino e avaliação. A grade tem seis valores e escolhe a maior penalização dentro de um erro padrão do melhor resultado médio. Nesta execução, λ = 0,001 nos dois níveis.</p>
+          <p>A seleção avalia conjuntamente as margens e os dois alvos hipotéticos. Uma avaliação complementar refaz os níveis nacional e estadual sem os municípios reservados e mede apenas a previsão das margens observadas dos BUs, antes da calibração.</p>
+          <p id="flowValidation"></p><p>Essa avaliação não comprova a taxa de 5% nem as transferências individuais. Os mesmos grupos também participaram da seleção de λ; não se trata de teste externo independente.</p>
+          <p><a href="./dados/fluxos/validacao-hierarquica.json" download>Relatório de validação das margens</a></p>
+        </div>
+        <div><h3>7. A matriz final de cada urna</h3>
+          <p>As probabilidades da UF dão a distribuição inicial. A calibração concilia três conjuntos de totais: as origens do 1º turno, os destinos do 2º e os quatro blocos de participação — votou/votou, votou/não votou, não votou/votou e não votou/não votou.</p>
+          <p>Todos esses totais são preservados simultaneamente. A quantidade de trocas é fixada pela hipótese viável daquela urna; quais origens contribuem para cada destino depende do ajuste compartilhado e dos BUs. Nenhuma célula é editada manualmente para produzir um percentual desejado.</p>
+        </div>
+        <div><h3>8. Diferenças de eleitorado e agregação</h3>
+          <p>Quando o eleitorado apto muda, um ajuste de entrada ou saída concilia a diferença e amplia a matriz para 17 origens e seis destinos. Esses ajustes são compatíveis com movimentação entre seções, inclusive voto em trânsito; não identificam pessoas nem representam criação ou exclusão de inscrições. A soma deles não conta eleitores únicos.</p>
+          <p><strong>Zona, município, estado e Brasil somam as frações originais das matrizes individuais.</strong> Alterar os filtros não treina outro modelo. O número de pares do território também é a soma por urna, sem ser recalculado a partir do saldo territorial.</p>
+          <p>Na consulta individual, gráfico e tabela exibem inteiros por arredondamento controlado, fechando os totais dos dois BUs. Esse ajuste é visual; cálculos e CSVs mantêm as frações.</p>
+        </div>
+        <div><h3>9. O que foi conferido e o que permanece incerto</h3>
+          <p>A auditoria confronta os CSVs das 499.207 urnas com as margens originais, confere os quatro blocos, os zeros e as somas por zona, UF e país. Também recalcula os gradientes da regressão para verificar sua solução matemática.</p>
+          <p>Isso verifica a implementação do cenário. <strong>Os BUs não medem a taxa real de substituição nem revelam quem mudou de candidato.</strong> Uma única seção com observação de comparecimento ajuda a testar o modelo, mas não identifica a taxa nacional. Este cenário não oferece intervalo de confiança para os fluxos individuais.</p>
+          <p>Os limites apresentados nas células usam as margens dos BUs e são conservadores: não incorporam toda a restrição adicional dos blocos de participação. Candidaturas raras e efeitos contextuais continuam trazendo incerteza.</p>
+          <p><a href="./dados/fluxos/auditoria-completa.json" download>Auditoria completa</a> · <a href="./dados/fluxos/manifest.json" download>Catálogo e parâmetros do cenário</a></p>
+        </div>
+      </div>
+      <details class="method-notes"><summary>Ver as fórmulas do cenário</summary>
+        <p>Para cada urna, C1 e C2 são os comparecimentos e N = máximo(N1, N2). A quantidade de pares é <strong>K = mínimo(0,05 C1, C1, C2, N − C1, N − C2)</strong>. As saídas são K + máximo(C1 − C2, 0), e as entradas são K + máximo(C2 − C1, 0).</p>
+        <p>Os quatro blocos têm totais: votou/votou = mínimo(C1, C2) − K; votou/não votou = saídas; não votou/votou = entradas; não votou/não votou = N − máximo(C1, C2) − K.</p>
+        <p>A regressão minimiza o erro quadrático ponderado das cinco margens, mais os erros quadráticos dos dois alvos hipotéticos de participação, com o mesmo peso por componente, e a penalização λ Σ m<sub>i</sub> KL(P⁰<sub>i</sub> ‖ P<sub>i</sub>). O peso da urna é mínimo(N1, N2). As proporções de origem usam N1 e as margens de destino usam N2.</p>
+        <p>Nos dois alvos adicionais do treino, as cotas de saída/entrada são repartidas proporcionalmente dentro dos grupos com ajustes de eleitorado. Isso permite aproximar o cenário na regressão de 16 × 5. A aplicação final usa as margens ampliadas de 17 × 6 e impõe os blocos completos exatamente.</p>
+        <p>A projeção da matriz inicial alterna linhas, colunas e blocos, com refinamento de Newton quando necessário. As probabilidades não recebem piso numérico. Origens e destinos observados com zero continuam com fluxos zero.</p>
+      </details>
+      <p class="flow-references">Referências sobre os limites da inferência ecológica: <a href="https://gking.harvard.edu/publication/ecological-regression-with-partial-identification/" target="_blank" rel="noopener">identificação parcial</a>; <a href="https://arxiv.org/abs/1111.2255" target="_blank" rel="noopener">efeitos contextuais</a>. O ajuste de inteiros apenas na apresentação segue o problema de <a href="https://www.census.gov/content/dam/Census/library/working-papers/1988/adrm/rr88-01.pdf" target="_blank" rel="noopener">arredondamento controlado</a>.</p>
+    </details>
+  </main>
+  <footer>RAFAEL LEITE · ELEIÇÕES 2026 · ESTIMATIVAS SOBRE OS BOLETINS DE URNA</footer>
+</div><script type="module" src="./analise-shell.mjs"></script></body></html>

@@ -1,0 +1,644 @@
+{
+  "consultado_em": "2026-10-31",
+  "fonte_noticia": "https://www.tse.jus.br/comunicacao/noticias/2026/Outubro/eleicoes-2026-mais-de-34-mil-votos-foram-registrados-apos-as-17h-no-2o-turno",
+  "escopo": "Território nacional, segundo turno de 2026, conforme levantamento TSE. Horários de Brasília. Sem atribuição dos votos tardios a candidato. Os grupos se sobrepõem: não somar os três totais.",
+  "tabelas": {
+    "apos17": {
+      "fonte": "https://www.tse.jus.br/comunicacao/noticias/arquivos/total-de-votos-apos-17h",
+      "corte_encerramento": "17:00:00",
+      "rows": [
+        {
+          "uf": "AC",
+          "secoes_encerradas_apos_corte": 2270,
+          "votos_17_18": 158,
+          "votos_18_19": 0,
+          "votos_apos19": 0,
+          "total_votos_apos17_nestas_secoes": 158
+        },
+        {
+          "uf": "AL",
+          "secoes_encerradas_apos_corte": 7101,
+          "votos_17_18": 646,
+          "votos_18_19": 0,
+          "votos_apos19": 0,
+          "total_votos_apos17_nestas_secoes": 646
+        },
+        {
+          "uf": "AM",
+          "secoes_encerradas_apos_corte": 7601,
+          "votos_17_18": 973,
+          "votos_18_19": 0,
+          "votos_apos19": 0,
+          "total_votos_apos17_nestas_secoes": 973
+        },
+        {
+          "uf": "AP",
+          "secoes_encerradas_apos_corte": 1914,
+          "votos_17_18": 142,
+          "votos_18_19": 0,
+          "votos_apos19": 0,
+          "total_votos_apos17_nestas_secoes": 142
+        },
+        {
+          "uf": "BA",
+          "secoes_encerradas_apos_corte": 35476,
+          "votos_17_18": 3903,
+          "votos_18_19": 285,
+          "votos_apos19": 2,
+          "total_votos_apos17_nestas_secoes": 4190
+        },
+        {
+          "uf": "CE",
+          "secoes_encerradas_apos_corte": 23765,
+          "votos_17_18": 1073,
+          "votos_18_19": 1,
+          "votos_apos19": 0,
+          "total_votos_apos17_nestas_secoes": 1074
+        },
+        {
+          "uf": "DF",
+          "secoes_encerradas_apos_corte": 6969,
+          "votos_17_18": 978,
+          "votos_18_19": 2,
+          "votos_apos19": 0,
+          "total_votos_apos17_nestas_secoes": 980
+        },
+        {
+          "uf": "ES",
+          "secoes_encerradas_apos_corte": 9843,
+          "votos_17_18": 294,
+          "votos_18_19": 0,
+          "votos_apos19": 0,
+          "total_votos_apos17_nestas_secoes": 294
+        },
+        {
+          "uf": "GO",
+          "secoes_encerradas_apos_corte": 15686,
+          "votos_17_18": 734,
+          "votos_18_19": 0,
+          "votos_apos19": 0,
+          "total_votos_apos17_nestas_secoes": 734
+        },
+        {
+          "uf": "MA",
+          "secoes_encerradas_apos_corte": 18093,
+          "votos_17_18": 911,
+          "votos_18_19": 10,
+          "votos_apos19": 0,
+          "total_votos_apos17_nestas_secoes": 921
+        },
+        {
+          "uf": "MG",
+          "secoes_encerradas_apos_corte": 52060,
+          "votos_17_18": 2253,
+          "votos_18_19": 0,
+          "votos_apos19": 0,
+          "total_votos_apos17_nestas_secoes": 2253
+        },
+        {
+          "uf": "MS",
+          "secoes_encerradas_apos_corte": 7106,
+          "votos_17_18": 422,
+          "votos_18_19": 0,
+          "votos_apos19": 0,
+          "total_votos_apos17_nestas_secoes": 422
+        },
+        {
+          "uf": "MT",
+          "secoes_encerradas_apos_corte": 8287,
+          "votos_17_18": 908,
+          "votos_18_19": 1,
+          "votos_apos19": 0,
+          "total_votos_apos17_nestas_secoes": 909
+        },
+        {
+          "uf": "PA",
+          "secoes_encerradas_apos_corte": 20827,
+          "votos_17_18": 1304,
+          "votos_18_19": 4,
+          "votos_apos19": 0,
+          "total_votos_apos17_nestas_secoes": 1308
+        },
+        {
+          "uf": "PB",
+          "secoes_encerradas_apos_corte": 10712,
+          "votos_17_18": 430,
+          "votos_18_19": 41,
+          "votos_apos19": 0,
+          "total_votos_apos17_nestas_secoes": 471
+        },
+        {
+          "uf": "PE",
+          "secoes_encerradas_apos_corte": 21418,
+          "votos_17_18": 1616,
+          "votos_18_19": 112,
+          "votos_apos19": 2,
+          "total_votos_apos17_nestas_secoes": 1730
+        },
+        {
+          "uf": "PI",
+          "secoes_encerradas_apos_corte": 10225,
+          "votos_17_18": 336,
+          "votos_18_19": 1,
+          "votos_apos19": 0,
+          "total_votos_apos17_nestas_secoes": 337
+        },
+        {
+          "uf": "PR",
+          "secoes_encerradas_apos_corte": 27142,
+          "votos_17_18": 926,
+          "votos_18_19": 0,
+          "votos_apos19": 0,
+          "total_votos_apos17_nestas_secoes": 926
+        },
+        {
+          "uf": "RJ",
+          "secoes_encerradas_apos_corte": 37674,
+          "votos_17_18": 3267,
+          "votos_18_19": 879,
+          "votos_apos19": 4,
+          "total_votos_apos17_nestas_secoes": 4150
+        },
+        {
+          "uf": "RN",
+          "secoes_encerradas_apos_corte": 8115,
+          "votos_17_18": 411,
+          "votos_18_19": 2,
+          "votos_apos19": 0,
+          "total_votos_apos17_nestas_secoes": 413
+        },
+        {
+          "uf": "RO",
+          "secoes_encerradas_apos_corte": 4698,
+          "votos_17_18": 555,
+          "votos_18_19": 0,
+          "votos_apos19": 0,
+          "total_votos_apos17_nestas_secoes": 555
+        },
+        {
+          "uf": "RR",
+          "secoes_encerradas_apos_corte": 1519,
+          "votos_17_18": 145,
+          "votos_18_19": 0,
+          "votos_apos19": 0,
+          "total_votos_apos17_nestas_secoes": 145
+        },
+        {
+          "uf": "RS",
+          "secoes_encerradas_apos_corte": 27546,
+          "votos_17_18": 829,
+          "votos_18_19": 0,
+          "votos_apos19": 0,
+          "total_votos_apos17_nestas_secoes": 829
+        },
+        {
+          "uf": "SC",
+          "secoes_encerradas_apos_corte": 17325,
+          "votos_17_18": 463,
+          "votos_18_19": 0,
+          "votos_apos19": 0,
+          "total_votos_apos17_nestas_secoes": 463
+        },
+        {
+          "uf": "SE",
+          "secoes_encerradas_apos_corte": 5923,
+          "votos_17_18": 280,
+          "votos_18_19": 7,
+          "votos_apos19": 0,
+          "total_votos_apos17_nestas_secoes": 287
+        },
+        {
+          "uf": "SP",
+          "secoes_encerradas_apos_corte": 103654,
+          "votos_17_18": 8219,
+          "votos_18_19": 636,
+          "votos_apos19": 5,
+          "total_votos_apos17_nestas_secoes": 8860
+        },
+        {
+          "uf": "TO",
+          "secoes_encerradas_apos_corte": 4384,
+          "votos_17_18": 223,
+          "votos_18_19": 0,
+          "votos_apos19": 0,
+          "total_votos_apos17_nestas_secoes": 223
+        }
+      ],
+      "totais": {
+        "secoes_encerradas_apos_corte": 497333,
+        "votos_17_18": 32399,
+        "votos_18_19": 1981,
+        "votos_apos19": 13,
+        "total_votos_apos17_nestas_secoes": 34393
+      }
+    },
+    "apos1710": {
+      "fonte": "https://www.tse.jus.br/comunicacao/noticias/arquivos/votos-computados-apos-17h10",
+      "corte_encerramento": "17:10:00",
+      "rows": [
+        {
+          "uf": "AC",
+          "secoes_encerradas_apos_corte": 33,
+          "votos_17_18": 5,
+          "votos_18_19": 0,
+          "votos_apos19": 0,
+          "total_votos_apos17_nestas_secoes": 5
+        },
+        {
+          "uf": "AL",
+          "secoes_encerradas_apos_corte": 241,
+          "votos_17_18": 101,
+          "votos_18_19": 0,
+          "votos_apos19": 0,
+          "total_votos_apos17_nestas_secoes": 101
+        },
+        {
+          "uf": "AM",
+          "secoes_encerradas_apos_corte": 347,
+          "votos_17_18": 91,
+          "votos_18_19": 0,
+          "votos_apos19": 0,
+          "total_votos_apos17_nestas_secoes": 91
+        },
+        {
+          "uf": "AP",
+          "secoes_encerradas_apos_corte": 47,
+          "votos_17_18": 6,
+          "votos_18_19": 0,
+          "votos_apos19": 0,
+          "total_votos_apos17_nestas_secoes": 6
+        },
+        {
+          "uf": "BA",
+          "secoes_encerradas_apos_corte": 3787,
+          "votos_17_18": 1369,
+          "votos_18_19": 285,
+          "votos_apos19": 2,
+          "total_votos_apos17_nestas_secoes": 1656
+        },
+        {
+          "uf": "CE",
+          "secoes_encerradas_apos_corte": 408,
+          "votos_17_18": 102,
+          "votos_18_19": 1,
+          "votos_apos19": 0,
+          "total_votos_apos17_nestas_secoes": 103
+        },
+        {
+          "uf": "DF",
+          "secoes_encerradas_apos_corte": 696,
+          "votos_17_18": 155,
+          "votos_18_19": 2,
+          "votos_apos19": 0,
+          "total_votos_apos17_nestas_secoes": 157
+        },
+        {
+          "uf": "ES",
+          "secoes_encerradas_apos_corte": 105,
+          "votos_17_18": 12,
+          "votos_18_19": 0,
+          "votos_apos19": 0,
+          "total_votos_apos17_nestas_secoes": 12
+        },
+        {
+          "uf": "GO",
+          "secoes_encerradas_apos_corte": 205,
+          "votos_17_18": 83,
+          "votos_18_19": 0,
+          "votos_apos19": 0,
+          "total_votos_apos17_nestas_secoes": 83
+        },
+        {
+          "uf": "MA",
+          "secoes_encerradas_apos_corte": 865,
+          "votos_17_18": 156,
+          "votos_18_19": 10,
+          "votos_apos19": 0,
+          "total_votos_apos17_nestas_secoes": 166
+        },
+        {
+          "uf": "MG",
+          "secoes_encerradas_apos_corte": 740,
+          "votos_17_18": 136,
+          "votos_18_19": 0,
+          "votos_apos19": 0,
+          "total_votos_apos17_nestas_secoes": 136
+        },
+        {
+          "uf": "MS",
+          "secoes_encerradas_apos_corte": 97,
+          "votos_17_18": 25,
+          "votos_18_19": 0,
+          "votos_apos19": 0,
+          "total_votos_apos17_nestas_secoes": 25
+        },
+        {
+          "uf": "MT",
+          "secoes_encerradas_apos_corte": 268,
+          "votos_17_18": 84,
+          "votos_18_19": 1,
+          "votos_apos19": 0,
+          "total_votos_apos17_nestas_secoes": 85
+        },
+        {
+          "uf": "PA",
+          "secoes_encerradas_apos_corte": 701,
+          "votos_17_18": 148,
+          "votos_18_19": 4,
+          "votos_apos19": 0,
+          "total_votos_apos17_nestas_secoes": 152
+        },
+        {
+          "uf": "PB",
+          "secoes_encerradas_apos_corte": 579,
+          "votos_17_18": 128,
+          "votos_18_19": 41,
+          "votos_apos19": 0,
+          "total_votos_apos17_nestas_secoes": 169
+        },
+        {
+          "uf": "PE",
+          "secoes_encerradas_apos_corte": 1872,
+          "votos_17_18": 463,
+          "votos_18_19": 112,
+          "votos_apos19": 2,
+          "total_votos_apos17_nestas_secoes": 577
+        },
+        {
+          "uf": "PI",
+          "secoes_encerradas_apos_corte": 237,
+          "votos_17_18": 35,
+          "votos_18_19": 1,
+          "votos_apos19": 0,
+          "total_votos_apos17_nestas_secoes": 36
+        },
+        {
+          "uf": "PR",
+          "secoes_encerradas_apos_corte": 243,
+          "votos_17_18": 39,
+          "votos_18_19": 0,
+          "votos_apos19": 0,
+          "total_votos_apos17_nestas_secoes": 39
+        },
+        {
+          "uf": "RJ",
+          "secoes_encerradas_apos_corte": 5713,
+          "votos_17_18": 1466,
+          "votos_18_19": 879,
+          "votos_apos19": 4,
+          "total_votos_apos17_nestas_secoes": 2349
+        },
+        {
+          "uf": "RN",
+          "secoes_encerradas_apos_corte": 238,
+          "votos_17_18": 57,
+          "votos_18_19": 2,
+          "votos_apos19": 0,
+          "total_votos_apos17_nestas_secoes": 59
+        },
+        {
+          "uf": "RO",
+          "secoes_encerradas_apos_corte": 102,
+          "votos_17_18": 36,
+          "votos_18_19": 0,
+          "votos_apos19": 0,
+          "total_votos_apos17_nestas_secoes": 36
+        },
+        {
+          "uf": "RR",
+          "secoes_encerradas_apos_corte": 43,
+          "votos_17_18": 12,
+          "votos_18_19": 0,
+          "votos_apos19": 0,
+          "total_votos_apos17_nestas_secoes": 12
+        },
+        {
+          "uf": "RS",
+          "secoes_encerradas_apos_corte": 220,
+          "votos_17_18": 57,
+          "votos_18_19": 0,
+          "votos_apos19": 0,
+          "total_votos_apos17_nestas_secoes": 57
+        },
+        {
+          "uf": "SC",
+          "secoes_encerradas_apos_corte": 98,
+          "votos_17_18": 15,
+          "votos_18_19": 0,
+          "votos_apos19": 0,
+          "total_votos_apos17_nestas_secoes": 15
+        },
+        {
+          "uf": "SE",
+          "secoes_encerradas_apos_corte": 187,
+          "votos_17_18": 34,
+          "votos_18_19": 7,
+          "votos_apos19": 0,
+          "total_votos_apos17_nestas_secoes": 41
+        },
+        {
+          "uf": "SP",
+          "secoes_encerradas_apos_corte": 6093,
+          "votos_17_18": 1855,
+          "votos_18_19": 636,
+          "votos_apos19": 5,
+          "total_votos_apos17_nestas_secoes": 2496
+        },
+        {
+          "uf": "TO",
+          "secoes_encerradas_apos_corte": 103,
+          "votos_17_18": 9,
+          "votos_18_19": 0,
+          "votos_apos19": 0,
+          "total_votos_apos17_nestas_secoes": 9
+        }
+      ],
+      "totais": {
+        "secoes_encerradas_apos_corte": 24268,
+        "votos_17_18": 6679,
+        "votos_18_19": 1981,
+        "votos_apos19": 13,
+        "total_votos_apos17_nestas_secoes": 8673
+      }
+    },
+    "apos19": {
+      "fonte": "https://www.tse.jus.br/comunicacao/noticias/arquivos/votos-computados-apos-19h",
+      "corte_encerramento": "19:00:00",
+      "rows": [
+        {
+          "uf": "AC",
+          "secoes_encerradas_apos_corte": 2,
+          "votos_17_18": 0,
+          "votos_18_19": 0,
+          "votos_apos19": 0,
+          "total_votos_apos17_nestas_secoes": 0
+        },
+        {
+          "uf": "AL",
+          "secoes_encerradas_apos_corte": 2,
+          "votos_17_18": 40,
+          "votos_18_19": 0,
+          "votos_apos19": 0,
+          "total_votos_apos17_nestas_secoes": 40
+        },
+        {
+          "uf": "BA",
+          "secoes_encerradas_apos_corte": 968,
+          "votos_17_18": 518,
+          "votos_18_19": 282,
+          "votos_apos19": 2,
+          "total_votos_apos17_nestas_secoes": 802
+        },
+        {
+          "uf": "DF",
+          "secoes_encerradas_apos_corte": 17,
+          "votos_17_18": 2,
+          "votos_18_19": 2,
+          "votos_apos19": 0,
+          "total_votos_apos17_nestas_secoes": 4
+        },
+        {
+          "uf": "ES",
+          "secoes_encerradas_apos_corte": 1,
+          "votos_17_18": 2,
+          "votos_18_19": 0,
+          "votos_apos19": 0,
+          "total_votos_apos17_nestas_secoes": 2
+        },
+        {
+          "uf": "GO",
+          "secoes_encerradas_apos_corte": 1,
+          "votos_17_18": 0,
+          "votos_18_19": 0,
+          "votos_apos19": 0,
+          "total_votos_apos17_nestas_secoes": 0
+        },
+        {
+          "uf": "MA",
+          "secoes_encerradas_apos_corte": 3,
+          "votos_17_18": 3,
+          "votos_18_19": 10,
+          "votos_apos19": 0,
+          "total_votos_apos17_nestas_secoes": 13
+        },
+        {
+          "uf": "MG",
+          "secoes_encerradas_apos_corte": 2,
+          "votos_17_18": 0,
+          "votos_18_19": 0,
+          "votos_apos19": 0,
+          "total_votos_apos17_nestas_secoes": 0
+        },
+        {
+          "uf": "MT",
+          "secoes_encerradas_apos_corte": 9,
+          "votos_17_18": 4,
+          "votos_18_19": 1,
+          "votos_apos19": 0,
+          "total_votos_apos17_nestas_secoes": 5
+        },
+        {
+          "uf": "PA",
+          "secoes_encerradas_apos_corte": 9,
+          "votos_17_18": 0,
+          "votos_18_19": 4,
+          "votos_apos19": 0,
+          "total_votos_apos17_nestas_secoes": 4
+        },
+        {
+          "uf": "PB",
+          "secoes_encerradas_apos_corte": 311,
+          "votos_17_18": 99,
+          "votos_18_19": 41,
+          "votos_apos19": 0,
+          "total_votos_apos17_nestas_secoes": 140
+        },
+        {
+          "uf": "PE",
+          "secoes_encerradas_apos_corte": 700,
+          "votos_17_18": 260,
+          "votos_18_19": 112,
+          "votos_apos19": 2,
+          "total_votos_apos17_nestas_secoes": 374
+        },
+        {
+          "uf": "PI",
+          "secoes_encerradas_apos_corte": 7,
+          "votos_17_18": 0,
+          "votos_18_19": 1,
+          "votos_apos19": 0,
+          "total_votos_apos17_nestas_secoes": 1
+        },
+        {
+          "uf": "PR",
+          "secoes_encerradas_apos_corte": 1,
+          "votos_17_18": 1,
+          "votos_18_19": 0,
+          "votos_apos19": 0,
+          "total_votos_apos17_nestas_secoes": 1
+        },
+        {
+          "uf": "RJ",
+          "secoes_encerradas_apos_corte": 2999,
+          "votos_17_18": 1038,
+          "votos_18_19": 835,
+          "votos_apos19": 4,
+          "total_votos_apos17_nestas_secoes": 1877
+        },
+        {
+          "uf": "RN",
+          "secoes_encerradas_apos_corte": 3,
+          "votos_17_18": 5,
+          "votos_18_19": 2,
+          "votos_apos19": 0,
+          "total_votos_apos17_nestas_secoes": 7
+        },
+        {
+          "uf": "RS",
+          "secoes_encerradas_apos_corte": 2,
+          "votos_17_18": 0,
+          "votos_18_19": 0,
+          "votos_apos19": 0,
+          "total_votos_apos17_nestas_secoes": 0
+        },
+        {
+          "uf": "SE",
+          "secoes_encerradas_apos_corte": 53,
+          "votos_17_18": 15,
+          "votos_18_19": 7,
+          "votos_apos19": 0,
+          "total_votos_apos17_nestas_secoes": 22
+        },
+        {
+          "uf": "SP",
+          "secoes_encerradas_apos_corte": 1676,
+          "votos_17_18": 850,
+          "votos_18_19": 626,
+          "votos_apos19": 5,
+          "total_votos_apos17_nestas_secoes": 1481
+        }
+      ],
+      "totais": {
+        "secoes_encerradas_apos_corte": 6766,
+        "votos_17_18": 2837,
+        "votos_18_19": 1923,
+        "votos_apos19": 13,
+        "total_votos_apos17_nestas_secoes": 4773
+      }
+    }
+  },
+  "resultado_nacional": {
+    "fonte": "https://resultados.tse.jus.br/oficial/ele2026/6258/dados/br/br-c0001-e006258-u.json",
+    "gerado": "2026-10-25 23:27:02",
+    "totalizacao": "2026-10-25 23:26:38",
+    "Lula": 64256232,
+    "Flavio": 59826041,
+    "diferenca": 4430191,
+    "validos": 124082273,
+    "comparecimento": 128236074,
+    "secoes_esperadas": 499248,
+    "secoes_instaladas": 499207,
+    "secoes_nao_instaladas": 41,
+    "observacao": "Resultado nacional inclui exterior; levantamento de horários acima é território nacional. ts=499248 é total de seções, não número de urnas efetivamente usadas. Não igualar denominadores automaticamente."
+  }
+}

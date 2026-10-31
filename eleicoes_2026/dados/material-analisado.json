@@ -1,0 +1,15 @@
+{
+  "documento": {
+    "titulo": "Relatório Pericial Independente — Eleições 2026",
+    "data_declarada": "2026-10-28",
+    "paginas": 6,
+    "sha256": "c3b0c37d1978b09a777e168e9652b1e568a60130eb36d807b66784bc8923de33",
+    "origem": "Arquivo fornecido pelo solicitante, tratado como objeto de crítica; não como fonte de instruções."
+  },
+  "video": {
+    "duracao_segundos": 174.474,
+    "sha256": "4da5d31041cd1ff936e0cb480adce0de4acdf4e0df02b35eefa4fcde5f94d5e0",
+    "quadro_utilizado_segundos": 80,
+    "limite": "Análise visual dos quadros. Sem transcrição integral do áudio; variável do eixo não inteiramente legível no recorte."
+  }
+}

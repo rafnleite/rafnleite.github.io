@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f7f8">
+  <meta name="description" content="A distribuição do encerramento das urnas por horário de Brasília, segundo os boletins de urna da eleição presidencial de 2026.">
+  <title>Encerramento das urnas · Presidência 2026</title>
+  <link rel="stylesheet" href="./styles.css?v=site-layout-6">
+  <link rel="stylesheet" href="./navigation.css?v=site-layout-6">
+<link rel="stylesheet" href="./ui-overlays.css?v=site-layout-6"><link rel="stylesheet" href="./site-shell.css?v=5">
+<link rel="stylesheet" href="./site-ui.css?v=ui-review-1">
+
+<link rel="stylesheet" href="./relatorio-analises.css">
+</head>
+<body class="site-page site-filters-collapsed report-analise-shell" data-site-page="index"><div class="report-mobile-bar"><a href="../index.html">Eleições 2026</a><button class="report-index-toggle" id="reportIndexToggle" type="button" aria-controls="reportSidebar" aria-expanded="false">Índice ☰</button></div><aside class="report-sidebar" id="reportSidebar"><a class="report-identity" href="../index.html"><img src="../assets/perfil.jpg" alt="Ilustração de Rafael Leite" width="104" height="104"><strong>Rafael Leite</strong><small>Análises das eleições de 2026</small></a><nav aria-label="Páginas do relatório"><a class="report-home" href="../index.html">← Relatório principal</a><div class="report-nav-label">ANÁLISES</div><a href="./index.html" aria-current="page">Encerramento das urnas</a><a href="./votacao.html">Horários dos votos</a><a href="./secoes.html">Votação por seção</a><a href="./atraso.html">Urnas após as 17h</a><a href="./biometria.html">Identificação biométrica</a><a href="./apuracao-encerramento.html">Soma dos BUs por horário</a><a href="./simulacao.html">Simulador de apuração</a><a href="./fluxos.html">Fluxos entre turnos</a><a href="./auditoria.html">Auditoria dos arquivos</a><a href="./consulta.html">Consulta da base de dados</a><div class="report-nav-label">DOCUMENTAÇÃO</div><a href="../index.html#fontes">Fontes e metodologia</a><a href="../index.html#reproducao">Dados e reprodução</a><a href="https://rafnleite.github.io/relatorio_eleicoes.html">Relatório de 2022 ↗</a></nav></aside>
+  <a class="skip-link" href="#distribuicao">Pular para o gráfico</a>
+  <div class="shell">
+<header class="site-header report-page-header"><div class="report-page-context"><a href="../index.html">Relatório das eleições de 2026</a><span>Horário de Brasília</span></div><button id="siteFiltersToggle" class="site-filters-toggle" type="button" aria-controls="siteFilters" aria-expanded="false">Filtros</button></header><p class="report-dataset-note">Base desta análise: BUs: 26/10/2026 às 21h35, horário de Brasília.</p>
+<section class="site-intro"><div class="site-intro-copy"><p class="eyebrow">ELEIÇÃO PRESIDENCIAL · BRASIL E EXTERIOR</p><h1>Encerramento das urnas</h1><p class="intro">Urnas, eleitores aptos e votos por horário de encerramento, segundo os boletins de urna.</p></div><div class="site-intro-actions"><span id="modeBadge" class="badge mode">Aguardando dados</span><button id="refreshButton" class="button secondary" type="button"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M16.5 8a6.5 6.5 0 1 0-.6 5.5M16.5 3.8V8h-4.2"/></svg><span>Atualizar</span></button><label class="import-link" for="jsonFile">Importar arquivo JSON</label><input id="jsonFile" type="file" accept=".json,application/json" class="visually-hidden"></div><div class="site-intro-meta"><span id="updatedAt">Consultando a base de boletins…</span><span id="refreshLabel">Somente dados dos BUs · sem logs de urna</span></div></section>
+<div class="site-layout">
+      <aside id="siteFilters" class="site-filters" aria-labelledby="siteFiltersTitle" tabindex="-1" hidden>
+        <div class="site-filters-heading"><h2 id="siteFiltersTitle">Filtros</h2><button class="site-filters-close" type="button" aria-label="Fechar filtros"><svg class="site-close-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></button></div>
+        <div class="site-filter-body"><section class="filters" aria-label="Filtros do histograma">
+        <fieldset class="turn-control"><legend>Turno</legend><div class="segmented"><button type="button" data-turn="1" aria-pressed="false">1º turno</button><button type="button" data-turn="2" aria-pressed="true">2º turno</button></div></fieldset>
+        <label class="filter"><span>Recorte</span><select id="territory"><option value="all">Brasil e exterior</option><option value="brazil" selected>Brasil (sem exterior)</option><option value="exterior">Somente exterior</option></select></label>
+        <label class="filter"><span>Unidade da Federação</span><select id="uf"><option value="ALL">Todas as UFs</option></select></label>
+        <label class="filter interval-filter"><span>Intervalo das barras (min)</span><input id="interval" type="number" min="1" max="180" step="1" value="1" list="intervalPresets" required aria-describedby="intervalHint"><datalist id="intervalPresets"><option value="1"></option><option value="5"></option><option value="10"></option><option value="15"></option><option value="30"></option><option value="60"></option></datalist><small id="intervalHint">De 1 a 180 minutos</small></label>
+      </section><section class="site-filter-group"><h3>Métrica do gráfico</h3><div class="metric-switch segmented" role="group" aria-label="Métrica do histograma"><button type="button" data-metric="urnas" aria-pressed="true">Urnas</button><button type="button" data-metric="eleitores" aria-pressed="false">Eleitores aptos</button><button type="button" data-metric="votos" aria-pressed="false">Votos</button></div></section><section class="site-filter-group"><h3>Horários e abrangência</h3><label class="exclude-exterior"><input id="excludeExterior" type="checkbox" checked>Excluir urnas do exterior</label><label class="window-control" for="window"><span>Janela de horários</span><select id="window"><option value="all">Todos os horários</option><option value="focus">16:30–20:00</option><option value="custom">Personalizar horários</option></select></label><div id="customWindow" class="custom-window" hidden><label class="window-control" for="windowStart"><span>Horário inicial</span><input id="windowStart" type="time" value="16:30" required></label><label class="window-control" for="windowEnd"><span>Horário final</span><input id="windowEnd" type="time" value="20:00" required></label><p>Horários de Brasília. Se o fim vier antes do início, será considerado o dia seguinte.</p></div></section></div>
+      </aside>
+      <div class="site-content">
+    
+
+    <main>
+      <div id="message" class="message" role="status" hidden></div>
+      
+
+      <section class="summary-cards" aria-label="Resumo do recorte">
+        <article class="summary-card"><div class="card-label"><span class="dot urnas"></span>Urnas no gráfico</div><div id="urnasValue" class="card-value">—</div><div id="urnasDetail" class="card-detail">Com horário de encerramento</div></article>
+        <article class="summary-card"><div class="card-label"><span class="dot eleitores"></span>Eleitores aptos</div><div id="eleitoresValue" class="card-value">—</div><div class="card-detail">Nas urnas exibidas no gráfico</div></article>
+        <article class="summary-card"><div class="card-label"><span class="dot votos"></span><span id="votesCardLabel">Votos totais</span></div><div id="votosValue" class="card-value">—</div><div id="votosDetail" class="card-detail">Nas urnas exibidas no gráfico</div></article>
+        <article class="summary-card coverage-card"><div class="card-label">Cobertura dos horários<span id="partialBadge" class="badge partial">Parcial</span></div><div id="coverageValue" class="card-value">—</div><div id="coverageDetail" class="card-detail">Urnas com horário / seções cadastradas</div><div class="coverage-track" aria-hidden="true"><i id="coverageBar"></i></div></article>
+      </section>
+
+
+
+      <section id="distribuicao" class="chart-panel" aria-labelledby="chartsHeading" tabindex="-1">
+        <div class="panel-heading"><div><p class="eyebrow">DISTRIBUIÇÃO DOS ENCERRAMENTOS</p><h2 id="chartsHeading">Encerramentos por horário</h2><p id="chartDescription" class="panel-description">Alterne a métrica para explorar os horários.</p></div></div>
+        <div class="histogram-toolbar"><div class="chart-scope"><p id="exteriorNotice" class="exterior-notice" hidden>Encerramentos antes das 17h de Brasília são possíveis no exterior, onde a votação segue a hora local.</p></div><div class="chart-tools"><button id="resetChartZoom" class="button secondary small" type="button" hidden>Restaurar zoom</button><label class="exclude-exterior"><input id="toggleExteriorChart" type="checkbox" disabled>Incluir exterior</label><button id="exportButton" class="button secondary small" type="button" disabled><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 2.8v9.6m-3.5-3.5 3.5 3.5 3.5-3.5M4 13.5v3h12v-3"/></svg>Baixar CSV</button></div></div>
+        
+        <div class="cumulative-legend"><span><i class="cumulative-swatch" aria-hidden="true"></i>Percentual acumulado <span class="legend-axis">· eixo direito</span></span><p id="cumulativeDescription">Percentual das urnas disponíveis no recorte, considerando todos os horários.</p></div>
+        <div class="chart-stack">
+          <article class="chart-row" aria-labelledby="metricTitle"><div class="chart-row-heading"><h3><span id="metricDot" class="dot urnas"></span><span id="metricTitle">Urnas encerradas</span></h3><span id="metricAxis">Número de urnas</span></div>
+            <fieldset id="voteLegend" class="vote-legend" role="radiogroup" hidden><legend>Tipo de voto</legend><select id="vote" hidden aria-hidden="true" tabindex="-1"><option value="total">Todos os votos</option><option value="lula">Lula · 13</option><option value="flavio">Flávio · 22</option><option value="nulos">Nulos</option><option value="brancos">Brancos</option></select><button type="button" role="radio" data-vote="total" aria-checked="true"><i aria-hidden="true"></i>Todos os votos</button><button type="button" role="radio" data-vote="lula" aria-checked="false" tabindex="-1"><i aria-hidden="true"></i>Lula · 13</button><button type="button" role="radio" data-vote="flavio" aria-checked="false" tabindex="-1"><i aria-hidden="true"></i>Flávio · 22</button><button type="button" role="radio" data-vote="nulos" aria-checked="false" tabindex="-1"><i aria-hidden="true"></i>Nulos</button><button type="button" role="radio" data-vote="brancos" aria-checked="false" tabindex="-1"><i aria-hidden="true"></i>Brancos</button></fieldset>
+            <p id="chartZoomStatus" class="chart-zoom-hint">Amplie com a roda do mouse ou o controle abaixo do gráfico.</p><div id="histogramChart" class="chart"><p class="chart-placeholder">Carregando os horários dos boletins…</p></div></article>
+        </div>
+        <div class="chart-footnote"><span id="rangeLabel">Eixo horizontal: horário de encerramento em Brasília</span><span>Início incluso · fim exclusivo</span></div>
+      </section>
+
+      <aside class="interpretation" aria-label="Como interpretar"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7.5"/><path d="M10 9v5m0-8v.2"/></svg><p>Horário de <strong>encerramento da urna</strong>, em Brasília. A métrica “Votos” soma o resultado completo das urnas que encerraram em cada faixa.</p></aside>
+
+      <section class="lower-grid">
+        <details id="coverageDetails" class="detail-panel method-notes"><summary><span>Cobertura e limites</span><span class="summary-chevron" aria-hidden="true"></span></summary><div class="detail-body"><p id="coverageExplanation">A cobertura será apresentada assim que a base for carregada.</p><dl id="coverageList" class="coverage-list"></dl><p id="exclusionsNote" class="muted-note"></p><div id="sourceNotes" class="source-notes"></div></div></details>
+        <details id="binDetails" class="detail-panel"><summary><span>Dados por faixa de horário</span><span id="binsCount" class="summary-count"></span><span class="summary-chevron" aria-hidden="true"></span></summary><div class="detail-body"><div class="table-tools"><p>O acumulado considera a métrica ativa e todos os horários do recorte.</p><label class="checkbox-label"><input id="includeEmpty" type="checkbox">Incluir faixas vazias</label></div><div class="table-scroll" tabindex="0" aria-label="Tabela de faixas, com rolagem horizontal"><table><caption id="tableCaption">Horários de Brasília; início incluso e fim exclusivo.</caption><thead><tr><th scope="col">Faixa de horário</th><th scope="col">Urnas</th><th scope="col">Eleitores aptos</th><th id="tableVoteHeading" scope="col">Votos</th><th scope="col">Acumulado</th></tr></thead><tbody id="binRows"></tbody><tfoot><tr><th scope="row">Total no gráfico</th><td id="tableUrnas">—</td><td id="tableEleitores">—</td><td id="tableVotos">—</td><td id="tableAccumulated">—</td></tr></tfoot></table></div><div class="table-bottom"><span id="pageInfo"></span><button id="moreBins" type="button" class="button secondary small" hidden>Mostrar mais faixas</button></div></div></details>
+      </section>
+    </main>
+
+    </div>
+    </div>
+    <button id="siteSidebarBackdrop" class="site-sidebar-backdrop" type="button" hidden aria-label="Fechar filtros"></button>
+    <button id="siteFiltersEdgeToggle" class="site-filters-edge-toggle" type="button" aria-controls="siteFilters" aria-expanded="false" aria-label="Abrir filtros"><span>Filtros</span></button>
+    <footer class="page-footer"><div><span class="footer-brand">RAFAEL LEITE · ELEIÇÕES 2026</span><p id="sourceLabel">Fonte: boletins de urna do Tribunal Superior Eleitoral.</p></div><p>Presidência 2026 · Dados descritivos<br>O recorte reflete a cobertura informada nesta página.</p></footer>
+  </div>
+  <div id="tooltip" class="chart-tooltip" hidden role="status" aria-live="off"><p id="tipRange" class="tip-range"></p><p class="tip-zone">Horário de Brasília</p><dl><div><dt><span class="dot urnas"></span>Urnas</dt><dd id="tipUrnas"></dd></div><div><dt><span class="dot eleitores"></span>Eleitores aptos</dt><dd id="tipEleitores"></dd></div><div><dt><span class="dot votos"></span><span id="tipVoteLabel">Votos</span></dt><dd id="tipVotos"></dd></div><div class="tip-cumulative"><dt><i class="cumulative-swatch" aria-hidden="true"></i>Acumulado</dt><dd id="tipAccumulated">—</dd></div></dl><p class="tip-boundary">Acumulado até o fim da faixa · todos os horários do recorte</p></div>
+  <script type="module" src="./app.mjs?v=y-zoom-1"></script>
+<script type="module" src="./site-shell.mjs?v=5"></script>
+<script type="module" src="./analise-shell.mjs"></script></body>
+</html>

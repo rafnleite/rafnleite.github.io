@@ -1,0 +1,72 @@
+{
+  "fonte": "eleições apuração/logs-urnas/relatorios/secoes_parciais_inicial.json",
+  "metodo": "Registro local de consulta, não carimbo independente nem prova da disponibilidade de todos os arquivos.",
+  "logs_antes26_03UTC": 4,
+  "primeiras_amostras": [
+    {
+      "ano": 2026,
+      "turno": 2,
+      "uf": "RR",
+      "municipio": "BOA VISTA",
+      "zona": 1,
+      "secao": 710,
+      "ultima_consulta": "2026-10-26T02:35:16+00:00",
+      "stamp_atual": "25/10/2026|20:19:20|",
+      "url_log": "https://resultados.tse.jus.br/oficial/ele2026/arquivo-urna/3221/dados/rr/03018/0001/0710/5771534c4c71576c6852652b65546272794566483973646f6869664d642b4e537577343033614b645a78343d/o03221rr0301800010710-log.jez",
+      "status": "processado",
+      "sha256": "e73a4384a71572a8d911a529a8875763701908275298565242793c4e0e11404b"
+    },
+    {
+      "ano": 2026,
+      "turno": 2,
+      "uf": "RR",
+      "municipio": "BOA VISTA",
+      "zona": 5,
+      "secao": 279,
+      "ultima_consulta": "2026-10-26T02:37:03+00:00",
+      "stamp_atual": "25/10/2026|19:59:47|",
+      "url_log": "https://resultados.tse.jus.br/oficial/ele2026/arquivo-urna/3221/dados/rr/03018/0005/0279/2d6a4b524439785a7863797a684e77695779566e36476858656a472d3170384b38446e4a7764326c6a68453d/o03221rr0301800050279-log.jez",
+      "status": "processado",
+      "sha256": "9ede86960e881d65c53a7937a16caaad0378b39c70a9efe51c6b4ce6cb6b5b08"
+    },
+    {
+      "ano": 2026,
+      "turno": 2,
+      "uf": "RR",
+      "municipio": "RORAINÓPOLIS",
+      "zona": 8,
+      "secao": 80,
+      "ultima_consulta": "2026-10-26T02:39:59+00:00",
+      "stamp_atual": "25/10/2026|20:27:06|",
+      "url_log": "https://resultados.tse.jus.br/oficial/ele2026/arquivo-urna/3221/dados/rr/03085/0008/0080/636a7a3665444b6e6559635271427037424633636d36736d64512b41547a3258394356576536516b3649773d/o03221rr0308500080080-log.jez",
+      "status": "processado",
+      "sha256": "6d8334f4768785e559d5ad3119e66f5a18b7fe0e8552ab681c95e905044338b3"
+    },
+    {
+      "ano": 2026,
+      "turno": 2,
+      "uf": "RR",
+      "municipio": "MUCAJAÍ",
+      "zona": 6,
+      "secao": 78,
+      "ultima_consulta": "2026-10-26T02:40:15+00:00",
+      "stamp_atual": "25/10/2026|19:55:41|",
+      "url_log": "https://resultados.tse.jus.br/oficial/ele2026/arquivo-urna/3221/dados/rr/03093/0006/0078/694f48584470425a30366a6452614c4955516261754f4c445172697558616557664f4b3269766565737a6b3d/o03221rr0309300060078-log.jez",
+      "status": "processado",
+      "sha256": "d71add29f38329c8838a0a41ac75cfdc4fba3cb1f49dfdc575fe83289506186f"
+    },
+    {
+      "ano": 2026,
+      "turno": 2,
+      "uf": "AM",
+      "municipio": "MANAUS",
+      "zona": 2,
+      "secao": 578,
+      "ultima_consulta": "2026-10-26T03:49:05+00:00",
+      "stamp_atual": "25/10/2026|22:10:54|",
+      "url_log": "https://resultados.tse.jus.br/oficial/ele2026/arquivo-urna/3221/dados/am/02550/0002/0578/7335384e6d2d7843317a3366624d37785749564b41736c5337634e4543664a59794372436762796c696d673d/o03221am0255000020578-log.jez",
+      "status": "processado",
+      "sha256": "b791d9cba0f9f3b23cfc507e371d612b3849d43de8b41cedab22619b2c6e6a84"
+    }
+  ]
+}

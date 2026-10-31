@@ -1,0 +1,117 @@
+{
+  "removedPlainCounterparts": [
+    {
+      "file": "dados/fluxos/AC-secoes.csv",
+      "bytes": 1163813
+    },
+    {
+      "file": "dados/fluxos/AL-secoes.csv",
+      "bytes": 3667980
+    },
+    {
+      "file": "dados/fluxos/AM-secoes.csv",
+      "bytes": 4205273
+    },
+    {
+      "file": "dados/fluxos/AP-secoes.csv",
+      "bytes": 973547
+    },
+    {
+      "file": "dados/fluxos/BA-secoes.csv",
+      "bytes": 18230038
+    },
+    {
+      "file": "dados/fluxos/CE-secoes.csv",
+      "bytes": 12103538
+    },
+    {
+      "file": "dados/fluxos/DF-secoes.csv",
+      "bytes": 3887842
+    },
+    {
+      "file": "dados/fluxos/ES-secoes.csv",
+      "bytes": 5288208
+    },
+    {
+      "file": "dados/fluxos/GO-secoes.csv",
+      "bytes": 8115392
+    },
+    {
+      "file": "dados/fluxos/MA-secoes.csv",
+      "bytes": 8929692
+    },
+    {
+      "file": "dados/fluxos/MG-secoes.csv",
+      "bytes": 28491628
+    },
+    {
+      "file": "dados/fluxos/MS-secoes.csv",
+      "bytes": 3667382
+    },
+    {
+      "file": "dados/fluxos/MT-secoes.csv",
+      "bytes": 4256018
+    },
+    {
+      "file": "dados/fluxos/PA-secoes.csv",
+      "bytes": 10282853
+    },
+    {
+      "file": "dados/fluxos/PB-secoes.csv",
+      "bytes": 5514939
+    },
+    {
+      "file": "dados/fluxos/PE-secoes.csv",
+      "bytes": 11185812
+    },
+    {
+      "file": "dados/fluxos/PI-secoes.csv",
+      "bytes": 5035834
+    },
+    {
+      "file": "dados/fluxos/PR-secoes.csv",
+      "bytes": 14635637
+    },
+    {
+      "file": "dados/fluxos/RJ-secoes.csv",
+      "bytes": 20710657
+    },
+    {
+      "file": "dados/fluxos/RN-secoes.csv",
+      "bytes": 4225680
+    },
+    {
+      "file": "dados/fluxos/RO-secoes.csv",
+      "bytes": 2352912
+    },
+    {
+      "file": "dados/fluxos/RR-secoes.csv",
+      "bytes": 743989
+    },
+    {
+      "file": "dados/fluxos/RS-secoes.csv",
+      "bytes": 14796785
+    },
+    {
+      "file": "dados/fluxos/SC-secoes.csv",
+      "bytes": 9401011
+    },
+    {
+      "file": "dados/fluxos/SE-secoes.csv",
+      "bytes": 3103206
+    },
+    {
+      "file": "dados/fluxos/SP-secoes.csv",
+      "bytes": 57773912
+    },
+    {
+      "file": "dados/fluxos/TO-secoes.csv",
+      "bytes": 2193645
+    },
+    {
+      "file": "dados/fluxos/ZZ-secoes.csv",
+      "bytes": 773828
+    }
+  ],
+  "reason": "Only .csv.gz is referenced by the manifest and worker. Gzip hashes matched the manifest and decompressed payloads matched the plain files before removal."
+}
