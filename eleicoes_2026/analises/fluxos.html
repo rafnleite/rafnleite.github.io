@@ -7,7 +7,7 @@
   <title>Fluxos entre turnos · Eleições 2026</title>
   <link rel="stylesheet" href="./site-shell.css?v=5">
   <link rel="stylesheet" href="./site-ui.css?v=regional-draw-1">
-  <link rel="stylesheet" href="./fluxos.css?v=4">
+  <link rel="stylesheet" href="./fluxos.css?v=aviso-inferencia-1">
   <script src="./vendor/echarts.min.js" defer></script>
   <script type="module" src="./fluxos.mjs?v=8"></script>
 
@@ -20,6 +20,7 @@
       <div class="site-intro-copy"><p class="eyebrow">PRESIDÊNCIA · PRIMEIRO E SEGUNDO TURNOS · 2026</p><h1>Fluxos entre turnos</h1><p class="site-intro-description">Uma estimativa de como os votos e as abstenções se redistribuíram entre os dois turnos.</p></div>
       <div class="site-intro-actions"><a href="#metodo">Entenda a estimativa</a></div>
     </section>
+    <aside class="flow-disclaimer" aria-label="O que os fluxos mostram"><p><strong>Os fluxos são estimativas, não a contagem de pessoas que mudaram de voto.</strong> O voto é secreto: os boletins informam os totais de cada seção em cada turno, mas não permitem saber em quem cada eleitor votou nos dois turnos.</p><p>Para construir o gráfico e a tabela, um modelo probabilístico de <strong>inferência ecológica</strong> compara as variações dos resultados e da participação nas urnas entre os turnos e estima fluxos compatíveis com esses totais. Mais de uma combinação de mudanças pode produzir os mesmos resultados. Por isso, os valores dependem das hipóteses e dos ajustes do modelo, não identificam trajetórias individuais e não devem ser tratados como medidas precisas. Este cenário não apresenta intervalos de confiança.</p></aside>
     <p class="flow-caution"><strong>Cenário: 5% de trocas de participação.</strong> Uma troca é um par: um eleitor sai do grupo de votantes e outro entra. A taxa usa os votantes do 1º turno e é reduzida quando não cabe na urna. É uma hipótese, não uma taxa observada nos BUs.</p>
     <section class="flow-filters" aria-label="Recorte territorial">
       <label class="field">Estado<select id="flowState" disabled><option value="ALL">Brasil</option></select></label>

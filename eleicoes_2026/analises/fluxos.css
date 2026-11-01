@@ -61,3 +61,7 @@
 
 @media(min-width:621px) and (max-width:1100px){.flow-metrics{grid-template-columns:1fr 1fr}.flow-metrics article:nth-child(n+3){border-top:1px solid var(--site-line)}}
 .flow-comparison{margin:18px 0 24px}.flow-comparison summary{cursor:pointer;font-size:13px;color:#395242}.flow-comparison table{border-collapse:collapse;width:100%;max-width:680px;font-size:13px;margin:12px 0}.flow-comparison th,.flow-comparison td{text-align:right;padding:10px;border-bottom:1px solid var(--site-line)}.flow-comparison th:first-child{text-align:left}
+
+.flow-disclaimer { margin: 0 0 18px; padding: 16px 18px; border: 1px solid #ead996; border-left: 4px solid #bb8a22; border-radius: 5px; background: #fff9e2; color: #443d27; font-size: 14px; line-height: 1.6; }
+.flow-disclaimer p { margin: 0 0 10px; }
+.flow-disclaimer p:last-child { margin-bottom: 0; }
