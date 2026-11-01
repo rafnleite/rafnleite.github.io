@@ -53,8 +53,7 @@ function initializeUnanimityMap(rows){
  const reference=point=>({contextElement:map.getContainer(),getBoundingClientRect(){const rect=map.getContainer().getBoundingClientRect(),p=map.latLngToContainerPoint(point.getLatLng());return new DOMRect(rect.left+p.x,rect.top+p.y,1,1);}});
  const hideOverlays=()=>{tooltip.remove();popup.remove();};
  function update(){
-    const candidate=$('unanimity-candidate').value,query=normalize($('unanimity-search').value);
-    const filtered=rows.filter(row=>(candidate==='todos'||(candidate==='lula'?row.lula>0:row.flavio>0))&&normalize(`${row.uf} ${row.municipio} ${row.local} ${row.zona} ${row.secao} ${contextLabels(row).join(' ')} ${researchBySection[sectionKey(row)]?.texto||''}`).includes(query));
+    const filtered=rows;
   hideOverlays();groups.clearLayers();let located=0;
   for(const row of filtered){
    if(!Number.isFinite(row.latitude)||!Number.isFinite(row.longitude)||row.latitude===-1&&row.longitude===-1)continue;
@@ -67,10 +66,10 @@ function initializeUnanimityMap(rows){
      marker.on('click',()=>{tooltip.remove();popup.show(reference(marker),content);});
   }
     const labelled=filtered.filter(row=>contextLabels(row).length||researchBySection[sectionKey(row)]).length;
-    $('unanimity-count').textContent=`${integer.format(filtered.length)} seções na seleção · ${integer.format(located)} com coordenadas · ${integer.format(labelled)} com rótulo contextual. A área dos círculos varia com os votos válidos; pontos no mesmo local podem se sobrepor.`;
-    $('unanimity-rows').innerHTML=filtered.map(row=>`<tr><td>${esc(row.uf)}<br>${esc(row.municipio)}</td><td>Z ${row.zona}<br>S ${row.secao}</td><td><a href="${esc(row.url)}" target="_blank" rel="noopener noreferrer">${esc(row.local)}</a><br>${contextHTML(row)}</td><td class="num vote-lula">${integer.format(row.lula)}</td><td class="num vote-flavio">${integer.format(row.flavio)}</td><td class="num">${row.brancos} / ${row.nulos}</td></tr>`).join('');
+    $('unanimity-count').textContent=`${integer.format(filtered.length)} seções · ${integer.format(located)} com coordenadas · ${integer.format(labelled)} com rótulo contextual. A área dos círculos varia com os votos válidos; pontos no mesmo local podem se sobrepor.`;
+    $('unanimity-rows').innerHTML=[...filtered].sort((a,b)=>(b.lula+b.flavio)-(a.lula+a.flavio)).map(row=>`<tr><td>${esc(row.uf)}<br>${esc(row.municipio)}</td><td>Z ${row.zona}<br>S ${row.secao}</td><td><a href="${esc(row.url)}" target="_blank" rel="noopener noreferrer">${esc(row.local)}</a><br>${contextHTML(row)}</td><td class="num vote-lula">${integer.format(row.lula)}</td><td class="num vote-flavio">${integer.format(row.flavio)}</td><td class="num">${row.brancos} / ${row.nulos}</td></tr>`).join('');
  }
- update();$('unanimity-candidate').addEventListener('change',update);$('unanimity-search').addEventListener('input',update);
+ update();
  map.on('movestart zoomstart',hideOverlays);
  new ResizeObserver(()=>map.invalidateSize({pan:false})).observe($('unanimity-map'));
 }
