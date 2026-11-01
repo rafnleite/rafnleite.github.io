@@ -49,7 +49,7 @@ function renderBio(d){
  chart('bio-chart',{
   legend:{bottom:0,data:['Número de seções','Percentual acumulado']},
   grid:{top:45,bottom:95,left:70,right:65},
-  tooltip:{trigger:'axis',formatter:points=>{const i=points[0].dataIndex,count=h.bins_1pp[i];return `Taxa ${i}% a ${i===99?'100% (inclusive)':(i+1)+'% (exclusive)'}<br>Seções: <b>${integer.format(count)}</b> (${decimal.format(count/h.n*100)}%)<br>Acumulado até o fim da faixa: <b>${decimal.format(cumulative[i])}%</b>`;}},
+  tooltip:{trigger:'axis',formatter:points=>{const i=points[0].dataIndex,count=h.bins_1pp[i];return `Taxa ${i}% a ${i===99?'100% (inclusive)':'menos de '+(i+1)+'%'}<br>Seções: <b>${integer.format(count)}</b> (${decimal.format(count/h.n*100)}%)<br>Acumulado até o fim da faixa: <b>${decimal.format(cumulative[i])}%</b>`;}},
   xAxis:{type:'category',data:h.bins_1pp.map((_,i)=>i),axisLabel:{interval:index=>index%10===0||index===99,formatter:v=>Number(v)===99?'100%':v+'%'},name:'Falhas / comparecimento, por seção',nameLocation:'center',nameGap:32},
   yAxis:[{type:'value',name:'Seções',axisLabel:{formatter:v=>v===0?'0':integer.format(v/1000)+' mil'},splitLine:{lineStyle:{color:'#edf0f2'}}},{type:'value',name:'Acumulado',min:0,max:100,axisLabel:{formatter:'{value}%'},splitLine:{show:false}}],
   series:[{name:'Número de seções',type:'bar',barCategoryGap:'0%',itemStyle:{color:blue},data:h.bins_1pp},{name:'Percentual acumulado',type:'line',yAxisIndex:1,showSymbol:false,lineStyle:{color:teal,width:2},itemStyle:{color:teal},data:cumulative}]
