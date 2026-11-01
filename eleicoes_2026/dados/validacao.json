@@ -1,8 +1,8 @@
 {
-  "gerado_em_utc": "2026-10-31T20:33:16.645233+00:00",
+  "gerado_em_utc": "2026-11-01T00:16:23.454202+00:00",
   "ok": true,
-  "verificacoes": 108,
-  "aprovadas": 108,
+  "verificacoes": 110,
+  "aprovadas": 110,
   "falhas": [],
   "divergencias_entre_fontes": [
     {
@@ -2590,6 +2590,14 @@
     },
     {
       "verificacao": "hash da fonte publicada: analises/apuracao-encerramento.json",
+      "ok": true
+    },
+    {
+      "verificacao": "hash da fonte publicada: dados/unanimidades-contexto.json",
+      "ok": true
+    },
+    {
+      "verificacao": "hash da fonte publicada: dados/unanimidades-contexto.json",
       "ok": true
     }
   ]

@@ -139,13 +139,19 @@
 .unanimity-context-label {
   display: inline-block;
   margin: 3px 4px 2px 0;
-  padding: 2px 5px;
-  border-left: 2px solid #687b52;
-  background: #f0f3e8;
-  color: #43523c;
+  padding: .25em .6em;
+  border-radius: 10rem;
+  color: #fff;
   font-size: 11px;
-  line-height: 1.45;
+  font-weight: 700;
+  line-height: 1.3;
 }
+.unanimity-context-label.ti { background: #007bff; }
+.unanimity-context-label.prisional { background: #343a40; }
+.unanimity-context-label.quilombola { background: #ffc107; color: #212529; }
+.unanimity-context-label.assentamento { background: #dc3545; }
+.unanimity-context-label.rural { background: #6c757d; }
+.unanimity-context-label.pouco { background: #117a8b; }
 
 .context-none {
   color: var(--muted);
@@ -159,3 +165,23 @@
   .report-biometry-map { height: 420px; }
   .report-bio-map-scale-labels { font-size: 10px; }
 }
+.legend span.indigenous:before { background: #8ebfa3; border-radius: 0; }
+
+.unanimity-table .vote-lula { color: #a3232c; font-weight: 700; }
+.unanimity-table .vote-flavio { color: #24568c; font-weight: 700; }
+
+.main section > p, .main .note p, .main figcaption {
+  text-align: justify;
+  hyphens: auto;
+}
+
+.closing-map-controls { display:grid; grid-template-columns:auto 1fr; align-items:center; gap:8px 18px; margin:16px 0; }
+.closing-map-controls label { font-size:14px; }
+.closing-map-controls input[type="time"] { margin-left:6px; padding:4px 6px; }
+.closing-map-controls input[type="range"], .closing-map-ends { grid-column:1 / -1; width:100%; }
+.closing-map-ends, .closing-map-scale-labels { display:flex; justify-content:space-between; gap:5px; font-size:11px; color:#626b73; }
+.closing-map-scale { margin:12px 0; }
+.closing-map-gradient { height:14px; border-radius:2px; background:linear-gradient(90deg,#053061 0%,#2166ac 30%,#e7e3e7 50%,#d73027 70%,#67000d 100%); }
+.closing-map-scale-labels { margin-top:4px; }
+.closing-map-scale small { color:#626b73; font-size:11px; }
+@media(max-width:600px) { .closing-map-controls { grid-template-columns:1fr; } .closing-map-scale-labels { font-size:9px; } }

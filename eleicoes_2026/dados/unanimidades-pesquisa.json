@@ -1,0 +1,197 @@
+{
+  "AM:2216:21:96": {
+    "texto": "Povoado São Raimundo",
+    "tipo": "rural",
+    "fonte": "https://hubpolitico.com.br/local/am/carauari/zona-rural/com-sao-raimundo-e-m-manoel-silva-cunha"
+  },
+  "AM:2690:4:130": {
+    "texto": "Povoado São Sebastião do Saracura",
+    "tipo": "rural",
+    "fonte": "https://sapl.parintins.am.leg.br/media/sapl/public/materialegislativa/2023/4534/indicacao_esc._mun._alberto_kimura_filho.pdf"
+  },
+  "AM:2879:3:252": {
+    "texto": "Povoado Jurupary",
+    "tipo": "rural",
+    "fonte": "https://www.escol.as/6769-e-m-sagrado-coracao-de-jesus"
+  },
+  "BA:33596:176:151": {
+    "texto": "Povoado Canabrava dos Barbosas",
+    "tipo": "rural",
+    "fonte": "https://hubpolitico.com.br/local/ba/barra-do-mendes/povoado-canabrava-dos-barbosas/escola-municipal-jarbas-passarinho"
+  },
+  "BA:35378:193:116": {
+    "texto": "Povoado Pedrinhas",
+    "tipo": "rural",
+    "fonte": "https://api.metro1.com.br/fotos/noticias/99744/mg/TRE-BA-11-11-2020-locais-de-votacao-da-bahia-com-secoes-compactado.pdf"
+  },
+  "BA:33090:111:250": {
+    "texto": "Povoado Sítio",
+    "tipo": "rural",
+    "fonte": "https://hubpolitico.com.br/local/ba/erico-cardoso/povoado-sitio/escola-municipal-de-sitio"
+  },
+  "MA:7030:52:85": {
+    "texto": "Quilombo Ilha do Cajual",
+    "tipo": "quilombola",
+    "fonte": "https://www.escol.as/32461-e-m-coracao-de-jesus"
+  },
+  "MA:7030:52:86": {
+    "texto": "Quilombo Mocajituba II",
+    "tipo": "quilombola",
+    "fonte": "https://mds.gov.br/webarquivos/arquivo/cadastro_unico/levantamento-de-comunidades-quilombolas.pdf"
+  },
+  "MA:8850:32:90": {
+    "texto": "Povoado Baliza",
+    "tipo": "rural",
+    "fonte": "https://hubpolitico.com.br/local/ma/primeira-cruz/povoado-baliza-zona-rural/escola-municipal-machado-de-assis"
+  },
+  "MA:8524:107:87": {
+    "texto": "Quilombo Brasília",
+    "tipo": "quilombola",
+    "fonte": "https://hubpolitico.com.br/local/ma/serrano-do-maranhao/quilombo-brasilia-zona-rural/centro-de-ensino-fundamental-cultural-do-brasil"
+  },
+  "MA:8524:107:89": {
+    "texto": "Quilombo Açude",
+    "tipo": "quilombola",
+    "fonte": "https://hubpolitico.com.br/local/ma/serrano-do-maranhao/locais-de-votacao"
+  },
+  "MA:7005:12:145": {
+    "texto": "Povoado Baixão do Poço",
+    "tipo": "rural",
+    "fonte": "https://hubpolitico.com.br/local/ma/agua-doce-do-maranhao/povoado-baixao-do-poco-zona-rural/unidade-escolar-jose-da-silva-aguiar"
+  },
+  "MG:41009:50:224": {
+    "texto": "Quilombo Júlia Mulata",
+    "tipo": "quilombola",
+    "fonte": "https://acervodenoticias.educacao.mg.gov.br/images/documentos/856-22-p.pdf"
+  },
+  "PA:4090:55:128": {
+    "texto": "Povoado Araticum",
+    "tipo": "rural",
+    "fonte": "https://www.escol.as/cidades/158-almeirim/dependencia/municipal"
+  },
+  "PA:5053:38:243": {
+    "texto": "Quilombo Juquirizinho",
+    "tipo": "quilombola",
+    "fonte": "https://mds.gov.br/webarquivos/arquivo/cadastro_unico/levantamento-de-comunidades-quilombolas.pdf"
+  },
+  "PI:12190:97:168": {
+    "texto": "Povoado Fazenda Nova",
+    "tipo": "rural",
+    "fonte": "https://observatoriodefavelas.org.br/wp-content/uploads/2013/12/Caminhadas-de-universit%C3%A1rios-de-origem-popular-%E2%80%93-UFPI.pdf"
+  },
+  "RR:3107:7:113": {
+    "texto": "Escola indígena",
+    "tipo": "ti",
+    "fonte": "https://www.fnde.gov.br/phocadownload/fnde/legislacao/resolucoes/2011/res027_02062011_rol_escolas_acessibilidade.pdf"
+  },
+  "RS:89630:59:590": {
+    "texto": "Aldeia Tekoa Nhundy",
+    "tipo": "ti",
+    "fonte": "https://desidades.ufrj.br/wp-content/uploads/td-4-2.pdf"
+  },
+  "RS:89630:59:591": {
+    "texto": "Aldeia Tekoa Nhe’engatu",
+    "tipo": "ti",
+    "fonte": "https://cimi.org.br/2024/02/retomada-nheengatu/"
+  },
+  "AM:2690:4:280": {
+    "texto": "Povoado Boca da Valéria",
+    "tipo": "rural",
+    "fonte": "https://www.parisgroup.ai/blog/zero-voto-secoes-segundo-turno-2026-dados-tse"
+  },
+  "MA:8958:83:170": {
+    "texto": "Povoado Aranha",
+    "tipo": "rural",
+    "fonte": "https://santahelena.ma.gov.br/licitacoes-e-contratos/obras-publicas"
+  },
+  "MA:9075:38:167": {
+    "texto": "Povoado Mata do Olímpio",
+    "tipo": "rural",
+    "fonte": "https://hubpolitico.com.br/local/ma/sao-bento/povoado-mata-do-olimpio-zona-rural/escola-municipal-sao-bento"
+  },
+  "MA:9415:39:58": {
+    "texto": "São José do Brito",
+    "tipo": "rural",
+    "fonte": "https://prospectei.app.br/escolas/escola/21070385-em-professor-nivaldo-ribeiro-pereira/"
+  },
+  "MA:9415:39:162": {
+    "texto": "Povoado São Romão",
+    "tipo": "rural",
+    "fonte": "https://buscacomercio.com/cidades/turiacu/escolas/em-emilia-santos-oliveira"
+  },
+  "MA:9415:39:195": {
+    "texto": "Povoado Campo Grande",
+    "tipo": "rural",
+    "fonte": "https://www.piranot.com.br/eleicoes/secoes/ma/turiacu/escola-municipal-sao-benedito-campo-grande/"
+  },
+  "MA:9415:39:206": {
+    "texto": "Povoado Bananal",
+    "tipo": "rural",
+    "fonte": "https://www.educacao.ma.gov.br/escola-digna-enche-de-orgulho-moradores-do-povoado-bananal-em-turiacu/"
+  },
+  "MS:91715:19:313": {
+    "texto": "Comunidade indígena Guaiviry",
+    "tipo": "ti",
+    "fonte": "https://guaivirykaiowa.org/"
+  },
+  "MG:51390:244:256": {
+    "texto": "Comunidade Boqueirão Baixo",
+    "tipo": "rural",
+    "fonte": "https://bhaz.com.br/noticias/politica/lula-ganha-de-69-a-0-de-flavio-bolsonaro-em-secao-em-comunidade-quilombola-de-minas-gerais/"
+  },
+  "PA:4073:21:234": {
+    "texto": "Zona rural",
+    "tipo": "rural",
+    "fonte": "https://www.escol.as/24507-sao-raimundo-v"
+  },
+  "PA:4499:17:41": {
+    "texto": "Igarapé do Campo",
+    "tipo": "rural",
+    "fonte": "https://prospectei.app.br/escolas/escola/15520145-e-m-e-f-jose-valerio-rodrigues/"
+  },
+  "PA:4936:37:120": {
+    "texto": "Vila Itaperuçu",
+    "tipo": "rural",
+    "fonte": "https://www.piranot.com.br/eleicoes/secoes/pa/moju/emef-anjo-da-guarda-itaperucu/"
+  },
+  "TO:95214:18:87": {
+    "texto": "Quilombo Kalunga do Mimoso",
+    "tipo": "quilombola",
+    "fonte": "https://simec.mec.gov.br/painelObras/recurso.php?obra=1009914"
+  },
+  "AM:2470:50:19": {
+    "texto": "Comunidade Estirão do Camaleão",
+    "tipo": "ti",
+    "fonte": "https://www.piranot.com.br/eleicoes/secoes/am/jurua/"
+  },
+  "MA:8958:83:179": {
+    "texto": "Povoado Armídio",
+    "tipo": "rural",
+    "fonte": "https://www.escol.as/34871-cef-raimundo-nogueira-campos"
+  },
+  "MA:9490:20:258": {
+    "texto": "Zona rural",
+    "tipo": "rural",
+    "fonte": "https://noticias.jaulacursos.com.br/wp-content/uploads/sites/23/2022/05/dom-famem-federacao-dos-municipios-do-estado-do-maranhao-ano-xvi-edicao-2849-assinado.pdf"
+  },
+  "PA:5657:14:236": {
+    "texto": "Povoado Cedral",
+    "tipo": "rural",
+    "fonte": "https://www.viseu.pa.gov.br/wp-content/uploads/09-EDITAL-P.E-008.2025.pdf"
+  },
+  "RS:89028:34:433": {
+    "texto": "Colônia Cerrito",
+    "tipo": "rural",
+    "fonte": "https://bhaz.com.br/primeiramao/flavio-bolsonaro-nao-teve-nenhum-voto-em-106-urnas-do-pais-lula-zerou-em-4/"
+  },
+  "RS:85839:166:81": {
+    "texto": "Linha Abrantes",
+    "tipo": "rural",
+    "fonte": "https://hubpolitico.com.br/local/rs/candido-godoi/locais-de-votacao"
+  },
+  "PR:77275:167:96": {
+    "texto": "Assentamento Maila Sabrina",
+    "tipo": "assentamento",
+    "fonte": "https://www.gov.br/incra/pt-br/assuntos/noticias/incra-e-prefeituras-de-ortigueira-e-faxinal-buscam-implantacao-do-assentamento-maila-sabrina-pr"
+  }
+}

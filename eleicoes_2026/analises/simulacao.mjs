@@ -45,7 +45,7 @@ function updateMode(){
   $('regionalSettings').hidden=!regional;$('simLayout').classList.toggle('regional-mode',regional);
   $('modeDescription').textContent=regional?'Escolha o ritmo das regiões. Cada local recebe um atraso sorteado após o encerramento.':modeCopy[mode()];
 }
-function setBusy(value){busy=value;$('newDraw').disabled=value||!metadata;$('export').disabled=value||!result;$('play').disabled=value||!result;$('timeline').disabled=value||!result;$('resultArea').setAttribute('aria-busy',String(value));}
+function setBusy(value){charts.forEach(chart=>value?chart.showLoading('default',{text:'Calculando simulação…',maskColor:'rgba(255,255,255,.8)'}):chart.hideLoading());busy=value;$('newDraw').disabled=value||!metadata;$('export').disabled=value||!result;$('play').disabled=value||!result;$('timeline').disabled=value||!result;$('resultArea').setAttribute('aria-busy',String(value));}
 function randomSeed(){const buffer=new Uint32Array(1);crypto.getRandomValues(buffer);$('seed').value=buffer[0];}
 function run(){
   clearTimeout(seedTimer);updateMode();pause();
@@ -91,7 +91,7 @@ function load(){
 function initCharts(){
   if(charts.length)return;
   axisControls=[...document.querySelectorAll('[data-main-axis-control]')].map(node=>createAxisControl(node,changeMainAxis));
-  charts=['percentChart','votesChart'].map(id=>{const chart=echarts.init($(id));chart.resetSimulationZoom=attachSimulationNavigation(chart);return chart;});charts.forEach(chart=>chart.group='simulation');echarts.connect('simulation');
+  charts=['percentChart','votesChart'].filter(id=>$(id)).map(id=>{const chart=echarts.init($(id));chart.resetSimulationZoom=attachSimulationNavigation(chart);return chart;});charts.forEach(chart=>chart.group='simulation');echarts.connect('simulation');
   bindCandidateLegend(document.querySelector('.chart-panel .candidate-legend'),candidate=>{
    highlightedCandidate=candidate;
    charts.forEach(chart=>{chart.getDom().dataset.highlightedCandidate=candidate===null?'':String(candidate);chart.setOption({series:[0,1].map(i=>({lineStyle:{opacity:candidateOpacity(i,candidate),color:candidateColor(i,candidate)}}))});});
