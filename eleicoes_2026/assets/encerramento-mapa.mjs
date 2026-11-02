@@ -47,6 +47,7 @@ async function load(){
   slider.addEventListener('input',()=>{const minute=Number(slider.value);time.value=closingLabel(minute*60).slice(0,5);$('closing-map-label').textContent=closingLabel(minute*60);clearTimeout(timer);timer=setTimeout(update,150);});
   time.addEventListener('change',()=>{if(!time.value)return;const [h,m]=time.value.split(':').map(Number);slider.value=String(Math.max(1020,Math.min(1439,h*60+m)));update();});
   update();
- }catch(error){status.textContent='Não foi possível carregar o mapa de encerramentos.';console.error(error);}
+  $('closing-map-loading').hidden=true;
+ }catch(error){$('closing-map-loading').hidden=true;status.textContent='Não foi possível carregar o mapa de encerramentos.';console.error(error);}
 }
 const observer=new IntersectionObserver(entries=>{if(entries.some(entry=>entry.isIntersecting)){observer.disconnect();load();}},{rootMargin:'500px'});observer.observe(container);

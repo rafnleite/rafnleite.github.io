@@ -20,7 +20,7 @@ function choose(z){$('uf').value=z.uf;zoneOptions();$('zone').value=`${z.uf}:${z
 function render(fit=false){
  const zones=selectedZones(),counts=[0,0,0,0];zones.forEach(z=>z.counts.forEach((n,i)=>counts[i]+=n));const total=counts.reduce((a,b)=>a+b,0),covered=zones.reduce((a,z)=>a+z.covered,0),expected=zones.reduce((a,z)=>a+z.expected,0);
  $('stats').innerHTML=counts.map((n,i)=>`<article>${labels[i]}<strong>${percent(n,total)}</strong><span>${fmt.format(n)} votos</span></article>`).join('');
- $('status').textContent=`${fmt.format(total)} confirmações nos logs · ${fmt.format(covered)} de ${fmt.format(expected)} seções · cobertura de ${percent(covered,expected)}`;
+ $('status').textContent=`${fmt.format(total)} votos para presidente nos logs · ${fmt.format(covered)} de ${fmt.format(expected)} seções · cobertura de ${percent(covered,expected)}`;
  const method=Number($('method').value);
  if(fit){const bounds=zones.filter(z=>Number.isFinite(z.lat)&&Number.isFinite(z.lon)).map(z=>[z.lat,z.lon]);if(bounds.length)map.fitBounds(bounds,{padding:[24,24],maxZoom:10});}
  bioMap.render();

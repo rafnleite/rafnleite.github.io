@@ -80,7 +80,8 @@ function load(){
     $('coverage').textContent=`${fmt.format(sum('included'))} urnas com horário · ${fmt.format(sum('withoutTime'))} sem horário · ${fmt.format(sum('expected')-sum('bus'))} sem BU. Cadastro: ${fmt.format(sum('expected'))} seções.`;
     $('snapshotDate').textContent=`Base gerada em ${new Date(metadata.generatedAt).toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo'})} (Brasília). Eleição: 25/10/2026.`;
     const shareOrdered=result.mode==='lula'||result.mode==='flavio';
-    $('initialBalance').textContent=shareOrdered?`Locais ordenados pelo percentual do candidato, ${activeRequest.options.includeExterior?'incluindo o exterior':'sem o exterior'}. Sem saldo inicial separado.`:`Às 19h: ${fmt.format(result.initialCount)} urnas do exterior já apuradas, com ${fmt.format(result.lula[result.initialCount])} votos de Lula e ${fmt.format(result.flavio[result.initialCount])} de Flávio.`;
+    $('initialBalance').hidden=shareOrdered||!result.initialCount;
+    $('initialBalance').textContent=result.initialCount?`O gráfico começa às 19h de Brasília com ${fmt.format(result.initialCount)} urnas do exterior já apuradas: ${fmt.format(result.lula[result.initialCount])} votos para Lula e ${fmt.format(result.flavio[result.initialCount])} para Flávio. Elas entram no saldo inicial porque seus horários de encerramento antecedem o início da simulação.`:'';
     $('scenarioLabel').textContent=`${modeNames[result.viewMode]} · sorteio ${result.seed} · ${fmt.format(result.changes[result.n])} trocas de liderança no cenário.`;
     if(shareOrdered)selectedAxis='count';
     playbackAxis=selectedAxis;playbackPosition=playbackBounds(result,playbackAxis).max;

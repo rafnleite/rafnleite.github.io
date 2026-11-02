@@ -30,16 +30,19 @@ function renderChart(){
   new ResizeObserver(()=>chart.resize()).observe(node);
  }
  const rows=data.periods.map(selected),labels=data.periods.map(p=>`${p.ano} · ${p.turno}º turno`);
- const shares=rows.map(comparisonShares),values=keys.map((_,j)=>shares.map(row=>row?.[j]??null));
- const active=[0,1,2,3];
- document.getElementById('evolutionIndeterminateLegend').hidden=false;
- node.setAttribute('aria-label','Formas de habilitação em percentual do comparecimento conhecido dos BUs. '+labels.map((label,i)=>`${label}: `+active.map(j=>`${methodNames[j]} ${shares[i]?pf.format(shares[i][j])+'%':'—'}`).join(', ')).join('. '));
+ const only=document.getElementById('evolution-biometric-only').checked;
+ const shares=rows.map(row=>{if(!only)return comparisonShares(row);const counts=comparisonCounts(row);if(!counts||!counts[0]&&!counts[1])return null;const total=counts[0]+counts[1];return [100*counts[0]/total,100*counts[1]/total];}),values=keys.map((_,j)=>shares.map(row=>row?.[j]??null));
+ const active=only?[0,1]:[0,1,2,3];
+ document.getElementById('evolutionIndeterminateLegend').hidden=only;
+ document.getElementById('evolutionNoBiometricLegend').hidden=only;
+ node.setAttribute('aria-label',`Formas de habilitação em percentual ${only?'dos eleitores com biometria cadastrada':'do comparecimento conhecido dos BUs'}. `+labels.map((label,i)=>`${label}: `+active.map(j=>`${methodNames[j]} ${shares[i]?pf.format(shares[i][j])+'%':'—'}`).join(', ')).join('. '));
  document.getElementById('evolutionChartEmpty').hidden=values.some(series=>series.some(value=>value!==null));
  chart.setOption({animation:false,color:['#4c8061','#bf914a','#4f7da0','#6d7775'],
   grid:{left:12,right:16,top:12,bottom:16,containLabel:true},
   tooltip:chartTooltipOptions({trigger:'axis',axisPointer:{type:'shadow'},formatter:items=>{
    if(!items.length)return '';
    const i=items[0].dataIndex,row=rows[i];
+   if(only){const counts=comparisonCounts(row);return `<strong>${labels[i]}</strong><br>`+active.map((j,seriesIndex)=>`${items.find(item=>item.seriesIndex===seriesIndex)?.marker||''} ${methodNames[j]}: <strong>${shares[i]?pf.format(shares[i][j])+'%':'—'}</strong> · ${counts?fmt.format(counts[j]):'—'} votos`).join('<br>')+(counts?`<br><small>Total: ${fmt.format(counts[0]+counts[1])} votos</small>`:'');}
    return comparisonTooltip(labels[i],row,active.map((j,seriesIndex)=>items.find(item=>item.seriesIndex===seriesIndex)?.marker||''));
   }}),
   xAxis:{type:'value',min:0,max:100,interval:20,axisLabel:{formatter:value=>`${value}%`,fontSize:11,color:'#65766b'},splitLine:{lineStyle:{color:'#e7ece2'}}},
@@ -52,4 +55,4 @@ async function refresh(){
  try{const r=await fetch('./evolucao-biometria.json');if(!r.ok)throw Error('Arquivo local do comparativo indisponível');const next=await r.json();data=next;render();}
  catch(e){section.querySelector('[data-evolution-status]').textContent=data?'Não foi possível atualizar. Exibindo os últimos dados recebidos.':'Aguardando dados dos boletins de urna.';}
 }
-if(section){document.getElementById('uf')?.addEventListener('change',render);refresh();}
+if(section){document.getElementById('uf')?.addEventListener('change',render);document.getElementById('evolution-biometric-only').addEventListener('change',renderChart);refresh();}

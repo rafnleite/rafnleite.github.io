@@ -7,7 +7,7 @@ for(const control of document.querySelectorAll('input[name="simulation-view"]'))
   single.hidden=showEnsemble;
   ensemble.hidden=!showEnsemble;
   if(showEnsemble&&!ensembleLoaded){
-   ensembleLoaded=import('../analises/simulacao-ensemble.mjs?v=quantidade-1').catch(error=>{
+   ensembleLoaded=import('../analises/simulacao-ensemble.mjs?v=saldo-exterior-2').catch(error=>{
     ensembleLoaded=null;
     for(const status of ensemble.querySelectorAll('[role="status"]'))status.textContent='Não foi possível carregar as simulações. Atualize a página para tentar novamente.';
     console.error(error);

@@ -176,6 +176,9 @@
 }
 
 .closing-map-controls { display:grid; grid-template-columns:auto 1fr; align-items:center; gap:8px 18px; margin:16px 0; }
+.closing-map-wrapper { position:relative; }
+.closing-map-loading { position:absolute; inset:0; z-index:500; display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,.8); color:#263442; font-size:18px; font-weight:600; }
+.closing-map-loading[hidden] { display:none; }
 .closing-map-controls label { font-size:14px; }
 .closing-map-controls input[type="time"] { margin-left:6px; padding:4px 6px; }
 .closing-map-controls input[type="range"], .closing-map-ends { grid-column:1 / -1; width:100%; }

@@ -416,7 +416,6 @@ html {background:#fff}
 /* A versão incorporada concentra-se na comparação das curvas. */
 #report-simulator .metrics,
 #report-simulator .playback,
-#report-simulator #initialBalance,
 #report-simulator #instantSummary,
 #report-simulator #export,
 #report-simulator .page-meta,

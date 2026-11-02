@@ -6,6 +6,7 @@ import {LEVELS,REGIONS} from './simulacao-model.mjs?v=fast-draw-1';
 const fmt=new Intl.NumberFormat('pt-BR'),panels=[...document.querySelectorAll('[data-ensemble]')];
 for(const panel of panels){
  const regional=panel.dataset.ensemble==='regions',button=panel.querySelector('[data-generate]'),cancel=panel.querySelector('[data-cancel]'),status=panel.querySelector('[role=status]'),progress=panel.querySelector('progress'),plot=panel.querySelector('.ensemble-plot'),alpha=panel.querySelector('[data-opacity]'),notes=panel.querySelector('[data-notes]'),fixedSettings=panel.querySelector('[data-fixed-speeds]');
+ const initialNote=document.createElement('p');initialNote.className='initial-balance';initialNote.hidden=true;initialNote.textContent='As simulações começam às 19h de Brasília com as urnas do exterior encerradas antes desse horário já incluídas no saldo inicial.';plot.before(initialNote);
  const fixedLevels=Object.fromEntries(Object.keys(REGIONS).map(region=>[region,3]));
  const loading=document.createElement('div');loading.textContent='Calculando simulações…';loading.hidden=true;loading.setAttribute('role','status');Object.assign(loading.style,{position:'absolute',inset:'0',zIndex:'10',display:'flex',alignItems:'center',justifyContent:'center',background:'rgba(255,255,255,.85)',color:'#365a46',fontWeight:'600'});plot.append(loading);
  function showLoading(show){loading.hidden=!show;loading.style.display=show?'flex':'none';if(show)plot.hidden=false;}
@@ -47,6 +48,7 @@ for(const panel of panels){
  function setControlsDisabled(value){for(const control of panel.querySelectorAll('[name="ensemble-speed-mode"], [data-region-speeds] button, [data-randomize-speeds]'))control.disabled=value;}
  function stop(){showLoading(false);worker?.terminate();worker=null;button.disabled=false;cancel.hidden=true;progress.hidden=true;setControlsDisabled(false);}
  function display(data){
+  initialNote.hidden=!(regional&&data.includeExterior);
   plot.hidden=false;plot.dataset.elapsedMs=String(data.elapsedMs||'');plot.dataset.workers=String(data.workers||'');chart??=createEnsembleChart(plot,{onAxisChange:value=>{selectedAxis=value;}});chart.setData(data,selectedAxis);chart.highlight(highlightedCandidate);appearance();appliedKey=regionalSpeedKey(data);appliedCount=data.count;updatePending();button.textContent=amountInput?'Gerar simulações':'Gerar nova simulação de 10 mil';
   const speeds=data.regional?(data.speedMode==='fixed'?`Velocidades fixas: ${Object.keys(REGIONS).map(r=>`${r} ${data.fixedLevels[r]}`).join(' · ')}. `:'Velocidades sorteadas em cada simulação. '):'';
   notes.textContent=`${speeds}Sorteio ${data.seed} · ${data.includeExterior?'Brasil e exterior':'Brasil, sem exterior'} · ${fmt.format(data.places)} locais e ${fmt.format(data.urns)} urnas por simulação. Resultado final: Lula ${data.finalPercent.toFixed(2).replace('.',',')}% · Flávio ${(100-data.finalPercent).toFixed(2).replace('.',',')}%.`;
