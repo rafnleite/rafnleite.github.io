@@ -42,7 +42,7 @@ async function load(){
  try{
   const response=await fetch('analises/atraso-data.json.gz');if(!response.ok)throw Error(`HTTP ${response.status}`);
   data=await new Response(response.body.pipeThrough(new DecompressionStream('gzip'))).json();if(data.schemaVersion!==1||data.turn!==2)throw Error('Base incompatível');
-  map=L.map(container,{preferCanvas:true,scrollWheelZoom:false}).setView([-14.5,-52.5],4);addStateBoundaries(map);layer=L.layerGroup().addTo(map);tooltip=createMapTooltip();popup=createMapTooltip({interactive:true});
+  map=L.map(container,{preferCanvas:true,scrollWheelZoom:true}).setView([-14.5,-52.5],4);addStateBoundaries(map);layer=L.layerGroup().addTo(map);tooltip=createMapTooltip();popup=createMapTooltip({interactive:true});
   map.on('movestart zoomstart',hide);map.on('moveend zoomend',renderMap);new ResizeObserver(()=>map.invalidateSize({pan:false})).observe(container);
   slider.addEventListener('input',()=>{const minute=Number(slider.value);time.value=closingLabel(minute*60).slice(0,5);$('closing-map-label').textContent=closingLabel(minute*60);clearTimeout(timer);timer=setTimeout(update,150);});
   time.addEventListener('change',()=>{if(!time.value)return;const [h,m]=time.value.split(':').map(Number);slider.value=String(Math.max(1020,Math.min(1439,h*60+m)));update();});

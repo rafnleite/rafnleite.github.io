@@ -42,7 +42,7 @@ const contextHTML=row=>{
 };
 
 function initializeUnanimityMap(rows){
- const map=L.map('unanimity-map',{preferCanvas:true,scrollWheelZoom:false}).setView([-14,-53],4);
+ const map=L.map('unanimity-map',{preferCanvas:true,scrollWheelZoom:true}).setView([-14,-53],4);
  L.control.scale({imperial:false}).addTo(map);
  addStateBoundaries(map);
  map.createPane('indigenous');map.getPane('indigenous').style.zIndex=350;

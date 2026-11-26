@@ -7,12 +7,15 @@ import re
 root = Path(__file__).resolve().parents[1]
 html = (root / 'index.html').read_text()
 for src in ['assets/relatorio.css', 'analises/vendor/leaflet.css']:
-    html = html.replace(f'<link rel="stylesheet" href="{src}">', '<style>' + (root / src).read_text() + '</style>')
-for src in ['analises/vendor/echarts.min.js', 'analises/vendor/leaflet.js']:
+    html = re.sub(rf'<link rel="stylesheet" href="{re.escape(src)}(?:\?[^"]*)?">',
+                  lambda _: '<style>' + (root / src).read_text() + '</style>', html)
+for src in ['analises/vendor/echarts.min.js', 'analises/vendor/leaflet.js', 'assets/indice-relatorio.js']:
     script = (root / src).read_text().replace('</script', '<\\/script')
     html = html.replace(f'<script defer src="{src}"></script>', '<script>' + script + '</script>')
 profile = base64.b64encode((root / 'assets/perfil.jpg').read_bytes()).decode()
 html = html.replace('src="assets/perfil.jpg"', f'src="data:image/jpeg;base64,{profile}"')
+sprite = (root / 'assets/perfis.svg').read_text().replace('<svg ', '<svg hidden width="0" height="0" ', 1)
+html = html.replace('<body>', '<body>' + sprite, 1).replace('href="assets/perfis.svg#', 'href="#')
 script = (root / 'assets/relatorio.mjs').read_text()
 start = script.index("const data=await fetch('dados/resumo-dados.json')")
 end = script.index('\nif(data)', start)
@@ -22,7 +25,7 @@ embedded = ''
 for identifier, src in [('offline-data', 'dados/resumo-dados.json'), ('offline-boundaries', 'analises/state-boundaries.geojson')]:
     contents = (root / src).read_text().replace('</', '<\\/')
     embedded += f'<script type="application/json" id="{identifier}">{contents}</script>\n'
-html = html.replace('<script type="module" src="assets/relatorio.mjs"></script>', '')
+html = re.sub(r'<script type="module" src="assets/relatorio\.mjs(?:\?[^"]*)?"></script>', '', html)
 # Bibliotecas podem conter strings com </body>. Inserir apenas no fechamento real.
 before, after = html.rsplit('</body>', 1)
 html = before + embedded + '<script type="module">' + script.replace('</script', '<\\/script') + '</script></body>' + after

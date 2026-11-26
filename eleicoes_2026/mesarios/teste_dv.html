@@ -17,20 +17,28 @@ output{display:block;margin:.6rem 0}.erro{color:#9b2525}footer{font-size:.92rem}
 @media(max-width:500px){th,td{padding:.45rem .4rem;font-size:.85rem}td:first-child{min-width:8rem}}
 </style>
 <meta name="theme-color" content="#f6f7f8">
-<link rel="stylesheet" href="../assets/relatorio.css">
-<link rel="stylesheet" href="../assets/mesarios.css">
-<noscript><style>@media(max-width:760px){.mesarios .sidebar{display:block;position:static;width:100%;box-shadow:none}.mesarios .mobile-nav{display:none}}</style></noscript></head><body class="mesarios pagina-teste-dv">
+<link rel="stylesheet" href="../assets/relatorio.css?v=coluna-perfis-1">
+<link rel="stylesheet" href="../assets/mesarios.css?v=fichas-compactas-2">
+<script defer src="../assets/indice-relatorio.js"></script>
+<noscript><style>@media(max-width:760px){.mesarios .sidebar{display:block;position:static;width:100%;box-shadow:none}.mesarios .mobile-nav{display:none}.mesarios .sidebar .identity .perfis-autor{display:flex}}</style></noscript></head><body class="mesarios pagina-teste-dv">
 <a class="skip" href="#conteudo">Ir para o conteúdo</a>
-<div class="mobile-nav"><strong>Eleições 2026</strong><button type="button" id="abrir-indice-mesarios" aria-controls="indice-mesarios" aria-expanded="false">Índice ☰</button></div>
+<div class="mobile-nav"><strong>Eleições 2026</strong><small class="perfis-autor">
+    <a href="https://twitter.com/rafnleite" rel="me" aria-label="Rafael Leite no Twitter (X)" title="Twitter (X)"><svg width="20" height="20" aria-hidden="true" focusable="false"><use href="../assets/perfis.svg#twitter"></use></svg></a>
+    <a href="https://www.linkedin.com/in/rafnleite/" rel="me" aria-label="Rafael Leite no LinkedIn" title="LinkedIn"><svg width="20" height="20" aria-hidden="true" focusable="false"><use href="../assets/perfis.svg#linkedin-in"></use></svg></a>
+  </small><button type="button" id="abrir-indice-mesarios" aria-controls="indice-mesarios" aria-expanded="false">Índice ☰</button></div>
 <aside class="sidebar" id="indice-mesarios">
-  <div class="identity"><img src="../assets/perfil.jpg" alt="Ilustração de Rafael Leite" width="104" height="104"><strong>Rafael Leite</strong><small>Análise de dados eleitorais</small></div>
+  <div class="identity"><img src="../assets/perfil.jpg" alt="Ilustração de Rafael Leite" width="104" height="104"><strong>Rafael Leite</strong><small>Análise de dados eleitorais</small>
+    <small class="perfis-autor">
+    <a href="https://twitter.com/rafnleite" rel="me" aria-label="Rafael Leite no Twitter (X)" title="Twitter (X)"><svg width="20" height="20" aria-hidden="true" focusable="false"><use href="../assets/perfis.svg#twitter"></use></svg></a>
+    <a href="https://www.linkedin.com/in/rafnleite/" rel="me" aria-label="Rafael Leite no LinkedIn" title="LinkedIn"><svg width="20" height="20" aria-hidden="true" focusable="false"><use href="../assets/perfis.svg#linkedin-in"></use></svg></a>
+  </small></div>
   <nav aria-label="Índice dos relatórios">
-    <a href="../index.html">Eleições 2026: o que os dados mostram</a>
-    <div class="extra">TÍTULOS DE MESÁRIO</div>
-    <a href="relatorio.html">Relatório dos mesários</a><a href="sankey_turnos.html">Diagrama de Sankey por turno</a><a href="teste_dv.html" class="active" aria-current="page">Teste dos dígitos verificadores</a><a href="casos_em_aberto.html">Casos sem explicação</a><a href="votos_vizinhas.html">Comparação com urnas vizinhas</a><a href="relatorio_tecnico.html">Anexo técnico e fichas</a>
 
+    <div class="extra">TÍTULOS DE MESÁRIO</div>
+    <a class="tool" href="relatorio.html">Relatório dos mesários</a><a class="tool" href="sankey_turnos.html">Diagrama de Sankey por turno</a><a class="tool active" href="teste_dv.html" aria-current="page">Teste dos dígitos verificadores</a><a class="tool" href="votos_vizinhas.html">Comparação com urnas vizinhas</a>
+    <a href="../index.html#mesarios">Relatório principal das eleições de 2026</a>
   </nav>
-</aside><main class="main" id="conteudo" tabindex="-1"><header class="masthead"><p class="eyebrow">Mesários · Teste dos dígitos verificadores</p><h1>Qual a chance de uma digitação produzir outro título válido?</h1><div class="meta"><button type="button" class="print-button" id="imprimir-mesarios">Imprimir página</button><a href="relatorio.html#dv">Relatório dos mesários · Dígitos verificadores</a></div></header>
+</aside><main class="main" id="conteudo" tabindex="-1"><header class="masthead"><div class="volta-ao-relatorio"><a href="../index.html#mesarios"><span aria-hidden="true">← </span>Voltar ao relatório principal das eleições de 2026</a><button type="button" class="print-button" id="imprimir-mesarios">Imprimir página</button></div><p class="eyebrow">Mesários · Teste dos dígitos verificadores</p><h1>Qual a chance de uma digitação produzir outro título válido?</h1><div class="meta"><a href="relatorio.html#dv">Relatório dos mesários · Dígitos verificadores</a></div></header>
 <section><h2>Cinco erros aplicados ao número completo</h2>
 <p>Em cada tentativa, o título de partida é sorteado entre as <strong>2.800.000.000 combinações</strong> de oito dígitos de sequência e 28 códigos de origem, cada qual com seus dois dígitos verificadores (DVs) corretos. Há sucesso quando o resultado <strong>difere do original</strong>, tem origem de 01 a 28 e passa nos dois DVs. A existência de uma inscrição atribuída a uma pessoa exigiria uma consulta ao cadastro eleitoral.</p>
 <div class='scroll'><table><thead><tr><th scope='col'>Operação nas 12 posições</th><th scope='col'>Outro título válido</th><th scope='col'>Entre as tentativas que mudam o número</th></tr></thead><tbody><tr><td>Substituir um dígito</td><td><strong>1,3444%</strong></td><td>1,3444%</td></tr><tr><td>Substituir dois dígitos</td><td><strong>5,1844%</strong></td><td>5,1844%</td></tr><tr><td>Inverter dois dígitos vizinhos</td><td><strong>1,1004%</strong></td><td>1,2193%</td></tr><tr><td>Omitir um dígito e completar com zero à esquerda</td><td><strong>6,4781%</strong></td><td>6,5387%</td></tr><tr><td>Inserir um dígito e descartar o último original</td><td><strong>0,2717%</strong></td><td>0,2742%</td></tr></tbody></table></div>

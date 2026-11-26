@@ -2,3 +2,44 @@
 
 /* Demonstração das curvas acumuladas */
 .curve-variables{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 20px;margin:20px 0 24px}.curve-variables div{display:flex;gap:12px;align-items:baseline;border-bottom:1px solid var(--rule);padding:8px 0}.curve-variables dt{font-family:Georgia,serif;font-size:21px;color:var(--navy);min-width:22px}.curve-variables dd{margin:0;font-size:15px}.curve-equation{background:#f4f8fb;border-left:3px solid var(--blue);padding:16px 22px;margin:22px 0 25px}.equation-label,.example-title{display:block;font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--navy)}.equation-scroll{overflow-x:auto}.curve-equation math{font-size:1.25em;margin:18px 0}.equation-key{display:flex;justify-content:center;gap:40px;flex-wrap:wrap;font-size:13px;color:var(--muted);line-height:1.4}.equation-key strong{color:var(--ink)}.curve-example{border:1px solid var(--rule);background:#fafcfd;padding:20px 22px;margin:26px 0}.curve-example .example-title{margin-bottom:10px}.curve-example p:last-child{margin-bottom:0}.curve-example .table-wrap{margin:12px 0 16px}.curve-example th,.curve-example td{padding:10px}.curve-example td{font-variant-numeric:tabular-nums}@media(max-width:600px){.curve-variables{grid-template-columns:1fr}.curve-equation{padding:14px}.curve-equation math{font-size:1.05em}.equation-key{justify-content:flex-start;gap:8px 20px}.curve-example{padding:16px}.curve-example table{min-width:620px}}
+
+/* A coluna editorial tem a mesma largura de leitura do relatório de 2022. */
+@media screen and (min-width:761px) {
+  .main {
+    --largura-indice: 280px;
+    --margem-minima: 42px;
+    max-width: none;
+    margin-inline: var(--largura-indice) 0;
+    padding-inline: max(var(--margem-minima), calc((100% - var(--largura-indice) - 1000px) / 2));
+  }
+}
+@media screen and (min-width:761px) and (max-width:1050px) {
+  .main { --largura-indice: 230px; --margem-minima: 26px; }
+}
+
+:is(.identity,.mobile-nav) .perfis-autor {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 4px;
+}
+:is(.identity,.mobile-nav) .perfis-autor a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  min-height: 36px;
+  color: #007bff;
+}
+.perfis-autor svg { display: block; width: 20px; height: 20px; }
+.perfis-autor a:hover { color: #0056b3; }
+@media (max-width:760px) {
+  .mobile-nav { padding-block: 4px; }
+  .mobile-nav .perfis-autor { margin: 0 8px 0 auto; }
+  .identity .perfis-autor { display: none; }
+}
+@media (max-width:760px), (pointer:coarse) {
+  :is(.identity,.mobile-nav) .perfis-autor a { min-width: 44px; min-height: 44px; }
+}

@@ -5,7 +5,7 @@
 <title>Eleições 2026: o que os dados mostram — Rafael Leite</title>
 <meta name="description" content="Análise dos boletins de urna, horários de votação, biometria e alegações de fraude nas eleições de 2026. Gráficos, mapas, simulador e dados para reprodução.">
 <meta name="theme-color" content="#f6f7f8">
-<link rel="stylesheet" href="assets/relatorio.css?v=curvas-1">
+<link rel="stylesheet" href="assets/relatorio.css?v=coluna-perfis-1">
 <link rel="stylesheet" href="assets/relatorio-visualizacoes.css?v=mapa-encerramento-2">
 <link rel="stylesheet" href="analises/vendor/leaflet.css">
 <link rel="stylesheet" href="analises/ui-overlays.css">
@@ -17,16 +17,25 @@
 <script defer src="analises/vendor/leaflet.js"></script>
 <script defer src="analises/vendor/floating-ui.core.min.js"></script>
 <script defer src="analises/vendor/floating-ui.dom.min.js"></script>
-<script type="module" src="assets/relatorio.mjs?v=biometria-filtro-5"></script>
-<script type="module" src="assets/relatorio-mapas.mjs?v=unanimidades-ordem-votos-1"></script>
+<script defer src="assets/indice-relatorio.js"></script>
+<script type="module" src="assets/relatorio.mjs?v=rolagem-1"></script>
+<script type="module" src="assets/relatorio-mapas.mjs?v=rolagem-1"></script>
 <script type="module" src="assets/biometria-secoes.mjs?v=2"></script>
-<script type="module" src="assets/encerramento-mapa.mjs?v=loading-2"></script>
+<script type="module" src="assets/encerramento-mapa.mjs?v=rolagem-1"></script>
 </head>
 <body>
 <a class="skip" href="#conteudo">Ir para o relatório</a>
-<div class="mobile-nav"><strong>Eleições 2026</strong><button id="menu" aria-controls="sidebar" aria-expanded="false">Índice ☰</button></div>
+<div class="mobile-nav"><strong>Eleições 2026</strong>
+ <small class="perfis-autor">
+  <a href="https://twitter.com/rafnleite" rel="me" aria-label="Rafael Leite no Twitter (X)" title="Twitter (X)"><svg width="20" height="20" aria-hidden="true" focusable="false"><use href="assets/perfis.svg#twitter"></use></svg></a>
+  <a href="https://www.linkedin.com/in/rafnleite/" rel="me" aria-label="Rafael Leite no LinkedIn" title="LinkedIn"><svg width="20" height="20" aria-hidden="true" focusable="false"><use href="assets/perfis.svg#linkedin-in"></use></svg></a>
+ </small><button id="menu" aria-controls="sidebar" aria-expanded="false">Índice ☰</button></div>
 <aside class="sidebar" id="sidebar">
- <div class="identity"><img src="assets/perfil.jpg" alt="Ilustração de Rafael Leite" width="104" height="104"><strong>Rafael Leite</strong><small>Análise de dados eleitorais</small></div>
+ <div class="identity"><img src="assets/perfil.jpg" alt="Ilustração de Rafael Leite" width="104" height="104"><strong>Rafael Leite</strong><small>Análise de dados eleitorais</small>
+ <small class="perfis-autor">
+  <a href="https://twitter.com/rafnleite" rel="me" aria-label="Rafael Leite no Twitter (X)" title="Twitter (X)"><svg width="20" height="20" aria-hidden="true" focusable="false"><use href="assets/perfis.svg#twitter"></use></svg></a>
+  <a href="https://www.linkedin.com/in/rafnleite/" rel="me" aria-label="Rafael Leite no LinkedIn" title="LinkedIn"><svg width="20" height="20" aria-hidden="true" focusable="false"><use href="assets/perfis.svg#linkedin-in"></use></svg></a>
+ </small></div>
  <nav aria-label="Índice do relatório">
   <a href="#introducao">Introdução</a><a href="#boletim">O boletim e a totalização</a><a href="#transparencia">O alegado apagão de 72 horas</a><a href="#encerramento">O encerramento às 17h</a><a href="#votos-tardios">Os 34 mil votos</a><a href="#corte">O corte de 17:06:44</a><a href="#biometria">A identificação biométrica</a><a href="#mesarios">Títulos de mesário repetidos</a><a href="#unanimidades">As urnas unânimes</a><a href="#benford">A lei de Benford</a><a href="#video">O vídeo e as curvas</a><a href="#seguranca">Segurança e testes públicos</a><a href="#reproducao">Como conferir os dados</a><a href="#conclusao">Conclusão</a><a href="#fontes">Fontes e metodologia</a>
   <div class="extra">ANÁLISES INTERATIVAS</div>
@@ -35,7 +44,9 @@
  </nav>
 </aside>
 <main class="main" id="conteudo">
-<header class="masthead"><p class="eyebrow">Relatório · Eleições presidenciais de 2026</p><h1>Eleições 2026:<br>o que os dados mostram</h1><p class="deck">Uma análise das alegações sobre horários de votação, biometria, registro de mesários, urnas unânimes e comportamento das curvas de apuração.</p><div class="meta">Rafael Leite · 31 de outubro de 2026 · Atualizado em 26 de novembro de 2026 <button class="print-button" id="print">Imprimir relatório</button><br><a href="#reproducao">Dados e reprodução</a><a href="#fontes">Fontes e limites da análise</a><a href="#report-simulator">Simulador interativo</a></div></header>
+<header class="masthead"><p class="eyebrow">Relatório · Eleições presidenciais de 2026</p><h1>Eleições 2026:<br>o que os dados mostram</h1><p class="deck">Uma análise das alegações sobre horários de votação, biometria, registro de mesários, urnas unânimes e comportamento das curvas de apuração.</p>
+<p><strong><a href="mesarios/relatorio.html">Ler o capítulo sobre títulos de mesário repetidos nas urnas →</a></strong></p>
+<div class="meta">Rafael Leite · 31 de outubro de 2026 · Atualizado em 26 de novembro de 2026 <button class="print-button" id="print">Imprimir relatório</button><br><a href="#reproducao">Dados e reprodução</a><a href="#fontes">Fontes e limites da análise</a><a href="#report-simulator">Simulador interativo</a></div></header>
 
 <section id="introducao"><h2>Introdução</h2>
 <p>Após o segundo turno das eleições presidenciais de 2026, circularam um documento de seis páginas, datado de 28 de outubro, e um vídeo que apresentam características dos dados eleitorais como indícios de fraude. O documento questiona a disponibilidade dos arquivos, o encerramento das urnas após as 17h, a habilitação de eleitores sem reconhecimento biométrico e a concentração de votos em determinadas seções. O vídeo associa oscilações de uma curva à suspeita de manipulação.</p>
@@ -63,6 +74,7 @@
 <section id="encerramento"><h2>Encerrar às 17h01 não caracteriza atraso irregular</h2>
 <p>As 17h marcam o início possível dos procedimentos de encerramento, respeitadas as regras e decisões aplicáveis. O horário não significa que centenas de milhares de urnas devam registrar o encerramento simultaneamente, no segundo exato. Um eleitor pode estar concluindo a votação; pode haver eleitores na fila; e os mesários precisam executar os procedimentos previstos.</p>
 <p>O <a href="https://www.tse.jus.br/comunicacao/noticias/2026/Outubro/eleicoes-2026-mais-de-34-mil-votos-foram-registrados-apos-as-17h-no-2o-turno">TSE esclarece</a> que registros de encerramento nos minutos seguintes às 17h fazem parte da rotina. A distribuição concentrada nesse horário é, portanto, compatível com a regra operacional. A mudança de comportamento em torno das 17h tem uma explicação imediata: é quando as seções passam a poder encerrar normalmente.</p>
+<p class="footnote">Use a roda do mouse sobre um gráfico ou mapa para aproximar ou afastar a visualização.</p>
 <figure><div class="figure-head"><h3>1. A concentração de encerramentos nos primeiros minutos</h3><a href="analises/index.html">Abrir histograma completo ↗</a></div><div id="closing-chart" class="chart" role="img" aria-label="Histograma dos encerramentos das urnas brasileiras após as 17h, segundo os boletins"><p class="chart-status">Carregando gráfico…</p></div><figcaption><strong>Brasil, segundo turno.</strong> Cada barra conta BUs com encerramento no minuto indicado. A linha mostra o percentual acumulado das 497.897 seções brasileiras da base. A janela inicial destaca os primeiros 16 minutos; o restante continua no denominador. Dados: base consolidada incluída nesta publicação.</figcaption></figure>
 <p>Na base analisada, <strong>237.646 urnas brasileiras encerraram entre 17h01min00s e 17h02min59s</strong>. Seus BUs somam 60.539.024 votos ao longo de todo o dia. Esse total não informa quantos desses votos ocorreram depois das 17h. Chamar todo o conjunto de “votos tardios” muda o significado da variável.</p>
 <p>Também é necessário cuidado ao interpretar a prorrogação até as 19h. Uma urna encerrada depois desse horário não revela, pelo BU, se houve fila, quanto tempo os procedimentos consumiram ou quantos eleitores votaram no intervalo prorrogado. <strong>Horário de encerramento não é uma classificação automática do motivo da permanência da seção em funcionamento.</strong></p>
@@ -112,13 +124,12 @@
 </section>
 
 <section id="mesarios"><h2>Títulos de mesário repetidos</h2>
-<p>O <a href="https://brasil.arvor.co/auditoria-2026/mesarios/relatorio.html">levantamento da Arvor</a> identificou <strong>11.866 casos</strong> em que o mesmo título consta no registro de mesários de mais de uma seção no mesmo turno. Segundo o cadastro do TSE de 25 de outubro, em 11.180 desses casos as seções funcionavam no mesmo local de votação. Em outros 626, o trajeto entre os locais é compatível com o intervalo registrado, considerada uma margem de dez minutos entre os relógios das urnas.</p>
-<p>Dos 60 casos com deslocamento improvável, 23 apresentam evidência forte de erro de digitação e 37 permanecem sem explicação específica. O <a href="mesarios/relatorio.html">relatório sobre a repetição de títulos de mesário</a> apresenta as equipes de abertura e encerramento, os horários e os registros que sustentam cada classificação.</p>
-<div class="explorer"><strong>Diagramas, testes e fichas</strong>
+<p>O <a href="https://brasil.arvor.co/auditoria-2026/mesarios/relatorio.html">levantamento da Arvor</a> identificou <strong>11.866 casos</strong> em que o mesmo título consta no registro de mesários de mais de uma seção no mesmo turno. Segundo o cadastro do TSE de 25 de outubro, em 11.180 casos as seções funcionavam no mesmo local de votação. Nos 686 casos em locais distintos, o cálculo admite até <strong>cinco minutos de diferença entre os relógios das urnas</strong>. O trajeto é compatível com os horários em 619 casos e improvável em 67.</p>
+<p>A comparação das equipes aponta <a href="mesarios/relatorio.html#digitacao">28 casos com evidência forte de erro de digitação</a>. Em quatro deles, os horários também permitiriam o deslocamento, mas a alternância dos títulos entre os registros favorece a explicação por erro de digitação. Entre os 67 deslocamentos improváveis, 24 têm evidência forte de erro e <a href="mesarios/relatorio.html#em-aberto">43 seguem sem explicação específica</a>. Outros quatro casos, todos com deslocamento possível, têm indícios numéricos inconclusivos.</p>
+<div class="explorer"><a class="launch" href="mesarios/relatorio.html">Abrir o capítulo completo sobre os mesários →</a>
 <ul><li><a href="mesarios/sankey_turnos.html">Diagrama de Sankey</a> com o desfecho de cada caso.</li>
 <li><a href="mesarios/teste_dv.html">Teste dos dígitos verificadores do título</a> para omissões, inserções e trocas de algarismos.</li>
-<li><a href="mesarios/votos_vizinhas.html">Comparação com as urnas vizinhas</a> por candidatura, comparecimento, votos em branco e nulos e liberações após falha de biometria.</li>
-<li><a href="mesarios/casos_em_aberto.html">Casos sem explicação específica</a> e <a href="mesarios/relatorio_tecnico.html">fichas técnicas por seção</a>.</li></ul></div>
+<li><a href="mesarios/votos_vizinhas.html">Comparação com as urnas vizinhas</a> por candidatura, comparecimento, votos em branco e nulos e liberações após falha de biometria.</li></ul></div>
 </section>
 
 <section id="unanimidades"><h2>Urnas unânimes e o contexto das seções</h2>
