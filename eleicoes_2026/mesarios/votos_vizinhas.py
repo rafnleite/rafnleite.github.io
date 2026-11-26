@@ -7,11 +7,11 @@ import csv
 import json
 from collections import Counter, defaultdict
 from pathlib import Path
-from statistics import mean, median
+from statistics import mean
 
 from biometria_vizinhas import carregar_biometria
 from boletins_vizinhas import NOMES_CANDIDATOS, carregar_boletins
-from estatistica_vizinhas import analisar_turno
+from estatistica_vizinhas import MIN_COMPARECIMENTO, analisar_turno
 from universo_vizinhas import carregar_universo
 
 
@@ -33,15 +33,35 @@ def classificacoes():
 
 
 def amostra_teste():
-    """Título-turno dos 37 casos definidos para o teste de votação com margem logística de 10 min."""
-    with (PASTA / "votos_vizinhas_amostra_teste.csv").open(encoding="utf-8-sig", newline="") as f:
-        return {(r["turno"], r["titulo"]) for r in csv.DictReader(f)}
+    """Lê os casos sem explicação específica da triagem logística vigente."""
+    casos = {}
+    with (PASTA / "em_aberto.csv").open(encoding="utf-8-sig", newline="") as f:
+        for linha in csv.DictReader(f):
+            chave = linha["turno"], linha["titulo"]
+            if chave in casos:
+                raise ValueError(f"Caso em aberto duplicado: {chave}")
+            casos[chave] = linha["id_caso"]
+    return casos
+
+
+def gravar_amostra_teste(amostra):
+    with (PASTA / "votos_vizinhas_amostra_teste.csv").open("w", encoding="utf-8-sig", newline="") as f:
+        escritor = csv.writer(f)
+        escritor.writerow(("turno", "titulo", "id_caso"))
+        escritor.writerows((turno, titulo, id_caso) for (turno, titulo), id_caso in sorted(amostra.items()))
+
+
+def validar_amostra(amostra, categorias):
+    for chave, id_caso in amostra.items():
+        if chave not in categorias or categorias[chave][1] != id_caso:
+            raise ValueError(f"Caso em aberto sem correspondência na triagem: {chave}")
 
 
 def atualizar_grupos():
     """Atualiza apenas os rótulos de classificação de cada seção, conservando todas as medidas dos BUs."""
     from tempfile import NamedTemporaryFile
     categorias, amostra = classificacoes(), amostra_teste()
+    validar_amostra(amostra, categorias)
     arquivo = PASTA / "votos_vizinhas_secoes.csv"
     presentes = set()
     with arquivo.open(encoding="utf-8-sig", newline="") as origem, NamedTemporaryFile(
@@ -61,7 +81,7 @@ def atualizar_grupos():
                 r["grupos"] = " | ".join(sorted(set(grupos)))
                 r["amostra_teste_votacao"] = int(any(k in amostra for k in chaves))
                 escritor.writerow(r)
-            if presentes != categorias.keys() or not amostra <= presentes:
+            if presentes != categorias.keys() or not amostra.keys() <= presentes:
                 raise ValueError("A classificação cobriu um universo diferente do CSV por seção.")
         except BaseException:
             out.close()
@@ -71,19 +91,14 @@ def atualizar_grupos():
         tmp.replace(arquivo)
     finally:
         tmp.unlink(missing_ok=True)
+    gravar_amostra_teste(amostra)
 
 
-def distancia_entre_marcadas(secao, vizinhas, bus, candidatos):
-    """Comparação exclusivamente descritiva quando as únicas vizinhas também são marcadas."""
-    alvos = bus[secao]["votos"]
-    votos = {c: sum(bus[s]["votos"].get(c, 0) for s in vizinhas) for c in candidatos}
-    total, base = sum(alvos.get(c, 0) for c in candidatos), sum(votos.values())
-    return 50 * sum(abs(alvos.get(c, 0) / total - votos[c] / base) for c in candidatos)
-
-
-def calcular():
+def calcular(amostra=None):
     universo, bus, categorias = carregar_universo(), carregar_boletins(), classificacoes()
-    amostra = amostra_teste()
+    if amostra is None:
+        amostra = amostra_teste()
+    validar_amostra(amostra, categorias)
     falhas = carregar_biometria(bus)
     if {(s[0], t) for s, titulos in universo.marcadas.items() for t in titulos} != categorias.keys():
         raise ValueError("Os casos do relatório e as seções marcadas não coincidem")
@@ -112,7 +127,7 @@ def calcular():
                     marcada = s in universo.marcadas
                     votos = {c:b["votos"].get(c, 0) for c in candidatos}
                     grupo[s] = (marcada, votos, b["brancos"], b["nulos"] + (b["votos"].get("28",0) if turno=="1" else 0))
-                    if turno == "1":
+                    if turno == "1" and sum(votos.values()):
                         bruto[s] = (marcada, b["votos"], b["brancos"], b["nulos"])
                 elif s not in universo.marcadas:
                     situacoes["vizinhas_sem_bu"] += 1
@@ -120,28 +135,34 @@ def calcular():
                 locais[local] = grupo
                 if bruto:
                     locais_brutos[local] = bruto
-                controles = [s for s, (marcada, v, _, _) in grupo.items() if not marcada and sum(v.values())]
+                controles = [s for s, (marcada, v, _, _) in grupo.items()
+                             if not marcada and sum(v.values()) and bus[s]["comparecimento"] >= MIN_COMPARECIMENTO]
                 participacao_controles[local] = (sum(bus[s]["comparecimento"] for s in controles),
                                                  sum(bus[s]["aptos"] for s in controles))
                 com_biometria = [s for s in controles if s in falhas]
                 biometria_controles[local] = (len(com_biometria), sum(falhas[s] for s in com_biometria),
                                               sum(bus[s]["comparecimento"] for s in com_biometria))
-        registros, resumo = analisar_turno(locais, candidatos, "13", permutacoes=PERMUTACOES, semente=SEMENTE + int(turno))
+        registros, resumo = analisar_turno(locais, candidatos, permutacoes=PERMUTACOES, semente=SEMENTE + int(turno))
         abertas = {s for s, titulos in universo.marcadas.items() if s[0] == turno
                    and any((turno, t) in amostra for t in titulos)}
         locais_abertos = {universo.locais[s] for s in abertas}
         grupos_abertos = {k: {s: v for s,v in locais[k].items() if not v[0] or s in abertas}
                           for k in locais_abertos if k in locais}
-        _, sub = analisar_turno(grupos_abertos, candidatos, "13", permutacoes=PERMUTACOES, semente=SEMENTE + 100 + int(turno))
-        resumo["casos_em_aberto"] = {k:sub[k] for k in ("n_comparaveis","distancia","referencia","extremos","permutacao")}
+        sub_registros, sub = analisar_turno(
+            grupos_abertos, candidatos, permutacoes=PERMUTACOES, semente=SEMENTE + 100 + int(turno)
+        )
+        resumo["casos_em_aberto"] = {k: sub[k] for k in (
+            "n_comparaveis", "n_locais_comparaveis", "distancia", "referencia", "extremos", "permutacao"
+        )}
+        resumo["casos_em_aberto"]["n_marcadas"] = len(abertas)
+        casos_abertos = {chave for chave in amostra if chave[0] == turno}
+        secoes_comparaveis = {r["secao"] for r in sub_registros if r["situacao"] == "comparavel"}
+        casos_comparaveis = {(turno, t) for s in secoes_comparaveis for t in universo.marcadas[s]}
+        resumo["casos_em_aberto"]["n_casos"] = len(casos_abertos)
+        resumo["casos_em_aberto"]["n_casos_comparaveis"] = len(casos_abertos & casos_comparaveis)
         if locais_brutos:
-            _, BU = analisar_turno(locais_brutos, nominais, "13", permutacoes=0)
+            _, BU = analisar_turno(locais_brutos, nominais, permutacoes=0)
             resumo["todos_nominais_bu"] = {k:BU[k] for k in ("n_comparaveis","distancia","referencia","extremos")}
-        # Repetir com um mínimo de votos tanto na seção estudada quanto nas vizinhas.
-        corte = {local: {s: v for s, v in grupo.items() if sum(v[1].values()) >= 100} for local, grupo in locais.items()}
-        corte = {local: grupo for local, grupo in corte.items() if any(v[0] for v in grupo.values())}
-        _, sens = analisar_turno(corte, candidatos, "13", permutacoes=0, semente=SEMENTE + int(turno))
-        resumo["sensibilidade_100"] = {k: sens[k] for k in ("n_comparaveis", "distancia", "referencia", "extremos")}
         por_secao = {r["secao"]: r for r in registros}
         chaves = sorted(s for s in universo.marcadas if s[0] == turno)
         resumo["n_marcadas_universo"] = len(chaves)
@@ -194,21 +215,9 @@ def calcular():
                     linha["falha_biometria_vizinhas_pct"] = 100 * liberacoes / presentes
                     linha["falha_biometria_diferenca_pp"] = linha["falha_biometria_secao_pct"] - linha["falha_biometria_vizinhas_pct"]
                     locais_com_par_biometrico.add(local)
-            linha["vizinhas_marcadas_com_validos"] = None
-            linha["distancia_so_marcadas_pp"] = None
-            if linha["situacao"] == "sem_controle":
-                viz = [m for m in por_local[local] if m != s and m in universo.marcadas
-                       and m in bus and any(bus[m]["votos"].get(c,0) for c in candidatos)]
-                linha["vizinhas_marcadas_com_validos"] = len(viz)
-                if viz:
-                    linha["distancia_so_marcadas_pp"] = distancia_entre_marcadas(s, viz, bus, candidatos)
             linhas_turno.append(linha)
         if sum(r["situacao"]=="comparavel" for r in linhas_turno) != resumo["n_comparaveis"]:
             raise ValueError("Cobertura de seções comparáveis divergente")
-        so_marcadas = [r["distancia_so_marcadas_pp"] for r in linhas_turno if r["distancia_so_marcadas_pp"] is not None]
-        resumo["apenas_outras_marcadas"] = dict(n=len(so_marcadas), media=mean(so_marcadas) if so_marcadas else None,
-                                               mediana=median(so_marcadas) if so_marcadas else None)
-        resumo["n_sem_vizinha_elegivel"] = sum(r["situacao"] == "sem_controle" and r["distancia_so_marcadas_pp"] is None for r in linhas_turno)
         c = [r for r in linhas_turno if r["comparecimento_secao_pct"] is not None]
         resumo["comparecimento"] = dict(n=len(c), media_secao_pct=mean(r["comparecimento_secao_pct"] for r in c),
                                         media_vizinhas_pct=mean(r["comparecimento_vizinhas_pct"] for r in c),
@@ -225,7 +234,9 @@ def calcular():
 
 
 def gravar_dados():
-    linhas, resumos = calcular()
+    amostra = amostra_teste()
+    linhas, resumos = calcular(amostra)
+    gravar_amostra_teste(amostra)
     colunas = dict.fromkeys(k for r in linhas for k in r)
     with (PASTA / "votos_vizinhas_secoes.csv").open("w", encoding="utf-8-sig", newline="") as f:
         w = csv.DictWriter(f, fieldnames=colunas)

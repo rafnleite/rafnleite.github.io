@@ -43,3 +43,27 @@
 @media (max-width:760px), (pointer:coarse) {
   :is(.identity,.mobile-nav) .perfis-autor a { min-width: 44px; min-height: 44px; }
 }
+
+.perfis-relatorios > a {
+  display: block;
+  color: var(--blue);
+  font-size: 13px;
+  font-weight: 650;
+  line-height: 1.4;
+  text-underline-offset: .18em;
+}
+@media (max-width:760px) {
+  html:has(.mobile-nav > .perfis-relatorios) {
+    --altura-barra-relatorios: 72px;
+    scroll-padding-top: calc(var(--altura-barra-relatorios) + 12px);
+  }
+  .mobile-nav:has(> .perfis-relatorios) { min-height: var(--altura-barra-relatorios); }
+  .mobile-nav > .perfis-relatorios { margin-inline: auto 8px; text-align: center; }
+  .mobile-nav .perfis-relatorios .perfis-autor { margin: 0; }
+  .mobile-nav .perfis-relatorios > a { white-space: nowrap; }
+  .mobile-nav:has(> .perfis-relatorios) + .sidebar { top: var(--altura-barra-relatorios); }
+}
+@media (max-width:360px) {
+  .mobile-nav:has(> .perfis-relatorios) { padding-inline: 8px; }
+  .mobile-nav > .perfis-relatorios { margin-right: 4px; }
+}

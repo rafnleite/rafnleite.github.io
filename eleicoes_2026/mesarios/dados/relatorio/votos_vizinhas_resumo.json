@@ -1,0 +1,885 @@
+{
+  "1": {
+    "n_marcadas": 10713,
+    "n_comparaveis": 8758,
+    "n_locais_comparaveis": 3958,
+    "n_controles_distintos": 35620,
+    "n_pares_referencia": 80160,
+    "situacoes": {
+      "comparavel": 8758,
+      "sem_controle": 1898,
+      "abaixo_minimo_comparecimento": 57
+    },
+    "distancia": {
+      "n": 8758,
+      "media": 4.805703038258427,
+      "maximo": 22.32063548460777,
+      "mediana": 4.307546979845898,
+      "p90": 8.059331895328375,
+      "p95": 9.470021923553523
+    },
+    "referencia": {
+      "n": 8758,
+      "media": 4.752644415953048,
+      "maximo": 27.85857992270744,
+      "mediana": 4.278538173416879,
+      "p90": 7.964369442131279,
+      "p95": 9.342930378751191
+    },
+    "excesso": {
+      "n": 8758,
+      "media": 0.05305862230537868,
+      "maximo": 16.777043172851396,
+      "mediana": -0.28829738610809486,
+      "p90": 3.3310857875055797,
+      "p95": 4.646340077257536
+    },
+    "semelhanca": {
+      "2": 693,
+      "5": 5352,
+      "10": 8412
+    },
+    "distribuicao_acumulada": [
+      {
+        "limiar_pp": 0,
+        "marcadas_pct": 0.0,
+        "referencia_pct": 0.0
+      },
+      {
+        "limiar_pp": 1,
+        "marcadas_pct": 0.445307147750628,
+        "referencia_pct": 0.5488218774275344
+      },
+      {
+        "limiar_pp": 2,
+        "marcadas_pct": 7.912765471568851,
+        "referencia_pct": 8.074562395045795
+      },
+      {
+        "limiar_pp": 3,
+        "marcadas_pct": 25.005709065996804,
+        "referencia_pct": 25.39794489192892
+      },
+      {
+        "limiar_pp": 4,
+        "marcadas_pct": 44.3366065311715,
+        "referencia_pct": 45.04633306452984
+      },
+      {
+        "limiar_pp": 5,
+        "marcadas_pct": 61.10984242977849,
+        "referencia_pct": 61.79569000976149
+      },
+      {
+        "limiar_pp": 6,
+        "marcadas_pct": 74.11509477049555,
+        "referencia_pct": 74.6109292782114
+      },
+      {
+        "limiar_pp": 7,
+        "marcadas_pct": 83.0212377255081,
+        "referencia_pct": 83.94819284986005
+      },
+      {
+        "limiar_pp": 8,
+        "marcadas_pct": 89.74651746974195,
+        "referencia_pct": 90.19246735658581
+      },
+      {
+        "limiar_pp": 9,
+        "marcadas_pct": 93.79995432747202,
+        "referencia_pct": 94.03787899473002
+      },
+      {
+        "limiar_pp": 10,
+        "marcadas_pct": 96.04932633021238,
+        "referencia_pct": 96.47644462318095
+      },
+      {
+        "limiar_pp": 11,
+        "marcadas_pct": 97.53368348938113,
+        "referencia_pct": 97.88258366345157
+      },
+      {
+        "limiar_pp": 12,
+        "marcadas_pct": 98.6298241607673,
+        "referencia_pct": 98.73135758754532
+      },
+      {
+        "limiar_pp": 13,
+        "marcadas_pct": 99.16647636446677,
+        "referencia_pct": 99.32800913093331
+      },
+      {
+        "limiar_pp": 14,
+        "marcadas_pct": 99.4290934003197,
+        "referencia_pct": 99.5789937836023
+      },
+      {
+        "limiar_pp": 15,
+        "marcadas_pct": 99.60036538022379,
+        "referencia_pct": 99.72639404652853
+      },
+      {
+        "limiar_pp": 16,
+        "marcadas_pct": 99.71454670015986,
+        "referencia_pct": 99.83901820157892
+      },
+      {
+        "limiar_pp": 17,
+        "marcadas_pct": 99.80589175610871,
+        "referencia_pct": 99.91898015785546
+      },
+      {
+        "limiar_pp": 18,
+        "marcadas_pct": 99.87440054807034,
+        "referencia_pct": 99.93984864431172
+      },
+      {
+        "limiar_pp": 19,
+        "marcadas_pct": 99.93149120803837,
+        "referencia_pct": 99.95482002403533
+      },
+      {
+        "limiar_pp": 20,
+        "marcadas_pct": 99.94290934003197,
+        "referencia_pct": 99.96898696558294
+      }
+    ],
+    "controles_independentes": {
+      "n_marcadas": 7979,
+      "n_locais": 3605,
+      "media_marcadas_pp": 4.815549649378091,
+      "media_controles_pp": 4.770820660673734,
+      "diferenca_pp": 0.04472898870435671
+    },
+    "extremos": {
+      "limiar_p95_ref_pp": 9.342930378751191,
+      "n_acima": 471,
+      "pct_acima": 5.377940168988354,
+      "pct_referencia_acima": 4.999885295327723
+    },
+    "cauda": {
+      "n_elegiveis": 453,
+      "n_cauda": 18,
+      "esperado_n": 19.34996870820231,
+      "limiar": 0.05
+    },
+    "brancos": {
+      "n": 8758,
+      "media_secao_pct": 1.9090998330280624,
+      "media_vizinhas_pct": 1.9194733230868162,
+      "diferenca_media_pp": -0.01037349005875325,
+      "diferenca_absoluta_media_pp": 0.7309333294860039,
+      "mediana_diferenca_pp": -0.08220548989706433
+    },
+    "nulos": {
+      "n": 8758,
+      "media_secao_pct": 2.936613771566219,
+      "media_vizinhas_pct": 2.937876287156498,
+      "diferenca_media_pp": -0.0012625155902791752,
+      "diferenca_absoluta_media_pp": 0.9361017703685958,
+      "mediana_diferenca_pp": -0.06815497713426488
+    },
+    "permutacao": {
+      "n_permutacoes": 1999,
+      "semente": 20261126,
+      "n_secoes": 8758,
+      "n_locais_informativos": 3958,
+      "observado_pp": 4.731670556234984,
+      "esperado_pp": 4.709792633504044,
+      "excesso_pp": 0.02187792273093925,
+      "desvio_nulo_pp": 0.021287478467955784,
+      "p_superior": 0.158,
+      "p_inferior": 0.8425,
+      "p025_pp": 4.668857653696733,
+      "p975_pp": 4.753283159304262
+    },
+    "casos_em_aberto": {
+      "n_comparaveis": 40,
+      "n_locais_comparaveis": 39,
+      "distancia": {
+        "n": 40,
+        "media": 4.553294155771619,
+        "maximo": 11.455485956457943,
+        "mediana": 3.7944825647512808,
+        "p90": 6.961976001246689,
+        "p95": 8.106114342459923
+      },
+      "referencia": {
+        "n": 40,
+        "media": 4.627562696482905,
+        "maximo": 15.57504873294347,
+        "mediana": 4.114643836819961,
+        "p90": 7.865677010609536,
+        "p95": 9.011847467954917
+      },
+      "extremos": {
+        "limiar_p95_ref_pp": 9.011847467954917,
+        "n_acima": 2,
+        "pct_acima": 5.0,
+        "pct_referencia_acima": 4.960282772782772
+      },
+      "permutacao": {
+        "n_permutacoes": 1999,
+        "semente": 20261226,
+        "n_secoes": 40,
+        "n_locais_informativos": 39,
+        "observado_pp": 4.551273256794776,
+        "esperado_pp": 4.612913916572065,
+        "excesso_pp": -0.061640659777289386,
+        "desvio_nulo_pp": 0.337826149347685,
+        "p_superior": 0.551,
+        "p_inferior": 0.4495,
+        "p025_pp": 3.984472173585355,
+        "p975_pp": 5.291790729810836
+      },
+      "n_marcadas": 45,
+      "n_casos": 20,
+      "n_casos_comparaveis": 17
+    },
+    "todos_nominais_bu": {
+      "n_comparaveis": 8758,
+      "distancia": {
+        "n": 8758,
+        "media": 4.809913752030774,
+        "maximo": 22.32063548460777,
+        "mediana": 4.312220609186184,
+        "p90": 8.067568004657632,
+        "p95": 9.470021923553523
+      },
+      "referencia": {
+        "n": 8758,
+        "media": 4.756852209674197,
+        "maximo": 27.86545117372185,
+        "mediana": 4.283401207006525,
+        "p90": 7.967831051629934,
+        "p95": 9.351425851082954
+      },
+      "extremos": {
+        "limiar_p95_ref_pp": 9.351425851082954,
+        "n_acima": 470,
+        "pct_acima": 5.3665220369947475,
+        "pct_referencia_acima": 4.999555456692155
+      }
+    },
+    "n_marcadas_universo": 10713,
+    "n_casos": 7092,
+    "n_locais_marcados": 4850,
+    "n_sem_bu": 0,
+    "controles_suplementares_excluidos": 1,
+    "vizinhas_sem_bu": 0,
+    "comparecimento": {
+      "n": 8758,
+      "media_secao_pct": 79.1427014883811,
+      "media_vizinhas_pct": 79.13395297079282,
+      "diferenca_media_pp": 0.008748517588280286
+    },
+    "falha_biometria": {
+      "n": 8758,
+      "n_controles": 35620,
+      "media_secao_pct": 6.343975223890393,
+      "media_vizinhas_pct": 6.19696573604531,
+      "diferenca_media_pp": 0.1470094878450827
+    },
+    "equivalencia": {
+      "principal": {
+        "n_secoes": 8758,
+        "n_locais": 3958,
+        "n_conglomerados": 3958,
+        "graus_liberdade": 3957,
+        "diferenca_pp": 0.053058622333866184,
+        "erro_padrao_pp": 0.030340723499852305,
+        "ic90_pp": [
+          0.0031408868241678267,
+          0.10297635784356454
+        ],
+        "ic95_pp": [
+          -0.006426298106260227,
+          0.11254354277399259
+        ],
+        "limite_superior_95_pp": 0.10297635784356454,
+        "margem_limite_tost_pp": 0.10297635784356454,
+        "tost": [
+          {
+            "margem_pp": 0.1,
+            "p_inferior": 2.373593078112358e-07,
+            "p_superior": 0.06095460732245195,
+            "p_tost": 0.06095460732245195,
+            "equivalente_5pct": false
+          },
+          {
+            "margem_pp": 0.25,
+            "p_inferior": 1.6080831288087023e-23,
+            "p_superior": 4.790989011206985e-11,
+            "p_tost": 4.790989011206985e-11,
+            "equivalente_5pct": true
+          },
+          {
+            "margem_pp": 0.5,
+            "p_inferior": 1.1875558527399886e-71,
+            "p_superior": 3.707394333790574e-48,
+            "p_tost": 3.707394333790574e-48,
+            "equivalente_5pct": true
+          }
+        ],
+        "ic95_simultaneo_pp": [
+          -0.014973049483909984,
+          0.12109029415164235
+        ]
+      },
+      "em_aberto": {
+        "n_secoes": 40,
+        "n_locais": 39,
+        "n_conglomerados": 39,
+        "graus_liberdade": 38,
+        "diferenca_pp": -0.07426855000000002,
+        "erro_padrao_pp": 0.3789082593584322,
+        "ic90_pp": [
+          -0.7130906198593557,
+          0.5645535198593558
+        ],
+        "ic95_pp": [
+          -0.8413282189032526,
+          0.6927911189032526
+        ],
+        "limite_superior_95_pp": 0.5645535198593558,
+        "margem_limite_tost_pp": 0.7130906198593557,
+        "tost": [
+          {
+            "margem_pp": 0.1,
+            "p_inferior": 0.47310689710971776,
+            "p_superior": 0.3240962116544748,
+            "p_tost": 0.47310689710971776,
+            "equivalente_5pct": false
+          },
+          {
+            "margem_pp": 0.25,
+            "p_inferior": 0.3227242934512887,
+            "p_superior": 0.1987371633233831,
+            "p_tost": 0.3227242934512887,
+            "equivalente_5pct": false
+          },
+          {
+            "margem_pp": 0.5,
+            "p_inferior": 0.13412105252350065,
+            "p_superior": 0.06894939199605116,
+            "p_tost": 0.13412105252350065,
+            "equivalente_5pct": false
+          }
+        ]
+      },
+      "independente": {
+        "n_secoes": 7979,
+        "n_locais": 3605,
+        "n_conglomerados": 3605,
+        "graus_liberdade": 3604,
+        "diferenca_pp": 0.044728988895851605,
+        "erro_padrao_pp": 0.030930677901489973,
+        "ic90_pp": [
+          -0.0061605296904938545,
+          0.09561850748219707
+        ],
+        "ic95_pp": [
+          -0.015914392120037577,
+          0.10537236991174079
+        ],
+        "limite_superior_95_pp": 0.09561850748219707,
+        "margem_limite_tost_pp": 0.09561850748219707,
+        "tost": [
+          {
+            "margem_pp": 0.1,
+            "p_inferior": 1.4933419101524976e-06,
+            "p_superior": 0.0370162671355598,
+            "p_tost": 0.0370162671355598,
+            "equivalente_5pct": true
+          },
+          {
+            "margem_pp": 0.25,
+            "p_inferior": 1.4149749519194797e-21,
+            "p_superior": 1.8466741632319337e-11,
+            "p_tost": 1.8466741632319337e-11,
+            "equivalente_5pct": true
+          },
+          {
+            "margem_pp": 0.5,
+            "p_inferior": 5.8025735476762844e-67,
+            "p_superior": 5.731803972495307e-48,
+            "p_tost": 5.731803972495307e-48,
+            "equivalente_5pct": true
+          }
+        ]
+      },
+      "por_municipio": {
+        "n_secoes": 8758,
+        "n_locais": 3958,
+        "n_conglomerados": 961,
+        "graus_liberdade": 960,
+        "diferenca_pp": 0.053058622333866184,
+        "erro_padrao_pp": 0.03087602397184096,
+        "ic90_pp": [
+          0.002223026439804203,
+          0.10389421822792816
+        ],
+        "ic95_pp": [
+          -0.007533665519794515,
+          0.11365091018752688
+        ],
+        "limite_superior_95_pp": 0.10389421822792816,
+        "margem_limite_tost_pp": 0.10389421822792816,
+        "tost": [
+          {
+            "margem_pp": 0.1,
+            "p_inferior": 4.226025593595053e-07,
+            "p_superior": 0.06438016279421799,
+            "p_tost": 0.06438016279421799,
+            "equivalente_5pct": false
+          },
+          {
+            "margem_pp": 0.25,
+            "p_inferior": 4.892185007783913e-22,
+            "p_superior": 1.3884550198369466e-10,
+            "p_tost": 1.3884550198369466e-10,
+            "equivalente_5pct": true
+          },
+          {
+            "margem_pp": 0.5,
+            "p_inferior": 1.996343314089185e-62,
+            "p_superior": 2.1119495411115604e-43,
+            "p_tost": 2.1119495411115604e-43,
+            "equivalente_5pct": true
+          }
+        ]
+      }
+    }
+  },
+  "2": {
+    "n_marcadas": 6035,
+    "n_comparaveis": 4736,
+    "n_locais_comparaveis": 2150,
+    "n_controles_distintos": 19051,
+    "n_pares_referencia": 42308,
+    "situacoes": {
+      "comparavel": 4736,
+      "sem_controle": 1263,
+      "abaixo_minimo_comparecimento": 36
+    },
+    "distancia": {
+      "n": 4736,
+      "media": 3.0129378655567125,
+      "maximo": 27.278976927808444,
+      "mediana": 2.433454145747304,
+      "p90": 6.317874310129962,
+      "p95": 7.632416245554932
+    },
+    "referencia": {
+      "n": 4736,
+      "media": 3.0568245687049225,
+      "maximo": 26.373814336806095,
+      "mediana": 2.4911470810888923,
+      "p90": 6.369383546776644,
+      "p95": 7.761483121195352
+    },
+    "excesso": {
+      "n": 4736,
+      "media": -0.04388670314821018,
+      "maximo": 22.71395324905279,
+      "mediana": -0.474887639008005,
+      "p90": 3.280634020601885,
+      "p95": 4.606278084991324
+    },
+    "semelhanca": {
+      "2": 2023,
+      "5": 3855,
+      "10": 4655
+    },
+    "distribuicao_acumulada": [
+      {
+        "limiar_pp": 0,
+        "marcadas_pct": 0.021114864864864864,
+        "referencia_pct": 0.014311186186186185
+      },
+      {
+        "limiar_pp": 1,
+        "marcadas_pct": 21.4527027027027,
+        "referencia_pct": 21.159631080921656
+      },
+      {
+        "limiar_pp": 2,
+        "marcadas_pct": 42.71537162162162,
+        "referencia_pct": 41.229785946530434
+      },
+      {
+        "limiar_pp": 3,
+        "marcadas_pct": 59.7972972972973,
+        "referencia_pct": 58.23652581880638
+      },
+      {
+        "limiar_pp": 4,
+        "marcadas_pct": 72.23395270270271,
+        "referencia_pct": 71.40497373586248
+      },
+      {
+        "limiar_pp": 5,
+        "marcadas_pct": 81.39780405405405,
+        "referencia_pct": 81.31355298645043
+      },
+      {
+        "limiar_pp": 6,
+        "marcadas_pct": 88.19679054054055,
+        "referencia_pct": 88.08615560963145
+      },
+      {
+        "limiar_pp": 7,
+        "marcadas_pct": 93.13766891891892,
+        "referencia_pct": 92.69113035452338
+      },
+      {
+        "limiar_pp": 8,
+        "marcadas_pct": 95.75591216216216,
+        "referencia_pct": 95.59508659530387
+      },
+      {
+        "limiar_pp": 9,
+        "marcadas_pct": 97.36064189189189,
+        "referencia_pct": 97.29523758548316
+      },
+      {
+        "limiar_pp": 10,
+        "marcadas_pct": 98.28969594594595,
+        "referencia_pct": 98.3779327153016
+      },
+      {
+        "limiar_pp": 11,
+        "marcadas_pct": 98.92314189189189,
+        "referencia_pct": 98.94853530541555
+      },
+      {
+        "limiar_pp": 12,
+        "marcadas_pct": 99.26097972972973,
+        "referencia_pct": 99.33224496952981
+      },
+      {
+        "limiar_pp": 13,
+        "marcadas_pct": 99.38766891891892,
+        "referencia_pct": 99.58277428936356
+      },
+      {
+        "limiar_pp": 14,
+        "marcadas_pct": 99.51435810810811,
+        "referencia_pct": 99.73851804566175
+      },
+      {
+        "limiar_pp": 15,
+        "marcadas_pct": 99.68327702702703,
+        "referencia_pct": 99.84024445787203
+      },
+      {
+        "limiar_pp": 16,
+        "marcadas_pct": 99.78885135135135,
+        "referencia_pct": 99.90900913331772
+      },
+      {
+        "limiar_pp": 17,
+        "marcadas_pct": 99.8733108108108,
+        "referencia_pct": 99.94212249886642
+      },
+      {
+        "limiar_pp": 18,
+        "marcadas_pct": 99.91554054054055,
+        "referencia_pct": 99.95591754391148
+      },
+      {
+        "limiar_pp": 19,
+        "marcadas_pct": 99.9366554054054,
+        "referencia_pct": 99.9694779793469
+      },
+      {
+        "limiar_pp": 20,
+        "marcadas_pct": 99.97888513513513,
+        "referencia_pct": 99.9756204854894
+      }
+    ],
+    "controles_independentes": {
+      "n_marcadas": 4283,
+      "n_locais": 1944,
+      "media_marcadas_pp": 3.000557133090332,
+      "media_controles_pp": 3.0418426110255323,
+      "diferenca_pp": -0.04128547793520054
+    },
+    "extremos": {
+      "limiar_p95_ref_pp": 7.761483121195352,
+      "n_acima": 223,
+      "pct_acima": 4.708614864864865,
+      "pct_referencia_acima": 4.998510153886232
+    },
+    "cauda": {
+      "n_elegiveis": 242,
+      "n_cauda": 13,
+      "esperado_n": 10.204080646553706,
+      "limiar": 0.05
+    },
+    "brancos": {
+      "n": 4736,
+      "media_secao_pct": 1.135228823668652,
+      "media_vizinhas_pct": 1.128492376507377,
+      "diferenca_media_pp": 0.006736447161274934,
+      "diferenca_absoluta_media_pp": 0.5527660245307466,
+      "mediana_diferenca_pp": -0.06398742703188143
+    },
+    "nulos": {
+      "n": 4736,
+      "media_secao_pct": 2.1677073603433947,
+      "media_vizinhas_pct": 2.190504578180923,
+      "diferenca_media_pp": -0.022797217837528538,
+      "diferenca_absoluta_media_pp": 0.7738871047640025,
+      "mediana_diferenca_pp": -0.08715390217071306
+    },
+    "permutacao": {
+      "n_permutacoes": 1999,
+      "semente": 20261127,
+      "n_secoes": 4736,
+      "n_locais_informativos": 2150,
+      "observado_pp": 2.9711601018785196,
+      "esperado_pp": 3.002774054794936,
+      "excesso_pp": -0.03161395291641649,
+      "desvio_nulo_pp": 0.029196385668784585,
+      "p_superior": 0.865,
+      "p_inferior": 0.1355,
+      "p025_pp": 2.946334218655247,
+      "p975_pp": 3.0617680927880357
+    },
+    "casos_em_aberto": {
+      "n_comparaveis": 27,
+      "n_locais_comparaveis": 27,
+      "distancia": {
+        "n": 27,
+        "media": 2.8170969570472173,
+        "maximo": 13.428526747585078,
+        "mediana": 2.0364565394626126,
+        "p90": 4.3736865614399045,
+        "p95": 6.440244965201093
+      },
+      "referencia": {
+        "n": 27,
+        "media": 2.535988658301547,
+        "maximo": 10.807524473033423,
+        "mediana": 1.9843637238393073,
+        "p90": 5.8558558558558556,
+        "p95": 6.832062891965852
+      },
+      "extremos": {
+        "limiar_p95_ref_pp": 6.832062891965852,
+        "n_acima": 1,
+        "pct_acima": 3.7037037037037037,
+        "pct_referencia_acima": 4.787369493251846
+      },
+      "permutacao": {
+        "n_permutacoes": 1999,
+        "semente": 20261227,
+        "n_secoes": 27,
+        "n_locais_informativos": 27,
+        "observado_pp": 2.8170969570472173,
+        "esperado_pp": 2.635341201354144,
+        "excesso_pp": 0.181755755693073,
+        "desvio_nulo_pp": 0.3914222625408399,
+        "p_superior": 0.296,
+        "p_inferior": 0.7045,
+        "p025_pp": 1.9045236852265073,
+        "p975_pp": 3.4559390721831846
+      },
+      "n_marcadas": 37,
+      "n_casos": 23,
+      "n_casos_comparaveis": 19
+    },
+    "n_marcadas_universo": 6035,
+    "n_casos": 4774,
+    "n_locais_marcados": 2768,
+    "n_sem_bu": 0,
+    "controles_suplementares_excluidos": 0,
+    "vizinhas_sem_bu": 0,
+    "comparecimento": {
+      "n": 4736,
+      "media_secao_pct": 81.10289558244894,
+      "media_vizinhas_pct": 81.19273119982704,
+      "diferenca_media_pp": -0.08983561737810962
+    },
+    "falha_biometria": {
+      "n": 4736,
+      "n_controles": 19051,
+      "media_secao_pct": 6.542019055756926,
+      "media_vizinhas_pct": 6.395983527686578,
+      "diferenca_media_pp": 0.14603552807034753
+    },
+    "equivalencia": {
+      "principal": {
+        "n_secoes": 4736,
+        "n_locais": 2150,
+        "n_conglomerados": 2150,
+        "graus_liberdade": 2149,
+        "diferenca_pp": -0.04388670314611487,
+        "erro_padrao_pp": 0.041789929820470584,
+        "ic90_pp": [
+          -0.11265466518906238,
+          0.02488125889683264
+        ],
+        "ic95_pp": [
+          -0.12583961777373615,
+          0.03806621148150639
+        ],
+        "limite_superior_95_pp": 0.02488125889683264,
+        "margem_limite_tost_pp": 0.11265466518906238,
+        "tost": [
+          {
+            "margem_pp": 0.1,
+            "p_inferior": 0.08974788156452301,
+            "p_superior": 0.0002930560276171121,
+            "p_tost": 0.08974788156452301,
+            "equivalente_5pct": false
+          },
+          {
+            "margem_pp": 0.25,
+            "p_inferior": 4.3787017616847257e-07,
+            "p_superior": 1.357864427339692e-12,
+            "p_tost": 4.3787017616847257e-07,
+            "equivalente_5pct": true
+          },
+          {
+            "margem_pp": 0.5,
+            "p_inferior": 2.4825524292614425e-27,
+            "p_superior": 1.2491782498603375e-37,
+            "p_tost": 2.4825524292614425e-27,
+            "equivalente_5pct": true
+          }
+        ],
+        "ic95_simultaneo_pp": [
+          -0.13762045063509903,
+          0.049847044342869296
+        ]
+      },
+      "em_aberto": {
+        "n_secoes": 27,
+        "n_locais": 27,
+        "n_conglomerados": 27,
+        "graus_liberdade": 26,
+        "diferenca_pp": 0.2811082962962963,
+        "erro_padrao_pp": 0.5314326223673778,
+        "ic90_pp": [
+          -0.6253127075581646,
+          1.1875293001507572
+        ],
+        "ic95_pp": [
+          -0.8112671036350283,
+          1.373483696227621
+        ],
+        "limite_superior_95_pp": 1.1875293001507572,
+        "margem_limite_tost_pp": 1.1875293001507572,
+        "tost": [
+          {
+            "margem_pp": 0.1,
+            "p_inferior": 0.23984254644654257,
+            "p_superior": 0.6320008901488423,
+            "p_tost": 0.6320008901488423,
+            "equivalente_5pct": false
+          },
+          {
+            "margem_pp": 0.25,
+            "p_inferior": 0.16340843192969795,
+            "p_superior": 0.5231156288200393,
+            "p_tost": 0.5231156288200393,
+            "equivalente_5pct": false
+          },
+          {
+            "margem_pp": 0.5,
+            "p_inferior": 0.07680480748983759,
+            "p_superior": 0.34189811240212864,
+            "p_tost": 0.34189811240212864,
+            "equivalente_5pct": false
+          }
+        ]
+      },
+      "independente": {
+        "n_secoes": 4283,
+        "n_locais": 1944,
+        "n_conglomerados": 1944,
+        "graus_liberdade": 1943,
+        "diferenca_pp": -0.04128547849638104,
+        "erro_padrao_pp": 0.04233256649365859,
+        "ic90_pp": [
+          -0.11094956865440991,
+          0.02837861166164784
+        ],
+        "ic95_pp": [
+          -0.12430750105383934,
+          0.04173654406107726
+        ],
+        "limite_superior_95_pp": 0.02837861166164784,
+        "margem_limite_tost_pp": 0.11094956865440991,
+        "tost": [
+          {
+            "margem_pp": 0.1,
+            "p_inferior": 0.0828031186623463,
+            "p_superior": 0.0004306327399807353,
+            "p_tost": 0.0828031186623463,
+            "equivalente_5pct": false
+          },
+          {
+            "margem_pp": 0.25,
+            "p_inferior": 4.452626602834552e-07,
+            "p_superior": 3.997642758300548e-12,
+            "p_tost": 4.452626602834552e-07,
+            "equivalente_5pct": true
+          },
+          {
+            "margem_pp": 0.5,
+            "p_inferior": 6.588169209184696e-27,
+            "p_superior": 2.6391673117281223e-36,
+            "p_tost": 6.588169209184696e-27,
+            "equivalente_5pct": true
+          }
+        ]
+      },
+      "por_municipio": {
+        "n_secoes": 4736,
+        "n_locais": 2150,
+        "n_conglomerados": 657,
+        "graus_liberdade": 656,
+        "diferenca_pp": -0.04388670314611487,
+        "erro_padrao_pp": 0.04066525118451612,
+        "ic90_pp": [
+          -0.11086968140459443,
+          0.023096275112364686
+        ],
+        "ic95_pp": [
+          -0.12373645438559676,
+          0.03596304809336702
+        ],
+        "limite_superior_95_pp": 0.023096275112364686,
+        "margem_limite_tost_pp": 0.11086968140459443,
+        "tost": [
+          {
+            "margem_pp": 0.1,
+            "p_inferior": 0.08404635962160462,
+            "p_superior": 0.00021555285214389596,
+            "p_tost": 0.08404635962160462,
+            "equivalente_5pct": false
+          },
+          {
+            "margem_pp": 0.25,
+            "p_inferior": 2.6101718994867257e-07,
+            "p_superior": 6.885704430559203e-13,
+            "p_tost": 2.6101718994867257e-07,
+            "equivalente_5pct": true
+          },
+          {
+            "margem_pp": 0.5,
+            "p_inferior": 3.924209335474598e-27,
+            "p_superior": 1.4983959719873934e-36,
+            "p_tost": 3.924209335474598e-27,
+            "equivalente_5pct": true
+          }
+        ]
+      }
+    }
+  }
+}

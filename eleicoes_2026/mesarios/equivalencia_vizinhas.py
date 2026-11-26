@@ -27,6 +27,8 @@ from functools import lru_cache
 from math import exp, fsum, isfinite, lgamma, log, log1p, sqrt
 from pathlib import Path
 
+from estatistica_vizinhas import MIN_VIZINHAS_VALIDAS
+
 
 DADOS = Path(__file__).resolve().parent / "dados" / "relatorio"
 MARGENS = (.10, .25, .50)
@@ -143,10 +145,10 @@ def calcular_equivalencia(pasta_dados_relatorio=DADOS):
             if (linha["amostra_teste_votacao"] == "1" if "amostra_teste_votacao" in linha
                     else GRUPO_ABERTO in linha["grupos"].split(" | ")):
                 grupos[turno]["em_aberto"][local].append(excesso)
-            if int(linha["n_controles_validos"]) >= 2:
+            if int(linha["n_controles_validos"]) > MIN_VIZINHAS_VALIDAS:
                 grupos[turno]["independente"][local].append(float(linha[independente]))
             elif linha[independente]:
-                raise ValueError(f"A referência independente exige pelo menos dois controles: {chave}")
+                raise ValueError(f"A referência independente exige pelo menos {MIN_VIZINHAS_VALIDAS + 1} controles: {chave}")
 
     if set(grupos) != {"1", "2"}:
         raise ValueError("A análise conjunta exige seções comparáveis dos dois turnos.")

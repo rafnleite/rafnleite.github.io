@@ -16,6 +16,7 @@
 .mesarios .masthead {background:transparent;color:var(--ink)}
 .mesarios .masthead .eyebrow {color:var(--blue)}
 .mesarios .masthead .deck {color:#505a63;max-width:none}
+.mesarios .masthead .sumario-relatorio a {color:var(--blue)}
 .mesarios .volta-ao-relatorio {display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;max-width:none;margin:0 0 18px;padding:0}
 .mesarios .volta-ao-relatorio a {color:var(--blue);font-weight:650;text-decoration:underline;text-underline-offset:.18em}
 .mesarios .masthead .meta {max-width:none;padding:12px 0;margin:25px 0 30px}
@@ -33,6 +34,7 @@
 .mesarios .lead {font-size:inherit}
 .mesarios .main footer {display:block;max-width:none;margin:40px 0 0;padding:16px 0 0;border-top:1px solid var(--rule);color:var(--muted)}
 .mesarios .main footer p {margin-block:7px 15px}
+:where(.mesarios .main :is(.nota,.intro,.accent)) {padding:9px 15px}
 .mesarios .main :is(.nota,.intro,.accent) {border-left:3px solid var(--blue);background:#f4f8fb;color:var(--ink)}
 .mesarios :is(.fine,.cred,figcaption) {color:var(--muted)}
 .mesarios :is(.scroll,.largo,.rolar) {width:100%;overflow-x:auto}
