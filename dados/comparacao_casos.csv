@@ -1,0 +1,699 @@
+﻿id_caso,ids_arvor_possiveis,turno,titulo,classe,secoes,locais,resultado,candidatos_turno,candidatos_so_outro_turno,omissoes_turno,omissoes_so_outro_turno,secoes_com_outro_turno,secoes_com_candidato_turno,secoes_com_candidato_outro_turno,suplementares_turno,suplementares_so_outro_turno,candidatos_com_contraste,omissoes_com_contraste
+M-D811615A470E,M-D811615A470E,1,000000000400,UFs distintas,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-0D58856F2123,M-0D58856F2123,1,001378422623,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-523C06F2F97C,M-523C06F2F97C,1,003661442607,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-DF34BDF51EE5,M-DF34BDF51EE5,1,003696841872,Municípios distintos na mesma UF,2,2,Omissão compatível no mesmo turno,1,0,1,0,2,1,1,0,0,1,1
+M-C8FC8562A885,M-C8FC8562A885,1,003956732437,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-F0BD22CC9BB0,M-F0BD22CC9BB0,1,004045381368,Municípios distintos na mesma UF,2,2,Omissão compatível no mesmo turno,1,0,1,0,2,1,1,0,0,1,1
+M-74FDC875314B,M-74FDC875314B,1,005752332470,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-3D9E6380E527,M-3D9E6380E527,1,007338602500,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-525CFBB53989,M-525CFBB53989,1,007891742410,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-1E77A04F12458051,M-6A4277D3A1C6 M-C6D9DFC21280 M-C90419CD1C3C,1,007907381090,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-D05F5C20F9BF,M-D05F5C20F9BF,1,007981742402,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-8F8A691579DE,M-8F8A691579DE,1,008052392550,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-2C3C73EF4DA7,M-2C3C73EF4DA7,1,008145110230,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-253A676FCCDF78DE,M-1B30ED07239B M-A3E6765ED47D,1,008362991384,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-65429EC1ABB8,M-65429EC1ABB8,1,009023842348,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-6E71358EA234,M-6E71358EA234,1,010934770744,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-5ABBEE6ACCAD,M-5ABBEE6ACCAD,1,011222522020,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-36CCC5AC24831E5E,M-1DB045E94741 M-37F22A34268C M-F8D24275B7B0,1,012968920779,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-E6D736191287,M-E6D736191287,1,013350962305,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-654C80937D9691D8,M-43AA95354A5D M-6B0B8473F38C,1,013743231465,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-71C8B6467CDE,M-71C8B6467CDE,1,014474361805,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-3FC94AF29737,M-3FC94AF29737,1,015455842003,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-868F9DA649CE,M-868F9DA649CE,1,015473431503,Locais distintos do mesmo município,2,2,Outra operação compatível somente no outro turno,0,1,0,0,2,0,1,0,0,0,0
+M-504F0AAA472D,M-504F0AAA472D,1,015857241074,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-56737337C02A,M-56737337C02A,1,016337360213,UFs distintas,2,2,Omissão compatível somente no outro turno,0,1,0,1,2,0,1,0,0,0,0
+M-41982A66DD7D,M-41982A66DD7D,1,016508671902,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-A56B2EBB0672,M-A56B2EBB0672,1,016869511961,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-0DDF06B1DB0B,M-0DDF06B1DB0B,1,016871001368,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-4D897AE7BA69,M-4D897AE7BA69,1,016892420590,UFs distintas,2,2,Omissão compatível no mesmo turno,1,0,1,0,2,1,1,0,0,1,1
+M-D71B2DAC59F2,M-D71B2DAC59F2,1,017730132097,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-F885A6B989AC,M-F885A6B989AC,1,018367272054,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-9B28243C4B27,M-9B28243C4B27,1,018380722070,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-918CF13B8ECA,M-918CF13B8ECA,1,018997641937,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-5DCE2C8DAAB4,M-5DCE2C8DAAB4,1,019457722330,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-31943BCE07F6,M-31943BCE07F6,1,019561751503,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-DABAD3D2C03E,M-DABAD3D2C03E,1,019819901600,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-9DFB3FB36A02,M-9DFB3FB36A02,1,020733062127,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-237196EB07D0,M-237196EB07D0,1,020807651910,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-527F42DFE576,M-527F42DFE576,1,021013692119,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-D58291EE3203,M-D58291EE3203,1,021399210124,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-A70434832E2FE51E,M-892E3D169A69 M-DF1915FEC76C,1,021743382003,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-02329F72116E,M-02329F72116E,1,021875671473,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-92F6D4907F6A,M-92F6D4907F6A,1,022424990175,Municípios distintos na mesma UF,2,2,Omissão compatível somente no outro turno,0,1,0,1,2,0,1,0,0,0,0
+M-65A52F9E3F2F,M-65A52F9E3F2F,1,022566181902,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-EC6AC13383B4,M-EC6AC13383B4,1,023532791430,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-4DD60740722D1C42,M-754B12EFFE45 M-FAF95ED236BE,1,023628401058,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-6D91F471F8DB,M-6D91F471F8DB,1,023749691457,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-EDE1CEF12C6C,M-EDE1CEF12C6C,1,023789311902,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-6348145D1D99,M-6348145D1D99,1,023898962186,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-73C212998D31,M-73C212998D31,1,024119591783,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-C1BB395B0419,M-C1BB395B0419,1,025384651619,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-7294BE7EFFD0,M-7294BE7EFFD0,1,025385001236,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-816044746EC4BF91,M-6A4277D3A1C6 M-C6D9DFC21280 M-C90419CD1C3C,1,025692171082,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-EA79B189A2F9,M-EA79B189A2F9,1,026319901902,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-0F3E65A3CC92,M-0F3E65A3CC92,1,026374312151,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-38D9805FB116,M-38D9805FB116,1,026875112100,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-4046076E98F0,M-4046076E98F0,1,026929590973,Locais distintos do mesmo município,3,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,3,0,0,0,0,0,0
+M-0ECCE347FA01,M-0ECCE347FA01,1,027460731988,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-BA959B897009,M-BA959B897009,1,027595422100,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-32BEDE77BC54,M-32BEDE77BC54,1,027719042194,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-3B38D4853366,M-3B38D4853366,1,028266330418,Municípios distintos na mesma UF,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-C6034F53F4E1,M-C6034F53F4E1,1,028495750167,Municípios distintos na mesma UF,2,2,Omissão compatível no mesmo turno,1,0,1,0,2,1,1,0,0,1,1
+M-A79DABD55AA8,M-A79DABD55AA8,1,029356751104,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-55CAFF4855BD,M-55CAFF4855BD,1,030283472178,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-6FD7E3BFD8B4,M-6FD7E3BFD8B4,1,030690382127,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-C82890A0591B,M-C82890A0591B,1,030790831627,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-93FCB692BD81,M-93FCB692BD81,1,031203080868,Municípios distintos na mesma UF,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-CA8C16F59410,M-CA8C16F59410,1,031826681872,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-1B90CB794B6D,M-1B90CB794B6D,1,032120021384,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-5DE8F80011C5,M-5DE8F80011C5,1,032204911449,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-16064CC55E2FD05C,M-694255B34907 M-92F61A613665 M-DE79FCDC017B,1,032206791082,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-0C760C2351C8,M-0C760C2351C8,1,032559971864,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-BEAA05334C0C,M-BEAA05334C0C,1,032907910159,Municípios distintos na mesma UF,2,2,Omissão compatível no mesmo turno,1,0,1,0,2,1,1,0,0,1,1
+M-1C313EC345D6,M-1C313EC345D6,1,033212211600,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-10551525F2C5,M-10551525F2C5,1,033686591090,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-3CC785722247,M-3CC785722247,1,033709751600,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-E2EB15A4584B,M-E2EB15A4584B,1,033794781120,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-5E8D49BF0274,M-5E8D49BF0274,1,034148351031,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-B7DF05B666E3,M-B7DF05B666E3,1,034211231430,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-06AA16317C26,M-06AA16317C26,1,034477011627,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-B463A1B03D9C,M-B463A1B03D9C,1,034858811040,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-FD86135228C3,M-FD86135228C3,1,034912761228,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-44783DA336C1,M-44783DA336C1,1,035162131791,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-EB3724642D0C,M-EB3724642D0C,1,035458990825,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-C215CB9191A9,M-C215CB9191A9,1,035608721724,Locais distintos do mesmo município,3,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,3,0,0,0,0,0,0
+M-13E091829A3E,M-13E091829A3E,1,035710371031,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-56608E8E8E03,M-56608E8E8E03,1,036149500701,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-7526A829CFDA,M-7526A829CFDA,1,036368211201,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-37BE75C33C64,M-37BE75C33C64,1,036435391120,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-F6F84C0C19F9,M-F6F84C0C19F9,1,036571571210,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-EECE7A68A30C,M-EECE7A68A30C,1,036714462216,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-3748C6A3A45D,M-3748C6A3A45D,1,036912500868,Municípios distintos na mesma UF,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-FB953F302F26,M-FB953F302F26,1,037312370957,Locais distintos do mesmo município,3,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,3,0,0,0,0,0,0
+M-4E5A3F8458DE,M-4E5A3F8458DE,1,037362640205,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-C1ED43035A61,M-C1ED43035A61,1,037597671015,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-19265F23FF00,M-19265F23FF00,1,038105072712,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-675C18413D26,M-675C18413D26,1,038372731384,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-8DF1136AC190,M-8DF1136AC190,1,038454582704,Municípios distintos na mesma UF,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-D278DB580283,M-D278DB580283,1,038525361040,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-064B65248226,M-064B65248226,1,038773921597,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-2C6D2425E7CA,M-2C6D2425E7CA,1,039274761341,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-065830D824F0,M-065830D824F0,1,039514782216,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-806B5D49C2D7,M-806B5D49C2D7,1,039730811767,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-CD397A03B8B5,M-CD397A03B8B5,1,039775621732,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-DC8D3CC1D030,M-DC8D3CC1D030,1,039932571350,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-B72FA3DE1C0762C0,M-43AA95354A5D M-6B0B8473F38C,1,039952181457,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-2D9CC5F842DC,M-2D9CC5F842DC,1,040084211031,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-CF04D0373A579DCA,M-1DB045E94741 M-37F22A34268C M-F8D24275B7B0,1,040259310752,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-B6D9914B2447,M-B6D9914B2447,1,040338861201,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-AFDF51E18EE87642,M-21C1750E53D3 M-870A43603DB0,1,040682051066,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-E2EFD84C2664C01C,M-0FD859B395DB M-C3A42D02CD1A M-C885AC430A24,1,040796610620,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-F799523BD3EB,M-F799523BD3EB,1,040815320531,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-82CB59E3E7FA4343,M-72D176C9EC50 M-B746616462E2,1,040860660639,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-8938CD42A269,M-8938CD42A269,1,041521292232,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-74D975E3CD34,M-74D975E3CD34,1,042056882283,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-B6D272E5D79D,M-B6D272E5D79D,1,042078341520,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-085960B98A75,M-085960B98A75,1,042233722208,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-755F80A6DB00A196,M-20009C64B756 M-C26CA34E8CCB,1,042724651112,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-CE565326F2475866,M-1B30ED07239B M-A3E6765ED47D,1,042742961309,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-13EB6EB8E0FF,M-13EB6EB8E0FF,1,043047730744,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-8092687FF0BC,M-8092687FF0BC,1,043194482763,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-6B4CA3F65D3A,M-6B4CA3F65D3A,1,043520080710,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-F51C797AD1AF,M-F51C797AD1AF,1,043538180752,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-4F0E50C5378F,M-4F0E50C5378F,1,043562970230,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-43EFF274B4C2,M-43EFF274B4C2,1,043726250795,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-D8559A3B23995B55,M-7CF09CFB624E M-8B5A1DE081C9 M-C6417E675CDD,1,044109381155,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-40A8BBF1DEFC,M-40A8BBF1DEFC,1,045364691295,Locais distintos do mesmo município,3,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,3,0,0,0,0,0,0
+L-C6CBB9A288B1A433,M-14AF65068DC0 M-504B4C27475C M-D2717C954F8E,1,045573541791,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-EB1D65DF3BF8B6B4,M-14AF65068DC0 M-504B4C27475C M-D2717C954F8E,1,045575901783,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-2B65D8175D8F876D,M-694255B34907 M-92F61A613665 M-DE79FCDC017B,1,045805081031,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-E5F12BEA3D875EF7,M-14AF65068DC0 M-504B4C27475C M-D2717C954F8E,1,046226401708,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-7FAF1FC80E36,M-7FAF1FC80E36,1,046279291066,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-1F9BF8F05887FEC8,M-101DAE1C9169 M-93474BCB693C,1,046988041716,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-562F1AB5AD9F,M-562F1AB5AD9F,1,047064171708,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-4B5F82CEB29A4D38,M-0FD859B395DB M-C3A42D02CD1A M-C885AC430A24,1,048269350620,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-248691AF792B,M-248691AF792B,1,048360890795,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-CC9939DDCB1A09A2,M-101DAE1C9169 M-93474BCB693C,1,048437521724,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-3F6364C5FF2F,M-3F6364C5FF2F,1,048860050701,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-B8E7AE554C3A,M-B8E7AE554C3A,1,049741300760,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-ACC651F5A0CA,M-ACC651F5A0CA,1,050783820833,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-733C94FCB14A,M-733C94FCB14A,1,050852610825,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-2714450E1580,M-2714450E1580,1,051037120523,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-5D2850A2D8F9,M-5D2850A2D8F9,1,052791500850,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-21D34913D1B9,M-21D34913D1B9,1,053267771007,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-DA58953E3017,M-DA58953E3017,1,054112910752,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-680621B266CE5F26,M-447E7C27C48D M-E1533D78D581,1,054166981058,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-99FA685B92C8,M-99FA685B92C8,1,054499311333,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-30DD732788B2,M-30DD732788B2,1,055773291007,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-58221A4B872F,M-58221A4B872F,1,056864430744,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-A3AD418B2A6F,M-A3AD418B2A6F,1,057163891180,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-7F006EC6BF6B,M-7F006EC6BF6B,1,057308140841,Locais distintos do mesmo município,3,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,3,0,0,0,0,0,0
+M-EB7864E6542F,M-EB7864E6542F,1,057676791384,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-9BB6E2BC051A,M-9BB6E2BC051A,1,058014690710,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-BD75BCC8A226,M-BD75BCC8A226,1,058031730710,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-C79B4E789BB3,M-C79B4E789BB3,1,058156821384,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-4CA265AF89CB,M-4CA265AF89CB,1,058683531040,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-3AC6F7B336E8,M-3AC6F7B336E8,1,058756671317,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-524034E61887,M-524034E61887,1,058873020230,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-71C70915088D1ECF,M-21C1750E53D3 M-870A43603DB0,1,059759181066,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-88FCC3674D2F,M-88FCC3674D2F,1,059968320809,Municípios distintos na mesma UF,2,2,Outra operação compatível no mesmo turno,1,0,0,0,2,1,1,0,0,1,0
+L-20AE392F87AC4F46,M-892E3D169A69 M-DF1915FEC76C,1,062071901040,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-B120F36AA919,M-B120F36AA919,1,062283071031,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-931A01735D13B115,M-7CF09CFB624E M-8B5A1DE081C9 M-C6417E675CDD,1,063235941139,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-D8F5CF855ED3,M-D8F5CF855ED3,1,063427070892,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-AF3630796AC6,M-AF3630796AC6,1,063684401031,Municípios distintos na mesma UF,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-03542B8CB1EC,M-03542B8CB1EC,1,064450831309,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-BA6FFB7B7D63E0CE,M-66E9E52DC957 M-E9E59EE69742,1,065075141058,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-27D434C5F7D9,M-27D434C5F7D9,1,065109910507,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-6A303985137A,M-6A303985137A,1,065209601155,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-332B3D1D73284E5D,M-754B12EFFE45 M-FAF95ED236BE,1,065369191104,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-5DF9FEFA7830,M-5DF9FEFA7830,1,066618650779,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-4DB099BBD182,M-4DB099BBD182,1,066809781090,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-E2715818D62F,M-E2715818D62F,1,066900590701,Municípios distintos na mesma UF,2,2,Outra operação compatível no mesmo turno,1,0,0,0,2,1,1,0,0,1,0
+L-8D35177AB262FA0D,M-72D176C9EC50 M-B746616462E2,1,067136570655,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-C03562E65A3B,M-C03562E65A3B,1,067424400566,Municípios distintos na mesma UF,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-750705D6F353,M-750705D6F353,1,067527300620,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-E83631B210E8,M-E83631B210E8,1,067693390736,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-68457FC01B87F608,M-096BD42CD5D0 M-E86A2B92F5FF,1,067725470736,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-26B61E1EF6864BB1,M-7CF09CFB624E M-8B5A1DE081C9 M-C6417E675CDD,1,067922691147,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-2D3BB916DE19,M-2D3BB916DE19,1,068007760507,Locais distintos do mesmo município,10,10,Nenhuma das operações testadas encontrou candidato,0,0,0,0,10,0,0,0,0,0,0
+M-A6747D66F2DC,M-A6747D66F2DC,1,068550351198,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-CBDB94FBA0EF,M-CBDB94FBA0EF,1,068551510779,Locais distintos do mesmo município,2,2,Outra operação compatível somente no outro turno,0,1,0,0,2,0,1,0,0,0,0
+M-5EBACBBB2DF3,M-5EBACBBB2DF3,1,068905911023,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-0312D1ABFD40,M-0312D1ABFD40,1,069148531180,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-F21E1956F728,M-F21E1956F728,1,069513060469,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-AD8BBAE0D14B,M-AD8BBAE0D14B,1,069852390817,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-3FC726A58F93,M-3FC726A58F93,1,070087281082,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-C0B02D1A7F76,M-C0B02D1A7F76,1,070370801007,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-8C06DA045CED4E0E,M-66E9E52DC957 M-E9E59EE69742,1,070456871090,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-F65B3BC3AA7F,M-F65B3BC3AA7F,1,070897851090,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-06D9D88D074F,M-06D9D88D074F,1,071053651040,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-BAD68F09B2D5,M-BAD68F09B2D5,1,071059421031,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-7C9E75670564,M-7C9E75670564,1,071119961350,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-E2C1DA26FA29,M-E2C1DA26FA29,1,072126000809,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-145D71FB8FF2,M-145D71FB8FF2,1,072342690728,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-6FBFFCEDAA05,M-6FBFFCEDAA05,1,072351701058,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-4A4B6E76B078,M-4A4B6E76B078,1,072459320787,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-7FA4933F74BE,M-7FA4933F74BE,1,072720121031,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-4A8F8D73AE3AD448,M-694255B34907 M-92F61A613665 M-DE79FCDC017B,1,073724571023,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-9C92282ECE19,M-9C92282ECE19,1,073745880302,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-61E31144DA38,M-61E31144DA38,1,073767320787,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-A5D80FE1F4A4,M-A5D80FE1F4A4,1,073887020817,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-B67D3FDF292E,M-B67D3FDF292E,1,074224901350,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-750BD2834D8F72FC,M-096BD42CD5D0 M-E86A2B92F5FF,1,074284900787,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-3DE67FCAF09D,M-3DE67FCAF09D,1,074316160680,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-D9A8DCD76DC74247,M-447E7C27C48D M-E1533D78D581,1,074728321066,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-8195D5B3AEC6,M-8195D5B3AEC6,1,074913460787,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-EACDDBB5E774,M-EACDDBB5E774,1,075514861090,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-E1D26DD34815B025,M-6A4277D3A1C6 M-C6D9DFC21280 M-C90419CD1C3C,1,075754141023,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-40E48F646DECC8F8,M-1DB045E94741 M-37F22A34268C M-F8D24275B7B0,1,075773620779,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-A80FE6640C89,M-A80FE6640C89,1,076012441317,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-BC45D91C0AF5,M-BC45D91C0AF5,1,076127401309,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-496A985BD358,M-496A985BD358,1,076338311023,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-9948F88FEFEC,M-9948F88FEFEC,1,076958011198,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-97C2C0084087,M-97C2C0084087,1,077065650744,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-C7D603211FE2,M-C7D603211FE2,1,077106741015,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-662AFA94C00A3F90,M-20009C64B756 M-C26CA34E8CCB,1,077109331031,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-5354F93DD6E7,M-5354F93DD6E7,1,077305500876,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-4E21DE6C440E,M-4E21DE6C440E,1,077494950345,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-59565BC185F4,M-59565BC185F4,1,077585570477,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-364625CD0B42,M-364625CD0B42,1,079472390876,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-AC3B44ADC18430AF,M-74FC727474AC M-DB342EAC61DD,1,079532750566,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-05C7795758F5,M-05C7795758F5,1,079871500809,Municípios distintos na mesma UF,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-44250CCF8CED,M-44250CCF8CED,1,080159140612,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-085C583AFB01,M-085C583AFB01,1,080343511112,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-647506F4A3FB,M-647506F4A3FB,1,083061540310,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-AE0F685E9DBB,M-AE0F685E9DBB,1,084179600809,Locais distintos do mesmo município,3,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,3,0,0,0,0,0,0
+M-7BEBC9C2B2CC,M-7BEBC9C2B2CC,1,084261571198,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-150460FB4CCB,M-150460FB4CCB,1,084590880825,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-71DFDB441C93,M-71DFDB441C93,1,084736760639,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-81A103DC7EF1,M-81A103DC7EF1,1,084791740281,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-7897F329A2C0,M-7897F329A2C0,1,085548400655,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-1B22B83C723B,M-1B22B83C723B,1,085791470744,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-4C77DF5E37A7,M-4C77DF5E37A7,1,086005950620,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-D1062DA41D62,M-D1062DA41D62,1,086064501198,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-57F9D8D75EF5,M-57F9D8D75EF5,1,087696070701,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-156CAED92036,M-156CAED92036,1,088042860639,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-D38B60752EE1,M-D38B60752EE1,1,088211440744,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-87C5DE483CC1,M-87C5DE483CC1,1,088641800353,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-470E624FB48D,M-470E624FB48D,1,089018160582,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-8EFE3E58EDEF,M-8EFE3E58EDEF,1,089188570884,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-5BC3E2B98477,M-5BC3E2B98477,1,089202410345,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-8173486CAFF5,M-8173486CAFF5,1,089256910531,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-B03E4089FB4C8320,M-0FD859B395DB M-C3A42D02CD1A M-C885AC430A24,1,090247550680,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-2B5063140B9F,M-2B5063140B9F,1,091275200825,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-0921AC96347D,M-0921AC96347D,1,092007640230,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-3103B3BE1920,M-3103B3BE1920,1,093853240469,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-72A6C081D9E4,M-72A6C081D9E4,1,094155580256,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-A1A4C034462C,M-A1A4C034462C,1,094875960701,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-F25641FA8821,M-F25641FA8821,1,095676370361,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-6000FAC3B570,M-6000FAC3B570,1,095973950485,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-E887C984D580,M-E887C984D580,1,096683300396,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-3FB1D1B23E1B,M-3FB1D1B23E1B,1,096962880272,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-54F5007E28C3,M-54F5007E28C3,1,097241280582,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-BC1DF6C5AF21,M-BC1DF6C5AF21,1,097933140272,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-E26CFAB45649F9D3,M-E73469CF407A M-F3751EA10FE7,1,098309690523,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-7E882CFD0A83,M-7E882CFD0A83,1,098319780671,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-E02EDDB4B1AC,M-E02EDDB4B1AC,1,099029740604,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-27F411CC04DF,M-27F411CC04DF,1,099921480302,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-B86AB4119AC9,M-B86AB4119AC9,1,100669610418,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-095A130EF63D,M-095A130EF63D,1,103487280205,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-4269F747ECE6,M-4269F747ECE6,1,103487690272,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-9D48F754C9E5,M-9D48F754C9E5,1,103893200329,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-17438D20B2AC,M-17438D20B2AC,1,104719330582,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-CF0C586CCC0D,M-CF0C586CCC0D,1,105196840230,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-55662198F22F,M-55662198F22F,1,105736610493,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-2341B43B89E7,M-2341B43B89E7,1,107395450329,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-41BB991445F4,M-41BB991445F4,1,107761500655,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-97A63BFACD7F,M-97A63BFACD7F,1,108845410698,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-8A862D1453D4,M-8A862D1453D4,1,110576370531,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-32FE55072DFAA8D6,M-B7355A0BB425 M-C5DD1B5AD722,1,111270420310,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-3120F53DF5BA,M-3120F53DF5BA,1,112843870558,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-ED298EF405E9,M-ED298EF405E9,1,113244650671,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-7819CDA5446C,M-7819CDA5446C,1,113884980620,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-67D3315B0E42,M-67D3315B0E42,1,114336870337,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-1E807A2A1B98,M-1E807A2A1B98,1,115111460388,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-5976C8904F91,M-5976C8904F91,1,117899270159,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-8BC7FC59422E8FD9,M-115E793680AE M-1E28FDDD14C3 M-8B55FF1550E9,1,118282060590,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-252AE2D88041,M-252AE2D88041,1,118893030639,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-C23076B10DE6,M-C23076B10DE6,1,120286110248,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-BC23646071A3,M-BC23646071A3,1,120764150264,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-983420097FDE,M-983420097FDE,1,120818420361,Locais distintos do mesmo município,3,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,3,0,0,0,0,0,0
+M-9396B81FAC43,M-9396B81FAC43,1,125380890353,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-99EC77A4DB6B,M-99EC77A4DB6B,1,126953980281,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-AB9DB11831E3,M-AB9DB11831E3,1,127871310540,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-C828F08F055D,M-C828F08F055D,1,129630990230,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-7F1D664A16E4,M-7F1D664A16E4,1,129895620388,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-B2300AF92E0B,M-B2300AF92E0B,1,130449470248,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-3C96321A218C,M-3C96321A218C,1,133013530272,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-6162C6F41D32,M-6162C6F41D32,1,135289080540,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-C2F3E7EDF179,M-C2F3E7EDF179,1,135839470256,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-22588128E194,M-22588128E194,1,136429050302,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-737BFAB3E61D,M-737BFAB3E61D,1,136769720515,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-877345CF3192,M-877345CF3192,1,137759030272,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-21B8EF67464D,M-21B8EF67464D,1,139491490205,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-A3A2EFEBAEBE,M-A3A2EFEBAEBE,1,143921500396,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-6C2B631B951F,M-6C2B631B951F,1,146808480272,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-1CB0BD32B0E1,M-1CB0BD32B0E1,1,148577700299,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-02FC5614791D,M-02FC5614791D,1,148782920329,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-8D54C16E6471,M-8D54C16E6471,1,149596420213,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-A8136C20B0AB,M-A8136C20B0AB,1,156293600396,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-3290C60117AF,M-3290C60117AF,1,157471250507,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-756883789656,M-756883789656,1,158420060531,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-8E6797E11219,M-8E6797E11219,1,159399500256,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-F1A9426B627A,M-F1A9426B627A,1,161148950566,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-771F57163A92,M-771F57163A92,1,161472940302,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-1EAA0C57BFCB,M-1EAA0C57BFCB,1,162713330590,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-2A93AFDD58F8,M-2A93AFDD58F8,1,163115420175,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-6F847C3776A6,M-6F847C3776A6,1,164387820205,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-D82672863075,M-D82672863075,1,164709480272,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-92DAED9CABDE,M-92DAED9CABDE,1,165985380213,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-03B083BD6FC89A8B,M-115E793680AE M-1E28FDDD14C3 M-8B55FF1550E9,1,167679050582,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-7B496B3BFD3B463E,M-115E793680AE M-1E28FDDD14C3 M-8B55FF1550E9,1,168753630540,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-855DFDADC8911EF7,M-1BC7CDC990DE M-F4CF6A2CEC99,1,169734590256,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-8DFD670A0D766395,M-1BC7CDC990DE M-F4CF6A2CEC99,1,169735820264,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-FAF1B3BCAFFD,M-FAF1B3BCAFFD,1,169755940116,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-C0E38FBD5A54,M-C0E38FBD5A54,1,169878740213,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-6785D9F89C6B,M-6785D9F89C6B,1,170777820213,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-24D789C0F46EA357,M-74FC727474AC M-DB342EAC61DD,1,171981590566,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-4EF696F6ADE9,M-4EF696F6ADE9,1,180194990329,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-3B7F48B2180928CD,M-B7355A0BB425 M-C5DD1B5AD722,1,180272360353,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-DDC901B21FD1,M-DDC901B21FD1,1,180553770310,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-19F980E5D222,M-19F980E5D222,1,186983760205,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-41C7C2C8C94F,M-41C7C2C8C94F,1,188045900221,Municípios distintos na mesma UF,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-59627D836F01,M-59627D836F01,1,190364500353,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-3465592548B7,M-3465592548B7,1,197680640205,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-AAD40B86AEA7,M-AAD40B86AEA7,1,198047020191,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-5015ED7DDD29,M-5015ED7DDD29,1,201275490108,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-5486898EB9EB,M-5486898EB9EB,1,204066870256,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-E297C26152E2,M-E297C26152E2,1,206002620299,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-A3B5DEA381D1,M-A3B5DEA381D1,1,206474390230,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-8EF007681188,M-8EF007681188,1,209503600221,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-501D7D964B22,M-501D7D964B22,1,216112430256,Locais distintos do mesmo município,3,3,Nenhuma das operações testadas encontrou candidato,0,0,0,0,3,0,0,0,0,0,0
+M-90D60DF4460F,M-90D60DF4460F,1,217157870141,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-CD7BC9FA31E1,M-CD7BC9FA31E1,1,217327770108,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-3FEEBEA311E4,M-3FEEBEA311E4,1,221236900124,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-A938F3309E97,M-A938F3309E97,1,227697460141,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-8B643D12F44F,M-8B643D12F44F,1,229706750248,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-9CC5F32C1726,M-9CC5F32C1726,1,235203280191,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-B7FE3E39FEF5,M-B7FE3E39FEF5,1,256170390183,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-4434C2DA073A,M-4434C2DA073A,1,263854010191,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-B85967144B95,M-B85967144B95,1,264280080132,Municípios distintos na mesma UF,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-66A8185E4E35,M-66A8185E4E35,1,265031630108,Municípios distintos na mesma UF,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-15C3AC10D047,M-15C3AC10D047,1,267474640141,Municípios distintos na mesma UF,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-3295B8FC5590,M-3295B8FC5590,1,277970540175,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-FC93AC7DCE44,M-FC93AC7DCE44,1,290002910159,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-F7AAAE50B058,M-F7AAAE50B058,1,313111870116,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-20FB36F9D78E,M-20FB36F9D78E,1,322975920116,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-67306B465E56,M-67306B465E56,1,327522080191,Municípios distintos na mesma UF,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-6991E2FC1BB9,M-6991E2FC1BB9,1,333501420108,Municípios distintos na mesma UF,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-9F7118D02CF65E40,M-E73469CF407A M-F3751EA10FE7,1,339505570159,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-1E9EE3F495A2,M-1E9EE3F495A2,1,339848590167,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-43AACE9363D2,M-43AACE9363D2,1,341319120116,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-C420CB13A9AB,M-C420CB13A9AB,1,345223060132,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-7A060E33CE77,M-7A060E33CE77,1,356007350191,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-925675C1347C,M-925675C1347C,1,359355890175,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-F0D11EE8BE61,M-F0D11EE8BE61,1,361082630116,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-5C8D1DBBD9AC,M-5C8D1DBBD9AC,1,362730820124,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-2B18D2D8441A,M-2B18D2D8441A,1,368518390167,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-37C874C446A2,M-37C874C446A2,1,375725040116,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-3A12A3C10F89,M-3A12A3C10F89,1,393163630167,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-9949B157E8E9,M-9949B157E8E9,1,394085420167,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-AAC830782299,M-AAC830782299,1,411747780191,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-2766B9D9875C,M-2766B9D9875C,1,422278650132,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-EB6E173AD590,M-EB6E173AD590,1,437710430124,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-8428348D675C,M-8428348D675C,2,000573590701,Municípios distintos na mesma UF,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-776B78F56BEC,M-776B78F56BEC,2,001814280710,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-7B5C3C53AC1F,M-7B5C3C53AC1F,2,002286961430,Municípios distintos na mesma UF,2,2,Omissão compatível no mesmo turno,1,0,1,0,2,1,1,0,0,1,1
+M-7E074A1DF507,M-7E074A1DF507,2,002647582631,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-3D743B914364,M-3D743B914364,2,003397722267,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-6184FD580B07,M-6184FD580B07,2,004077112232,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-CCC98BC43EC4,M-CCC98BC43EC4,2,005864511589,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-9211562EF82A,M-9211562EF82A,2,006252260558,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-80B1065DF8AC,M-80B1065DF8AC,2,006386432518,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-59C218D66B62,M-59C218D66B62,2,007048990485,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-43CD130486E2,M-43CD130486E2,2,008446590281,Municípios distintos na mesma UF,2,2,Omissão compatível no mesmo turno,1,0,1,0,2,1,1,0,0,0,0
+M-D5B5BC903381,M-D5B5BC903381,2,008496210582,UFs distintas,2,2,Omissão compatível no mesmo turno,1,0,1,0,2,1,1,0,0,1,1
+M-DB134560E971,M-DB134560E971,2,011067062232,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-BB767AB8769D,M-BB767AB8769D,2,011262422070,UFs distintas,2,2,Omissão compatível no mesmo turno,1,0,1,0,2,1,1,0,0,1,1
+M-CFAFC3D5AF50,M-CFAFC3D5AF50,2,012020361929,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-E6D736191287,M-E6D736191287,2,013350962305,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-7D65F5D2F1F5,M-7D65F5D2F1F5,2,013588941406,Municípios distintos na mesma UF,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-CA7E53713D2D9061,M-3727DC6DD5DB M-C7A349C1DA59,2,014386362046,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-D8E93BA53130,M-D8E93BA53130,2,015482051970,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-405A471CA420,M-405A471CA420,2,017174280671,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-9E5F93234C9A,M-9E5F93234C9A,2,017471042046,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-32AF06B44F8A,M-32AF06B44F8A,2,017715592089,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-D71B2DAC59F2,M-D71B2DAC59F2,2,017730132097,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-659D1DF522CE,M-659D1DF522CE,2,017825631368,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-9862D0B659C3,M-9862D0B659C3,2,018868791872,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-421CB1DCA748,M-421CB1DCA748,2,020576072224,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-8C76B6E15B97,M-8C76B6E15B97,2,020926262208,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-7149C2A0FFE6,M-7149C2A0FFE6,2,021335081872,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-A52C901B67A7,M-A52C901B67A7,2,021366352070,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-14C273470DE36D99,M-3727DC6DD5DB M-C7A349C1DA59,2,021500582046,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-E510C721236DBE14,M-8ABE106A3EE0 M-A9245FA79F4B M-C05ACFCCE4DE,2,021704570213,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-02329F72116E,M-02329F72116E,2,021875671473,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-3138F5E85E4B,M-3138F5E85E4B,2,021895732020,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-009BE4A49C3F,M-009BE4A49C3F,2,022083300281,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-D9DD2E211D3C,M-D9DD2E211D3C,2,022655781465,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-5E7B070CC41E,M-5E7B070CC41E,2,022679970795,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-D090A2B11EF0,M-D090A2B11EF0,2,022718321201,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-08C2D77BAB59,M-08C2D77BAB59,2,023168362267,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-3B6632D7D35F,M-3B6632D7D35F,2,023456721783,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-EC6AC13383B4,M-EC6AC13383B4,2,023532791430,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-4517DB737BB32E6B,M-51D26821B4C5 M-E110CA215804,2,024018280973,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-93F1D49505D0,M-93F1D49505D0,2,024300762046,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-B0AEECA55842,M-B0AEECA55842,2,025799641090,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-DE86EBDB7FDF,M-DE86EBDB7FDF,2,025897771120,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-E8844EFFF3F5,M-E8844EFFF3F5,2,026524821910,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-B4AF1F8E9B2B,M-B4AF1F8E9B2B,2,026586191333,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-5B727C8E2975,M-5B727C8E2975,2,027336552070,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-92593EF99E7D,M-92593EF99E7D,2,028143561562,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-55B13FE44DDAE313,M-64F65389DFD9 M-87BF962226A3 M-93EE9286470C,2,028589541384,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-668F38B5353D,M-668F38B5353D,2,028775431309,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-D49E3D29050A73FD,M-64F65389DFD9 M-87BF962226A3 M-93EE9286470C,2,029378361325,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-65A70C3AA2F5,M-65A70C3AA2F5,2,029463660710,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-9A501AB594C8,M-9A501AB594C8,2,029463740728,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-F109B695DD34,M-F109B695DD34,2,030077641880,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-F28C4019E4B1,M-F28C4019E4B1,2,030339361872,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-47FE9F5AF6940BFE,M-7B78ED014B99 M-DF9FD68B83F4,2,031257671147,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-2C21F2AFF237,M-2C21F2AFF237,2,031333671821,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-3204C2C7DA0E,M-3204C2C7DA0E,2,032785210965,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-A1DCC96F2FF8,M-A1DCC96F2FF8,2,032814980442,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-EAEA1DCA2C1F,M-EAEA1DCA2C1F,2,033127100477,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-276A90820C39,M-276A90820C39,2,033353731252,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-DF8EFFA8DC30,M-DF8EFFA8DC30,2,033648351821,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,1,0,0,0
+L-23DC188C645BD81F,M-3400FFACF4EB M-7EA43E9D7D61,2,033772951899,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-9E8E183333B2,M-9E8E183333B2,2,033935570124,UFs distintas,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-3F20153AB447,M-3F20153AB447,2,034166381562,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-6FDE86FA8E3E,M-6FDE86FA8E3E,2,034832262224,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-91CAADD4F8B6,M-91CAADD4F8B6,2,034849331856,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-FD86135228C3,M-FD86135228C3,2,034912761228,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-DCC58F14E5B7,M-DCC58F14E5B7,2,035031271317,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-B8F39FAC1C8A0E9B,M-BAF1E7B3182B M-ED1438D64D60,2,035351561104,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-7FF9F386446A,M-7FF9F386446A,2,035356271783,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-EB3724642D0C,M-EB3724642D0C,2,035458990825,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-69C5A7F1B08C,M-69C5A7F1B08C,2,035468181813,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-087E1AC74DE4,M-087E1AC74DE4,2,035511601759,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-3A24203A38EC,M-3A24203A38EC,2,035934900850,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-DB859D1470FF,M-DB859D1470FF,2,036363681350,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-7526A829CFDA,M-7526A829CFDA,2,036368211201,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-828694900B03,M-828694900B03,2,036716101236,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-DAE736F256DD,M-DAE736F256DD,2,036932761805,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-EEDE16CACBF2,M-EEDE16CACBF2,2,037206481660,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-FAF7E8349B0C,M-FAF7E8349B0C,2,037940101147,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-458802BA344F,M-458802BA344F,2,038533311260,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-05700E0E6EA8,M-05700E0E6EA8,2,039055441520,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-3B47183D5D8B,M-3B47183D5D8B,2,039515091252,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-663BB6D61E00,M-663BB6D61E00,2,039526341589,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-0CF73770561D,M-0CF73770561D,2,039622621325,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-D2AE12813E9E,M-D2AE12813E9E,2,040010270493,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-AD78F6647C0C,M-AD78F6647C0C,2,040013341503,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-0B148395BBDD,M-0B148395BBDD,2,040412711376,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-0610FC3097C470DD,M-51D26821B4C5 M-E110CA215804,2,040909800981,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-5A0B8BE0AB0D,M-5A0B8BE0AB0D,2,040911390701,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-71245460B602,M-71245460B602,2,040951481503,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-BBBDB3F1BB3B,M-BBBDB3F1BB3B,2,041227121236,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-CB8776247A86,M-CB8776247A86,2,041254351503,Municípios distintos na mesma UF,2,2,Outra operação compatível no mesmo turno,1,0,0,0,2,1,1,0,0,1,0
+M-FC0C0332DBBB,M-FC0C0332DBBB,2,041378891708,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-45376E022302,M-45376E022302,2,041443861015,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-3833BDDD9369,M-3833BDDD9369,2,042703421058,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-D052D74065AD,M-D052D74065AD,2,043643942291,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-6A90F3AE0A5E,M-6A90F3AE0A5E,2,043836261570,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-7C58ED699E89,M-7C58ED699E89,2,043837121538,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-E02016828756,M-E02016828756,2,045170190833,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-070895E8A955,M-070895E8A955,2,045453650299,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-8472A4B1AEDA,M-8472A4B1AEDA,2,047547742208,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-9ED711204CF5,M-9ED711204CF5,2,048357300680,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-248691AF792B,M-248691AF792B,2,048360890795,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-2931EB9C0D7F,M-2931EB9C0D7F,2,048364091767,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-AF17727487A3,M-AF17727487A3,2,048586191562,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-144CFFEE8622,M-144CFFEE8622,2,049293301333,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-307C6DF18FBD,M-307C6DF18FBD,2,050286831082,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-89112616BCF3,M-89112616BCF3,2,050791950981,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-861F134CF246,M-861F134CF246,2,051441010825,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-80CFDDE156F1,M-80CFDDE156F1,2,052517920868,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-C7A549B704CF,M-C7A549B704CF,2,052978310515,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-CFD4CBBCD15FFFC4,M-0DDF4E431CAA M-567A06EB1AEA,2,053182160523,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-C39C177C7939,M-C39C177C7939,2,053941801325,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-A809AB2EDE60,M-A809AB2EDE60,2,054494131333,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-103FC648F8F1,M-103FC648F8F1,2,055241661325,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-C5C2365436C9,M-C5C2365436C9,2,055694621341,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-65B7F574365D,M-65B7F574365D,2,056005020744,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-06CEE652322870D7,M-6E06D04BBF99 M-DB23D9CC0547,2,056272110817,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-89527B96B2F4,M-89527B96B2F4,2,056625181392,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-7DA78CF02EAF552F,M-5BB2E29B688F M-953A15434865,2,057323071309,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-1F28AD5444DC3F08,M-64F65389DFD9 M-87BF962226A3 M-93EE9286470C,2,057663391040,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-F2C8BA432966,M-F2C8BA432966,2,058687990787,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-606779EAE12A14A2,M-BAF1E7B3182B M-ED1438D64D60,2,059796471325,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-60A5E959028E,M-60A5E959028E,2,061235781147,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-319298851EA1,M-319298851EA1,2,062047571341,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-42273F0421C0,M-42273F0421C0,2,062189781163,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-EEB322043F29,M-EEB322043F29,2,063587281090,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-3C8A5EB8CDD3,M-3C8A5EB8CDD3,2,064108641031,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-355403869011,M-355403869011,2,066849380710,Locais distintos do mesmo município,4,3,Nenhuma das operações testadas encontrou candidato,0,0,0,0,4,0,0,0,0,0,0
+M-456032904A98,M-456032904A98,2,067026280213,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-E6EB5D8D6B65,M-E6EB5D8D6B65,2,067255030558,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-36200864BCC98D01,M-7B78ED014B99 M-DF9FD68B83F4,2,070078530604,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-414FF09ADD59,M-414FF09ADD59,2,071478130426,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-990FCCED2E3A,M-990FCCED2E3A,2,072653850400,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-EC198CAC8B0C,M-EC198CAC8B0C,2,073147991104,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-8F7D3A0451C3,M-8F7D3A0451C3,2,074214391309,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-9CA210243443AEA6,M-4EA06E674E00 M-68D2584CE6BA,2,074487920426,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-8FDEEB8190503327,M-6E06D04BBF99 M-DB23D9CC0547,2,074938190833,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-9F780E3B9681,M-9F780E3B9681,2,077333640701,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-52B82C376BEBFF4E,M-5BB2E29B688F M-953A15434865,2,077399641317,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-A1EC8107BA60,M-A1EC8107BA60,2,077621710590,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-9FAFD7A5198E2E08,M-0E6E042D1926 M-4924C70814E5,2,077709340493,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-551B20B7AD6B,M-551B20B7AD6B,2,079362030469,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-59348A27A659,M-59348A27A659,2,079822970850,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-44250CCF8CED,M-44250CCF8CED,2,080159140612,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-E8A07C8C72A1,M-E8A07C8C72A1,2,080180370302,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-E6FC051282DB,M-E6FC051282DB,2,080399001120,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-EC59D84CA0CD,M-EC59D84CA0CD,2,080701720485,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-9503F49951BC,M-9503F49951BC,2,081888051180,Municípios distintos na mesma UF,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-D51B000A36A2,M-D51B000A36A2,2,082609411112,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-A07609795DF9,M-A07609795DF9,2,082641941333,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-7C51C30D4F18,M-7C51C30D4F18,2,083350380612,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-3702DF3A4EF7,M-3702DF3A4EF7,2,084525911163,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-744FD3074543,M-744FD3074543,2,084533771333,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-838EBF1C50F0,M-838EBF1C50F0,2,085843780442,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-1EFBC57DD2FF8224,M-968A22F8FB9C M-B18FD2DA19E6,2,087177180281,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-9060FBDD20E5,M-9060FBDD20E5,2,087179730230,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-6CF971CB4C08,M-6CF971CB4C08,2,087330340523,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-1D15CD244903,M-1D15CD244903,2,088751650310,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-035DD2EC90E42361,M-7F88FBD3BFEB M-86D7C6A39A6A M-D0650CB05FEC,2,088769270256,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-F8EDDA5C871B,M-F8EDDA5C871B,2,088852331147,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-B691935951DB,M-B691935951DB,2,089000750779,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-1129F2F59DA3,M-1129F2F59DA3,2,089549320752,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-9A77C3ADE963449B,M-8CA6C735A79E M-9C62DB061BE1 M-F857107DB817,2,090135500248,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-90C6BB0D2926,M-90C6BB0D2926,2,091944660205,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-BB0B68C103C2,M-BB0B68C103C2,2,092108270507,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-A7A960DA9AD8,M-A7A960DA9AD8,2,094151680272,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-D5A0CB031383,M-D5A0CB031383,2,094271990728,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-D9791B068446,M-D9791B068446,2,094418950701,Locais distintos do mesmo município,3,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,3,0,0,0,0,0,0
+M-554C3BCCCD42,M-554C3BCCCD42,2,095093710213,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-7150717CC9D3,M-7150717CC9D3,2,095253100566,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-92C696675725,M-92C696675725,2,095611940604,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-3628882542A7,M-3628882542A7,2,096358300701,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-7F02D30F2716,M-7F02D30F2716,2,096980550493,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-19F414867769,M-19F414867769,2,097143350493,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-A37AF6389B81,M-A37AF6389B81,2,097772040469,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-1038711085AD,M-1038711085AD,2,097858020515,Municípios distintos na mesma UF,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-B000A9201B74,M-B000A9201B74,2,099508650868,Locais distintos do mesmo município,3,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,3,0,0,0,0,0,0
+L-1F9853BA5EC0D761,M-13F9585E843F M-766E8C6EB13D M-C59831E18846,2,099995510540,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-662BEA578797,M-662BEA578797,2,100944480256,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-9DD589FBE78B,M-9DD589FBE78B,2,101373390620,Municípios distintos na mesma UF,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-BCCE740F86B33650,M-3400FFACF4EB M-7EA43E9D7D61,2,101404030248,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-68E283E0CE0C,M-68E283E0CE0C,2,101945200256,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-6ED052C293C8,M-6ED052C293C8,2,102438480507,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-B72FB2577335,M-B72FB2577335,2,103237330507,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-4E377314FCF9,M-4E377314FCF9,2,103649090833,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-96E61D5570E4,M-96E61D5570E4,2,103862360264,Municípios distintos na mesma UF,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-172C61D48FDC,M-172C61D48FDC,2,104254380469,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-2B00D8406C90,M-2B00D8406C90,2,104808790299,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-B57147BCE7B5,M-B57147BCE7B5,2,104983360515,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-A213BE63FAAE,M-A213BE63FAAE,2,105102710370,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-3BF4EC745899,M-3BF4EC745899,2,105122670809,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-91E032E8AADA,M-91E032E8AADA,2,106468210299,Locais distintos do mesmo município,4,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,4,0,0,0,0,0,0
+M-98F930700CD6,M-98F930700CD6,2,106666110582,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-C7CE6E0AE3CD4DF2,M-8ABE106A3EE0 M-A9245FA79F4B M-C05ACFCCE4DE,2,107098480221,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-2341B43B89E7,M-2341B43B89E7,2,107395450329,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-B8C27B8437CA,M-B8C27B8437CA,2,107628430213,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-866FE418F7CD,M-866FE418F7CD,2,107874900531,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-36DBCD935AE6,M-36DBCD935AE6,2,109644590604,UFs distintas,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-1FB808ABE103,M-1FB808ABE103,2,111526610426,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-B4B81A7DADF283B0,M-8ABE106A3EE0 M-A9245FA79F4B M-C05ACFCCE4DE,2,111779010248,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-015B33D9F50A20DF,M-13F9585E843F M-766E8C6EB13D M-C59831E18846,2,111818280213,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-39D19B92F6F7,M-39D19B92F6F7,2,113269560213,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-4070DFF9AF67D590,M-968A22F8FB9C M-B18FD2DA19E6,2,113508290281,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-C0E11E532FBB,M-C0E11E532FBB,2,113797810281,Locais distintos do mesmo município,3,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,3,0,0,0,0,0,0
+M-1247E68ED161,M-1247E68ED161,2,113919970329,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-BEF7DF06CADF162E,M-8C2F0D6BAFC0 M-B5038F631601,2,115661790442,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-8A3036935641,M-8A3036935641,2,118085440418,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-798AD8D0C4314AB8,M-4EA06E674E00 M-68D2584CE6BA,2,118091780469,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-8A2B145E0963,M-8A2B145E0963,2,118422260507,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-4D5C291DB6CA,M-4D5C291DB6CA,2,118917340205,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-9A7E8370A744,M-9A7E8370A744,2,120291830256,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-069B06680C16,M-069B06680C16,2,120350900248,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-983420097FDE,M-983420097FDE,2,120818420361,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-1020F6B9D712,M-1020F6B9D712,2,120927400230,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-7E8E21E8BB2A0292,M-0DDF4E431CAA M-567A06EB1AEA,2,120953970582,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-C092D86EE420,M-C092D86EE420,2,121958550281,Municípios distintos na mesma UF,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-0F603C6F6434437A,M-63D2705A5E66 M-F7863D1C1AA6,2,122096520558,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-4376763B03E7,M-4376763B03E7,2,122195080469,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-7B16BB677CC4,M-7B16BB677CC4,2,122215600558,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-4CAC45BF9322,M-4CAC45BF9322,2,122977190205,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-9CA7C51173ED8A72,M-8CA6C735A79E M-9C62DB061BE1 M-F857107DB817,2,122983520213,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-0F8A9DBC7B850199,M-0E6E042D1926 M-4924C70814E5,2,123506970426,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-A323BC3688E6,M-A323BC3688E6,2,123723860485,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-14C4F8FF5FDA9604,M-7F88FBD3BFEB M-86D7C6A39A6A M-D0650CB05FEC,2,124430730221,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-DD83814C6D4F,M-DD83814C6D4F,2,124851950299,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-4322DFB24A78,M-4322DFB24A78,2,125004910353,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-8251F0D93BF14A63,M-7F88FBD3BFEB M-86D7C6A39A6A M-D0650CB05FEC,2,125028620281,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-1533227D87E0,M-1533227D87E0,2,125535660205,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-8038B724C0E6,M-8038B724C0E6,2,125677950221,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-C40A5C7A96561695,M-36B157702F41 M-6E0E3BA2822B,2,126779150159,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-A07CD6E9C168,M-A07CD6E9C168,2,127645240213,Municípios distintos na mesma UF,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-E5B95278ADDF,M-E5B95278ADDF,2,128768470493,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-ACB2AFF97BE78A9B,M-8C2F0D6BAFC0 M-B5038F631601,2,129021370477,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-EFBFBBD0E86068AF,M-C70668BF4B58 M-CAF43138B1D0,2,129047100248,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-ABC81041EFF3,M-ABC81041EFF3,2,129062790213,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-6C28F44C71F2,M-6C28F44C71F2,2,130178470213,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-A1BBBC9904CC1855,M-5AB65CBD3B43 M-B199C54CDB9A M-C99EA6839613,2,131542000310,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-3C96321A218C,M-3C96321A218C,2,133013530272,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-AE6219E24922,M-AE6219E24922,2,133388400299,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-A24F3FACCD78,M-A24F3FACCD78,2,133556250353,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-60D5EF708079,M-60D5EF708079,2,135695450272,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-898562B37CB103F7,M-5AB65CBD3B43 M-B199C54CDB9A M-C99EA6839613,2,136265190370,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-B0917EE31384D18B,M-5AB65CBD3B43 M-B199C54CDB9A M-C99EA6839613,2,136269400302,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-02F6CF0E7C1B,M-02F6CF0E7C1B,2,136797700299,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-93EC22B745F2,M-93EC22B745F2,2,140190560523,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-8F725BFAF870,M-8F725BFAF870,2,140224880329,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-7E4B68A66AE7,M-7E4B68A66AE7,2,140297670574,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-FCC04A243291,M-FCC04A243291,2,142167580248,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-AEDA4754E3DA,M-AEDA4754E3DA,2,144860700582,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-56F745C7E0BE,M-56F745C7E0BE,2,145880230507,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-71D59E02AFBECD76,M-92A000A1B5D2 M-9DECBABAA52F M-A824611B7039,2,146001320205,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-ED75705B512B,M-ED75705B512B,2,146895960370,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-41B9E96F0DB8,M-41B9E96F0DB8,2,149067530248,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-79107469F6023322,M-63D2705A5E66 M-F7863D1C1AA6,2,149480920507,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-8D54C16E6471,M-8D54C16E6471,2,149596420213,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-CEFC58D6199E,M-CEFC58D6199E,2,152066430281,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-3BDD10087FF6,M-3BDD10087FF6,2,152278740256,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-96CB45D04500,M-96CB45D04500,2,152770480388,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-97A63DE5A425,M-97A63DE5A425,2,153373880310,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-A83D923AF1ED,M-A83D923AF1ED,2,155747530337,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-F4615DF972CD,M-F4615DF972CD,2,155971150281,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-09F523C7CE86,M-09F523C7CE86,2,158345610248,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-71F425E9AB18,M-71F425E9AB18,2,158374920248,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-266802DA8032,M-266802DA8032,2,158674840272,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-974F71359D83,M-974F71359D83,2,159514140523,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-16D08430A95F,M-16D08430A95F,2,160553280281,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-D4025F21D560C6B1,M-CA76A45B5D46 M-E363CEF58530,2,160555510256,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-A05560775855,M-A05560775855,2,161263940515,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-6EFF82EA34BD,M-6EFF82EA34BD,2,161267750213,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-771F57163A92,M-771F57163A92,2,161472940302,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-89B3AD57A61E,M-89B3AD57A61E,2,161533140213,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-7841B57C8459,M-7841B57C8459,2,162197040272,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-A0D12EB160EC,M-A0D12EB160EC,2,162389650256,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-6BE731C17C743F4B,M-92A000A1B5D2 M-9DECBABAA52F M-A824611B7039,2,162576170205,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-6FB24D9799AD,M-6FB24D9799AD,2,162854780213,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-648451172DEA,M-648451172DEA,2,166332690302,Locais distintos do mesmo município,2,2,Outra operação compatível no mesmo turno,1,0,0,0,2,1,1,0,0,1,0
+M-C896807DC236,M-C896807DC236,2,169278250256,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-56248AA845BD,M-56248AA845BD,2,169558780590,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-C0E38FBD5A54,M-C0E38FBD5A54,2,169878740213,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-DAB0A007A18D,M-DAB0A007A18D,2,170092230523,Municípios distintos na mesma UF,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-6785D9F89C6B,M-6785D9F89C6B,2,170777820213,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-0DCD63CAC0E7,M-0DCD63CAC0E7,2,170990280116,Municípios distintos na mesma UF,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-C55043C25485,M-C55043C25485,2,171782300256,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-3005C0BBA39B,M-3005C0BBA39B,2,171796430281,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-9A1D455CAFD0,M-9A1D455CAFD0,2,173403730558,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-DFE34B146E49923B,M-CA76A45B5D46 M-E363CEF58530,2,173687150167,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-E8D8278B3877,M-E8D8278B3877,2,174160360248,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-10CBADB26337,M-10CBADB26337,2,176311210310,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-C0D98EED9048,M-C0D98EED9048,2,176434790582,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-B418E488B610,M-B418E488B610,2,178447240221,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-0859F83D242C,M-0859F83D242C,2,178594700299,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-FB4737BA12610FB1,M-9D9C639D0DE1 M-F678626D804D,2,179038270230,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-7F19659807AD,M-7F19659807AD,2,179817450213,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-25628E1035B9,M-25628E1035B9,2,182177590396,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-5FEA5B591B23,M-5FEA5B591B23,2,183884560264,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,1,0,0
+L-1A6FBAD90FEE05C5,M-36B157702F41 M-6E0E3BA2822B,2,184598130132,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-99C90478C256,M-99C90478C256,2,187054990213,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-BF92C805D657,M-BF92C805D657,2,187148910213,Locais distintos do mesmo município,2,2,Outra operação compatível no mesmo turno,1,0,0,0,2,1,1,0,1,1,0
+M-83658A8FC9AB,M-83658A8FC9AB,2,190768290213,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-B3AA692A12A6,M-B3AA692A12A6,2,194555580256,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-6FC7D95748AB,M-6FC7D95748AB,2,197889460281,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-C087F52E318B,M-C087F52E318B,2,198006470213,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-1D372984B399,M-1D372984B399,2,198636220191,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-4A34DCA8FBBC6F57,M-8CA6C735A79E M-9C62DB061BE1 M-F857107DB817,2,202069820264,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-04099ACDC473,M-04099ACDC473,2,206791830264,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-DDD250A9D080C6CF,M-9D9C639D0DE1 M-F678626D804D,2,209053010213,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-19A8F6F7EBBE,M-19A8F6F7EBBE,2,210981640248,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-57723A6B6A39,M-57723A6B6A39,2,212706410213,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-001AD9BBF377,M-001AD9BBF377,2,214522320264,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-0467004D4FBA,M-0467004D4FBA,2,214576140116,Municípios distintos na mesma UF,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-501D7D964B22,M-501D7D964B22,2,216112430256,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-90D60DF4460F,M-90D60DF4460F,2,217157870141,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-5A1525D44408,M-5A1525D44408,2,217791970221,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-F65A437CBCF2,M-F65A437CBCF2,2,218765880264,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-E07FBDA550BCFE95,M-13F9585E843F M-766E8C6EB13D M-C59831E18846,2,219839860272,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-482F5545534E,M-482F5545534E,2,220248820264,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-A938F3309E97,M-A938F3309E97,2,227697460141,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-B291D40870902560,M-C70668BF4B58 M-CAF43138B1D0,2,229575970183,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+L-C328469D3BACDB0A,M-92A000A1B5D2 M-9DECBABAA52F M-A824611B7039,2,237676180248,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-71D1140CB629,M-71D1140CB629,2,238363580191,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-018804583C85,M-018804583C85,2,297173390116,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-97E6430DA8FF,M-97E6430DA8FF,2,300661430167,Municípios distintos na mesma UF,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-BB04363128ED,M-BB04363128ED,2,304488950108,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-ADF1B5228749,M-ADF1B5228749,2,306286620191,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-0F62F2F833C0,M-0F62F2F833C0,2,309205800183,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-121AA5A24DB6,M-121AA5A24DB6,2,316741230108,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-8837939BCB68,M-8837939BCB68,2,323448890159,Municípios distintos na mesma UF,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-3E6EBF7E99EC,M-3E6EBF7E99EC,2,364302390191,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-EB6E173AD590,M-EB6E173AD590,2,437710430124,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0
+M-303EC9AD19E1,M-303EC9AD19E1,2,459142970167,Locais distintos do mesmo município,2,2,Nenhuma das operações testadas encontrou candidato,0,0,0,0,2,0,0,0,0,0,0

@@ -1,0 +1,932 @@
+{
+  "bahia": {
+    "id_caso": "M-DAB0A007A18D",
+    "titulo_repetido": "170092230523",
+    "titulo_alternativo": "137009230523",
+    "secoes": [
+      {
+        "turno": 1,
+        "uf": "BA",
+        "codigo_municipio": "34436",
+        "municipio": "CASA NOVA",
+        "zona": 66,
+        "secao": 249,
+        "local": "1996",
+        "nome": "CENTRO EDUCACIONAL SÃO SEBASTIÃO",
+        "endereco": "DISTRITO PAU A PIQUE - ZONA RURAL",
+        "bairro": "DISTRITO PAU A PIQUE",
+        "cep": "47300000",
+        "latitude": "-9.62027293",
+        "longitude": "-41.61981585",
+        "local_arvor": "1996",
+        "urnas": [
+          "02272888"
+        ],
+        "registros": [
+          {
+            "titulo": "137009230523",
+            "data_hora": "04/10/2026 07:16:20",
+            "urna": "02272888",
+            "etapa": "abertura",
+            "membro": "logd.dat",
+            "linha": 821,
+            "linha_marcador": 807,
+            "eleitor_da_secao": "sim",
+            "linha_eleitor_da_secao": 820
+          },
+          {
+            "titulo": "137009230523",
+            "data_hora": "04/10/2026 18:07:57",
+            "urna": "02272888",
+            "etapa": "encerramento",
+            "membro": "logd.dat",
+            "linha": 7052,
+            "linha_marcador": 7036,
+            "eleitor_da_secao": "sim",
+            "linha_eleitor_da_secao": 7051
+          }
+        ],
+        "habilitacoes": [
+          {
+            "titulo": "137009230523",
+            "data_hora": "04/10/2026 09:52:41",
+            "urna": "02272888",
+            "etapa": "fora do ciclo",
+            "membro": "logd.dat",
+            "linha": 2110,
+            "linha_marcador": 831
+          },
+          {
+            "titulo": "137009230523",
+            "data_hora": "04/10/2026 09:54:56",
+            "urna": "02272888",
+            "etapa": "fora do ciclo",
+            "membro": "logd.dat",
+            "linha": 2144,
+            "linha_marcador": 831
+          },
+          {
+            "titulo": "137009230523",
+            "data_hora": "04/10/2026 11:51:28",
+            "urna": "02272888",
+            "etapa": "fora do ciclo",
+            "membro": "logd.dat",
+            "linha": 3083,
+            "linha_marcador": 831
+          }
+        ],
+        "equipe_abertura": 4,
+        "equipe_encerramento": 4,
+        "equipe_em_ambas": 4,
+        "alvos_so_abertura": [],
+        "alvos_so_encerramento": [],
+        "arquivo": "logs/1/BA/o03220ba3443600660249-log.jez",
+        "sha256": "77c02cf8d80fef040cf427bf3f1d29ab7dfbec047a16a1ea5134cc1b4f018bf9",
+        "url_log": "https://resultados.tse.jus.br/oficial/ele2026/arquivo-urna/3220/dados/ba/34436/0066/0249/5131426f784b4278672d68454a784a79527130542d4b43784737474667445132506c6b63562b73762d73303d/o03220ba3443600660249-log.jez"
+      },
+      {
+        "turno": 1,
+        "uf": "BA",
+        "codigo_municipio": "38075",
+        "municipio": "PORTO SEGURO",
+        "zona": 122,
+        "secao": 643,
+        "local": "1546",
+        "nome": "ESCOLA MUNICIPAL INFANTIL CANTINHO DA PAZ",
+        "endereco": "RUA FREI COIMBRA, 700 - MERCADO DO POVO - ZONA URBANA",
+        "bairro": "FREI CALIXTO",
+        "cep": "45810000",
+        "latitude": "-16.4224217",
+        "longitude": "-39.08248",
+        "local_arvor": "1546",
+        "urnas": [
+          "02049518"
+        ],
+        "registros": [
+          {
+            "titulo": "170092230523",
+            "data_hora": "04/10/2026 07:18:53",
+            "urna": "02049518",
+            "etapa": "abertura",
+            "membro": "logd.dat",
+            "linha": 586,
+            "linha_marcador": 569,
+            "eleitor_da_secao": "sim",
+            "linha_eleitor_da_secao": 585
+          },
+          {
+            "titulo": "170092230523",
+            "data_hora": "04/10/2026 17:19:31",
+            "urna": "02049518",
+            "etapa": "encerramento",
+            "membro": "logd.dat",
+            "linha": 5855,
+            "linha_marcador": 5831,
+            "eleitor_da_secao": "sim",
+            "linha_eleitor_da_secao": 5854
+          }
+        ],
+        "habilitacoes": [],
+        "equipe_abertura": 4,
+        "equipe_encerramento": 4,
+        "equipe_em_ambas": 3,
+        "alvos_so_abertura": [],
+        "alvos_so_encerramento": [],
+        "arquivo": "logs/1/BA/o03220ba3807501220643-log.jez",
+        "sha256": "d26a1c744b933dcf145947bb5e1d22bc308e45fdf2fdf775a5fe8398ea087cac",
+        "url_log": "https://resultados.tse.jus.br/oficial/ele2026/arquivo-urna/3220/dados/ba/38075/0122/0643/4c463866705773776874643941674861747256736f70554641486a726f3431474b494775305070506973513d/o03220ba3807501220643-log.jez"
+      },
+      {
+        "turno": 2,
+        "uf": "BA",
+        "codigo_municipio": "34436",
+        "municipio": "CASA NOVA",
+        "zona": 66,
+        "secao": 249,
+        "local": "1996",
+        "nome": "CENTRO EDUCACIONAL SÃO SEBASTIÃO",
+        "endereco": "DISTRITO PAU A PIQUE - ZONA RURAL",
+        "bairro": "DISTRITO PAU A PIQUE",
+        "cep": "47300000",
+        "latitude": "-9.62027293",
+        "longitude": "-41.61981585",
+        "local_arvor": "1996",
+        "urnas": [
+          "02272888"
+        ],
+        "registros": [
+          {
+            "titulo": "137009230523",
+            "data_hora": "25/10/2026 07:31:33",
+            "urna": "02272888",
+            "etapa": "abertura",
+            "membro": "logd.dat",
+            "linha": 7658,
+            "linha_marcador": 7644,
+            "eleitor_da_secao": "sim",
+            "linha_eleitor_da_secao": 7657
+          },
+          {
+            "titulo": "170092230523",
+            "data_hora": "25/10/2026 17:03:15",
+            "urna": "02272888",
+            "etapa": "encerramento",
+            "membro": "logd.dat",
+            "linha": 11399,
+            "linha_marcador": 11378,
+            "eleitor_da_secao": "não",
+            "linha_eleitor_da_secao": 11398
+          }
+        ],
+        "habilitacoes": [
+          {
+            "titulo": "137009230523",
+            "data_hora": "25/10/2026 11:28:57",
+            "urna": "02272888",
+            "etapa": "fora do ciclo",
+            "membro": "logd.dat",
+            "linha": 9441,
+            "linha_marcador": 7667
+          },
+          {
+            "titulo": "137009230523",
+            "data_hora": "25/10/2026 11:31:07",
+            "urna": "02272888",
+            "etapa": "fora do ciclo",
+            "membro": "logd.dat",
+            "linha": 9468,
+            "linha_marcador": 7667
+          },
+          {
+            "titulo": "137009230523",
+            "data_hora": "25/10/2026 15:16:44",
+            "urna": "02272888",
+            "etapa": "fora do ciclo",
+            "membro": "logd.dat",
+            "linha": 10670,
+            "linha_marcador": 7667
+          },
+          {
+            "titulo": "137009230523",
+            "data_hora": "25/10/2026 15:19:28",
+            "urna": "02272888",
+            "etapa": "fora do ciclo",
+            "membro": "logd.dat",
+            "linha": 10716,
+            "linha_marcador": 7667
+          }
+        ],
+        "equipe_abertura": 4,
+        "equipe_encerramento": 4,
+        "equipe_em_ambas": 3,
+        "alvos_so_abertura": [
+          "137009230523"
+        ],
+        "alvos_so_encerramento": [
+          "170092230523"
+        ],
+        "arquivo": "logs/2/BA/o03221ba3443600660249-log.jez",
+        "sha256": "7988f874ad160d167f7c4985fd492c2328afdf21694525965f39ff310dc524d6",
+        "url_log": "https://resultados.tse.jus.br/oficial/ele2026/arquivo-urna/3221/dados/ba/34436/0066/0249/614b31414a33594b7a50367239414e4a4b426c7a75304d4b4835542d496e324a6b676a61486379317348733d/o03221ba3443600660249-log.jez"
+      },
+      {
+        "turno": 2,
+        "uf": "BA",
+        "codigo_municipio": "38075",
+        "municipio": "PORTO SEGURO",
+        "zona": 122,
+        "secao": 643,
+        "local": "1546",
+        "nome": "ESCOLA MUNICIPAL INFANTIL CANTINHO DA PAZ",
+        "endereco": "RUA FREI COIMBRA, 700 - MERCADO DO POVO - ZONA URBANA",
+        "bairro": "FREI CALIXTO",
+        "cep": "45810000",
+        "latitude": "-16.4224217",
+        "longitude": "-39.08248",
+        "local_arvor": "1546",
+        "urnas": [
+          "02049518"
+        ],
+        "registros": [
+          {
+            "titulo": "170092230523",
+            "data_hora": "25/10/2026 07:13:07",
+            "urna": "02049518",
+            "etapa": "abertura",
+            "membro": "logd.dat",
+            "linha": 6468,
+            "linha_marcador": 6442,
+            "eleitor_da_secao": "sim",
+            "linha_eleitor_da_secao": 6467
+          },
+          {
+            "titulo": "170092230523",
+            "data_hora": "25/10/2026 17:02:54",
+            "urna": "02049518",
+            "etapa": "encerramento",
+            "membro": "logd.dat",
+            "linha": 10067,
+            "linha_marcador": 10045,
+            "eleitor_da_secao": "sim",
+            "linha_eleitor_da_secao": 10066
+          }
+        ],
+        "habilitacoes": [],
+        "equipe_abertura": 4,
+        "equipe_encerramento": 4,
+        "equipe_em_ambas": 4,
+        "alvos_so_abertura": [],
+        "alvos_so_encerramento": [],
+        "arquivo": "logs/2/BA/o03221ba3807501220643-log.jez",
+        "sha256": "3d8da9b930f261ce66dc251e6cddf437418424fbe6e50ada72d10e5a651eba63",
+        "url_log": "https://resultados.tse.jus.br/oficial/ele2026/arquivo-urna/3221/dados/ba/38075/0122/0643/334e4462524c2b746b336a684838663256716f6845733738456c67534b552d704762617a65765357634d413d/o03221ba3807501220643-log.jez"
+      }
+    ],
+    "intervalo_encerramentos_s": 21,
+    "distancia_reta_km": 804.7028,
+    "comparacao": {
+      "origem": "137009230523",
+      "intermediario": "17009230523",
+      "destino": "170092230523",
+      "posicao_omitida_na_origem": 2,
+      "digito_omitido": "3",
+      "posicao_duplicada_na_origem": 7,
+      "digito_duplicado": "2",
+      "alinhamento_origem": "1370092–30523",
+      "alinhamento_destino": "1–70092230523"
+    }
+  },
+  "sao_paulo": {
+    "id_caso": "M-2D3BB916DE19",
+    "titulo_repetido": "068007760507",
+    "secoes": [
+      {
+        "turno": 1,
+        "uf": "SP",
+        "codigo_municipio": "71072",
+        "municipio": "SÃO PAULO",
+        "zona": 254,
+        "secao": 75,
+        "local": "1066",
+        "nome": "EMEF. JOÃO DOMINGUES SAMPAIO",
+        "endereco": "RUA GASTÃO MADEIRA, 386",
+        "bairro": "VILA MARIA ALTA",
+        "cep": "02131080",
+        "latitude": "-23.5058564",
+        "longitude": "-46.5848414",
+        "local_arvor": "1066",
+        "urnas": [
+          "02337509"
+        ],
+        "registros": [
+          {
+            "titulo": "068007760507",
+            "data_hora": "04/10/2026 17:04:44",
+            "urna": "02337509",
+            "etapa": "encerramento",
+            "membro": "logd.dat",
+            "linha": 5495,
+            "linha_marcador": 5492,
+            "eleitor_da_secao": "não",
+            "linha_eleitor_da_secao": 5494
+          }
+        ],
+        "habilitacoes": [],
+        "equipe_abertura": 4,
+        "equipe_encerramento": 4,
+        "equipe_em_ambas": 3,
+        "alvos_so_abertura": [],
+        "alvos_so_encerramento": [
+          "068007760507"
+        ],
+        "arquivo": "logs/1/SP/o03220sp7107202540075-log.jez",
+        "sha256": "9f2f37ae2531ff236994e154daf5b46dd5713934e9f58c4f5ceb016430b0a2f0",
+        "url_log": "https://resultados.tse.jus.br/oficial/ele2026/arquivo-urna/3220/dados/sp/71072/0254/0075/7476646235363373333658464e5078556b6d314d486231616c52423541583370575a4239785a3748594a553d/o03220sp7107202540075-log.jez"
+      },
+      {
+        "turno": 1,
+        "uf": "SP",
+        "codigo_municipio": "71072",
+        "municipio": "SÃO PAULO",
+        "zona": 254,
+        "secao": 95,
+        "local": "1082",
+        "nome": "EMEF. DOM PEDRO I",
+        "endereco": "PRAÇA PRES. JÂNIO DA SILVA QUADROS, 420",
+        "bairro": "JARDIM JAPÃO",
+        "cep": "02132000",
+        "latitude": "-23.5001083",
+        "longitude": "-46.5821777",
+        "local_arvor": "1082",
+        "urnas": [
+          "02345089"
+        ],
+        "registros": [
+          {
+            "titulo": "068007760507",
+            "data_hora": "04/10/2026 17:02:35",
+            "urna": "02345089",
+            "etapa": "encerramento",
+            "membro": "logd.dat",
+            "linha": 5099,
+            "linha_marcador": 5090,
+            "eleitor_da_secao": "não",
+            "linha_eleitor_da_secao": 5098
+          }
+        ],
+        "habilitacoes": [],
+        "equipe_abertura": 4,
+        "equipe_encerramento": 4,
+        "equipe_em_ambas": 3,
+        "alvos_so_abertura": [],
+        "alvos_so_encerramento": [
+          "068007760507"
+        ],
+        "arquivo": "logs/1/SP/o03220sp7107202540095-log.jez",
+        "sha256": "5b1e8b3c280695cf5dfd11193e4e472ee16a5f6f5c67a9aabb6afa8952163607",
+        "url_log": "https://resultados.tse.jus.br/oficial/ele2026/arquivo-urna/3220/dados/sp/71072/0254/0095/434272436262665778443054496635624d6647535971585338546d39464e787a4f6f4436456e4d775553673d/o03220sp7107202540095-log.jez"
+      },
+      {
+        "turno": 1,
+        "uf": "SP",
+        "codigo_municipio": "71072",
+        "municipio": "SÃO PAULO",
+        "zona": 254,
+        "secao": 146,
+        "local": "1139",
+        "nome": "EMEF. CEL. ROMÃO GOMES",
+        "endereco": "RUA SOLDADO JOSÉ VICENTE DE PAULA, 140",
+        "bairro": "PARQUE NOVO MUNDO",
+        "cep": "02180020",
+        "latitude": "-23.5209702",
+        "longitude": "-46.5663902",
+        "local_arvor": "1139",
+        "urnas": [
+          "01811917"
+        ],
+        "registros": [
+          {
+            "titulo": "068007760507",
+            "data_hora": "04/10/2026 17:02:22",
+            "urna": "01811917",
+            "etapa": "encerramento",
+            "membro": "logd.dat",
+            "linha": 6688,
+            "linha_marcador": 6685,
+            "eleitor_da_secao": "não",
+            "linha_eleitor_da_secao": 6687
+          }
+        ],
+        "habilitacoes": [],
+        "equipe_abertura": 4,
+        "equipe_encerramento": 3,
+        "equipe_em_ambas": 1,
+        "alvos_so_abertura": [],
+        "alvos_so_encerramento": [
+          "068007760507"
+        ],
+        "arquivo": "logs/1/SP/o03220sp7107202540146-log.jez",
+        "sha256": "497dda2174ee4b897acdcb5dd7c77b0c9c17bd4c62d5c0b8ca565ed52644adbb",
+        "url_log": "https://resultados.tse.jus.br/oficial/ele2026/arquivo-urna/3220/dados/sp/71072/0254/0146/59636c61524349316a635132392d63432b4f2d627a43636f527a506f594555384142334b327450463139553d/o03220sp7107202540146-log.jez"
+      },
+      {
+        "turno": 1,
+        "uf": "SP",
+        "codigo_municipio": "71072",
+        "municipio": "SÃO PAULO",
+        "zona": 254,
+        "secao": 154,
+        "local": "1147",
+        "nome": "EMEF. CEL. ARY GOMES",
+        "endereco": "RUA BENEDITO ALÉSSIO, 184",
+        "bairro": "JARDIM ANDARAI",
+        "cep": "02166100",
+        "latitude": "-23.5264211",
+        "longitude": "-46.5822135",
+        "local_arvor": "1147",
+        "urnas": [
+          "01820381"
+        ],
+        "registros": [
+          {
+            "titulo": "068007760507",
+            "data_hora": "04/10/2026 17:01:27",
+            "urna": "01820381",
+            "etapa": "encerramento",
+            "membro": "logd.dat",
+            "linha": 6504,
+            "linha_marcador": 6501,
+            "eleitor_da_secao": "não",
+            "linha_eleitor_da_secao": 6503
+          }
+        ],
+        "habilitacoes": [],
+        "equipe_abertura": 3,
+        "equipe_encerramento": 3,
+        "equipe_em_ambas": 2,
+        "alvos_so_abertura": [],
+        "alvos_so_encerramento": [
+          "068007760507"
+        ],
+        "arquivo": "logs/1/SP/o03220sp7107202540154-log.jez",
+        "sha256": "208f7879ebb8a4ef28c97141aa8103cad4600f70e8543a8d3413efef0e2af9a1",
+        "url_log": "https://resultados.tse.jus.br/oficial/ele2026/arquivo-urna/3220/dados/sp/71072/0254/0154/794137386d6c303333523851494845713937734c3379626e30486e522d416d5479576a51543966757374593d/o03220sp7107202540154-log.jez"
+      },
+      {
+        "turno": 1,
+        "uf": "SP",
+        "codigo_municipio": "71072",
+        "municipio": "SÃO PAULO",
+        "zona": 254,
+        "secao": 178,
+        "local": "1171",
+        "nome": "EMEF. RUY BARBOSA",
+        "endereco": "AV. CONCEIÇÃO, 1385",
+        "bairro": "VILA PAIVA",
+        "cep": "02072001",
+        "latitude": "-23.5003833",
+        "longitude": "-46.6005183",
+        "local_arvor": "1171",
+        "urnas": [
+          "02060149"
+        ],
+        "registros": [
+          {
+            "titulo": "068007760507",
+            "data_hora": "04/10/2026 17:04:54",
+            "urna": "02060149",
+            "etapa": "encerramento",
+            "membro": "logd.dat",
+            "linha": 5267,
+            "linha_marcador": 5254,
+            "eleitor_da_secao": "não",
+            "linha_eleitor_da_secao": 5266
+          }
+        ],
+        "habilitacoes": [],
+        "equipe_abertura": 4,
+        "equipe_encerramento": 3,
+        "equipe_em_ambas": 2,
+        "alvos_so_abertura": [],
+        "alvos_so_encerramento": [
+          "068007760507"
+        ],
+        "arquivo": "logs/1/SP/o03220sp7107202540178-log.jez",
+        "sha256": "234475ddd59c57103c9cec47f4535e8fb23c4a6ab1aa84e593730d9c1ebae34f",
+        "url_log": "https://resultados.tse.jus.br/oficial/ele2026/arquivo-urna/3220/dados/sp/71072/0254/0178/4c397541544a507663364f414f7532454f326f6161302d50397853572d306a597677326a7a514c575a636f3d/o03220sp7107202540178-log.jez"
+      },
+      {
+        "turno": 1,
+        "uf": "SP",
+        "codigo_municipio": "71072",
+        "municipio": "SÃO PAULO",
+        "zona": 254,
+        "secao": 187,
+        "local": "1180",
+        "nome": "EE. PROF. NARBAL FONTES",
+        "endereco": "AVENIDA CONCEIÇÃO, 806",
+        "bairro": "VILA PAIVA",
+        "cep": "02072000",
+        "latitude": "-23.5003931",
+        "longitude": "-46.6056218",
+        "local_arvor": "1180",
+        "urnas": [
+          "02339449"
+        ],
+        "registros": [
+          {
+            "titulo": "068007760507",
+            "data_hora": "04/10/2026 17:03:08",
+            "urna": "02339449",
+            "etapa": "registro pelo menu de votação",
+            "membro": "logd.dat",
+            "linha": 5676,
+            "linha_marcador": 5669,
+            "eleitor_da_secao": "não",
+            "linha_eleitor_da_secao": 5675
+          },
+          {
+            "titulo": "068007760507",
+            "data_hora": "04/10/2026 17:06:03",
+            "urna": "02339449",
+            "etapa": "encerramento",
+            "membro": "logd.dat",
+            "linha": 5708,
+            "linha_marcador": 5692,
+            "eleitor_da_secao": "não",
+            "linha_eleitor_da_secao": 5707
+          }
+        ],
+        "habilitacoes": [],
+        "equipe_abertura": 4,
+        "equipe_encerramento": 4,
+        "equipe_em_ambas": 3,
+        "alvos_so_abertura": [],
+        "alvos_so_encerramento": [
+          "068007760507"
+        ],
+        "arquivo": "logs/1/SP/o03220sp7107202540187-log.jez",
+        "sha256": "871e1c4310a06bce343e06af306db3e276e9c7918f4ae205ff967ad461b766fd",
+        "url_log": "https://resultados.tse.jus.br/oficial/ele2026/arquivo-urna/3220/dados/sp/71072/0254/0187/646e3034474e456537697a6f6c4e4352724157447a716d3350746376574661417744485451442b5a6365413d/o03220sp7107202540187-log.jez"
+      },
+      {
+        "turno": 1,
+        "uf": "SP",
+        "codigo_municipio": "71072",
+        "municipio": "SÃO PAULO",
+        "zona": 254,
+        "secao": 267,
+        "local": "1252",
+        "nome": "EE. PROFª. ANÉSIA SINCORÁ",
+        "endereco": "RUA JOSÉ BERNARDO PINTO, 758",
+        "bairro": "VILA GUILHERME",
+        "cep": "02055001",
+        "latitude": "-23.515695",
+        "longitude": "-46.60458",
+        "local_arvor": "1252",
+        "urnas": [
+          "02339415"
+        ],
+        "registros": [
+          {
+            "titulo": "068007760507",
+            "data_hora": "04/10/2026 17:03:47",
+            "urna": "02339415",
+            "etapa": "encerramento",
+            "membro": "logd.dat",
+            "linha": 6306,
+            "linha_marcador": 6288,
+            "eleitor_da_secao": "não",
+            "linha_eleitor_da_secao": 6305
+          }
+        ],
+        "habilitacoes": [],
+        "equipe_abertura": 4,
+        "equipe_encerramento": 4,
+        "equipe_em_ambas": 3,
+        "alvos_so_abertura": [],
+        "alvos_so_encerramento": [
+          "068007760507"
+        ],
+        "arquivo": "logs/1/SP/o03220sp7107202540267-log.jez",
+        "sha256": "1cc47fa0e698e9e0e0e91f130675997b0d7f287edf29ef22405317a1f767eb8b",
+        "url_log": "https://resultados.tse.jus.br/oficial/ele2026/arquivo-urna/3220/dados/sp/71072/0254/0267/5474794431785569774b5670544e42784e47616e7a7950727a2b2d2b68333645686f733349754f6f495a6f3d/o03220sp7107202540267-log.jez"
+      },
+      {
+        "turno": 1,
+        "uf": "SP",
+        "codigo_municipio": "71072",
+        "municipio": "SÃO PAULO",
+        "zona": 254,
+        "secao": 307,
+        "local": "1031",
+        "nome": "EE. MINISTRO HORÁCIO LAFER",
+        "endereco": "RUA DIAS DA SILVA, 1464",
+        "bairro": "VILA MARIA BAIXA",
+        "cep": "02114002",
+        "latitude": "-23.5136451",
+        "longitude": "-46.5845907",
+        "local_arvor": "1031",
+        "urnas": [
+          "02064358"
+        ],
+        "registros": [
+          {
+            "titulo": "068007760507",
+            "data_hora": "04/10/2026 07:17:46",
+            "urna": "02064358",
+            "etapa": "abertura",
+            "membro": "logd.dat",
+            "linha": 543,
+            "linha_marcador": 530,
+            "eleitor_da_secao": "não",
+            "linha_eleitor_da_secao": 542
+          },
+          {
+            "titulo": "068007760507",
+            "data_hora": "04/10/2026 17:01:40",
+            "urna": "02064358",
+            "etapa": "encerramento",
+            "membro": "logd.dat",
+            "linha": 4666,
+            "linha_marcador": 4658,
+            "eleitor_da_secao": "não",
+            "linha_eleitor_da_secao": 4665
+          }
+        ],
+        "habilitacoes": [],
+        "equipe_abertura": 3,
+        "equipe_encerramento": 4,
+        "equipe_em_ambas": 3,
+        "alvos_so_abertura": [],
+        "alvos_so_encerramento": [],
+        "arquivo": "logs/1/SP/o03220sp7107202540307-log.jez",
+        "sha256": "931bf94c2b353a1a3063dbe24c0385bf71cd1d966fbf1f2aa490b95d6dce5195",
+        "url_log": "https://resultados.tse.jus.br/oficial/ele2026/arquivo-urna/3220/dados/sp/71072/0254/0307/437543536b597a35354a6944415856584c796c7059416d73716d447467383342503530654e424f3272476f3d/o03220sp7107202540307-log.jez"
+      },
+      {
+        "turno": 1,
+        "uf": "SP",
+        "codigo_municipio": "71072",
+        "municipio": "SÃO PAULO",
+        "zona": 254,
+        "secao": 391,
+        "local": "1333",
+        "nome": "UNINOVE - CAMPUS VILA MARIA",
+        "endereco": "RUA GUARANÉSIA, 425",
+        "bairro": "VILA MARIA BAIXA",
+        "cep": "02112000",
+        "latitude": "-23.5197995",
+        "longitude": "-46.5924453",
+        "local_arvor": "1333",
+        "urnas": [
+          "02336354"
+        ],
+        "registros": [
+          {
+            "titulo": "068007760507",
+            "data_hora": "04/10/2026 17:12:26",
+            "urna": "02336354",
+            "etapa": "encerramento",
+            "membro": "logd.dat",
+            "linha": 5160,
+            "linha_marcador": 5142,
+            "eleitor_da_secao": "não",
+            "linha_eleitor_da_secao": 5159
+          }
+        ],
+        "habilitacoes": [],
+        "equipe_abertura": 3,
+        "equipe_encerramento": 4,
+        "equipe_em_ambas": 2,
+        "alvos_so_abertura": [],
+        "alvos_so_encerramento": [
+          "068007760507"
+        ],
+        "arquivo": "logs/1/SP/o03220sp7107202540391-log.jez",
+        "sha256": "dfbc55447b5d1c47cad1fd851e371d8a394c0bbdd4fedac54305ea6cb2466aeb",
+        "url_log": "https://resultados.tse.jus.br/oficial/ele2026/arquivo-urna/3220/dados/sp/71072/0254/0391/5651526250627069314d537a353034586c5244487266474e7443466b44634a6b563576466e4f576f7939303d/o03220sp7107202540391-log.jez"
+      },
+      {
+        "turno": 1,
+        "uf": "SP",
+        "codigo_municipio": "71072",
+        "municipio": "SÃO PAULO",
+        "zona": 254,
+        "secao": 456,
+        "local": "1538",
+        "nome": "EMEI. Dª MARIA YOLANDA DE S. PINTO HAHNE",
+        "endereco": "RUA GASTÃO MADEIRA, 340",
+        "bairro": "VILA MARIA ALTA",
+        "cep": "02131080",
+        "latitude": "-23.5057513",
+        "longitude": "-46.5852447",
+        "local_arvor": "1538",
+        "urnas": [
+          "02273913"
+        ],
+        "registros": [
+          {
+            "titulo": "068007760507",
+            "data_hora": "04/10/2026 17:01:58",
+            "urna": "02273913",
+            "etapa": "encerramento",
+            "membro": "logd.dat",
+            "linha": 5145,
+            "linha_marcador": 5142,
+            "eleitor_da_secao": "não",
+            "linha_eleitor_da_secao": 5144
+          }
+        ],
+        "habilitacoes": [],
+        "equipe_abertura": 3,
+        "equipe_encerramento": 5,
+        "equipe_em_ambas": 3,
+        "alvos_so_abertura": [],
+        "alvos_so_encerramento": [
+          "068007760507"
+        ],
+        "arquivo": "logs/1/SP/o03220sp7107202540456-log.jez",
+        "sha256": "5ad8a23fd12f16586273504bbba2eea2731d658a6316c90e19756649251247a8",
+        "url_log": "https://resultados.tse.jus.br/oficial/ele2026/arquivo-urna/3220/dados/sp/71072/0254/0456/6d31723979376e79587663366438456a644746744541704832765a504544644e4179612d665741703247303d/o03220sp7107202540456-log.jez"
+      },
+      {
+        "turno": 2,
+        "uf": "SP",
+        "codigo_municipio": "71072",
+        "municipio": "SÃO PAULO",
+        "zona": 254,
+        "secao": 307,
+        "local": "1031",
+        "nome": "EE. MINISTRO HORÁCIO LAFER",
+        "endereco": "RUA DIAS DA SILVA, 1464",
+        "bairro": "VILA MARIA BAIXA",
+        "cep": "02114002",
+        "latitude": "-23.5136451",
+        "longitude": "-46.5845907",
+        "local_arvor": "1031",
+        "urnas": [
+          "02064358"
+        ],
+        "registros": [
+          {
+            "titulo": "068007760507",
+            "data_hora": "25/10/2026 07:26:05",
+            "urna": "02064358",
+            "etapa": "abertura",
+            "membro": "logd.dat",
+            "linha": 5397,
+            "linha_marcador": 5376,
+            "eleitor_da_secao": "não",
+            "linha_eleitor_da_secao": 5396
+          },
+          {
+            "titulo": "068007760507",
+            "data_hora": "25/10/2026 17:02:50",
+            "urna": "02064358",
+            "etapa": "encerramento",
+            "membro": "logd.dat",
+            "linha": 7951,
+            "linha_marcador": 7933,
+            "eleitor_da_secao": "não",
+            "linha_eleitor_da_secao": 7950
+          }
+        ],
+        "habilitacoes": [],
+        "equipe_abertura": 4,
+        "equipe_encerramento": 4,
+        "equipe_em_ambas": 4,
+        "alvos_so_abertura": [],
+        "alvos_so_encerramento": [],
+        "arquivo": "logs/2/SP/o03221sp7107202540307-log.jez",
+        "sha256": "a5ba73d2f3f11cfc0e907bd37a1c6a3e4a88c00a3d31540a284ed774211b4d85",
+        "url_log": "https://resultados.tse.jus.br/oficial/ele2026/arquivo-urna/3221/dados/sp/71072/0254/0307/75554941557a37366d4d56506452476a43563638304e4b43724e6c685258636356566262766c5438586f343d/o03221sp7107202540307-log.jez"
+      }
+    ],
+    "resumo": {
+      "por_turno": {
+        "1": {
+          "secoes_turno": 10,
+          "secoes_distintas": 10,
+          "urnas_distintas": 10,
+          "locais_distintos": 10,
+          "enderecos_distintos": 10,
+          "registros": 12,
+          "registros_abertura": 1,
+          "registros_encerramento": 10,
+          "habilitacoes": 0
+        },
+        "2": {
+          "secoes_turno": 1,
+          "secoes_distintas": 1,
+          "urnas_distintas": 1,
+          "locais_distintos": 1,
+          "enderecos_distintos": 1,
+          "registros": 2,
+          "registros_abertura": 1,
+          "registros_encerramento": 1,
+          "habilitacoes": 0
+        }
+      },
+      "ambos": {
+        "secoes_turno": 11,
+        "secoes_distintas": 10,
+        "urnas_distintas": 10,
+        "locais_distintos": 10,
+        "enderecos_distintos": 10,
+        "registros": 14,
+        "registros_abertura": 2,
+        "registros_encerramento": 11,
+        "habilitacoes": 0
+      },
+      "registros_apos_17h_1t": 11,
+      "inicio_apos_17h_1t": "04/10/2026 17:01:27",
+      "fim_apos_17h_1t": "04/10/2026 17:12:26",
+      "janela_apos_17h_1t_s": 659,
+      "distancia_min_entre_locais_km": 0.0428,
+      "distancia_max_entre_locais_km": 4.6084
+    },
+    "deslocamentos_apos_17h_1t": [
+      {
+        "secao_origem": 154,
+        "hora_origem": "04/10/2026 17:01:27",
+        "secao_destino": 307,
+        "hora_destino": "04/10/2026 17:01:40",
+        "segundos": 13,
+        "distancia_reta_km": 1.4412
+      },
+      {
+        "secao_origem": 307,
+        "hora_origem": "04/10/2026 17:01:40",
+        "secao_destino": 456,
+        "hora_destino": "04/10/2026 17:01:58",
+        "segundos": 18,
+        "distancia_reta_km": 0.8803
+      },
+      {
+        "secao_origem": 456,
+        "hora_origem": "04/10/2026 17:01:58",
+        "secao_destino": 146,
+        "hora_destino": "04/10/2026 17:02:22",
+        "segundos": 24,
+        "distancia_reta_km": 2.5612
+      },
+      {
+        "secao_origem": 146,
+        "hora_origem": "04/10/2026 17:02:22",
+        "secao_destino": 95,
+        "hora_destino": "04/10/2026 17:02:35",
+        "segundos": 13,
+        "distancia_reta_km": 2.8236
+      },
+      {
+        "secao_origem": 95,
+        "hora_origem": "04/10/2026 17:02:35",
+        "secao_destino": 187,
+        "hora_destino": "04/10/2026 17:03:08",
+        "segundos": 33,
+        "distancia_reta_km": 2.3909
+      },
+      {
+        "secao_origem": 187,
+        "hora_origem": "04/10/2026 17:03:08",
+        "secao_destino": 267,
+        "hora_destino": "04/10/2026 17:03:47",
+        "segundos": 39,
+        "distancia_reta_km": 1.7048
+      },
+      {
+        "secao_origem": 267,
+        "hora_origem": "04/10/2026 17:03:47",
+        "secao_destino": 75,
+        "hora_destino": "04/10/2026 17:04:44",
+        "segundos": 57,
+        "distancia_reta_km": 2.2907
+      },
+      {
+        "secao_origem": 75,
+        "hora_origem": "04/10/2026 17:04:44",
+        "secao_destino": 178,
+        "hora_destino": "04/10/2026 17:04:54",
+        "segundos": 10,
+        "distancia_reta_km": 1.7105
+      },
+      {
+        "secao_origem": 178,
+        "hora_origem": "04/10/2026 17:04:54",
+        "secao_destino": 187,
+        "hora_destino": "04/10/2026 17:06:03",
+        "segundos": 69,
+        "distancia_reta_km": 0.5204
+      },
+      {
+        "secao_origem": 187,
+        "hora_origem": "04/10/2026 17:06:03",
+        "secao_destino": 391,
+        "hora_destino": "04/10/2026 17:12:26",
+        "segundos": 383,
+        "distancia_reta_km": 2.542
+      }
+    ]
+  }
+}

@@ -1,0 +1,235 @@
+{
+  "id_caso": "M-56737337C02A",
+  "titulo_repetido": "016337360213",
+  "titulo_alternativo": "163237360213",
+  "intermediario": "16337360213",
+  "caminho_usual": [
+    {
+      "tipo": "omissao",
+      "antes": "163237360213",
+      "depois": "16337360213",
+      "posicoes": [
+        4
+      ],
+      "digitos_antes": "2",
+      "digitos_depois": ""
+    }
+  ],
+  "secoes": [
+    {
+      "turno": 1,
+      "uf": "GO",
+      "codigo_municipio": "93718",
+      "municipio": "GOIANÉSIA",
+      "zona": 74,
+      "secao": 60,
+      "local": "1139",
+      "nome": "ESCOLA ESTADUAL PRESIDENTE COSTA E SILVA - UE-EST",
+      "endereco": "R. 38, N 313",
+      "bairro": "SAO CRISTOVAO",
+      "cep": "76381104",
+      "latitude": "-15.3092427",
+      "longitude": "-49.1156923",
+      "local_arvor": "1139",
+      "urnas": [
+        "01836621"
+      ],
+      "registros": [
+        {
+          "titulo": "016337360213",
+          "data_hora": "04/10/2026 07:51:35",
+          "urna": "01836621",
+          "etapa": "abertura",
+          "membro": "logd.dat",
+          "linha": 631,
+          "linha_marcador": 615,
+          "eleitor_da_secao": "não",
+          "linha_eleitor_da_secao": 630
+        },
+        {
+          "titulo": "016337360213",
+          "data_hora": "04/10/2026 17:11:13",
+          "urna": "01836621",
+          "etapa": "encerramento",
+          "membro": "logd.dat",
+          "linha": 6775,
+          "linha_marcador": 6767,
+          "eleitor_da_secao": "não",
+          "linha_eleitor_da_secao": 6774
+        }
+      ],
+      "habilitacoes": [],
+      "equipe_abertura": 4,
+      "equipe_encerramento": 4,
+      "equipe_em_ambas": 4,
+      "arquivo": "logs/1/GO/o03220go9371800740060-log.jez",
+      "sha256": "9fad5ee59141575ef5f6b367485ddb66dd5cb7a9cff36b3e1314c251630bce10",
+      "url_log": "https://resultados.tse.jus.br/oficial/ele2026/arquivo-urna/3220/dados/go/93718/0074/0060/484d476253784d58455533346f3662666c5648503046513371336d536c676758314e6e2d2b7953636850593d/o03220go9371800740060-log.jez"
+    },
+    {
+      "turno": 2,
+      "uf": "GO",
+      "codigo_municipio": "93718",
+      "municipio": "GOIANÉSIA",
+      "zona": 74,
+      "secao": 60,
+      "local": "1139",
+      "nome": "ESCOLA ESTADUAL PRESIDENTE COSTA E SILVA - UE-EST",
+      "endereco": "R. 38, N 313",
+      "bairro": "SAO CRISTOVAO",
+      "cep": "76381104",
+      "latitude": "-15.3092427",
+      "longitude": "-49.1156923",
+      "local_arvor": "1139",
+      "urnas": [
+        "01836621"
+      ],
+      "registros": [
+        {
+          "titulo": "163237360213",
+          "data_hora": "25/10/2026 07:08:53",
+          "urna": "01836621",
+          "etapa": "abertura",
+          "membro": "logd.dat",
+          "linha": 7498,
+          "linha_marcador": 7495,
+          "eleitor_da_secao": "não",
+          "linha_eleitor_da_secao": 7497
+        },
+        {
+          "titulo": "163237360213",
+          "data_hora": "25/10/2026 17:02:47",
+          "urna": "01836621",
+          "etapa": "encerramento",
+          "membro": "logd.dat",
+          "linha": 11888,
+          "linha_marcador": 11874,
+          "eleitor_da_secao": "não",
+          "linha_eleitor_da_secao": 11887
+        }
+      ],
+      "habilitacoes": [],
+      "equipe_abertura": 4,
+      "equipe_encerramento": 4,
+      "equipe_em_ambas": 4,
+      "arquivo": "logs/2/GO/o03221go9371800740060-log.jez",
+      "sha256": "e3e0b4e1484b20981c41bbade01b9ff37aaa913220b264567cd25799f86378bf",
+      "url_log": "https://resultados.tse.jus.br/oficial/ele2026/arquivo-urna/3221/dados/go/93718/0074/0060/41617a4d2d397436375973546531497673674b56364c65457644694c4e426732546c386e6f3462327434773d/o03221go9371800740060-log.jez"
+    },
+    {
+      "turno": 1,
+      "uf": "MG",
+      "codigo_municipio": "40932",
+      "municipio": "ATALÉIA",
+      "zona": 270,
+      "secao": 10,
+      "local": "1031",
+      "nome": "ESCOLA ESTADUAL HERMINIA PEREIRA DE ALMEIDA",
+      "endereco": "RUA PROF ALVARO PIRES, 576",
+      "bairro": "ACARÍ",
+      "cep": "39850000",
+      "latitude": "-18.0378281",
+      "longitude": "-41.1055088",
+      "local_arvor": "1031",
+      "urnas": [
+        "02080738"
+      ],
+      "registros": [
+        {
+          "titulo": "016337360213",
+          "data_hora": "04/10/2026 07:22:24",
+          "urna": "02080738",
+          "etapa": "abertura",
+          "membro": "logd.dat",
+          "linha": 535,
+          "linha_marcador": 525,
+          "eleitor_da_secao": "não",
+          "linha_eleitor_da_secao": 534
+        },
+        {
+          "titulo": "016337360213",
+          "data_hora": "04/10/2026 17:03:30",
+          "urna": "02080738",
+          "etapa": "encerramento",
+          "membro": "logd.dat",
+          "linha": 4990,
+          "linha_marcador": 4971,
+          "eleitor_da_secao": "não",
+          "linha_eleitor_da_secao": 4989
+        }
+      ],
+      "habilitacoes": [],
+      "equipe_abertura": 3,
+      "equipe_encerramento": 4,
+      "equipe_em_ambas": 3,
+      "arquivo": "logs/1/MG/o03220mg4093202700010-log.jez",
+      "sha256": "9ac125c5495e02032876cc404d83a41d3d58bc6b81c0c7b27f9099a3bbc2cd52",
+      "url_log": "https://resultados.tse.jus.br/oficial/ele2026/arquivo-urna/3220/dados/mg/40932/0270/0010/462d616776517a755261324b77584473414c363449356f6357724e6b4b436e47673134566348534141626b3d/o03220mg4093202700010-log.jez"
+    },
+    {
+      "turno": 2,
+      "uf": "MG",
+      "codigo_municipio": "40932",
+      "municipio": "ATALÉIA",
+      "zona": 270,
+      "secao": 10,
+      "local": "1031",
+      "nome": "ESCOLA ESTADUAL HERMINIA PEREIRA DE ALMEIDA",
+      "endereco": "RUA PROF ALVARO PIRES, 576",
+      "bairro": "ACARÍ",
+      "cep": "39850000",
+      "latitude": "-18.0378281",
+      "longitude": "-41.1055088",
+      "local_arvor": "1031",
+      "urnas": [
+        "02080738"
+      ],
+      "registros": [
+        {
+          "titulo": "016337360213",
+          "data_hora": "25/10/2026 07:07:08",
+          "urna": "02080738",
+          "etapa": "abertura",
+          "membro": "logd.dat",
+          "linha": 5614,
+          "linha_marcador": 5599,
+          "eleitor_da_secao": "não",
+          "linha_eleitor_da_secao": 5613
+        },
+        {
+          "titulo": "016337360213",
+          "data_hora": "25/10/2026 17:03:12",
+          "urna": "02080738",
+          "etapa": "encerramento",
+          "membro": "logd.dat",
+          "linha": 8231,
+          "linha_marcador": 8218,
+          "eleitor_da_secao": "não",
+          "linha_eleitor_da_secao": 8230
+        }
+      ],
+      "habilitacoes": [],
+      "equipe_abertura": 4,
+      "equipe_encerramento": 4,
+      "equipe_em_ambas": 4,
+      "arquivo": "logs/2/MG/o03221mg4093202700010-log.jez",
+      "sha256": "8dfff97ac345451597cbd82663cabf1086d72b83c1e5bad3e8e15c55b099723a",
+      "url_log": "https://resultados.tse.jus.br/oficial/ele2026/arquivo-urna/3221/dados/mg/40932/0270/0010/466d656977774c59642b755a7455616d44753172685872684b677757773331364156707a586c3478624e453d/o03221mg4093202700010-log.jez"
+    }
+  ],
+  "goianesia_titulos_constantes_nas_quatro_etapas": 3,
+  "ataleia_fechamentos_em_comum": 4,
+  "municipios_com_goianesia": [
+    {
+      "nome": "GOIANÉSIA",
+      "uf": "GO",
+      "codigo_municipio_tse": "93718"
+    },
+    {
+      "nome": "GOIANÉSIA DO PARÁ",
+      "uf": "PA",
+      "codigo_municipio_tse": "04006"
+    }
+  ],
+  "cadastro_municipios": "https://cdn.tse.jus.br/estatistica/sead/odsele/eleitorado_locais_votacao/eleitorado_local_votacao_2026.zip"
+}
