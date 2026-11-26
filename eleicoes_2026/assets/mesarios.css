@@ -1,0 +1,84 @@
+/* Os seis documentos compartilham relatorio.css com a página Eleições 2026.
+   Estas regras conciliam a folha editorial com as tabelas e os controles das fichas. */
+.mesarios {
+  --green: var(--blue);
+  --verde: var(--blue);
+  --soft: var(--muted);
+  --tinta: var(--ink);
+  --linha: var(--rule);
+  --paper: #fff;
+  --papel: #fff;
+  --light: #f5f7f8;
+  --tint: #f4f8fb;
+}
+
+.mesarios :is(h1,h2,h3,h4,h5) {font-family:inherit;color:var(--ink)}
+.mesarios .masthead {background:transparent;color:var(--ink)}
+.mesarios .masthead .eyebrow {color:var(--blue)}
+.mesarios .masthead .deck {color:#505a63;max-width:940px}
+.mesarios .masthead .meta {max-width:none;padding:12px 0;margin:25px 0 30px}
+.mesarios .masthead .meta a {color:var(--blue)}
+.mesarios .masthead .print-button {background:white;color:var(--blue)}
+.mesarios .sidebar {margin:0;border-left:0}
+.mesarios .sidebar nav {display:block;border:0;padding:0}
+.mesarios .sidebar nav a:not(.active) {font-weight:400}
+.mesarios .identity small {display:block}
+.mesarios .main {min-width:0}
+.mesarios .main > section {border-top:0;border-bottom:0;padding:0}
+.mesarios main > section:first-of-type {margin-top:32px}
+.mesarios .main :is(h2,h3) {font-weight:650}
+.mesarios main p {max-width:95ch}
+.mesarios .lead {font-size:inherit}
+.mesarios .main footer {display:block;max-width:none;margin:40px 0 0;padding:16px 0 0;border-top:1px solid var(--rule);color:var(--muted)}
+.mesarios .main footer p {margin-block:7px 15px}
+.mesarios .main :is(.nota,.intro,.accent) {border-left:3px solid var(--blue);background:#f4f8fb;color:var(--ink)}
+.mesarios :is(.fine,.cred,figcaption) {color:var(--muted)}
+.mesarios :is(.scroll,.largo,.rolar) {width:100%;overflow-x:auto}
+.mesarios :is(th,caption) {color:var(--ink)}
+.mesarios th {background:#f5f7f8}
+.mesarios :is(summary,.captura-ampliar) {color:var(--blue)}
+.mesarios .download {background:#f4f8fb;border-color:#c4d5e0;color:var(--navy)}
+.mesarios .download:hover {background:#eaf2f7}
+.mesarios .main details {padding:.6rem 0}
+.mesarios .main details[open] > summary {margin-bottom:.65rem}
+.mesarios .main .grupo-geografico {padding:10px 14px}
+.mesarios .main :is(.eq-quadro,#previa-equipes) {line-height:1.4}
+.mesarios :is(#previa-equipes .pe-cabecalho,.captura-barra button) {background:var(--navy);color:white}
+.mesarios .caso-mapa :is(figure,section),.mesarios .triagem-geral figure {margin:0}
+.mesarios .triagem-geral :is(.roscas-por-turno,.roscas-por-turno svg) {max-width:100%}
+.mesarios .roscas-por-turno svg {height:auto}
+.mesarios .main :is(.eq-frente,.tit-linha) {font-variant-numeric:tabular-nums}
+
+.pagina-sankey-turnos .rolar-grafico {background:#f7f9fa;border-color:var(--rule)}
+.pagina-sankey-turnos .chaves {background:var(--sidebar);border-color:var(--rule)}
+.pagina-sankey-turnos .chaves button[aria-pressed="true"] {background:var(--navy);color:white}
+.pagina-sankey-turnos .no {color:var(--ink)}
+.pagina-sankey-turnos .no.selecionado {border-color:var(--cor)}
+.pagina-sankey-turnos .prancha {min-width:1100px}
+.pagina-sankey-turnos .legenda,.pagina-sankey-turnos .etapas span {color:var(--muted)}
+.pagina-teste-dv .main form button {color:white;background:var(--navy)}
+.pagina-teste-dv .main form {margin-block:1rem}
+.mesarios .main :is(input,button,select) {max-width:100%}
+
+@media (min-width:761px) {
+  .pagina-sankey-turnos .main {max-width:none;padding-inline:clamp(16px,2vw,42px)}
+}
+@media (min-width:761px) and (max-width:1440px) {
+  .pagina-sankey-turnos .dica-rolagem {display:inline}
+}
+@media (max-width:760px) {
+  .mesarios .masthead .meta {margin-block:16px 22px}
+  .mesarios .sidebar {height:auto}
+  .mesarios .main h1 {font-size:clamp(28px,7.7vw,34px)}
+  .mesarios .mobile-nav button {background:white}
+  .mesarios main > section:first-of-type {margin-top:22px}
+  .mesarios .scroll table {max-width:none}
+}
+@media print {
+  .mesarios .main {padding:0;margin:0;max-width:none}
+  .mesarios .masthead .meta,.mesarios .skip {display:none}
+  .mesarios .main section {padding:0;margin-top:14pt}
+  .mesarios .main :is(.scroll,.largo,.rolar) {overflow:visible}
+  .pagina-sankey-turnos .prancha {min-width:0}
+  .pagina-sankey-turnos .sankey .no {display:block!important}
+}

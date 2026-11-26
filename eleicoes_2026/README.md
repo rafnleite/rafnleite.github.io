@@ -1,6 +1,8 @@
 # Relatório das eleições de 2026
 
-Site estático em português, com o padrão editorial do relatório de Rafael Leite de 2022. O relatório e as nove páginas de análise formam um único site para o GitHub Pages, com navegação lateral, identidade visual e arquivos locais compartilhados. A entrada para publicação é `index.html`.
+Site estático em português, com o padrão editorial do relatório de Rafael Leite de 2022. A entrada para o relatório eleitoral, os nove painéis de análise e o estudo dos mesários é `index.html`. As páginas compartilham a navegação lateral e a identidade visual da edição.
+
+O [relatório de mesários](mesarios/relatorio.html) tem cinco páginas auxiliares: [Sankey por turno](mesarios/sankey_turnos.html), [teste dos dígitos verificadores](mesarios/teste_dv.html), [votos nas urnas vizinhas](mesarios/votos_vizinhas.html), [casos em aberto](mesarios/casos_em_aberto.html) e [fichas técnicas](mesarios/relatorio_tecnico.html). Os gráficos e as fichas carregam dados da própria pasta `mesarios/blocos/`. Os links de download apontam para o commit correspondente na [branch do acervo](https://github.com/rafnleite/rafnleite.github.io/tree/dados-mesarios-2026), que também oferece o relatório completo para leitura offline.
 
 Para uma leitura direta do artigo no computador, abra `leitura-offline.html`: os gráficos e o mapa principais estão incorporados nesse arquivo. Essa cópia é uma alternativa de leitura do relatório principal; o site completo, com todas as análises, é acessado pelo GitHub Pages ou pela visualização local abaixo.
 

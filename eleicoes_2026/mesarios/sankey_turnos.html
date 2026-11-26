@@ -1,0 +1,548 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Desfechos por turno · Títulos de mesário</title>
+<style>
+:root{color-scheme:light;--tinta:#22352f;--verde:#116453;--linha:#cad8d0;--papel:#fcfcf8;font-family:"Segoe UI",Arial,sans-serif}
+*{box-sizing:border-box}body{margin:0;background:var(--papel);color:var(--tinta);font-size:16px;line-height:1.48}
+main{max-width:1600px;margin:auto;padding:24px clamp(14px,3vw,48px) 50px}
+a{color:var(--verde);text-underline-offset:3px}:focus-visible{outline:3px solid #1b69a0;outline-offset:3px}
+nav{display:flex;gap:12px 20px;flex-wrap:wrap;font-size:.92rem}
+h1,h2,p,figure{margin:0}h1,h2{font-family:Georgia,serif;font-weight:500;line-height:1.14}
+h1{font-size:clamp(2rem,3.9vw,3.3rem);margin:20px 0 6px;letter-spacing:-.035em}p{max-width:90ch}
+.cab-grafico{display:flex;align-items:center;flex-wrap:wrap;gap:8px 22px;margin:18px 0 12px}
+.chaves{display:inline-flex;gap:3px;padding:3px;background:#eef2ed;border:1px solid #cbd6cf;border-radius:7px}
+.chaves button,button.controle{color:var(--tinta);border:1px solid #a4b7aa;border-radius:4px;padding:8px 14px;background:transparent;font:inherit;cursor:pointer}
+.chaves button{border:0;padding:6px 14px}.chaves button[aria-pressed=true]{background:#205d4b;color:white}
+.legenda{font-size:.89rem;color:#455d51}.dica-rolagem{display:none}
+.fluxo{margin:0}.rolar-grafico{overflow-x:auto;border-top:1px solid #b8c9be;border-bottom:1px solid #b8c9be;background:#f6f8f3}
+.prancha{min-width:1100px;padding:16px 12px 2px}.etapas,.sankey{position:relative}
+.etapas{height:34px;border-bottom:1px solid #dce5db}.etapas span{position:absolute;top:0;color:#455d51;font-weight:650;font-size:.86rem;line-height:1.2}
+.sankey svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.origem{--cor:#344f43}.local{--cor:#56806b}.investigado{--cor:#326a84}.trajeto{--cor:#237661}.titulo{--cor:#724592}.aberto{--cor:#ad542c}
+.geografia-comum{--cor:#306f80}.geografia-distinta{--cor:#8d4842}
+.indicio{--cor:#97722f}.incerto{--cor:#66717e}.no small{display:block;color:#4d6157;font-size:.76rem;line-height:1.2}
+.banda{fill:var(--cor);opacity:.44}.fio{fill:none;stroke:var(--cor);stroke-width:1.5;vector-effect:non-scaling-stroke}
+.no{position:absolute;transform:translateY(-50%);padding:9px 10px 9px 12px;min-height:74px;line-height:1.15;font:inherit;text-align:left;cursor:pointer;background:#fff;border:1px solid #c1cfc5;border-left:5px solid var(--cor);border-radius:4px;color:var(--tinta);font-variant-numeric:tabular-nums}
+.no:hover,.no:focus-visible,.no.selecionado{border-color:var(--cor);background:#fcfdfa;box-shadow:0 0 0 1px var(--cor)}
+.no .nome{display:block;font-size:clamp(.8rem,1.17vw,1rem);line-height:1.2;font-weight:600;overflow-wrap:break-word}
+.valor{font-size:clamp(1.22rem,1.75vw,1.7rem);font-weight:700;letter-spacing:-.04em;line-height:1.2}
+.percentual{margin-left:.45em;font-size:.78rem;white-space:nowrap;color:#4d6157}
+.consulta,.metodo{margin-top:22px;padding-top:16px}.metodo{border-top:1px solid var(--linha);color:#455d51}
+.filtro-geo{padding:8px 12px 10px;margin:14px 0;border:1px solid var(--linha);border-radius:4px}
+.filtro-geo legend{font-weight:600;padding:0 4px}.filtro-geo div{display:flex;gap:6px 18px;flex-wrap:wrap}
+.filtro-geo label{cursor:pointer}.filtro-geo input{accent-color:var(--verde)}
+.consulta h2,.metodo h2{font-size:1.6rem}.consulta .resumo{font-weight:600;margin-top:5px}.ferramentas{display:flex;flex-wrap:wrap;align-items:end;gap:9px 20px;margin:14px 0}.ferramentas label{display:grid;gap:3px;font-size:.9rem}.ferramentas input{font:inherit;width:min(330px,100%);color:var(--tinta);padding:7px 9px;border:1px solid #a4b7aa;border-radius:4px}button.controle{min-height:34px;padding:3px 10px}button:disabled{opacity:.45;cursor:default}.paginas{display:flex;gap:10px;align-items:center;justify-content:start;flex-wrap:wrap;font-size:.9rem;margin:13px 0}.rolar{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:.92rem}td,th{text-align:left;vertical-align:top;border-bottom:1px solid var(--linha);padding:8px 7px}th{background:#edf2e9}td small{display:block;color:#536659}code{white-space:nowrap}details>summary{color:var(--verde);cursor:pointer;font-weight:600}.metodo p{margin:10px 0}.fim{margin-top:25px}[hidden]{display:none!important}
+@media(max-width:1170px){.dica-rolagem{display:inline}}
+@media(max-width:805px){main{padding-inline:12px}.rolar-grafico{scrollbar-color:#93aa9c #e6ede6}.prancha{padding-inline:8px}.no{padding:7px 6px 7px 8px}.percentual{font-size:.73rem}.etapas span{font-size:.79rem}}
+@media(max-width:540px){nav{gap:6px 12px}.consulta td:not(:first-child){min-width:105px}.cab-grafico{gap:6px}}
+@page{size:landscape;margin:12mm}
+@media print{body{background:white}main{max-width:none;padding:0}nav,.cab-grafico,.consulta,.fim{display:none}article[data-turno][hidden]{display:block!important}article[data-turno]+article{break-before:page}figure{break-inside:avoid}.prancha{min-width:0}.rolar-grafico{overflow:visible}.fluxo{print-color-adjust:exact;-webkit-print-color-adjust:exact}.metodo{margin-top:6px}}
+</style><style>
+.eq-quadro{margin:.6rem 0 1.3rem;max-width:100%;color:#1c302e}
+.eq-periodo{margin:1rem 0 .45rem;font-weight:700}
+.eq-urnas{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,23rem),1fr));gap:.8rem;align-items:start}
+.eq-urna{min-width:0;overflow-wrap:anywhere;border:1px solid #c4d3cb;border-radius:5px;background:#fff}
+.eq-cab{padding:.55rem .7rem;background:#f1f5f0;border-bottom:1px solid #c4d3cb}
+.eq-cab b,.eq-cab small{display:block}.eq-cab b{font-size:.94rem;line-height:1.3}
+.eq-quadro small{font-size:.76rem;line-height:1.35;color:#405953}
+.eq-quadro table{width:100%;table-layout:fixed;border-collapse:collapse;margin:0}
+.eq-quadro th,.eq-quadro td{padding:.38rem .55rem;vertical-align:top;text-align:left;border:0}
+.eq-quadro th{background:#fff;color:#304a41;border-bottom:1px solid #d7e1db;font-size:.83rem}
+.eq-quadro td+td,.eq-quadro th+th{border-left:1px solid #d7e1db}
+.eq-frente col.eq-col-par{width:2.4rem}
+.eq-frente .eq-par{text-align:center;vertical-align:middle;padding-inline:.15rem}
+.eq-frente td.eq-par{color:#146147;font-weight:700}
+.eq-quadro tbody tr+tr td{border-top:1px solid #e5ebe7}.eq-frente small{display:block}
+.eq-frente .eq-falta{color:#577067}.eq-quadro .eq-troca{background:#faf5e9}
+.eq-quadro ul{list-style:none;padding:0;margin:0}.eq-quadro li{margin:0 0 .36rem;line-height:1.3}
+.eq-quadro li:last-child{margin-bottom:0}.eq-quadro li small{display:block}
+.eq-quadro code{font:.88rem/1.35 Consolas,"Courier New",monospace;white-space:nowrap;letter-spacing:0}
+.eq-quadro .eq-repetido,.eq-quadro .eq-comparado{font-weight:700;padding:0 .12em;border-radius:2px}
+.eq-quadro .eq-repetido{color:#124c3c;background:#dbeee2}.eq-quadro .eq-comparado{color:#593603;background:#f9e9c9}
+.eq-eleitor{display:inline-block;padding:.03em .38em;border:1px solid #adc6d2;border-radius:3px;background:#eef5f8;color:#234e63;font:.72rem/1.35 "Segoe UI",Arial,sans-serif}
+.eq-extra{padding:.45rem .6rem;border-top:1px solid #d7e1db}.eq-extra>b{font-size:.82rem}
+.eq-extra ul{margin-top:.2rem}.eq-quadro .eq-vazio{padding:.15em 0;display:block}
+@media(max-width:440px){.eq-quadro th,.eq-quadro td{padding:.32rem .35rem}.eq-quadro code{font-size:.82rem}}
+@media print{.eq-urnas{display:block}.eq-urna{break-inside:avoid;margin-bottom:.6em}.eq-periodo{break-after:avoid}}
+#previa-equipes {
+    position: fixed;
+    z-index: 10000;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    width: min(56rem, calc(100vw - 16px));
+    max-height: 76vh;
+    overflow: hidden;
+    color: #203932;
+    background: #fffefa;
+    border: 1px solid #91a99e;
+    border-radius: 8px;
+    box-shadow: 0 6px 26px #15392c29, 0 1px 3px #15392c22;
+    font: 14px/1.4 "Segoe UI", Arial, sans-serif;
+    text-align: left;
+}
+#previa-equipes[hidden] { display: none }
+#previa-equipes .pe-cabecalho {
+    flex: none;
+    display: flex;
+    align-items: center;
+    gap: 5px 12px;
+    padding: 6px 10px 6px 14px;
+    color: #fff;
+    background: #1c4b40;
+}
+#previa-equipes .pe-cabecalho b { font-size: 15px }
+#previa-equipes .pe-cabecalho code { color: #e4f2e7; font-size: 13px }
+#previa-equipes .pe-fechar {
+    padding: 4px 10px;
+    margin: 0 0 0 auto;
+    min-height: 32px;
+    background: #24594c;
+    border: 1px solid #8cae9f;
+    border-radius: 4px;
+    color: white;
+    font: inherit;
+    cursor: pointer;
+}
+#previa-equipes .pe-listas {
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 0 12px 4px;
+    scrollbar-color: #90a79c #f0f4ef;
+}
+#previa-equipes .eq-quadro { margin: .35rem 0 .7rem }
+#previa-equipes .eq-periodo { margin-top: .55rem }
+#previa-equipes .eq-quadro td, #previa-equipes .eq-quadro th { min-width: 0; width: auto }
+#previa-equipes :focus-visible { outline: 2px solid #c78222; outline-offset: 2px }
+button.ver-equipe {
+    display: inline;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: #075b4d;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    text-align: inherit;
+    text-decoration: underline;
+    text-underline-offset: .15em;
+    cursor: pointer;
+}
+button.ver-equipe:hover { text-decoration-thickness: 2px }
+button.ver-equipe:focus-visible { outline: 2px solid #b47420; outline-offset: 2px }
+@media(max-width:420px) {
+    #previa-equipes .pe-cabecalho { gap: 3px 8px; padding-left: 10px }
+    #previa-equipes .pe-listas { padding: 0 6px 3px }
+}
+@media print { #previa-equipes { display: none !important } }
+</style><noscript><style>.ver-equipe{display:none}</style></noscript>
+<meta name="theme-color" content="#f6f7f8">
+<link rel="stylesheet" href="../assets/relatorio.css">
+<link rel="stylesheet" href="../assets/mesarios.css">
+<noscript><style>@media(max-width:760px){.mesarios .sidebar{display:block;position:static;width:100%;box-shadow:none}.mesarios .mobile-nav{display:none}}</style></noscript></head><body class="mesarios pagina-sankey-turnos">
+<a class="skip" href="#conteudo">Ir para o conteúdo</a>
+<div class="mobile-nav"><strong>Eleições 2026</strong><button type="button" id="abrir-indice-mesarios" aria-controls="indice-mesarios" aria-expanded="false">Índice ☰</button></div>
+<aside class="sidebar" id="indice-mesarios">
+  <div class="identity"><img src="../assets/perfil.jpg" alt="Ilustração de Rafael Leite" width="104" height="104"><strong>Rafael Leite</strong><small>Análise de dados eleitorais</small></div>
+  <nav aria-label="Índice dos relatórios">
+    <a href="../index.html">Eleições 2026: o que os dados mostram</a>
+    <div class="extra">TÍTULOS DE MESÁRIO</div>
+    <a href="relatorio.html">Relatório dos mesários</a><a href="sankey_turnos.html" class="active" aria-current="page">Diagrama de Sankey por turno</a><a href="teste_dv.html">Teste dos dígitos verificadores</a><a href="casos_em_aberto.html">Casos sem explicação</a><a href="votos_vizinhas.html">Comparação com urnas vizinhas</a><a href="relatorio_tecnico.html">Anexo técnico e fichas</a>
+
+  </nav>
+</aside><main class="main" id="conteudo" tabindex="-1"><header class="masthead"><p class="eyebrow">Mesários · Diagrama de Sankey por turno</p><h1>Desfechos dos títulos repetidos</h1><div class="meta"><button type="button" class="print-button" id="imprimir-mesarios">Imprimir página</button><a href="relatorio.html">Relatório ilustrado</a><a href="casos_em_aberto.html">Lista atual dos casos sem explicação</a></div></header>
+<p>11.866 casos nas eleições de 2026. Cada caso corresponde a um título registrado em mais de uma seção no mesmo turno. Para avaliar os deslocamentos, admiti até <strong>dez minutos de diferença entre os relógios das urnas</strong>, com um ajuste fixo por urna em cada caso. <a href="relatorio.html#cenario-relogios">Ver o critério de horário</a>.</p>
+<p id="estado-dados-mesarios" role="status" hidden>Carregando os casos do diagrama…</p><noscript><p>Os dados completos também estão no <a href="relatorio.html#arquivos">pacote para leitura offline</a>.</p></noscript><div class="cab-grafico"><div class="chaves" hidden id="seletor" role="group" aria-label="Turno do diagrama"><button type="button" data-ir="1" aria-pressed="true">1º turno</button><button type="button" data-ir="2" aria-pressed="false">2º turno</button></div>
+<p class="legenda">Selecione uma contagem para ver os casos. Na coluna “Estado das seções”, os percentuais se referem aos casos em municípios e zonas eleitorais diferentes no turno. <span class="dica-rolagem">Deslize para ver todas as etapas.</span></p></div>
+<article data-turno="1" aria-label="Sankey do 1º turno"><figure class="fluxo" aria-label="Do local de votação ao desfecho de cada caso no 1º turno"><div class="rolar-grafico" tabindex="0" aria-label="Diagrama de fluxos do 1º turno"><div class="prancha"><div class="etapas"><span style="left:0.000%;width:11.2%">Turno</span><span style="left:14.080%;width:12.6%">Local de votação</span><span style="left:29.560%;width:14.8%">Deslocamento</span><span style="left:47.240%;width:16.8%">Análise dos títulos</span><span style="left:66.920%;width:17.2%">Município e zona eleitoral</span><span style="left:87.000%;width:13.0%">Estado das seções</span></div><div class="sankey" style="height:486.0px"><svg viewBox="0 0 1000 486.0" preserveAspectRatio="none" aria-hidden="true"><g class="local" data-de="turno" data-para="mesmo" data-casos="6729"><title>1º turno → Mesmo local · 6.729</title><path class="banda" d="M112.00 108.0000 C126.40 108.0000 126.40 49.6379 140.80 49.6379 v60.7242 C126.40 110.3621 126.40 168.7242 112.00 168.7242 Z"/></g><g class="investigado" data-de="turno" data-para="distintos" data-casos="363"><title>1º turno → Locais distintos · 363</title><path class="banda" d="M112.00 168.7242 C126.40 168.7242 126.40 236.3621 140.80 236.3621 v3.2758 C126.40 239.6379 126.40 172.0000 112.00 172.0000 Z"/></g><g class="trajeto" data-de="distintos" data-para="plausivel" data-casos="333"><title>Locais distintos → Trajeto compatível · 333</title><path class="banda" d="M266.80 236.3621 C281.20 236.3621 281.20 123.4975 295.60 123.4975 v3.0051 C281.20 126.5025 281.20 239.3672 266.80 239.3672 Z"/></g><g class="aberto" data-de="distintos" data-para="improvavel" data-casos="30"><title>Locais distintos → Deslocamento improvável · 30</title><path class="banda" d="M266.80 239.3672 C281.20 239.3672 281.20 299.8646 295.60 299.8646 v0.2707 C281.20 300.1354 281.20 239.6379 266.80 239.6379 Z"/><path class="fio" d="M266.80 239.5025 C281.20 239.5025 281.20 300.0000 295.60 300.0000"/></g><g class="titulo" data-de="improvavel" data-para="Erro de digitação com evidência forte" data-casos="12"><title>Deslocamento improvável → Erro de digitação com evidência forte · 12</title><path class="banda" d="M443.60 299.8646 C458.00 299.8646 458.00 109.9459 472.40 109.9459 v0.1083 C458.00 110.0541 458.00 299.9729 443.60 299.9729 Z"/><path class="fio" d="M443.60 299.9188 C458.00 299.9188 458.00 110.0000 472.40 110.0000"/></g><g class="aberto" data-de="improvavel" data-para="Sem evidência de erro de digitação" data-casos="18"><title>Deslocamento improvável → Sem evidência de erro de digitação · 18</title><path class="banda" d="M443.60 299.9729 C458.00 299.9729 458.00 303.9188 472.40 303.9188 v0.1624 C458.00 304.0812 458.00 300.1354 443.60 300.1354 Z"/><path class="fio" d="M443.60 300.0541 C458.00 300.0541 458.00 304.0000 472.40 304.0000"/></g><g class="geografia-comum" data-de="Sem evidência de erro de digitação" data-para="Mesmo município ou mesma zona eleitoral" data-casos="10"><title>Sem evidência de erro de digitação → Mesmo município ou mesma zona eleitoral · 10</title><path class="banda" d="M640.40 303.9188 C654.80 303.9188 654.80 239.9549 669.20 239.9549 v0.0902 C654.80 240.0451 654.80 304.0090 640.40 304.0090 Z"/><path class="fio" d="M640.40 303.9639 C654.80 303.9639 654.80 240.0000 669.20 240.0000"/></g><g class="geografia-distinta" data-de="Sem evidência de erro de digitação" data-para="Municípios e zonas eleitorais diferentes" data-casos="8"><title>Sem evidência de erro de digitação → Municípios e zonas eleitorais diferentes · 8</title><path class="banda" d="M640.40 304.0090 C654.80 304.0090 654.80 367.9639 669.20 367.9639 v0.0722 C654.80 368.0361 654.80 304.0812 640.40 304.0812 Z"/><path class="fio" d="M640.40 304.0451 C654.80 304.0451 654.80 368.0000 669.20 368.0000"/></g><g class="geografia-distinta" data-de="Municípios e zonas eleitorais diferentes" data-para="Mesmo estado" data-casos="7"><title>Municípios e zonas eleitorais diferentes → Mesmo estado · 7</title><path class="banda" d="M841.20 367.9639 C855.60 367.9639 855.60 315.9684 870.00 315.9684 v0.0632 C855.60 316.0316 855.60 368.0271 841.20 368.0271 Z"/><path class="fio" d="M841.20 367.9955 C855.60 367.9955 855.60 316.0000 870.00 316.0000"/></g><g class="geografia-distinta" data-de="Municípios e zonas eleitorais diferentes" data-para="Estados diferentes" data-casos="1"><title>Municípios e zonas eleitorais diferentes → Estados diferentes · 1</title><path class="banda" d="M841.20 368.0271 C855.60 368.0271 855.60 419.9955 870.00 419.9955 v0.0090 C855.60 420.0045 855.60 368.0361 841.20 368.0361 Z"/><path class="fio" d="M841.20 368.0316 C855.60 368.0316 855.60 420.0000 870.00 420.0000"/></g></svg><button type="button" class="no origem" data-turno="1" data-campo="todos" data-valor="1º turno" aria-label="Consultar 1º turno, 7.092 casos no 1º turno" style="left:0.000%;width:11.2%;top:140px"><span class="nome">1º turno</span><span class="valor">7.092</span><span class="percentual">100,0%</span></button><button type="button" class="no local" data-turno="1" data-campo="locais" data-valor="Mesmo local" aria-label="Consultar Mesmo local, 6.729 casos no 1º turno" style="left:14.080%;width:12.6%;top:80px"><span class="nome">Mesmo local</span><span class="valor">6.729</span><span class="percentual">94,9%</span></button><button type="button" class="no investigado" data-turno="1" data-campo="locais" data-valor="Locais distintos" aria-label="Consultar Locais distintos, 363 casos no 1º turno" style="left:14.080%;width:12.6%;top:238px"><span class="nome">Locais distintos</span><span class="valor">363</span><span class="percentual">5,1%</span></button><button type="button" class="no trajeto" data-turno="1" data-campo="desfecho" data-valor="Trajeto compatível com o intervalo" aria-label="Consultar Trajeto compatível, 333 casos no 1º turno" style="left:29.560%;width:14.8%;top:125px"><span class="nome">Trajeto compatível</span><span class="valor">333</span><span class="percentual">91,7%</span></button><button type="button" class="no aberto" data-turno="1" data-campo="improvaveis" data-valor="Deslocamento improvável" aria-label="Consultar Deslocamento improvável, 30 casos no 1º turno" style="left:29.560%;width:14.8%;top:300px"><span class="nome">Deslocamento improvável</span><span class="valor">30</span><span class="percentual">8,3%</span></button><button type="button" class="no titulo" data-turno="1" data-campo="grupo" data-valor="Erro de digitação com evidência forte" aria-label="Consultar Erro de digitação com evidência forte, 12 casos no 1º turno" style="left:47.240%;width:16.8%;top:110px"><span class="nome">Erro de digitação com evidência forte</span><span class="valor">12</span><span class="percentual">40,0%</span></button><button type="button" class="no aberto" data-turno="1" data-campo="grupo" data-valor="Sem evidência de erro de digitação" aria-label="Consultar Sem evidência de erro de digitação, 18 casos no 1º turno" style="left:47.240%;width:16.8%;top:304.0px"><span class="nome">Sem evidência de erro de digitação</span><span class="valor">18</span><span class="percentual">60,0%</span></button><button type="button" class="no geografia-comum" data-turno="1" data-campo="geografia" data-valor="Mesmo município ou mesma zona eleitoral" aria-label="Consultar Mesmo município ou mesma zona eleitoral, 10 casos no 1º turno" style="left:66.920%;width:17.2%;top:240.0px"><span class="nome">Mesmo município ou mesma zona eleitoral</span><span class="valor">10</span><span class="percentual">55,6%</span></button><button type="button" class="no geografia-distinta" data-turno="1" data-campo="geografia" data-valor="Municípios e zonas eleitorais diferentes" aria-label="Consultar Municípios e zonas eleitorais diferentes, 8 casos no 1º turno" style="left:66.920%;width:17.2%;top:368.0px"><span class="nome">Municípios e zonas eleitorais diferentes</span><span class="valor">8</span><span class="percentual">44,4%</span></button><button type="button" class="no geografia-distinta" data-turno="1" data-campo="estado" data-valor="Mesmo estado" aria-label="Consultar Mesmo estado, 7 casos no 1º turno" style="left:87.000%;width:13.0%;top:316.0px"><span class="nome">Mesmo estado</span><span class="valor">7</span><span class="percentual">87,5%</span></button><button type="button" class="no geografia-distinta" data-turno="1" data-campo="estado" data-valor="Estados diferentes" aria-label="Consultar Estados diferentes, 1 caso no 1º turno" style="left:87.000%;width:13.0%;top:420.0px"><span class="nome">Estados diferentes</span><span class="valor">1</span><span class="percentual">12,5%</span></button></div></div></div></figure></article><article data-turno="2" aria-label="Sankey do 2º turno"><figure class="fluxo" aria-label="Do local de votação ao desfecho de cada caso no 2º turno"><div class="rolar-grafico" tabindex="0" aria-label="Diagrama de fluxos do 2º turno"><div class="prancha"><div class="etapas"><span style="left:0.000%;width:11.2%">Turno</span><span style="left:14.080%;width:12.6%">Local de votação</span><span style="left:29.560%;width:14.8%">Deslocamento</span><span style="left:47.240%;width:16.8%">Análise dos títulos</span><span style="left:66.920%;width:17.2%">Município e zona eleitoral</span><span style="left:87.000%;width:13.0%">Estado das seções</span></div><div class="sankey" style="height:486.0px"><svg viewBox="0 0 1000 486.0" preserveAspectRatio="none" aria-hidden="true"><g class="local" data-de="turno" data-para="mesmo" data-casos="4451"><title>2º turno → Mesmo local · 4.451</title><path class="banda" d="M112.00 108.0000 C126.40 108.0000 126.40 50.1651 140.80 50.1651 v59.6699 C126.40 109.8349 126.40 167.6699 112.00 167.6699 Z"/></g><g class="investigado" data-de="turno" data-para="distintos" data-casos="323"><title>2º turno → Locais distintos · 323</title><path class="banda" d="M112.00 167.6699 C126.40 167.6699 126.40 235.8349 140.80 235.8349 v4.3301 C126.40 240.1651 126.40 172.0000 112.00 172.0000 Z"/></g><g class="trajeto" data-de="distintos" data-para="plausivel" data-casos="293"><title>Locais distintos → Trajeto compatível · 293</title><path class="banda" d="M266.80 235.8349 C281.20 235.8349 281.20 123.0360 295.60 123.0360 v3.9279 C281.20 126.9640 281.20 239.7629 266.80 239.7629 Z"/></g><g class="aberto" data-de="distintos" data-para="improvavel" data-casos="30"><title>Locais distintos → Deslocamento improvável · 30</title><path class="banda" d="M266.80 239.7629 C281.20 239.7629 281.20 299.7989 295.60 299.7989 v0.4022 C281.20 300.2011 281.20 240.1651 266.80 240.1651 Z"/><path class="fio" d="M266.80 239.9640 C281.20 239.9640 281.20 300.0000 295.60 300.0000"/></g><g class="titulo" data-de="improvavel" data-para="Erro de digitação com evidência forte" data-casos="11"><title>Deslocamento improvável → Erro de digitação com evidência forte · 11</title><path class="banda" d="M443.60 299.7989 C458.00 299.7989 458.00 109.9263 472.40 109.9263 v0.1475 C458.00 110.0737 458.00 299.9464 443.60 299.9464 Z"/><path class="fio" d="M443.60 299.8726 C458.00 299.8726 458.00 110.0000 472.40 110.0000"/></g><g class="aberto" data-de="improvavel" data-para="Sem evidência de erro de digitação" data-casos="19"><title>Deslocamento improvável → Sem evidência de erro de digitação · 19</title><path class="banda" d="M443.60 299.9464 C458.00 299.9464 458.00 303.8726 472.40 303.8726 v0.2547 C458.00 304.1274 458.00 300.2011 443.60 300.2011 Z"/><path class="fio" d="M443.60 300.0737 C458.00 300.0737 458.00 304.0000 472.40 304.0000"/></g><g class="geografia-comum" data-de="Sem evidência de erro de digitação" data-para="Mesmo município ou mesma zona eleitoral" data-casos="16"><title>Sem evidência de erro de digitação → Mesmo município ou mesma zona eleitoral · 16</title><path class="banda" d="M640.40 303.8726 C654.80 303.8726 654.80 239.8928 669.20 239.8928 v0.2145 C654.80 240.1072 654.80 304.0871 640.40 304.0871 Z"/><path class="fio" d="M640.40 303.9799 C654.80 303.9799 654.80 240.0000 669.20 240.0000"/></g><g class="geografia-distinta" data-de="Sem evidência de erro de digitação" data-para="Municípios e zonas eleitorais diferentes" data-casos="3"><title>Sem evidência de erro de digitação → Municípios e zonas eleitorais diferentes · 3</title><path class="banda" d="M640.40 304.0871 C654.80 304.0871 654.80 367.9799 669.20 367.9799 v0.0402 C654.80 368.0201 654.80 304.1274 640.40 304.1274 Z"/><path class="fio" d="M640.40 304.1072 C654.80 304.1072 654.80 368.0000 669.20 368.0000"/></g><g class="geografia-distinta" data-de="Municípios e zonas eleitorais diferentes" data-para="Mesmo estado" data-casos="2"><title>Municípios e zonas eleitorais diferentes → Mesmo estado · 2</title><path class="banda" d="M841.20 367.9799 C855.60 367.9799 855.60 315.9866 870.00 315.9866 v0.0268 C855.60 316.0134 855.60 368.0067 841.20 368.0067 Z"/><path class="fio" d="M841.20 367.9933 C855.60 367.9933 855.60 316.0000 870.00 316.0000"/></g><g class="geografia-distinta" data-de="Municípios e zonas eleitorais diferentes" data-para="Estados diferentes" data-casos="1"><title>Municípios e zonas eleitorais diferentes → Estados diferentes · 1</title><path class="banda" d="M841.20 368.0067 C855.60 368.0067 855.60 419.9933 870.00 419.9933 v0.0134 C855.60 420.0067 855.60 368.0201 841.20 368.0201 Z"/><path class="fio" d="M841.20 368.0134 C855.60 368.0134 855.60 420.0000 870.00 420.0000"/></g></svg><button type="button" class="no origem" data-turno="2" data-campo="todos" data-valor="2º turno" aria-label="Consultar 2º turno, 4.774 casos no 2º turno" style="left:0.000%;width:11.2%;top:140px"><span class="nome">2º turno</span><span class="valor">4.774</span><span class="percentual">100,0%</span></button><button type="button" class="no local" data-turno="2" data-campo="locais" data-valor="Mesmo local" aria-label="Consultar Mesmo local, 4.451 casos no 2º turno" style="left:14.080%;width:12.6%;top:80px"><span class="nome">Mesmo local</span><span class="valor">4.451</span><span class="percentual">93,2%</span></button><button type="button" class="no investigado" data-turno="2" data-campo="locais" data-valor="Locais distintos" aria-label="Consultar Locais distintos, 323 casos no 2º turno" style="left:14.080%;width:12.6%;top:238px"><span class="nome">Locais distintos</span><span class="valor">323</span><span class="percentual">6,8%</span></button><button type="button" class="no trajeto" data-turno="2" data-campo="desfecho" data-valor="Trajeto compatível com o intervalo" aria-label="Consultar Trajeto compatível, 293 casos no 2º turno" style="left:29.560%;width:14.8%;top:125px"><span class="nome">Trajeto compatível</span><span class="valor">293</span><span class="percentual">90,7%</span></button><button type="button" class="no aberto" data-turno="2" data-campo="improvaveis" data-valor="Deslocamento improvável" aria-label="Consultar Deslocamento improvável, 30 casos no 2º turno" style="left:29.560%;width:14.8%;top:300px"><span class="nome">Deslocamento improvável</span><span class="valor">30</span><span class="percentual">9,3%</span></button><button type="button" class="no titulo" data-turno="2" data-campo="grupo" data-valor="Erro de digitação com evidência forte" aria-label="Consultar Erro de digitação com evidência forte, 11 casos no 2º turno" style="left:47.240%;width:16.8%;top:110px"><span class="nome">Erro de digitação com evidência forte</span><span class="valor">11</span><span class="percentual">36,7%</span></button><button type="button" class="no aberto" data-turno="2" data-campo="grupo" data-valor="Sem evidência de erro de digitação" aria-label="Consultar Sem evidência de erro de digitação, 19 casos no 2º turno" style="left:47.240%;width:16.8%;top:304.0px"><span class="nome">Sem evidência de erro de digitação</span><span class="valor">19</span><span class="percentual">63,3%</span></button><button type="button" class="no geografia-comum" data-turno="2" data-campo="geografia" data-valor="Mesmo município ou mesma zona eleitoral" aria-label="Consultar Mesmo município ou mesma zona eleitoral, 16 casos no 2º turno" style="left:66.920%;width:17.2%;top:240.0px"><span class="nome">Mesmo município ou mesma zona eleitoral</span><span class="valor">16</span><span class="percentual">84,2%</span></button><button type="button" class="no geografia-distinta" data-turno="2" data-campo="geografia" data-valor="Municípios e zonas eleitorais diferentes" aria-label="Consultar Municípios e zonas eleitorais diferentes, 3 casos no 2º turno" style="left:66.920%;width:17.2%;top:368.0px"><span class="nome">Municípios e zonas eleitorais diferentes</span><span class="valor">3</span><span class="percentual">15,8%</span></button><button type="button" class="no geografia-distinta" data-turno="2" data-campo="estado" data-valor="Mesmo estado" aria-label="Consultar Mesmo estado, 2 casos no 2º turno" style="left:87.000%;width:13.0%;top:316.0px"><span class="nome">Mesmo estado</span><span class="valor">2</span><span class="percentual">66,7%</span></button><button type="button" class="no geografia-distinta" data-turno="2" data-campo="estado" data-valor="Estados diferentes" aria-label="Consultar Estados diferentes, 1 caso no 2º turno" style="left:87.000%;width:13.0%;top:420.0px"><span class="nome">Estados diferentes</span><span class="valor">1</span><span class="percentual">33,3%</span></button></div></div></div></figure></article>
+<section id="consulta" class="consulta" hidden aria-labelledby="consulta-titulo"><h2 id="consulta-titulo">Casos do fluxo selecionado</h2><p class="resumo" id="grupo"></p>
+<p>Os 12 algarismos reproduzem o número digitado na urna, inclusive os zeros à esquerda. A linha de registro de presença no log público do TSE contém o número sem o nome do titular.</p>
+<fieldset class="filtro-geo" id="filtro-geo" hidden><legend>Municípios e zonas eleitorais das seções</legend><div><label><input type="radio" name="filtro-geo" value=""> Todos (<span>0</span>)</label><label><input type="radio" name="filtro-geo" value="Mesmo município ou mesma zona eleitoral"> Mesmo município ou mesma zona eleitoral (<span>0</span>)</label><label><input type="radio" name="filtro-geo" value="Municípios e zonas eleitorais diferentes"> Municípios e zonas eleitorais diferentes (<span>0</span>)</label></div></fieldset>
+<div class="ferramentas"><label>Buscar título, município, seção ou ID<input id="busca" type="search" autocomplete="off"></label></div>
+<div class="rolar"><table><thead><tr><th>Turno</th><th>Título registrado</th><th>Seções</th><th>Desfecho</th></tr></thead><tbody id="linhas"></tbody></table></div>
+<div class="paginas"><button type="button" class="controle" id="anterior">Anterior</button><span id="paginacao" aria-live="polite"></span><button type="button" class="controle" id="proxima">Próxima</button></div></section>
+<section class="metodo"><details open><summary>Como ler as categorias</summary><p>Em cada turno, siga as faixas da esquerda para a direita. Sua espessura acompanha a quantidade de casos, e um traço fino mantém visíveis os menores grupos. Cada percentual usa o total do ramo de origem. Para a divisão por município e zona, a base reúne os casos com indício inconclusivo e os sem evidência de erro de digitação.</p>
+<p>Em 626 dos 686 casos em locais distintos, o intervalo entre os registros é compatível com o deslocamento de uma seção à outra. Dos 60 casos de deslocamento improvável, 30 ocorreram no primeiro turno e 30 no segundo. Os locais de votação seguem o cadastro do TSE de 25 de outubro.</p>
+<p>O diagrama agrupa os casos pelo local de votação e, entre as seções de locais distintos, pelo tempo disponível para o remanejamento. Os casos em que o trajeto cabe no intervalo entram no grupo de deslocamentos possíveis, inclusive quando há títulos semelhantes. A faixa roxa reúne todos os casos do turno com evidência forte de erro de digitação. Selecione a contagem para consultar a lista e abra um título para conferir a comparação entre as urnas.</p>
+<p>Em “Sem evidência de erro de digitação”, a comparação das listas não identificou outro título que explicasse o registro. Para os casos que seguem em aberto, o diagrama mostra a localização das seções. Quando os municípios e as zonas diferem, o diagrama distingue os casos restritos à mesma UF dos que envolvem mais de uma.</p>
+<p>A ata da mesa permite conferir um remanejamento específico.</p><p>Os logs das urnas de contingência registram 13 casos no 1º turno (mesmo local). Esses casos adicionais ficam fora do universo publicado pela Arvor.</p><details><summary>Ver os títulos suplementares (13)</summary><div class="rolar"><table><thead><tr><th>Título registrado</th><th>Turno</th><th>Município</th><th>Seções</th></tr></thead><tbody><tr><td><code>016938081791</code></td><td>1º</td><td>Palestina</td><td>AL/28231/Z0011/S0068 | AL/28231/Z0011/S0086</td></tr><tr><td><code>026580211775</code></td><td>1º</td><td>Palestina</td><td>AL/28231/Z0011/S0068 | AL/28231/Z0011/S0086</td></tr><tr><td><code>038481151040</code></td><td>1º</td><td>Trindade</td><td>GO/96253/Z0049/S0017 | GO/96253/Z0049/S0018</td></tr><tr><td><code>040578851023</code></td><td>1º</td><td>Trindade</td><td>GO/96253/Z0049/S0017 | GO/96253/Z0049/S0018</td></tr><tr><td><code>045545651708</code></td><td>1º</td><td>Palestina</td><td>AL/28231/Z0011/S0068 | AL/28231/Z0011/S0086</td></tr><tr><td><code>053510500604</code></td><td>1º</td><td>Tijucas Do Sul</td><td>PR/79251/Z0199/S0096 | PR/79251/Z0199/S0160</td></tr><tr><td><code>083323520604</code></td><td>1º</td><td>São José Dos Pinhais</td><td>PR/78859/Z0008/S0419 | PR/78859/Z0008/S0420</td></tr><tr><td><code>091362290663</code></td><td>1º</td><td>São José Dos Pinhais</td><td>PR/78859/Z0008/S0419 | PR/78859/Z0008/S0420</td></tr><tr><td><code>098231860639</code></td><td>1º</td><td>Apucarana</td><td>PR/74250/Z0028/S0202 | PR/74250/Z0028/S0203</td></tr><tr><td><code>099304290655</code></td><td>1º</td><td>São José Dos Pinhais</td><td>PR/78859/Z0008/S0419 | PR/78859/Z0008/S0420</td></tr><tr><td><code>111745210574</code></td><td>1º</td><td>Vitória Da Conquista</td><td>BA/39659/Z0040/S0380 | BA/39659/Z0040/S0425</td></tr><tr><td><code>140913910523</code></td><td>1º</td><td>Vitória Da Conquista</td><td>BA/39659/Z0040/S0380 | BA/39659/Z0040/S0425</td></tr><tr><td><code>142371560540</code></td><td>1º</td><td>Vitória Da Conquista</td><td>BA/39659/Z0040/S0380 | BA/39659/Z0040/S0425</td></tr></tbody></table></div><a href="https://raw.githubusercontent.com/rafnleite/rafnleite.github.io/5c1699b0d706c23cee9d1cfa2e47ef9ba9cf85d2/dados/repeticoes_adicionais.csv" download>Baixar o CSV com os títulos e links dos logs do TSE</a></details>
+<nav class="fim"><a href="https://raw.githubusercontent.com/rafnleite/rafnleite.github.io/5c1699b0d706c23cee9d1cfa2e47ef9ba9cf85d2/dados/secoes_por_caso.csv">Seções de cada caso</a><a href="https://raw.githubusercontent.com/rafnleite/rafnleite.github.io/5c1699b0d706c23cee9d1cfa2e47ef9ba9cf85d2/dados/duas_edicoes_casos.csv">Teste de digitação</a><a href="https://raw.githubusercontent.com/rafnleite/rafnleite.github.io/5c1699b0d706c23cee9d1cfa2e47ef9ba9cf85d2/dados/relatorio/deslocamento_possivel.csv" download>Deslocamentos possíveis</a><a href="https://raw.githubusercontent.com/rafnleite/rafnleite.github.io/5c1699b0d706c23cee9d1cfa2e47ef9ba9cf85d2/dados/relatorio/deslocamento_improvavel.csv" download>Deslocamentos improváveis por turno</a></nav></details></section>
+<script type="application/json" id="dados" data-bloco-mesarios="blocos/sankey-casos.json.gz?v=b5156cb1fe0a"></script>
+<script type="application/json" id="equipes-para-previa" data-bloco-mesarios="blocos/sankey-equipes.json.gz?v=42ff58db4ea0"></script><script src="../assets/mesarios-dados.js"></script><script>window.dadosMesariosProntos.then(function (prontos) {
+if (!prontos) return;
+(() => {
+    "use strict";
+    const fonte = document.getElementById("equipes-para-previa");
+    if (!fonte) return;
+
+    const casos = JSON.parse(fonte.textContent);
+    const seletor = "[data-equipe-prever]";
+    let ativo = null;
+    let fixo = false;
+    let devolvendoFoco = false;
+    let fecharDepois = 0;
+    let quadroAgendado = 0;
+    let ultimoPonteiro = "";
+
+    const painel = document.createElement("div");
+    painel.id = "previa-equipes";
+    painel.setAttribute("role", "dialog");
+    painel.setAttribute("aria-labelledby", "previa-equipes-titulo");
+    painel.hidden = true;
+    painel.innerHTML = '<div class="pe-cabecalho"><b id="previa-equipes-titulo">Equipes das urnas</b>' +
+        '<code></code><button type="button" class="pe-fechar">Fechar</button></div><div class="pe-listas"></div>';
+    const numero = painel.querySelector(".pe-cabecalho code");
+    const botaoFechar = painel.querySelector(".pe-fechar");
+    const listas = painel.querySelector(".pe-listas");
+    document.body.append(painel);
+
+    function acionador(no) {
+        return no instanceof Element ? no.closest(seletor) : null;
+    }
+
+    function dedicado(alvo) {
+        return alvo.matches("button.ver-equipe");
+    }
+
+    function indicar(alvo, aberto) {
+        if (dedicado(alvo)) {
+            alvo.setAttribute("aria-haspopup", "dialog");
+            alvo.setAttribute("aria-controls", painel.id);
+            alvo.setAttribute("aria-expanded", String(aberto));
+        }
+    }
+    document.querySelectorAll("button.ver-equipe[data-equipe-prever]").forEach(alvo => indicar(alvo, false));
+
+    function fechar(devolverFoco = false) {
+        window.clearTimeout(fecharDepois);
+        const anterior = ativo;
+        if (anterior) indicar(anterior, false);
+        ativo = null;
+        fixo = false;
+        painel.hidden = true;
+        if (devolverFoco && anterior?.isConnected) {
+            devolvendoFoco = true;
+            anterior.focus({preventScroll: true});
+            devolvendoFoco = false;
+        }
+    }
+
+    function copiarQuadro(caso) {
+        if (caso.html) {
+            const molde = document.createElement("template");
+            molde.innerHTML = caso.html;
+            return molde.content.querySelector(".eq-quadro");
+        }
+        const origem = document.getElementById((caso.fonte || "").replace(/^#/, ""));
+        const quadro = origem?.matches(".eq-quadro") ? origem : origem?.querySelector(".eq-quadro");
+        return quadro?.cloneNode(true);
+    }
+
+    function filtrarMesa(quadro, filtro) {
+        for (const card of quadro.querySelectorAll(".eq-urna")) {
+            const u = card.dataset;
+            if ((filtro.equipeUf && filtro.equipeUf !== u.uf) ||
+                (filtro.equipeMunicipio && filtro.equipeMunicipio !== u.municipio) ||
+                (filtro.equipeZona && Number(filtro.equipeZona) !== Number(u.zona)) ||
+                (filtro.equipeSecao && Number(filtro.equipeSecao) !== Number(u.secao)) ||
+                (filtro.equipeTurno && filtro.equipeTurno !== u.turno)) card.remove();
+        }
+        for (const grupo of quadro.querySelectorAll(".eq-urnas")) {
+            if (grupo.querySelector(".eq-urna")) continue;
+            const rotulo = grupo.previousElementSibling;
+            if (rotulo?.matches(".eq-periodo")) rotulo.remove();
+            grupo.remove();
+        }
+    }
+
+    function posicionar() {
+        if (!ativo) return;
+        const alvo = ativo.getBoundingClientRect();
+        const largura = document.documentElement.clientWidth;
+        const altura = document.documentElement.clientHeight;
+        if (!ativo.isConnected || !alvo.width || !alvo.height || alvo.bottom <= 0 || alvo.top >= altura ||
+            alvo.right <= 0 || alvo.left >= largura) {
+            fechar(painel.contains(document.activeElement));
+            return;
+        }
+        const margem = 8;
+        const folga = 4;
+        const direita = largura - margem - alvo.right - folga;
+        const esquerda = alvo.left - margem - folga;
+        const lateral = Math.max(direita, esquerda) >= 790;
+        painel.style.width = Math.min(largura - 2 * margem, 900, lateral ? Math.max(esquerda, direita) : largura) + "px";
+        const abaixo = altura - margem - alvo.bottom - folga;
+        const acima = alvo.top - margem - folga;
+        const porBaixo = abaixo >= acima;
+        const limite = lateral ? altura - 2 * margem : Math.max(acima, abaixo);
+        painel.style.maxHeight = Math.min(altura - 2 * margem, 650, Math.max(125, limite)) + "px";
+        const x = lateral ? (direita >= esquerda ? alvo.right + folga : alvo.left - folga - painel.offsetWidth) : alvo.left;
+        const y = lateral ? alvo.top - 12 : (porBaixo ? alvo.bottom + folga : alvo.top - folga - painel.offsetHeight);
+        painel.style.left = Math.max(margem, Math.min(x, largura - margem - painel.offsetWidth)) + "px";
+        painel.style.top = Math.max(margem, Math.min(y, altura - margem - painel.offsetHeight)) + "px";
+    }
+
+    function abrir(alvo) {
+        window.clearTimeout(fecharDepois);
+        if (alvo === ativo) return;
+        fechar();
+        const caso = casos[alvo.dataset.equipePrever];
+        if (!caso) return;
+        const quadro = copiarQuadro(caso);
+        if (!quadro) return;
+        filtrarMesa(quadro, alvo.dataset);
+        if (!quadro.querySelector(".eq-urna")) return;
+        listas.replaceChildren(quadro);
+        numero.textContent = caso.titulo;
+        ativo = alvo;
+        indicar(alvo, true);
+        painel.hidden = false;
+        listas.scrollTop = 0;
+        posicionar();
+    }
+
+    document.addEventListener("pointerover", ev => {
+        if (ev.pointerType === "touch") return;
+        if (painel.contains(ev.target)) {
+            window.clearTimeout(fecharDepois);
+            return;
+        }
+        if (fixo || painel.contains(document.activeElement)) return;
+        const alvo = acionador(ev.target);
+        if (alvo && !alvo.contains(ev.relatedTarget)) abrir(alvo);
+    });
+    document.addEventListener("pointerout", ev => {
+        if (!ativo || fixo || ev.pointerType === "touch") return;
+        if (!ativo.contains(ev.target) && !painel.contains(ev.target)) return;
+        if (ativo.contains(ev.relatedTarget) || painel.contains(ev.relatedTarget)) return;
+        window.clearTimeout(fecharDepois);
+        fecharDepois = window.setTimeout(() => {
+            if (ativo && !fixo && !painel.contains(document.activeElement) &&
+                !(document.activeElement === ativo && ativo.matches(":focus-visible"))) fechar();
+        }, 260);
+    });
+    document.addEventListener("pointerdown", ev => {
+        ultimoPonteiro = ev.pointerType;
+        if (ativo && !ativo.contains(ev.target) && !painel.contains(ev.target)) fechar();
+    }, true);
+    document.addEventListener("focusin", ev => {
+        if (devolvendoFoco) return;
+        if (painel.contains(ev.target)) {
+            window.clearTimeout(fecharDepois);
+            return;
+        }
+        const alvo = acionador(ev.target);
+        if (alvo && ultimoPonteiro !== "touch") abrir(alvo);
+    });
+    document.addEventListener("focusout", ev => {
+        if (!ativo || (!ativo.contains(ev.target) && !painel.contains(ev.target))) return;
+        if (ativo.contains(ev.relatedTarget) || painel.contains(ev.relatedTarget)) return;
+        // Quando um dedo toca a área rolável, relatedTarget pode ser nulo.
+        if (ev.relatedTarget || !fixo) fechar();
+    });
+
+    botaoFechar.addEventListener("click", () => fechar(true));
+    document.addEventListener("click", ev => {
+        const alvo = acionador(ev.target);
+        if (!alvo || painel.contains(ev.target)) return;
+        if (dedicado(alvo)) {
+            if (fixo && ativo === alvo) fechar();
+            else {
+                abrir(alvo);
+                fixo = ativo === alvo;
+            }
+        } else {
+            // Os controles de ficha e os summaries continuam com a ação original.
+            fechar();
+        }
+    });
+
+    document.addEventListener("keydown", ev => {
+        ultimoPonteiro = "";
+        if (!ativo) return;
+        if (ev.key === "Escape") {
+            ev.preventDefault();
+            fechar(painel.contains(document.activeElement));
+            return;
+        }
+        if (ev.key === "Tab") {
+            const foco = document.activeElement;
+            if (!ev.shiftKey && ativo.contains(foco)) {
+                ev.preventDefault();
+                fixo = true;
+                botaoFechar.focus({preventScroll: true});
+            } else if (ev.shiftKey && foco === botaoFechar) {
+                ev.preventDefault();
+                fechar(true);
+            } else if (!ev.shiftKey && painel.contains(foco)) {
+                const links = listas.querySelectorAll("a[href]");
+                if (foco === (links[links.length - 1] || botaoFechar)) {
+                    // A partir da última fonte, Tab segue na página após o acionador.
+                    fechar(true);
+                }
+            }
+            return;
+        }
+        if ((!ativo.contains(document.activeElement) && !painel.contains(document.activeElement)) ||
+            ev.ctrlKey || ev.altKey || ev.metaKey || listas.scrollHeight <= listas.clientHeight) return;
+        const passo = {ArrowDown: 36, ArrowUp: -36, PageDown: listas.clientHeight * .85,
+            PageUp: -listas.clientHeight * .85, Home: -listas.scrollHeight, End: listas.scrollHeight}[ev.key];
+        if (passo !== undefined) {
+            ev.preventDefault();
+            listas.scrollTop += passo;
+        }
+    });
+
+    function atualizarPosicao(ev) {
+        if (!ativo || quadroAgendado || (ev.target instanceof Node && painel.contains(ev.target))) return;
+        quadroAgendado = requestAnimationFrame(() => { quadroAgendado = 0; posicionar(); });
+    }
+    window.addEventListener("scroll", atualizarPosicao, {capture: true, passive: true});
+    window.addEventListener("resize", atualizarPosicao);
+    window.addEventListener("blur", () => fechar());
+})();
+
+});</script>
+<script>window.dadosMesariosProntos.then(function (prontos) {
+if (!prontos) return;
+
+(()=>{
+  const el=id=>document.getElementById(id);
+  const [lugares,casos]=JSON.parse(el('dados').textContent);
+  const botoes=document.querySelectorAll('button.no[data-campo][data-valor][data-turno]');
+  const paineis=document.querySelectorAll('article[data-turno]');
+  const turnos=el('seletor').querySelectorAll('button[data-ir]');
+  const cabecalho=el('consulta-titulo');
+  const filtroGeo=el('filtro-geo');
+  const opcoesGeo=filtroGeo.querySelectorAll('input');
+  cabecalho.tabIndex=-1;
+  cabecalho.setAttribute('aria-describedby','grupo');
+  const tamanho=20;
+  const simples=s=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+  let selecionado, conjunto=[],filtrados=[],pagina=0;
+  function corresponde(c,{turno,campo,valor}){
+    if(c[0]!==turno)return false;
+    switch(campo){
+      case 'todos':return true;
+      case 'improvaveis':return Boolean(c[6]);
+      case 'locais':return valor===(c[4]?'Locais distintos':'Mesmo local');
+      case 'grupo':return valor===c[4];
+      case 'desfecho':return valor===c[5];
+      case 'geografia':return valor===c[10];
+      case 'estado':return valor===c[13];
+      default:return false;
+    }
+  }
+  function texto(tag,s){const t=document.createElement(tag);t.textContent=s;return t}
+  function mostrar(){
+    const body=el('linhas');body.replaceChildren();
+    const inicio=pagina*tamanho;
+    filtrados.slice(inicio,inicio+tamanho).forEach(c=>{
+      const linha=document.createElement('tr'),titulo=document.createElement('td'),lugar=document.createElement('td'),desfecho=document.createElement('td');
+      const numero=texto('code',c[1]);
+      if(c[4]){
+        const link=document.createElement('a');link.href='relatorio_tecnico.html#f-'+c[0]+'-'+c[2].toLowerCase();
+        if(c[9])link.dataset.equipePrever=c[0]+'-'+c[2].toLowerCase();
+        link.append(numero);titulo.append(link);
+      }else{titulo.append(numero)}
+      titulo.append(texto('small','Referência · '+c[2]));
+      lugar.textContent=lugares[c[3]];desfecho.textContent=c[5]||'Seções no mesmo local';
+      if(c[10] && (!filtroGeo.hidden || ['geografia','estado'].includes(selecionado.dataset.campo))){
+        const municipio=c[11]?'Mesmo município':'Municípios diferentes';
+        const zona=c[12]?'mesma zona':'zonas diferentes';
+        lugar.append(texto('small',[municipio,zona,c[13]].filter(Boolean).join(' · ')));
+      }
+      if(c[8]||c[7]){
+        const notas=document.createElement('details');notas.append(texto('summary','Detalhes da ficha'));desfecho.append(notas);
+        if(c[8])notas.append(texto('small','Avaliação inicial do trajeto · '+c[8]));
+        if(c[7])notas.append(texto('small',c[7]));
+      }
+      linha.append(texto('td',c[0]+'º'),titulo,lugar,desfecho);body.append(linha);
+    });
+    el('paginacao').textContent=filtrados.length?(inicio+1)+'–'+Math.min(inicio+tamanho,filtrados.length)+' de '+filtrados.length.toLocaleString('pt-BR'):'Nenhum caso encontrado';
+    el('anterior').disabled=pagina===0;el('proxima').disabled=inicio+tamanho>=filtrados.length;
+  }
+  function filtrar(){const termos=simples(el('busca').value.trim()).split(/\s+/).filter(Boolean);
+    const geo=filtroGeo.hidden?'':filtroGeo.querySelector('input:checked').value;
+    filtrados=conjunto.filter(c=>{
+      if(geo && c[10]!==geo)return false;
+      const s=simples([c[1],c[2],lugares[c[3]],c[5],c[7]].join(' '));return termos.every(t=>s.includes(t));
+    });pagina=0;mostrar()}
+  function ativar(botao,rolar){
+    if(selecionado){
+      selecionado.setAttribute('aria-pressed','false');
+      selecionado.classList.remove('selecionado');
+    }
+    selecionado=botao;
+    botao.setAttribute('aria-pressed','true');
+    botao.classList.add('selecionado');
+    const {turno,campo,valor}=botao.dataset;
+    conjunto=casos.filter(c=>corresponde(c,botao.dataset));
+    filtroGeo.hidden=!(conjunto.length && (campo==='grupo' || campo==='desfecho') && conjunto.every(c=>c[10]));
+    if(!filtroGeo.hidden){
+      for(const opcao of opcoesGeo){
+        const quantidade=opcao.value?conjunto.filter(c=>c[10]===opcao.value).length:conjunto.length;
+        opcao.labels[0].querySelector('span').textContent=quantidade;
+        opcao.checked=!opcao.value;
+        opcao.disabled=!quantidade;
+      }
+    }
+    el('busca').value='';
+    const descricao=[turno+'º turno'];
+    if(campo==='estado')descricao.push(conjunto[0][10]);
+    if(campo!=='todos')descricao.push(valor);
+    descricao.push(conjunto.length.toLocaleString('pt-BR')+(conjunto.length===1?' caso':' casos'));el('grupo').textContent=descricao.join(' · ');
+    filtrar();
+    if(rolar){
+      cabecalho.focus({preventScroll:true});
+      cabecalho.scrollIntoView({block:'start'});
+    }
+  }
+  botoes.forEach(b=>{
+    b.setAttribute('aria-pressed','false');
+    b.setAttribute('aria-controls','consulta');
+    b.addEventListener('click',()=>ativar(b,true));
+  });
+  function mudarTurno(turno){
+    for(const painel of paineis)painel.hidden=painel.dataset.turno!==turno;
+    for(const botao of turnos)botao.setAttribute('aria-pressed',String(botao.dataset.ir===turno));
+    const inicio=document.querySelector(`button.no[data-turno="${turno}"][data-campo="todos"]`);
+    ativar(inicio,false);
+  }
+  turnos.forEach(b=>b.addEventListener('click',()=>{
+    if(b.dataset.ir!==selecionado.dataset.turno)mudarTurno(b.dataset.ir);
+  }));
+  el('busca').addEventListener('input',filtrar);
+  filtroGeo.addEventListener('change',filtrar);
+  el('proxima').addEventListener('click',()=>{pagina++;mostrar()});el('anterior').addEventListener('click',()=>{pagina--;mostrar()});
+  el('consulta').hidden=false;
+  el('seletor').hidden=false;
+  mudarTurno('1');
+})();
+
+});</script></main>
+<script>
+(() => {
+    const menu = document.getElementById("indice-mesarios");
+    const botao = document.getElementById("abrir-indice-mesarios");
+    function alternar(aberto) {
+        menu.classList.toggle("open", aberto);
+        botao.setAttribute("aria-expanded", String(aberto));
+    }
+    botao.addEventListener("click", () => alternar(!menu.classList.contains("open")));
+    menu.addEventListener("click", evento => {
+        if (evento.target.closest("a")) alternar(false);
+    });
+    document.addEventListener("keydown", evento => {
+        if (evento.key === "Escape" && menu.classList.contains("open")) {
+            alternar(false);
+            botao.focus();
+        }
+    });
+    document.addEventListener("click", evento => {
+        if (!menu.contains(evento.target) && !botao.contains(evento.target)) alternar(false);
+    });
+    document.getElementById("imprimir-mesarios").addEventListener("click", () => window.print());
+})();
+</script><script defer src="../assets/mesarios-download.js"></script></body></html>
